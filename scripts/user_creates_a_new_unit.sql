@@ -574,9 +574,9 @@ SET @visibility_explanation = CONCAT('Tick to HIDE this case if the user is the 
 			# All the users in the Group @creator_group_id can see the users in the group YYY
 			# The group @creator_group_id has Permission #2 to:
 				# See all the users that are creators
-					(@creator_group_id,@creator_group_id,2),
+					#(@creator_group_id,@creator_group_id,2),
 				# See all user that have the same role in the unit
-					(@creator_group_id,@visibility_case_group_id,2),
+					#(@creator_group_id,@visibility_case_group_id,2),
 				# See all the users in the list of visible user for this product
 					# This is needed
 					(@creator_group_id,@list_user_group_id,2),
