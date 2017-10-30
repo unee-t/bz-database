@@ -4103,6 +4103,404 @@
 		/*Data for the table `audit_log` */
 		# Nothing to do
 
+	# We now Create the Privileges for Jocelyn
+	#   - Jocelyn works for the Management Company Management Co, in charge of this unit.
+	#     Her `id_role_type` in the table `ut_role_types` = 4
+
+	# We do NOT need to create the unit here.
+	# We do NOT need to create a new component/stakholder
+	# We do NOT need to create new groups
+	# We 'Just' need to grant the correct group memberships to Jocelyn for the correct product/unit and component/stakholder/role
+
+		# We do NOT need to create the unit here.
+	# BUT We need to Make sure that the the component for this Unit is correct
+	
+	# We also want to show the publicly visible information for Management Co.
+		# His public name
+			SET @stakeholder_pub_name = 'Jocelyn';
+		# More details
+			SET @stakeholder_more = 'Team Bravo';
+		# Se we can create the public info too
+			SET @stakeholder_pub_info = CONCAT(@stakeholder_pub_name,' - ', @stakeholder_more);
+		
+	# We Need the BZ user information for Jocelyn
+		SET @bz_user_id = 7;
+
+	# User role: this is an id in the table `ut_role_types` for easier manipulation, update and maintenance
+		SET @role_type_id = 4;
+
+	# Is this user an occupant of the unit?
+	#	- 1 = TRUE
+	#	- 0 = FALSE
+		SET @is_occupant = 0;
+
+	# We Need the BZ user information for the creator of the new user too (Marina)
+		SET @user_creator_bz_user_id = 8;
+			
+		# His public name 
+		# We have this as a variable in this script.
+		# this should be stored somewhere in the MEFE
+		# we do not need to recreate this in the context of the script to create DEMO users.
+			# SET @user_creator_pub_name = 'Marina';
+		# More details
+			#SET @user_creator_more ='Team Lead';
+		# Se we can create the public info too
+			#SET @user_creator_pub_info = CONCAT(@user_creator_pub_name,' - ', @user_creator_more);
+
+	# OPTIONAL INFORMATION:
+	#
+	# We need to know if this user can 
+	#	- see all other user (1) 
+	#		In this case this user will be a member of the group `@list_visible_assignees_group_id`
+	#		for this product/unit.
+	#	- see only the people in the same role/stakeholder group. (0)
+	# 		Else this user will NOT be a member of the group `@list_visible_assignees_group_id`
+	#		for this product/unit.
+	# By Default, the user is visible to all other user.
+		SET @user_is_public = 0; 
+	#
+	# We need to know if this user is 
+	#	- visible to all other user (1) 
+	#		In this case this user will be a member of the group `@see_visible_assignees_group_id`
+	#		for this product/unit.
+	#	- visible only to people in the same role/stakeholder group. (1)
+	# 		Else this user will NOT be a member of the group `@see_visible_assignees_group_id`
+	#		for this product/unit.
+	# By Default, the user is visible to all other user.
+		SET @user_can_see_public = 1; 
+
+	#
+	# By default the new user can approve all flags but we want flexibility there 
+	# We know this might not be always true for all BZ user we create
+		SET @can_be_asked_to_approve = 0;
+
+	# By default the new user can approve all flags but we want flexibility there 
+	# We know this might not be always true for all BZ user we create
+		SET @can_approve = 1;
+	#
+	# Is the user allowed to create new users?
+		# only in the same group of stakholders
+			SET @can_create_same_stakeholder = 0;
+		
+		# in ANY group of stakeholders
+			SET @can_create_any_stakeholder = 0;
+	
+	# Is this user allowed to decided who can be requestee and grant Flags?
+		SET @can_approve_user_for_flag = 0;
+		
+	# Is this user is allowed to decided who is visible in the list of assignee?
+		SET @can_decide_if_user_is_visible = 0;
+		
+	# Is this user is allowed to decided if a new user can see visible assignees?
+		SET @can_decide_if_user_can_see_visible = 0;
+
+	# We have everything - Onward for Management Co!
+	
+		# We DISABLE the FK check
+			SET FOREIGN_KEY_CHECKS = 0;
+	
+		# Get the additional variable that we need
+			# When is this happening?
+				SET @timestamp = NOW();
+
+			# We get the login name from the user_id
+				SET @login_name = (SELECT `login_name` FROM `profiles` WHERE `userid`=@bz_user_id);
+				SET @user_creator_login_name = (SELECT `login_name` FROM `profiles` WHERE `userid`=@user_creator_bz_user_id);
+
+			# We get the Stakeholder designation from the `ut_role_types` table
+			# this makes it easy to maintain
+				SET @stakeholder = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@role_type_id);
+
+			# We get the Stakeholder Generic description for the BZFE from the `ut_role_types` table
+			# this makes it easy to maintain
+				SET @stakeholder_g_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type`=@role_type_id);
+
+			# The 'visibility' explanation
+				SET @visibility_explanation = CONCAT(@visibility_explanation_1,@stakeholder,@visibility_explanation_2);
+
+	# We need to know if this is the first time we have created a user with this role.
+	#
+	# If this was any other scenario, we will need to check if we already have a record in the table `ut_product_group`
+	# The check is to test if we have a record in the table `ut_product_group` where
+	# `product_id` = @product_id AND `role_type_id` = @role_type_id AND `group_type_id` = 2
+	# `group_type_id` = 2 is the group to grant access to product/units and bugs/cases.
+	# if we have one, no need to create a component/stakholder or any group
+	# we just need 
+	#	1- to grant membership in this group to the new user so that it can access this
+	#		unit and the cases in this unit.
+	#	2- Check the group_id that makes this user visible to other users for this product (also in the table `ut_product_group`)
+	#	3- Check the group_id that makes this user see the other users for this product (also in the table `ut_product_group`)
+	#	4- Check the group_id that allow users to be asked for flag approvals for this product (also in the table `ut_product_group`)
+	#	5- Check the group_id that allow users to approve flag for this product (also in the table `ut_product_group`)
+	#
+	# This is for Demo, we know this is NOT the first time we create a Management Company.
+	# We need to:
+	# We need to:
+	#	- Create the component
+	#	- Create the groups
+	#	- Update the table `ut_product_group`
+	#	- Make sure the groups are properly configured
+	#	- Make sure that this new users is granted the membership in the group he needs
+	
+		/*Data for the table `components` */
+		# We insert the correct values for the component/stakeholder.
+		# Nothing to do here
+
+		# In order to to populate other table (flags, audit table,...), we need to get the newly created component_id
+			SET @component_id = LAST_INSERT_ID();
+
+		/*Data for the table `component_cc` */
+		# We have NOT added a new user as another stakeholder in stakeholder group that already has users.
+		#		We only do that for
+		#			- Tenant
+		#			- Landlord
+		# Nothing to do here
+			
+		/*Data for the table `groups` */
+		# We have created all the groups we needed when we created the unit
+		# We have no need to re-create these groups.
+
+
+		/*Data for the table `group_group_map` */
+		# We have created all the groups we needed when we created the unit
+		# Nothing to do here
+		
+		/*Data for the table `group_control_map` */
+		# We have created all the groups we needed when we created the unit
+		# Nothing to do here
+	
+		/*Data for the table `user_group_map` */
+		# The groups have been defined, we can now tell which group the BZ users needs access to.
+
+##################################################################################
+# WE NEED TO MAKE THIS A CONDITIONAL THING TO MAKE THIS SCRIPT MORE VERSATILE
+#	- Is the user the creator of the unit?
+#	- What is the role_type_id for that user?
+#	- Is the user an occupant?
+#	- Is this user publicly visible?
+#	- Can this user see the publicly visible users?
+#	- Can this user be asked to approved flags?
+#	- Can this user approve flags?
+#	- Is the user allowed to create more users?
+#		- In the same group of Stakholder
+#		- In ANY group of stakeholder
+#		- Can decide who can be requestee and grant Flags
+#		- Can decided who is visible in the list of assignee
+#		- Can decided if a new user can see visible assignees
+#		- 
+#
+# The consequences of the answers to these questions are:
+#	- If user is the creator of the unit, we make him a member of:
+#		- @unit_creator_group_id
+#	- If user is in the role [n] then we make him a member of THE groups
+#		- @are_users_stakeholder_[n]_group_id
+#		- @hide_to_stakeholder_[all but n]_group_id
+# 	- If the user is an occupant then make him a member of
+#		- @are_occupants_group_id
+# 	- If the user is NOT an occupant then make him a member of
+#		- @hide_to_occupants_group_id
+#	- If the user is publicly visible then make him a member of
+#		- @list_visible_assignees_group_id
+#	- If the user can see the publicly visible users then make him a member of
+#		- @see_visible_assignees_group_id
+#	- If the user can be asked to approved flags then make him a member of
+#		- @r_group_next_step
+#		- @r_group_solution
+#		- @r_group_budget
+#		- @r_group_attachment
+#		- @r_group_OK_to_pay
+#		- @r_group_is_paid
+#		- @all_r_flags_group_id
+#	- If the user is allowed to approve flags then make him a member of
+#		- @g_group_next_step
+#		- @g_group_solution
+#		- @g_group_budget
+#		- @g_group_attachment
+#		- @g_group_OK_to_pay
+#		- @g_group_is_paid
+#		- @all_g_flags_group_id
+#
+# Creation of new users:
+#	- If the user is allowed to create more users in ANY group of stakeholder 
+#		then he is granted permissions to add users to
+#		- @create_case_group_id
+#		- @are_users_stakeholder_1_group_id
+#		- @are_users_stakeholder_2_group_id
+#		- @are_users_stakeholder_3_group_id
+#		- @are_users_stakeholder_4_group_id
+#		- @are_users_stakeholder_5_group_id
+#		- @hide_to_stakeholder_1_group_id
+#		- @hide_to_stakeholder_2_group_id
+#		- @hide_to_stakeholder_3_group_id
+#		- @hide_to_stakeholder_4_group_id
+#		- @hide_to_stakeholder_5_group_id
+#		- @are_occupants_group_id
+#		- @hide_to_occupants_group_id
+#
+#	- If the user is allowed to create more users only in the same group of stakeholder [n] 
+#		then he is granted permissions to add users to
+#		- @create_case_group_id
+#		- @are_users_stakeholder_[n]_group_id
+#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @are_occupants_group_id
+#		- @hide_to_occupants_group_id
+#
+#	- If the user can decided who is visible in the list of assignee
+#		- @list_visible_assignees_group_id
+#
+#	- If the user can decided if a new user can see visible assignees
+#		- @see_visible_assignees_group_id
+#
+#	- If the user can decide who can be requestee and grant Flags
+#		- @r_group_next_step
+#		- @r_group_solution
+#		- @r_group_budget
+#		- @r_group_attachment
+#		- @r_group_OK_to_pay
+#		- @r_group_is_paid
+#		- @g_group_next_step
+#		- @g_group_solution
+#		- @g_group_budget
+#		- @g_group_attachment
+#		- @g_group_OK_to_pay
+#		- @g_group_is_paid
+#		- @all_r_flags_group_id
+#		- @all_g_flags_group_id
+#
+##################################################################################
+
+		INSERT  INTO `user_group_map`
+			(`user_id`
+			,`group_id`
+			,`isbless`
+			,`grant_type`
+			) 
+			VALUES 
+			# Permission for the user we created:
+				# Permission to GRANT Membership to the following groups
+					# A user is the creator: this is true so he can add more users and stakholders there
+						#(@bz_user_id,@unit_creator_group_id,1,0),
+						
+					# A user can create a case for this unit? This is true so he can add more users and stakholders there
+					# For Jocelyn, we know she is NOT allowed to
+						(@bz_user_id,@create_case_group_id,1,0),
+						
+					# A user is a stakeholder: This is true so he can add more users and stakholders there
+					# For Jocelyn, we know she NOT is allowed to create other users
+						#(@bz_user_id,@are_users_stakeholder_1_group_id,1,0),
+						#(@bz_user_id,@are_users_stakeholder_2_group_id,1,0),
+						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
+						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
+						#(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
+						#(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
+						#(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
+						#(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+					
+					# A user is an occupant: This is true so he can add more users and stakholders there
+					# For Jocelyn, we know she is NOT allowed to
+						#(@bz_user_id,@are_occupants_group_id,1,0),
+						#(@bz_user_id,@hide_to_occupants_group_id,1,0),
+					
+					# A user is a visible assignee: This is true so he can add more users and stakholders there
+					# For Jocelyn, we know she is NOT allowed to
+						#(@bz_user_id,@list_visible_assignees_group_id,1,0),
+						
+					# A user can see visible assignees: This is true so he can add more users and stakholders there
+					# For Jocelyn, we know she is NOT allowed to
+						#(@bz_user_id,@see_visible_assignees_group_id,1,0),
+					
+					# A user can be asked to approve flags: This is true so he can add more users and stakholders there
+					# For Jocelyn, we know she is NOT allowed to
+						#(@bz_user_id,@r_group_next_step,1,0),
+						#(@bz_user_id,@r_group_solution,1,0),
+						#(@bz_user_id,@r_group_budget,1,0),
+						#(@bz_user_id,@r_group_attachment,1,0),
+						#(@bz_user_id,@r_group_OK_to_pay,1,0),
+						#(@bz_user_id,@r_group_is_paid,1,0),
+						#(@bz_user_id,@all_r_flags_group_id,1,0),
+					
+					# A user can approve flags: This is true so he can add more users and stakholders there
+					# For Jocelyn, we know she is NOT allowed to
+						#(@bz_user_id,@g_group_next_step,1,0),
+						#(@bz_user_id,@g_group_solution,1,0),
+						#(@bz_user_id,@g_group_budget,1,0),
+						#(@bz_user_id,@g_group_attachment,1,0),
+						#(@bz_user_id,@g_group_OK_to_pay,1,0),
+						#(@bz_user_id,@g_group_is_paid,1,0),
+						#(@bz_user_id,@all_g_flags_group_id,1,0),
+
+				# Jocelyn is a member of the following groups
+
+					# Can he create a case for this unit?
+					# All the new user can create...
+						(@bz_user_id,@create_case_group_id,0,0),
+
+					# Is the user a creator of the unit?
+					# For Jocelyn, we know he is NOT
+						#(@bz_user_id,@unit_creator_group_id,0,0),
+					
+					# Group to show/hide cases to some stakeholders:
+					# For Jocelyn, we know he is stakeholder 4
+						#(@bz_user_id,@are_users_stakeholder_1_group_id,0,0),
+						#(@bz_user_id,@are_users_stakeholder_2_group_id,0,0),
+						#(@bz_user_id,@are_users_stakeholder_3_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_4_group_id,0,0),
+						#(@bz_user_id,@are_users_stakeholder_5_group_id,0,0),
+						
+					# Group to show/hide cases to some stakeholders:
+					# For Jocelyn, we know he is stakeholder 4
+						(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
+						(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
+						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
+						#(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+					
+					# Is he an occupant?
+					# For Jocelyn, the answer is NO
+						#(@bz_user_id,@are_occupants_group_id,0,0),
+						(@bz_user_id,@hide_to_occupants_group_id,0,0),
+					
+					# Is she visible in the list of possible assignees?
+					# For Jocelyn, the answer is NO
+						#(@bz_user_id,@list_visible_assignees_group_id,0,0),
+						
+					# Can she see all the other visible assigneed?
+					# For Jocelyn, the answer is YES
+						(@bz_user_id,@see_visible_assignees_group_id,0,0);
+					
+					# Flags: can she be asked to request?
+					# For Jocelyn, the answer is NO
+						#(@bz_user_id,@r_group_next_step,0,0),
+						#(@bz_user_id,@r_group_solution,0,0),
+						#(@bz_user_id,@r_group_budget,0,0),
+						#(@bz_user_id,@r_group_attachment,0,0),
+						#(@bz_user_id,@r_group_OK_to_pay,0,0),
+						#(@bz_user_id,@r_group_is_paid,0,0),
+						#(@bz_user_id,@all_r_flags_group_id,0,0);
+
+					# Flags: can she approve?
+					# For Jocelyn, the answer is YES
+						#(@bz_user_id,@g_group_next_step,0,0),
+						#(@bz_user_id,@g_group_solution,0,0),
+						#(@bz_user_id,@g_group_budget,0,0),
+						#(@bz_user_id,@g_group_attachment,0,0),
+						#(@bz_user_id,@g_group_OK_to_pay,0,0),
+						#(@bz_user_id,@g_group_is_paid,0,0),
+						#(@bz_user_id,@all_g_flags_group_id,0,0);
+
+		/*Data for the table `series_categories` */
+		# Nothing to do
+
+		/*Data for the table `series_categories` */
+		# Nothing to do
+					
+		/*Data for the table `series` */
+		# Nothing to do
+
+		/*Data for the table `audit_log` */
+		# Nothing to do
 
 
 
