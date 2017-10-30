@@ -234,6 +234,9 @@
 	# We Need the BZ user information for Leonel too
 		SET @bz_user_id = 2;
 
+	# We Need the BZ user information for the creator of the new user too (Leonel)
+		SET @user_creator_bz_user_id = 2;
+		
 	# OPTIONAL INFORMATION:
 	#
 	# We need to know if this user is 
@@ -316,8 +319,36 @@
 		# `group_type_id` = 2 is the group to grant access to product/units and bugs/cases.
 		# 
 		
+		/*Data for the table `ut_map_user_unit_details` */
+		# Update the Unee-T table that records information about the user:
+			INSERT INTO `ut_map_user_unit_details`
+							(`id_user_unit`
+							, `created`
+							, `record_created_by`
+							, `is_obsolete`
+							, `user_id`
+							, `bz_profile_id`
+							, `bz_unit_id`
+							, `role_type_id`
+							, `is_occupant`
+							, `is_public_assignee`
+							, `is_see_visible_assignee`
+							, `is_flag_requestee`
+							, `is_flag_approver`
+							, `can_create_any_sh`
+							, `can_create_same_sh`
+							, `can_approve_user_for_flags`
+							, `can_decide_if_user_visible`
+							, `can_decide_if_user_can_see_visible`
+							, `public_name`
+							, `more_info`
+							, `comment`
+							)
+							VALUES
+							(NULL,@timestamp,@user_creator_bz_user_id,0,NULL,@bz_user_id,@product_id,@role_type_id,@is_occupant,@user_is_public,@user_can_see_public,@can_be_asked_to_approve,@can_approve,@can_create_any_stakeholder,@can_create_same_stakeholder,@can_approve_user_for_flag,@can_decide_if_user_is_visible,@can_decide_if_user_can_see_visible
+							,@stakeholder_pub_name,@stakeholder_more,'');
 		
-		# We first need to delete the component created in the BZ blank install
+		# We need to delete the component created in the BZ blank install
 			DELETE FROM `components` WHERE `id`=1;
 
 		/*Data for the table `components` */
@@ -1669,6 +1700,35 @@
 	#	- Update the table `ut_product_group`
 	#	- Make sure the groups are properly configured
 	#	- Make sure that this new users is granted the membership in the group he needs
+
+		/*Data for the table `ut_map_user_unit_details` */
+		# Update the Unee-T table that records information about the user:
+			INSERT INTO `ut_map_user_unit_details`
+							(`id_user_unit`
+							, `created`
+							, `record_created_by`
+							, `is_obsolete`
+							, `user_id`
+							, `bz_profile_id`
+							, `bz_unit_id`
+							, `role_type_id`
+							, `is_occupant`
+							, `is_public_assignee`
+							, `is_see_visible_assignee`
+							, `is_flag_requestee`
+							, `is_flag_approver`
+							, `can_create_any_sh`
+							, `can_create_same_sh`
+							, `can_approve_user_for_flags`
+							, `can_decide_if_user_visible`
+							, `can_decide_if_user_can_see_visible`
+							, `public_name`
+							, `more_info`
+							, `comment`
+							)
+							VALUES
+							(NULL,@timestamp,@user_creator_bz_user_id,0,NULL,@bz_user_id,@product_id,@role_type_id,@is_occupant,@user_is_public,@user_can_see_public,@can_be_asked_to_approve,@can_approve,@can_create_any_stakeholder,@can_create_same_stakeholder,@can_approve_user_for_flag,@can_decide_if_user_is_visible,@can_decide_if_user_can_see_visible
+							,@stakeholder_pub_name,@stakeholder_more,'');
 	
 		/*Data for the table `components` */
 		# We insert the correct values for the component/stakeholder.
@@ -2109,7 +2169,36 @@
 	#	- Update the table `ut_product_group`
 	#	- Make sure the groups are properly configured
 	#	- Make sure that this new users is granted the membership in the group he needs
-	
+
+		/*Data for the table `ut_map_user_unit_details` */
+		# Update the Unee-T table that records information about the user:
+			INSERT INTO `ut_map_user_unit_details`
+							(`id_user_unit`
+							, `created`
+							, `record_created_by`
+							, `is_obsolete`
+							, `user_id`
+							, `bz_profile_id`
+							, `bz_unit_id`
+							, `role_type_id`
+							, `is_occupant`
+							, `is_public_assignee`
+							, `is_see_visible_assignee`
+							, `is_flag_requestee`
+							, `is_flag_approver`
+							, `can_create_any_sh`
+							, `can_create_same_sh`
+							, `can_approve_user_for_flags`
+							, `can_decide_if_user_visible`
+							, `can_decide_if_user_can_see_visible`
+							, `public_name`
+							, `more_info`
+							, `comment`
+							)
+							VALUES
+							(NULL,@timestamp,@user_creator_bz_user_id,0,NULL,@bz_user_id,@product_id,@role_type_id,@is_occupant,@user_is_public,@user_can_see_public,@can_be_asked_to_approve,@can_approve,@can_create_any_stakeholder,@can_create_same_stakeholder,@can_approve_user_for_flag,@can_decide_if_user_is_visible,@can_decide_if_user_can_see_visible
+							,@stakeholder_pub_name,@stakeholder_more,'');
+
 		/*Data for the table `components` */
 		# We insert the correct values for the component/stakeholder.
 		INSERT  INTO `components`
@@ -2551,6 +2640,35 @@
 	#	- Update the table `ut_product_group`
 	#	- Make sure the groups are properly configured
 	#	- Make sure that this new users is granted the membership in the group he needs
+
+		/*Data for the table `ut_map_user_unit_details` */
+		# Update the Unee-T table that records information about the user:
+			INSERT INTO `ut_map_user_unit_details`
+							(`id_user_unit`
+							, `created`
+							, `record_created_by`
+							, `is_obsolete`
+							, `user_id`
+							, `bz_profile_id`
+							, `bz_unit_id`
+							, `role_type_id`
+							, `is_occupant`
+							, `is_public_assignee`
+							, `is_see_visible_assignee`
+							, `is_flag_requestee`
+							, `is_flag_approver`
+							, `can_create_any_sh`
+							, `can_create_same_sh`
+							, `can_approve_user_for_flags`
+							, `can_decide_if_user_visible`
+							, `can_decide_if_user_can_see_visible`
+							, `public_name`
+							, `more_info`
+							, `comment`
+							)
+							VALUES
+							(NULL,@timestamp,@user_creator_bz_user_id,0,NULL,@bz_user_id,@product_id,@role_type_id,@is_occupant,@user_is_public,@user_can_see_public,@can_be_asked_to_approve,@can_approve,@can_create_any_stakeholder,@can_create_same_stakeholder,@can_approve_user_for_flag,@can_decide_if_user_is_visible,@can_decide_if_user_can_see_visible
+							,@stakeholder_pub_name,@stakeholder_more,'');
 	
 		/*Data for the table `components` */
 		# We insert the correct values for the component/stakeholder.
@@ -2997,6 +3115,35 @@
 	#	- Update the table `ut_product_group`
 	#	- Make sure the groups are properly configured
 	#	- Make sure that this new users is granted the membership in the group he needs
+
+		/*Data for the table `ut_map_user_unit_details` */
+		# Update the Unee-T table that records information about the user:
+			INSERT INTO `ut_map_user_unit_details`
+							(`id_user_unit`
+							, `created`
+							, `record_created_by`
+							, `is_obsolete`
+							, `user_id`
+							, `bz_profile_id`
+							, `bz_unit_id`
+							, `role_type_id`
+							, `is_occupant`
+							, `is_public_assignee`
+							, `is_see_visible_assignee`
+							, `is_flag_requestee`
+							, `is_flag_approver`
+							, `can_create_any_sh`
+							, `can_create_same_sh`
+							, `can_approve_user_for_flags`
+							, `can_decide_if_user_visible`
+							, `can_decide_if_user_can_see_visible`
+							, `public_name`
+							, `more_info`
+							, `comment`
+							)
+							VALUES
+							(NULL,@timestamp,@user_creator_bz_user_id,0,NULL,@bz_user_id,@product_id,@role_type_id,@is_occupant,@user_is_public,@user_can_see_public,@can_be_asked_to_approve,@can_approve,@can_create_any_stakeholder,@can_create_same_stakeholder,@can_approve_user_for_flag,@can_decide_if_user_is_visible,@can_decide_if_user_can_see_visible
+							,@stakeholder_pub_name,@stakeholder_more,'');
 	
 		/*Data for the table `components` */
 		# We insert the correct values for the component/stakeholder.
@@ -3443,7 +3590,36 @@
 	#	- Update the table `ut_product_group`
 	#	- Make sure the groups are properly configured
 	#	- Make sure that this new users is granted the membership in the group he needs
-	
+
+		/*Data for the table `ut_map_user_unit_details` */
+		# Update the Unee-T table that records information about the user:
+			INSERT INTO `ut_map_user_unit_details`
+							(`id_user_unit`
+							, `created`
+							, `record_created_by`
+							, `is_obsolete`
+							, `user_id`
+							, `bz_profile_id`
+							, `bz_unit_id`
+							, `role_type_id`
+							, `is_occupant`
+							, `is_public_assignee`
+							, `is_see_visible_assignee`
+							, `is_flag_requestee`
+							, `is_flag_approver`
+							, `can_create_any_sh`
+							, `can_create_same_sh`
+							, `can_approve_user_for_flags`
+							, `can_decide_if_user_visible`
+							, `can_decide_if_user_can_see_visible`
+							, `public_name`
+							, `more_info`
+							, `comment`
+							)
+							VALUES
+							(NULL,@timestamp,@user_creator_bz_user_id,0,NULL,@bz_user_id,@product_id,@role_type_id,@is_occupant,@user_is_public,@user_can_see_public,@can_be_asked_to_approve,@can_approve,@can_create_any_stakeholder,@can_create_same_stakeholder,@can_approve_user_for_flag,@can_decide_if_user_is_visible,@can_decide_if_user_can_see_visible
+							,@stakeholder_pub_name,@stakeholder_more,'');
+
 		/*Data for the table `components` */
 		# We insert the correct values for the component/stakeholder.
 		# Nothing to do here
@@ -3842,6 +4018,35 @@
 	#	- Update the table `ut_product_group`
 	#	- Make sure the groups are properly configured
 	#	- Make sure that this new users is granted the membership in the group he needs
+
+		/*Data for the table `ut_map_user_unit_details` */
+		# Update the Unee-T table that records information about the user:
+			INSERT INTO `ut_map_user_unit_details`
+							(`id_user_unit`
+							, `created`
+							, `record_created_by`
+							, `is_obsolete`
+							, `user_id`
+							, `bz_profile_id`
+							, `bz_unit_id`
+							, `role_type_id`
+							, `is_occupant`
+							, `is_public_assignee`
+							, `is_see_visible_assignee`
+							, `is_flag_requestee`
+							, `is_flag_approver`
+							, `can_create_any_sh`
+							, `can_create_same_sh`
+							, `can_approve_user_for_flags`
+							, `can_decide_if_user_visible`
+							, `can_decide_if_user_can_see_visible`
+							, `public_name`
+							, `more_info`
+							, `comment`
+							)
+							VALUES
+							(NULL,@timestamp,@user_creator_bz_user_id,0,NULL,@bz_user_id,@product_id,@role_type_id,@is_occupant,@user_is_public,@user_can_see_public,@can_be_asked_to_approve,@can_approve,@can_create_any_stakeholder,@can_create_same_stakeholder,@can_approve_user_for_flag,@can_decide_if_user_is_visible,@can_decide_if_user_can_see_visible
+							,@stakeholder_pub_name,@stakeholder_more,'');
 	
 		/*Data for the table `components` */
 		# We insert the correct values for the component/stakeholder.
@@ -4241,6 +4446,35 @@
 	#	- Update the table `ut_product_group`
 	#	- Make sure the groups are properly configured
 	#	- Make sure that this new users is granted the membership in the group he needs
+
+		/*Data for the table `ut_map_user_unit_details` */
+		# Update the Unee-T table that records information about the user:
+			INSERT INTO `ut_map_user_unit_details`
+							(`id_user_unit`
+							, `created`
+							, `record_created_by`
+							, `is_obsolete`
+							, `user_id`
+							, `bz_profile_id`
+							, `bz_unit_id`
+							, `role_type_id`
+							, `is_occupant`
+							, `is_public_assignee`
+							, `is_see_visible_assignee`
+							, `is_flag_requestee`
+							, `is_flag_approver`
+							, `can_create_any_sh`
+							, `can_create_same_sh`
+							, `can_approve_user_for_flags`
+							, `can_decide_if_user_visible`
+							, `can_decide_if_user_can_see_visible`
+							, `public_name`
+							, `more_info`
+							, `comment`
+							)
+							VALUES
+							(NULL,@timestamp,@user_creator_bz_user_id,0,NULL,@bz_user_id,@product_id,@role_type_id,@is_occupant,@user_is_public,@user_can_see_public,@can_be_asked_to_approve,@can_approve,@can_create_any_stakeholder,@can_create_same_stakeholder,@can_approve_user_for_flag,@can_decide_if_user_is_visible,@can_decide_if_user_can_see_visible
+							,@stakeholder_pub_name,@stakeholder_more,'');
 	
 		/*Data for the table `components` */
 		# We insert the correct values for the component/stakeholder.
