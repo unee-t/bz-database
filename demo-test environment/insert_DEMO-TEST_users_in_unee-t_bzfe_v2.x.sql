@@ -120,7 +120,7 @@
 		# We create a variable @visibility_explanation_1 and 2 to facilitate development
 		# 	This variable store the text displayed next to the 'visibility' tick in a case
 		# 	We do this that way so we can re-use @visibility_explanation in the script to create several demo users.
-			SET @visibility_explanation_1 = 'Show this case only to me and other ';
+			SET @visibility_explanation_1 = 'Visible only to ';
 			SET @visibility_explanation_2 = ' for this unit (If none are selected, then all roles can see this case).';
 			
 		# Get the additional data we need
@@ -1273,14 +1273,14 @@
 				
 				# The group that allow a user to create cases for a product/unit
 				# Editbugs is necessary so we can do what we need.
-					(@create_case_group_id,@product_id,1,3,3,0,0,0,0),
-					(@can_edit_case_group_id,@product_id,1,3,3,1,0,0,1),
-					(@can_edit_all_field_case_group_id,@product_id,1,3,3,1,0,1,1),
-					(@can_edit_component_group_id,@product_id,0,3,3,0,1,0,0);
+					(@create_case_group_id,@product_id,1,0,0,0,0,0,0),
+					(@can_edit_case_group_id,@product_id,1,0,0,1,0,0,1),
+					(@can_edit_all_field_case_group_id,@product_id,1,0,0,1,0,1,1),
+					(@can_edit_component_group_id,@product_id,0,0,0,0,1,0,0),
 
 				# The group to hide cases from some stakeholders
 
-				/*
+				
 				########################################################
 				#
 				#	THIS DOES NOT WORK AS INTENDED - COMMENTED OUT
@@ -1288,14 +1288,14 @@
 				########################################################
 				
 				# editcomponents is needed so that the user can create add new users in this product
-					(@show_to_stakeholder_1_group_id,@product_id,0,2,2,0,0,0,0),
-					(@show_to_stakeholder_2_group_id,@product_id,0,2,2,0,0,0,0),
-					(@show_to_stakeholder_3_group_id,@product_id,0,2,2,0,0,0,0),
-					(@show_to_stakeholder_4_group_id,@product_id,0,2,2,0,0,0,0),
-					(@show_to_stakeholder_5_group_id,@product_id,0,2,2,0,0,0,0),
-					(@show_to_occupants_group_id,@product_id,0,2,2,0,0,0,0);
+					(@show_to_stakeholder_1_group_id,@product_id,0,1,1,0,0,0,0),
+					(@show_to_stakeholder_2_group_id,@product_id,0,1,1,0,0,0,0),
+					(@show_to_stakeholder_3_group_id,@product_id,0,1,1,0,0,0,0),
+					(@show_to_stakeholder_4_group_id,@product_id,0,1,1,0,0,0,0),
+					(@show_to_stakeholder_5_group_id,@product_id,0,1,1,0,0,0,0),
+					(@show_to_occupants_group_id,@product_id,0,1,1,0,0,0,0);
 				#											
-				*/
+				
 	/*Data for the table `user_group_map` */
 	# The groups have been defined, we can now tell which group the BZ users needs access to.
 
@@ -1532,10 +1532,10 @@
 					
 					# Group to show/hide cases to some stakeholders:
 					# For Leonel, we know he is stakeholder 5
-						#(@bz_user_id,@are_users_stakeholder_1_group_id,0,0),
-						#(@bz_user_id,@are_users_stakeholder_2_group_id,0,0),
-						#(@bz_user_id,@are_users_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@are_users_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_1_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_2_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_3_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_4_group_id,0,0),
 						(@bz_user_id,@are_users_stakeholder_5_group_id,0,0),
 						
 					# Group to show/hide cases to some stakeholders:
@@ -1553,7 +1553,7 @@
 					# Is he an occupant?
 					# For Leonel, the answer is NO
 						#(@bz_user_id,@are_occupants_group_id,0,0),
-						#(@bz_user_id,@show_to_occupants_group_id,0,0),
+						(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is he visible in the list of possible assignees?
 					# For Leonel, the answer is YES
@@ -2041,11 +2041,11 @@
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
 						(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Marley, we know he is allowed to
@@ -2105,11 +2105,11 @@
 					
 					# Group to show/hide cases to some stakeholders:
 					# For Marley, we know he is stakeholder 2
-						#(@bz_user_id,@are_users_stakeholder_1_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_1_group_id,0,0),
 						(@bz_user_id,@are_users_stakeholder_2_group_id,0,0),
-						#(@bz_user_id,@are_users_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@are_users_stakeholder_4_group_id,0,0),
-						#(@bz_user_id,@are_users_stakeholder_5_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_3_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_5_group_id,0,0),
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Marley, we know he is stakeholder 2
@@ -2122,7 +2122,7 @@
 					# Is he an occupant?
 					# For Marley, the answer is NO
 						#(@bz_user_id,@are_occupants_group_id,0,0),
-						#(@bz_user_id,@show_to_occupants_group_id,0,0),
+						(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is he visible in the list of possible assignees?
 					# For Marley, the answer is YES
@@ -2537,10 +2537,10 @@
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
 						(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Michael, we know he is allowed to
@@ -2609,10 +2609,10 @@
 					# Group to show/hide cases to some stakeholders:
 					# For Michael, we know he is stakeholder 1
 						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Michael, the answer is YES
@@ -3034,10 +3034,10 @@
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
 						(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Sabrina, we know he is allowed to
@@ -3106,10 +3106,10 @@
 					# Group to show/hide cases to some stakeholders:
 					# For Sabrina, we know she is stakeholder 1
 						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Sabrina, the answer is YES
@@ -4011,9 +4011,22 @@
 					# A user can create a case for this unit? This is true so he can add more users and stakholders there
 					# For Marina, we know she is allowed to
 						(@bz_user_id,@create_case_group_id,1,0),
-						
+								
+					# A user can edit a case for that unit
+					# For Marina, we know she is allowed to
+						(@bz_user_id,@can_edit_case_group_id,1,0),
+					
+					# A user can edit all filed in a case, regardless of its role
+					# For Marina, we know she is NOT allowed to
+					# This is because he is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,1,0),
+					
+					# A user can edit stakholder/component in the product.
+					# For Marina, we know she is allowed to
+						(@bz_user_id,@can_edit_component_group_id,1,0),
+										
 					# A user is a stakeholder: This is true so he can add more users and stakholders there
-					# For Marina, we know she is allowed to create other users
+					# For Marina, we know she is allowed to create other users that are only management company
 						#(@bz_user_id,@are_users_stakeholder_1_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_2_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
@@ -4022,7 +4035,7 @@
 						(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
 						(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
 						(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
 						(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
@@ -4063,6 +4076,19 @@
 					# Can he create a case for this unit?
 					# All the new user can create...
 						(@bz_user_id,@create_case_group_id,0,0),
+					
+					# User can edit a case for that unit
+					# For Marina, we know she is allowed to
+						(@bz_user_id,@can_edit_case_group_id,0,0),
+					
+					# User can edit all filed in a case, regardless of its role
+					# For Marina, we know he is allowed to
+					# This is because she is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,0,0),
+					
+					# User can edit stakholder/component in the product.
+					# For Marina, we know she is allowed to
+						(@bz_user_id,@can_edit_component_group_id,0,0),
 
 					# Is the user a creator of the unit?
 					# For Marina, we know he is NOT
@@ -4081,7 +4107,7 @@
 						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
@@ -4438,10 +4464,23 @@
 						
 					# A user can create a case for this unit? This is true so he can add more users and stakholders there
 					# For Celeste, we know she is NOT allowed to
-						(@bz_user_id,@create_case_group_id,1,0),
+						#(@bz_user_id,@create_case_group_id,1,0),
+								
+					# A user can edit a case for that unit
+					# For Celeste, we know she is NOT allowed to
+						#(@bz_user_id,@can_edit_case_group_id,1,0),
+					
+					# A user can edit all filed in a case, regardless of its role
+					# For Celeste, we know she is NOT allowed to
+					# This is because he is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,1,0),
+					
+					# A user can edit stakholder/component in the product.
+					# For Celeste, we know she is NOT allowed to
+						#(@bz_user_id,@can_edit_component_group_id,1,0),
 						
 					# A user is a stakeholder: This is true so he can add more users and stakholders there
-					# For Celeste, we know she is allowed to create other users
+					# For Celeste, we know she is NOT allowed to create other users
 						#(@bz_user_id,@are_users_stakeholder_1_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_2_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
@@ -4491,6 +4530,19 @@
 					# Can he create a case for this unit?
 					# All the new user can create...
 						(@bz_user_id,@create_case_group_id,0,0),
+					
+					# User can edit a case for that unit
+					# For Celeste, we know she is allowed to
+						(@bz_user_id,@can_edit_case_group_id,0,0),
+					
+					# User can edit all filed in a case, regardless of its role
+					# For Celeste, we know he is allowed to
+					# This is because she is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,0,0),
+					
+					# User can edit stakholder/component in the product.
+					# For Celeste, we know she is NOT allowed to
+						#(@bz_user_id,@can_edit_component_group_id,0,0),
 
 					# Is the user a creator of the unit?
 					# For Celeste, we know he is NOT
@@ -4509,7 +4561,7 @@
 						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
@@ -4867,6 +4919,19 @@
 					# A user can create a case for this unit? This is true so he can add more users and stakholders there
 					# For Jocelyn, we know she is NOT allowed to
 						(@bz_user_id,@create_case_group_id,1,0),
+								
+					# A user can edit a case for that unit
+					# For Jocelyn, we know she is NOT allowed to
+						#(@bz_user_id,@can_edit_case_group_id,1,0),
+					
+					# A user can edit all filed in a case, regardless of its role
+					# For Jocelyn, we know she is NOT allowed to
+					# This is because he is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,1,0),
+					
+					# A user can edit stakholder/component in the product.
+					# For Jocelyn, we know she is NOT allowed to
+						#(@bz_user_id,@can_edit_component_group_id,1,0),
 						
 					# A user is a stakeholder: This is true so he can add more users and stakholders there
 					# For Jocelyn, we know she NOT is allowed to create other users
@@ -4919,6 +4984,19 @@
 					# Can he create a case for this unit?
 					# All the new user can create...
 						(@bz_user_id,@create_case_group_id,0,0),
+					
+					# User can edit a case for that unit
+					# For Jocelyn, we know she is allowed to
+						(@bz_user_id,@can_edit_case_group_id,0,0),
+					
+					# User can edit all filed in a case, regardless of its role
+					# For Jocelyn, we know he is allowed to
+					# This is because she is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,0,0),
+					
+					# User can edit stakholder/component in the product.
+					# For Jocelyn, we know she is NOT allowed to
+						#(@bz_user_id,@can_edit_component_group_id,0,0),
 
 					# Is the user a creator of the unit?
 					# For Jocelyn, we know he is NOT
@@ -4937,7 +5015,7 @@
 						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
 						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
@@ -4985,19 +5063,6 @@
 		/*Data for the table `audit_log` */
 		# Nothing to do
 
-
-
-
-
-
-
-
-
-
-
-
-
-		
 		# We enable the FK check back
 		SET FOREIGN_KEY_CHECKS = 1;
 
