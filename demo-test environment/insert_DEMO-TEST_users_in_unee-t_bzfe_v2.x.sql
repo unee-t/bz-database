@@ -120,8 +120,8 @@
 		# We create a variable @visibility_explanation_1 and 2 to facilitate development
 		# 	This variable store the text displayed next to the 'visibility' tick in a case
 		# 	We do this that way so we can re-use @visibility_explanation in the script to create several demo users.
-			SET @visibility_explanation_1 = 'Tick to HIDE this case if the user is the ';
-			SET @visibility_explanation_2 = ' Untick to Show this case.';
+			SET @visibility_explanation_1 = 'Show this case only to me and other ';
+			SET @visibility_explanation_2 = ' for this unit (If none are selected, then all roles can see this case).';
 			
 		# Get the additional data we need
 			SET @unit = (SELECT `name` FROM `products` WHERE `id`=@product_id);
@@ -368,30 +368,30 @@
 			SET @create_case_group_id = (@unit_creator_group_id+1);
 
 		# group to hide cases to this type of role/stakeholder (1)
-			SET @hide_to_stakeholder_1_group_id = (@create_case_group_id+1);
+			SET @show_to_stakeholder_1_group_id = (@create_case_group_id+1);
 		# group to list all the user that are from the same stakeholder type  (1)
-			SET @are_users_stakeholder_1_group_id = (@hide_to_stakeholder_1_group_id+1);
+			SET @are_users_stakeholder_1_group_id = (@show_to_stakeholder_1_group_id+1);
 		# group to hide cases to this type of role/stakeholder (2)
-			SET @hide_to_stakeholder_2_group_id = (@are_users_stakeholder_1_group_id+1);
+			SET @show_to_stakeholder_2_group_id = (@are_users_stakeholder_1_group_id+1);
 		# group to list all the user that are from the same stakeholder type (2)
-			SET @are_users_stakeholder_2_group_id = (@hide_to_stakeholder_2_group_id+1);
+			SET @are_users_stakeholder_2_group_id = (@show_to_stakeholder_2_group_id+1);
 		# group to hide cases to this type of role/stakeholder (3)
-			SET @hide_to_stakeholder_3_group_id = (@are_users_stakeholder_2_group_id+1);
+			SET @show_to_stakeholder_3_group_id = (@are_users_stakeholder_2_group_id+1);
 		# group to list all the user that are from the same stakeholder type (3)
-			SET @are_users_stakeholder_3_group_id = (@hide_to_stakeholder_3_group_id+1);
+			SET @are_users_stakeholder_3_group_id = (@show_to_stakeholder_3_group_id+1);
 		# group to hide cases to this type of role/stakeholder (4)
-			SET @hide_to_stakeholder_4_group_id = (@are_users_stakeholder_3_group_id+1);
+			SET @show_to_stakeholder_4_group_id = (@are_users_stakeholder_3_group_id+1);
 		# group to list all the user that are from the same stakeholder type (4)
-			SET @are_users_stakeholder_4_group_id = (@hide_to_stakeholder_4_group_id+1);
+			SET @are_users_stakeholder_4_group_id = (@show_to_stakeholder_4_group_id+1);
 		# group to hide cases to this type of role/stakeholder (5)
-			SET @hide_to_stakeholder_5_group_id = (@are_users_stakeholder_4_group_id+1);
+			SET @show_to_stakeholder_5_group_id = (@are_users_stakeholder_4_group_id+1);
 		# group to list all the user that are from the same stakeholder type (5)
-			SET @are_users_stakeholder_5_group_id = (@hide_to_stakeholder_5_group_id+1);
+			SET @are_users_stakeholder_5_group_id = (@show_to_stakeholder_5_group_id+1);
 
 		# group to hide cases to occupants
-			SET @hide_to_occupants_group_id = (@are_users_stakeholder_5_group_id+1);
+			SET @show_to_occupants_group_id = (@are_users_stakeholder_5_group_id+1);
 		# group to list all the user that are from the same stakeholder type
-			SET @are_occupants_group_id = (@hide_to_occupants_group_id+1);
+			SET @are_occupants_group_id = (@show_to_occupants_group_id+1);
 
 		# List all the user that are visible in the drop down list for assignees
 			SET @list_visible_assignees_group_id = (@are_occupants_group_id+1);
@@ -417,6 +417,11 @@
 		# Next is a group of groups for all the USERS who are allowed to be asked for flag approval
 		# this allows us to display the correct list of users in the drop down list next to a flag
 			SET @all_r_flags_group_id = (@all_g_flags_group_id+1);
+			
+		# Advanced permission groups:
+			SET @can_edit_case_group_id = (@all_r_flags_group_id+1);
+			SET @can_edit_all_field_case_group_id = (@can_edit_case_group_id+1);
+			SET @can_edit_component_group_id = (@can_edit_all_field_case_group_id+1);
 	
 		/*We can now create the groups that we need */
 		# We need several groups so we can do what we want.
@@ -442,29 +447,29 @@
 				(@unit_creator_group_id,CONCAT(@unit,' #',@product_id,' Unit Creators - Created by: ',@creator_pub_name),'This is the group for the unit creator',0,'',1,NULL),
 			#
 			# group to allow user to create cases for this unit
-				(@create_case_group_id,CONCAT(@unit,' #',@product_id,' - Created by: ',@creator_pub_name),CONCAT('Tick to HIDE this case from all users EXCEPT those below.',@visibility_explanation_2),1,'',1,NULL),
+				(@create_case_group_id,CONCAT(@unit,' #',@product_id,' - Can Create Cases'),'User can create cases for this unit.',1,'',1,NULL),
 			# group to hide cases to stakehodler 1
-				(@hide_to_stakeholder_1_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1),@visibility_explanation_2),1,'',1,NULL),
+				(@show_to_stakeholder_1_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1),@visibility_explanation_2),1,'',1,NULL),
 			# group to list all the user that are from the same stakeholder type  (1)
 				(@are_users_stakeholder_1_group_id,CONCAT(@unit,' #',@product_id,' - List users - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1)),CONCAT('User is: ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1)),0,'',1,NULL),
 			# group to hide cases to stakehodler 2
-				(@hide_to_stakeholder_2_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2),@visibility_explanation_2),1,'',1,NULL),
+				(@show_to_stakeholder_2_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2),@visibility_explanation_2),1,'',1,NULL),
 			# group to list all the user that are from the same stakeholder type  (2)
 				(@are_users_stakeholder_2_group_id,CONCAT(@unit,' #',@product_id,' - List users - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2)),CONCAT('User is: ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2)),0,'',1,NULL),
 			# group to hide cases to stakehodler 3
-				(@hide_to_stakeholder_3_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3),@visibility_explanation_2),1,'',1,NULL),
+				(@show_to_stakeholder_3_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3),@visibility_explanation_2),1,'',1,NULL),
 			# group to list all the user that are from the same stakeholder type  (3)
 				(@are_users_stakeholder_3_group_id,CONCAT(@unit,' #',@product_id,' - List users - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3)),CONCAT('User is: ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3)),0,'',1,NULL),
 			# group to hide cases to stakehodler 4
-				(@hide_to_stakeholder_4_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4),@visibility_explanation_2),1,'',1,NULL),
+				(@show_to_stakeholder_4_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4),@visibility_explanation_2),1,'',1,NULL),
 			# group to list all the user that are from the same stakeholder type  (4)
 				(@are_users_stakeholder_4_group_id,CONCAT(@unit,' #',@product_id,' - List users - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4)),CONCAT('User is: ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4)),0,'',1,NULL),
 			# group to hide cases to stakehodler 5
-				(@hide_to_stakeholder_5_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5),@visibility_explanation_2),1,'',1,NULL),
+				(@show_to_stakeholder_5_group_id,CONCAT(@unit,' #',@product_id,' - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5)),CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5),@visibility_explanation_2),1,'',1,NULL),
 			# group to list all the user that are from the same stakeholder type  (5)
 				(@are_users_stakeholder_5_group_id,CONCAT(@unit,' #',@product_id,' - List users - ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5)),CONCAT('User is: ',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5)),0,'',1,NULL),
 			# group to hide cases to occupants
-				(@hide_to_occupants_group_id,CONCAT(@unit,' #',@product_id,' - Occupant(s) - Created by: ',@creator_pub_name),CONCAT(@visibility_explanation_1,'Occupant(s)',@visibility_explanation_2),1,'',1,NULL),
+				(@show_to_occupants_group_id,CONCAT(@unit,' #',@product_id,' - Occupant(s) - Created by: ',@creator_pub_name),CONCAT(@visibility_explanation_1,'Occupant(s)',@visibility_explanation_2),1,'',1,NULL),
 			# group to list all the user that are occupants
 				(@are_occupants_group_id,CONCAT(@unit,' #',@product_id,' - List Occupants - Created by: ',@creator_pub_name),'User is an occupant',0,'',1,NULL),
 			# group to list the users who are VISIBLE stakeholders in this unit
@@ -494,7 +499,13 @@
 			# 	- for all the USERS who are allowed to be asked for flag approval (requestee)
 			#	  These users are the only one visible in the request for approval list.
 			# 	- to group all the "request flag" groups: all the '*_r_*' flags groups will be in this group
-				(@all_r_flags_group_id,CONCAT(@unit,' #',@product_id,' - Can be asked to approve all flags'),'user in this group are visible in the list of flag approver',0,'',1,NULL);
+				(@all_r_flags_group_id,CONCAT(@unit,' #',@product_id,' - Can be asked to approve all flags'),'user in this group are visible in the list of flag approver',0,'',1,NULL),
+				
+			# Advanced permission groups:	
+				(@can_edit_case_group_id,CONCAT(@unit,' #',@product_id,' - Can edit'),'user in this can edit a case they have access to',1,'',1,NULL),
+				(@can_edit_all_field_case_group_id,CONCAT(@unit,' #',@product_id,' - Can edit all fields'),'user in this can edit all fields in a case they have access to, regardless og its role',1,'',1,NULL),
+				(@can_edit_component_group_id,CONCAT(@unit,' #',@product_id,' - Can edit components'),'user in this can edit components/stakholders and permission for the unit',1,'',1,NULL);
+
 
 	# THIS IS NOT A BZ INITIATED ACTION!
 	# 	To make sure Unee-T works as intended, we need to capture what we just did!
@@ -505,8 +516,12 @@
 	# 	we do NOT need to re-create the group, just grant the new user access to the group.
 
 #########################################################################################
-#	SINCE WE ARE NOW CREATING ALL THE USER GROUPS WHEN THE PRODUCT IS CREATED
-#	WE NEED TO REVIEW THIS AND INCLUDE THE GROUPS TO HIDE CASES FROM CERTAIN USERS
+#	
+#	WE NEED MORE GROUP TYPES SO WE CAN RECORD
+#		- @can_edit_case_group_id
+#		- @can_edit_all_field_case_group_id
+#		- @can_edit_component_group_id
+#
 #########################################################################################
 	
 		INSERT INTO `ut_product_group`
@@ -533,17 +548,17 @@
 				(@product_id,@are_users_stakeholder_5_group_id,22,5,@timestamp),
 				
 			# 2 = hide cases from a role
-				(@product_id,@hide_to_stakeholder_1_group_id,22,1,@timestamp),
-				(@product_id,@hide_to_stakeholder_2_group_id,22,2,@timestamp),
-				(@product_id,@hide_to_stakeholder_3_group_id,22,3,@timestamp),
-				(@product_id,@hide_to_stakeholder_4_group_id,22,4,@timestamp),
-				(@product_id,@hide_to_stakeholder_5_group_id,22,5,@timestamp),
+				(@product_id,@show_to_stakeholder_1_group_id,22,1,@timestamp),
+				(@product_id,@show_to_stakeholder_2_group_id,22,2,@timestamp),
+				(@product_id,@show_to_stakeholder_3_group_id,22,3,@timestamp),
+				(@product_id,@show_to_stakeholder_4_group_id,22,4,@timestamp),
+				(@product_id,@show_to_stakeholder_5_group_id,22,5,@timestamp),
 				
 			# 3 = list occupants
 				(@product_id,@are_occupants_group_id,3,NULL,@timestamp),
 			
 			# 24 = hide cases from occupants
-				(@product_id,@hide_to_occupants_group_id,22,NULL,@timestamp),
+				(@product_id,@show_to_occupants_group_id,22,NULL,@timestamp),
 				
 				
 			# 4 = list visible users (possible assignee for a unit)
@@ -592,6 +607,28 @@
 				# Can approve all flags
 					# 19 = all_g_flags
 						(@product_id,@all_g_flags_group_id,19,@role_type_id,@timestamp);
+#######
+# WIP
+#######
+################################
+# WHAT IS THE GROUP TYPE ID?
+################################
+				# ?? = Can edit a case
+#						(@product_id,@can_edit_case_group_id,??,@role_type_id,@timestamp);
+
+################################
+# WHAT IS THE GROUP TYPE ID?
+################################
+				# Can approve all flags
+					# ?? = Can edit all fields in a case regardless of role
+#						(@product_id,@can_edit_all_field_case_group_id,??,@role_type_id,@timestamp);
+
+################################
+# WHAT IS THE GROUP TYPE ID?
+################################
+				# Can approve all flags
+					# ?? = Can edit stakeholder/components for the product/unit
+#						(@product_id,@can_edit_component_group_id,??,@role_type_id,@timestamp);
 
 	/* Data for the table `group_group_map` */
 		
@@ -658,12 +695,12 @@
 						(1,@create_case_group_id,0),
 					# Groups to hide different roles
 # This is NOT needed once we are in production
-						#(1,@hide_to_stakeholder_1_group_id,0),
-						#(1,@hide_to_stakeholder_2_group_id,0),
-						#(1,@hide_to_stakeholder_3_group_id,0),
-						#(1,@hide_to_stakeholder_4_group_id,0),
-						#(1,@hide_to_stakeholder_5_group_id,0),
-						#(1,@hide_to_occupants_group_id,0),
+						#(1,@show_to_stakeholder_1_group_id,0),
+						#(1,@show_to_stakeholder_2_group_id,0),
+						#(1,@show_to_stakeholder_3_group_id,0),
+						#(1,@show_to_stakeholder_4_group_id,0),
+						#(1,@show_to_stakeholder_5_group_id,0),
+						#(1,@show_to_occupants_group_id,0),
 					# Groups to make user visible to other
 # This is NOT needed once we are in production
 						#(1,@are_users_stakeholder_1_group_id,0),
@@ -703,6 +740,11 @@
 					# this allows us to display the correct list of users in the drop down list next to a flag
 # This is NOT needed once we are in production
 #						(1,@all_r_flags_group_id,0),
+#
+#					# Advanced permission groups
+#						(1,@can_edit_case_group_id,0),
+#						(1,@can_edit_all_field_case_group_id,0),
+#						(1,@can_edit_component_group_id,0),
 					
 				# Privilege #1:
 				# All the users in the Group XXX can grant access so that a user can be put in group YYY
@@ -713,12 +755,12 @@
 #						(1,@create_case_group_id,1),
 
 					# Groups to hide different roles
-#						(1,@hide_to_stakeholder_1_group_id,1),
-#						(1,@hide_to_stakeholder_2_group_id,1),
-#						(1,@hide_to_stakeholder_3_group_id,1),
-#						(1,@hide_to_stakeholder_4_group_id,1),
-#						(1,@hide_to_stakeholder_5_group_id,1),
-#						(1,@hide_to_occupants_group_id,1),
+#						(1,@show_to_stakeholder_1_group_id,1),
+#						(1,@show_to_stakeholder_2_group_id,1),
+#						(1,@show_to_stakeholder_3_group_id,1),
+#						(1,@show_to_stakeholder_4_group_id,1),
+#						(1,@show_to_stakeholder_5_group_id,1),
+#						(1,@show_to_occupants_group_id,1),
 					# Groups to make user visible to other
 #						(1,@are_users_stakeholder_1_group_id,1),
 #						(1,@are_users_stakeholder_2_group_id,1),
@@ -753,6 +795,11 @@
 #						(1,@all_g_flags_group_id,1),
 					# Decide if a user can be asked for approval for all flags
 #						(1,@all_r_flags_group_id,1),
+#
+#					# Advanced permission groups
+#						(1,@can_edit_case_group_id,1),
+#						(1,@can_edit_all_field_case_group_id,1),
+#						(1,@can_edit_component_group_id,1),
 
 				# Privilege #2: 
 				# All the users in the Group XXX can see the users in the group YYY
@@ -768,12 +815,12 @@
 
 					# Groups to hide different roles
 # This is NOT needed once we are in production
-#						(1,@hide_to_stakeholder_1_group_id,2),
-#						(1,@hide_to_stakeholder_2_group_id,2),
-#						(1,@hide_to_stakeholder_3_group_id,2),
-#						(1,@hide_to_stakeholder_4_group_id,2),
-#						(1,@hide_to_stakeholder_5_group_id,2),
-#						(1,@hide_to_occupants_group_id,2),
+#						(1,@show_to_stakeholder_1_group_id,2),
+#						(1,@show_to_stakeholder_2_group_id,2),
+#						(1,@show_to_stakeholder_3_group_id,2),
+#						(1,@show_to_stakeholder_4_group_id,2),
+#						(1,@show_to_stakeholder_5_group_id,2),
+#						(1,@show_to_occupants_group_id,2),
 					# Groups to make user visible to other
 # This is NOT needed once we are in production
 #						(1,@are_users_stakeholder_1_group_id,2),
@@ -816,7 +863,12 @@
 #								(1,@g_group_is_paid,2),
 							# The aggregated flags (this is technically overkill: we have granted the same jus with individual flags anyway...)
 #								(1,@all_g_flags_group_id,2),
-			
+#
+#					# Advanced permission groups
+#						(1,@can_edit_case_group_id,2),
+#						(1,@can_edit_all_field_case_group_id,2),
+#						(1,@can_edit_component_group_id,2),
+
 			# We then look at the group @unit_creator_group_id
 					
 				# Privilege #0:
@@ -854,11 +906,84 @@
 
 				# Privilege #2: 
 				# All the users in the Group @create_case_group_id can see the users in the group YYY
-				# The group @create_case_group_id has Permission #2 to:
-						# this is the only privilege for this group.
-						# we do the rest at the user level in the table `user_group_map`
-						(@create_case_group_id,@create_case_group_id,2),
-			
+				# The group @create_case_group_id has Permission #2 to see the list of people that you can
+				# request approval for a flag from (requestees):
+					(@create_case_group_id,@r_group_next_step,2),
+					(@create_case_group_id,@r_group_solution,2),
+					(@create_case_group_id,@r_group_budget,2),
+					(@create_case_group_id,@r_group_attachment,2),
+					(@create_case_group_id,@r_group_OK_to_pay,2),
+					(@create_case_group_id,@r_group_is_paid,2),		
+
+			# We then look at the group @can_edit_case_group_id
+			# This is a group to 
+			#	- allow access to a product/unit
+
+				# Privilege #0:
+				# All the users in the Group @can_edit_case_group_id are automatically a member of group YYY
+				# The group has privilege #0 for the NONE of the groups:
+					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
+
+				# Privilege #1:
+				# All the users in the Group XXX can grant access so that a user can be put in group YYY
+				# The group @can_edit_case_group_id has Permission #1 for:
+					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
+
+				# Privilege #2: 
+				# All the users in the Group @can_edit_case_group_id can see the users in the group YYY
+				# The group @can_edit_case_group_id has Permission #2 to see the list of people that you can
+				# request approval for a flag from (requestees):
+					(@can_edit_case_group_id,@r_group_next_step,2),
+					(@can_edit_case_group_id,@r_group_solution,2),
+					(@can_edit_case_group_id,@r_group_budget,2),
+					(@can_edit_case_group_id,@r_group_attachment,2),
+					(@can_edit_case_group_id,@r_group_OK_to_pay,2),
+					(@can_edit_case_group_id,@r_group_is_paid,2),		
+					
+			# We then look at the group @can_edit_all_field_case_group_id
+			# This is a group to 
+			#	- allow access to a product/unit
+
+				# Privilege #0:
+				# All the users in the Group @can_edit_all_field_case_group_id are automatically a member of group YYY
+				# The group has privilege #0 for the NONE of the groups:
+					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
+
+				# Privilege #1:
+				# All the users in the Group XXX can grant access so that a user can be put in group YYY
+				# The group @can_edit_all_field_case_group_id has Permission #1 for:
+					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
+
+				# Privilege #2: 
+				# All the users in the Group @can_edit_all_field_case_group_id can see the users in the group YYY
+				# The group @can_edit_all_field_case_group_id has Permission #2 to see the list of people that you can
+				# request approval for a flag from (requestees):
+					(@can_edit_all_field_case_group_id,@r_group_next_step,2),
+					(@can_edit_all_field_case_group_id,@r_group_solution,2),
+					(@can_edit_all_field_case_group_id,@r_group_budget,2),
+					(@can_edit_all_field_case_group_id,@r_group_attachment,2),
+					(@can_edit_all_field_case_group_id,@r_group_OK_to_pay,2),
+					(@can_edit_all_field_case_group_id,@r_group_is_paid,2),				
+					
+			# We then look at the group @can_edit_component_group_id
+			# This is a group to 
+			#	- allow access to a product/unit
+
+				# Privilege #0:
+				# All the users in the Group @can_edit_component_group_id are automatically a member of group YYY
+				# The group has privilege #0 for the NONE of the groups:
+					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
+
+				# Privilege #1:
+				# All the users in the Group XXX can grant access so that a user can be put in group YYY
+				# The group @can_edit_component_group_id has Permission #1 for:
+					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
+
+				# Privilege #2: 
+				# All the users in the Group @can_edit_component_group_id can see the users in the group YYY
+				# The group @can_edit_component_group_id has Permission #2 to:
+					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
+				
 			# We then look at the groups @are_users_stakeholder_n_group_id (and occupants)
 				# Privilege #0:
 				# All the users in the Group @are_users_stakeholder_n_group_id are automatically a member of group YYY
@@ -882,38 +1007,38 @@
 						(@are_users_stakeholder_5_group_id,@are_users_stakeholder_5_group_id,2),
 						(@are_occupants_group_id,@are_occupants_group_id,2),
 			
-			# We then look at the groups @hide_to_stakeholder_n_group_id (and occupants)
+			# We then look at the groups @show_to_stakeholder_n_group_id (and occupants)
 				# Privilege #0:
-				# All the users in the Group @hide_to_stakeholder_n_group_id are automatically a member of group YYY
+				# All the users in the Group @show_to_stakeholder_n_group_id are automatically a member of group YYY
 				# The group has privilege #0 for the NONE of the groups:
 					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
 
 				# Privilege #1:
 				# All the users in the Group XXX can grant access so that a user can be put in group YYY
-				# The group @hide_to_stakeholder_n_group_id has Permission #1 for:
+				# The group @show_to_stakeholder_n_group_id has Permission #1 for:
 					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
 
 				# Privilege #2: 
-				# All the users in the Group @hide_to_stakeholder_n_group_id can see the users in the group YYY
-				# The group @hide_to_stakeholder_n_group_id has Permission #2 to:
-						# this is the only privilege for this group.
+				# All the users in the Group @show_to_stakeholder_n_group_id can see the users in the group YYY
+				# The group @show_to_stakeholder_n_group_id has Permission #2 to:
+					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
 						# we do the rest at the user level in the table `user_group_map`
-						(@hide_to_stakeholder_1_group_id,@are_users_stakeholder_1_group_id,2),
-						(@hide_to_stakeholder_2_group_id,@are_users_stakeholder_2_group_id,2),
-						(@hide_to_stakeholder_3_group_id,@are_users_stakeholder_3_group_id,2),
-						(@hide_to_stakeholder_4_group_id,@are_users_stakeholder_4_group_id,2),
-						(@hide_to_stakeholder_5_group_id,@are_users_stakeholder_5_group_id,2),
-						(@hide_to_occupants_group_id,@hide_to_occupants_group_id,2),
+						#(@show_to_stakeholder_1_group_id,@are_users_stakeholder_1_group_id,2),
+						#(@show_to_stakeholder_2_group_id,@are_users_stakeholder_2_group_id,2),
+						#(@show_to_stakeholder_3_group_id,@are_users_stakeholder_3_group_id,2),
+						#(@show_to_stakeholder_4_group_id,@are_users_stakeholder_4_group_id,2),
+						#(@show_to_stakeholder_5_group_id,@are_users_stakeholder_5_group_id,2),
+						#(@show_to_occupants_group_id,@show_to_occupants_group_id,2),
 
 			# We then look at the group @list_visible_assignees_group_id
 				# Privilege #0:
-				# All the users in the Group @hide_to_stakeholder_n_group_id are automatically a member of group YYY
+				# All the users in the Group @show_to_stakeholder_n_group_id are automatically a member of group YYY
 				# The group has privilege #0 for the NONE of the groups:
 					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
 
 				# Privilege #1:
 				# All the users in the Group XXX can grant access so that a user can be put in group YYY
-				# The group @hide_to_stakeholder_n_group_id has Permission #1 for:
+				# The group @show_to_stakeholder_n_group_id has Permission #1 for:
 					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
 
 				# Privilege #2: 
@@ -923,13 +1048,13 @@
 						
 			# We then look at the group @see_visible_assignees_group_id
 				# Privilege #0:
-				# All the users in the Group @hide_to_stakeholder_n_group_id are automatically a member of group YYY
+				# All the users in the Group @show_to_stakeholder_n_group_id are automatically a member of group YYY
 				# The group has privilege #0 for the NONE of the groups:
 					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
 
 				# Privilege #1:
 				# All the users in the Group XXX can grant access so that a user can be put in group YYY
-				# The group @hide_to_stakeholder_n_group_id has Permission #1 for:
+				# The group @show_to_stakeholder_n_group_id has Permission #1 for:
 					# Irrelevant - we do this at the user level - doing this at the group level is dangerous
 
 				# Privilege #2: 
@@ -947,7 +1072,7 @@
 				# All the users in the Group XXX are automatically a member of group YYY
 				# The group has privilege #0 for the NONE of the groups:
 					# This is only relevant for the following groups 
-					# @all_g_flags_group_id
+					# All the g flags
 						(@all_g_flags_group_id,@g_group_next_step,0),
 						(@all_g_flags_group_id,@g_group_solution,0),
 						(@all_g_flags_group_id,@g_group_budget,0),
@@ -956,7 +1081,7 @@
 						(@all_g_flags_group_id,@g_group_is_paid,0),
 
 
-					#	@all_r_flags_group_id
+					#	All the r flags
 						(@all_r_flags_group_id,@r_group_next_step,0),
 						(@all_r_flags_group_id,@r_group_solution,0),
 						(@all_r_flags_group_id,@r_group_budget,0),
@@ -1139,27 +1264,38 @@
 				#
 				# This table is relevant ONLY for the groups that are active for bugs/cases:
 				#	- @create_case_group_id
-				#	- @hide_to_stakeholder_1_group_id
-				#	- @hide_to_stakeholder_2_group_id
-				#	- @hide_to_stakeholder_3_group_id
-				#	- @hide_to_stakeholder_4_group_id
-				#	- @hide_to_stakeholder_5_group_id
-				#	- @hide_to_occupants_group_id
+				#	- @show_to_stakeholder_1_group_id
+				#	- @show_to_stakeholder_2_group_id
+				#	- @show_to_stakeholder_3_group_id
+				#	- @show_to_stakeholder_4_group_id
+				#	- @show_to_stakeholder_5_group_id
+				#	- @show_to_occupants_group_id
 				
 				# The group that allow a user to create cases for a product/unit
 				# Editbugs is necessary so we can do what we need.
-					(@create_case_group_id,@product_id,1,2,3,1,0,1,1),
+					(@create_case_group_id,@product_id,1,3,3,0,0,0,0),
+					(@can_edit_case_group_id,@product_id,1,3,3,1,0,0,1),
+					(@can_edit_all_field_case_group_id,@product_id,1,3,3,1,0,1,1),
+					(@can_edit_component_group_id,@product_id,0,3,3,0,1,0,0);
 
-				# The group to hide cases for tenants
+				# The group to hide cases from some stakeholders
+
+				/*
+				########################################################
+				#
+				#	THIS DOES NOT WORK AS INTENDED - COMMENTED OUT
+				#
+				########################################################
+				
 				# editcomponents is needed so that the user can create add new users in this product
-					(@hide_to_stakeholder_1_group_id,@product_id,1,2,3,0,1,0,1),
-					(@hide_to_stakeholder_2_group_id,@product_id,1,2,3,0,1,0,1),
-					(@hide_to_stakeholder_3_group_id,@product_id,1,2,3,0,1,0,1),
-					(@hide_to_stakeholder_4_group_id,@product_id,1,2,3,0,1,0,1),
-					(@hide_to_stakeholder_5_group_id,@product_id,1,2,3,0,1,0,1),
-					(@hide_to_occupants_group_id,@product_id,1,2,3,0,1,0,1);
+					(@show_to_stakeholder_1_group_id,@product_id,0,2,2,0,0,0,0),
+					(@show_to_stakeholder_2_group_id,@product_id,0,2,2,0,0,0,0),
+					(@show_to_stakeholder_3_group_id,@product_id,0,2,2,0,0,0,0),
+					(@show_to_stakeholder_4_group_id,@product_id,0,2,2,0,0,0,0),
+					(@show_to_stakeholder_5_group_id,@product_id,0,2,2,0,0,0,0),
+					(@show_to_occupants_group_id,@product_id,0,2,2,0,0,0,0);
 				#											
-
+				*/
 	/*Data for the table `user_group_map` */
 	# The groups have been defined, we can now tell which group the BZ users needs access to.
 
@@ -1186,11 +1322,11 @@
 #		- @unit_creator_group_id
 #	- If user is in the role [n] then we make him a member of THE groups
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 # 	- If the user is an occupant then make him a member of
 #		- @are_occupants_group_id
 # 	- If the user is NOT an occupant then make him a member of
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #	- If the user is publicly visible then make him a member of
 #		- @list_visible_assignees_group_id
 #	- If the user can see the publicly visible users then make him a member of
@@ -1221,21 +1357,21 @@
 #		- @are_users_stakeholder_3_group_id
 #		- @are_users_stakeholder_4_group_id
 #		- @are_users_stakeholder_5_group_id
-#		- @hide_to_stakeholder_1_group_id
-#		- @hide_to_stakeholder_2_group_id
-#		- @hide_to_stakeholder_3_group_id
-#		- @hide_to_stakeholder_4_group_id
-#		- @hide_to_stakeholder_5_group_id
+#		- @show_to_stakeholder_1_group_id
+#		- @show_to_stakeholder_2_group_id
+#		- @show_to_stakeholder_3_group_id
+#		- @show_to_stakeholder_4_group_id
+#		- @show_to_stakeholder_5_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user is allowed to create more users only in the same group of stakeholder [n] 
 #		then he is granted permissions to add users to
 #		- @create_case_group_id
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user can decided who is visible in the list of assignee
 #		- @list_visible_assignees_group_id
@@ -1276,13 +1412,13 @@
 				(1,@are_users_stakeholder_3_group_id,1,0),
 				(1,@are_users_stakeholder_4_group_id,1,0),
 				(1,@are_users_stakeholder_5_group_id,1,0),
-				(1,@hide_to_stakeholder_1_group_id,1,0),
-				(1,@hide_to_stakeholder_2_group_id,1,0),
-				(1,@hide_to_stakeholder_3_group_id,1,0),
-				(1,@hide_to_stakeholder_4_group_id,1,0),
-				(1,@hide_to_stakeholder_5_group_id,1,0),
+				(1,@show_to_stakeholder_1_group_id,1,0),
+				(1,@show_to_stakeholder_2_group_id,1,0),
+				(1,@show_to_stakeholder_3_group_id,1,0),
+				(1,@show_to_stakeholder_4_group_id,1,0),
+				(1,@show_to_stakeholder_5_group_id,1,0),
 				(1,@are_occupants_group_id,1,0),
-				(1,@hide_to_occupants_group_id,1,0),
+				(1,@show_to_occupants_group_id,1,0),
 				(1,@list_visible_assignees_group_id,1,0),
 				(1,@see_visible_assignees_group_id,1,0),
 				(1,@r_group_next_step,1,0),
@@ -1299,6 +1435,9 @@
 				(1,@g_group_is_paid,1,0),
 				(1,@all_r_flags_group_id,1,0),
 				(1,@all_g_flags_group_id,1,0),
+				(1,@can_edit_case_group_id,1,0),
+				(1,@can_edit_all_field_case_group_id,1,0),
+				(1,@can_edit_component_group_id,1,0),
 			
 			# Permission for the user we created:
 				# Permission to GRANT Membership to the following groups
@@ -1308,6 +1447,19 @@
 					# A user can create a case for this unit? This is true so he can add more users and stakholders there
 					# For Leonel, we know he is allowed to
 						(@bz_user_id,@create_case_group_id,1,0),
+					
+					# A user can edit a case for that unit
+					# For Leonel, we know he is allowed to
+						(@bz_user_id,@can_edit_case_group_id,1,0),
+					
+					# A user can edit all filed in a case, regardless of its role
+					# For Leonel, we know he is allowed to
+					# This is because he is he unit creator
+						(@bz_user_id,@can_edit_all_field_case_group_id,1,0),
+					
+					# A user can edit stakholder/component in the product.
+					# For Leonel, we know he is allowed to
+						(@bz_user_id,@can_edit_component_group_id,1,0),
 						
 					# A user is a stakeholder: This is true so he can add more users and stakholders there
 					# For Leonel, we know he is allowed to
@@ -1316,16 +1468,16 @@
 						(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Leonel, we know he is allowed to
 						(@bz_user_id,@are_occupants_group_id,1,0),
-						(@bz_user_id,@hide_to_occupants_group_id,1,0),
+						(@bz_user_id,@show_to_occupants_group_id,1,0),
 					
 					# A user is a visible assignee: This is true so he can add more users and stakholders there
 					# For Leonel, we know he is allowed to
@@ -1360,7 +1512,20 @@
 					# Can he create a case for this unit?
 					# All the new user can create...
 						(@bz_user_id,@create_case_group_id,0,0),
-
+					
+					# User can edit a case for that unit
+					# For Leonel, we know he is allowed to
+						(@bz_user_id,@can_edit_case_group_id,0,0),
+					
+					# User can edit all filed in a case, regardless of its role
+					# For Leonel, we know he is allowed to
+					# This is because he is he unit creator
+						(@bz_user_id,@can_edit_all_field_case_group_id,0,0),
+					
+					# User can edit stakholder/component in the product.
+					# For Leonel, we know he is allowed to
+						(@bz_user_id,@can_edit_component_group_id,0,0),
+					
 					# Is the user a creator of the unit?
 					# For Leonel, we know he is
 						(@bz_user_id,@unit_creator_group_id,0,0),
@@ -1375,16 +1540,20 @@
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Leonel, we know he is stakeholder 5
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
-						#(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+					# But as the creator, he should be able to see all options
+####
+#	WE NEED TO REVIEW THIS AND USE THE GROUP UNIT CREATOR TO DO THAT...
+###
+						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Leonel, the answer is NO
 						#(@bz_user_id,@are_occupants_group_id,0,0),
-						(@bz_user_id,@hide_to_occupants_group_id,0,0),
+						#(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is he visible in the list of possible assignees?
 					# For Leonel, the answer is YES
@@ -1761,11 +1930,11 @@
 #		- @unit_creator_group_id
 #	- If user is in the role [n] then we make him a member of THE groups
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 # 	- If the user is an occupant then make him a member of
 #		- @are_occupants_group_id
 # 	- If the user is NOT an occupant then make him a member of
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #	- If the user is publicly visible then make him a member of
 #		- @list_visible_assignees_group_id
 #	- If the user can see the publicly visible users then make him a member of
@@ -1796,21 +1965,21 @@
 #		- @are_users_stakeholder_3_group_id
 #		- @are_users_stakeholder_4_group_id
 #		- @are_users_stakeholder_5_group_id
-#		- @hide_to_stakeholder_1_group_id
-#		- @hide_to_stakeholder_2_group_id
-#		- @hide_to_stakeholder_3_group_id
-#		- @hide_to_stakeholder_4_group_id
-#		- @hide_to_stakeholder_5_group_id
+#		- @show_to_stakeholder_1_group_id
+#		- @show_to_stakeholder_2_group_id
+#		- @show_to_stakeholder_3_group_id
+#		- @show_to_stakeholder_4_group_id
+#		- @show_to_stakeholder_5_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user is allowed to create more users only in the same group of stakeholder [n] 
 #		then he is granted permissions to add users to
 #		- @create_case_group_id
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user can decided who is visible in the list of assignee
 #		- @list_visible_assignees_group_id
@@ -1851,7 +2020,20 @@
 					# A user can create a case for this unit? This is true so he can add more users and stakholders there
 					# For Marley, we know he is allowed to
 						(@bz_user_id,@create_case_group_id,1,0),
-						
+								
+					# A user can edit a case for that unit
+					# For Marley, we know he is allowed to
+						(@bz_user_id,@can_edit_case_group_id,1,0),
+					
+					# A user can edit all filed in a case, regardless of its role
+					# For Marley, we know he is NOT allowed to
+					# This is because he is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,1,0),
+					
+					# A user can edit stakholder/component in the product.
+					# For Marley, we know he is allowed to
+						(@bz_user_id,@can_edit_component_group_id,1,0),
+				
 					# A user is a stakeholder: This is true so he can add more users and stakholders there
 					# For Marley, we know he is allowed to ONLY create other Landlord (2)
 						#(@bz_user_id,@are_users_stakeholder_1_group_id,1,0),
@@ -1859,16 +2041,16 @@
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Marley, we know he is allowed to
 						(@bz_user_id,@are_occupants_group_id,1,0),
-						(@bz_user_id,@hide_to_occupants_group_id,1,0),
+						(@bz_user_id,@show_to_occupants_group_id,1,0),
 					
 					# A user is a visible assignee: This is true so he can add more users and stakholders there
 					# For Marley, we know he is allowed to
@@ -1903,7 +2085,20 @@
 					# Can he create a case for this unit?
 					# All the new user can create...
 						(@bz_user_id,@create_case_group_id,0,0),
-
+					
+					# User can edit a case for that unit
+					# For Marley, we know he is allowed to
+						(@bz_user_id,@can_edit_case_group_id,0,0),
+					
+					# User can edit all filed in a case, regardless of its role
+					# For Marley, we know he is allowed to
+					# This is because he is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,0,0),
+					
+					# User can edit stakholder/component in the product.
+					# For Marley, we know he is allowed to
+						(@bz_user_id,@can_edit_component_group_id,0,0),
+	
 					# Is the user a creator of the unit?
 					# For Marley, we know he is NOT
 						#(@bz_user_id,@unit_creator_group_id,0,0),
@@ -1918,16 +2113,16 @@
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Marley, we know he is stakeholder 2
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
-						#(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Marley, the answer is NO
 						#(@bz_user_id,@are_occupants_group_id,0,0),
-						(@bz_user_id,@hide_to_occupants_group_id,0,0),
+						#(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is he visible in the list of possible assignees?
 					# For Marley, the answer is YES
@@ -2230,11 +2425,11 @@
 #		- @unit_creator_group_id
 #	- If user is in the role [n] then we make him a member of THE groups
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 # 	- If the user is an occupant then make him a member of
 #		- @are_occupants_group_id
 # 	- If the user is NOT an occupant then make him a member of
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #	- If the user is publicly visible then make him a member of
 #		- @list_visible_assignees_group_id
 #	- If the user can see the publicly visible users then make him a member of
@@ -2265,21 +2460,21 @@
 #		- @are_users_stakeholder_3_group_id
 #		- @are_users_stakeholder_4_group_id
 #		- @are_users_stakeholder_5_group_id
-#		- @hide_to_stakeholder_1_group_id
-#		- @hide_to_stakeholder_2_group_id
-#		- @hide_to_stakeholder_3_group_id
-#		- @hide_to_stakeholder_4_group_id
-#		- @hide_to_stakeholder_5_group_id
+#		- @show_to_stakeholder_1_group_id
+#		- @show_to_stakeholder_2_group_id
+#		- @show_to_stakeholder_3_group_id
+#		- @show_to_stakeholder_4_group_id
+#		- @show_to_stakeholder_5_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user is allowed to create more users only in the same group of stakeholder [n] 
 #		then he is granted permissions to add users to
 #		- @create_case_group_id
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user can decided who is visible in the list of assignee
 #		- @list_visible_assignees_group_id
@@ -2316,7 +2511,20 @@
 				# Permission to GRANT Membership to the following groups
 					# A user is the creator: this is true so he can add more users and stakholders there
 						#(@bz_user_id,@unit_creator_group_id,1,0),
-						
+					
+					# User can edit a case for that unit
+					# For Michael, we know he is allowed to
+						(@bz_user_id,@can_edit_case_group_id,1,0),
+					
+					# A User can edit all filed in a case, regardless of its role
+					# For Michael, we know he is allowed to
+					# This is because he NOT is he unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,1,0),
+					
+					# A User can edit stakholder/component in the product.
+					# For Michael, we know he is allowed to
+						(@bz_user_id,@can_edit_component_group_id,1,0),
+							
 					# A user can create a case for this unit? This is true so he can add more users and stakholders there
 					# For Michael, we know he is allowed to
 						(@bz_user_id,@create_case_group_id,1,0),
@@ -2328,16 +2536,16 @@
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Michael, we know he is allowed to
 						(@bz_user_id,@are_occupants_group_id,1,0),
-						(@bz_user_id,@hide_to_occupants_group_id,1,0),
+						(@bz_user_id,@show_to_occupants_group_id,1,0),
 					
 					# A user is a visible assignee: This is true so he can add more users and stakholders there
 					# For Michael, we know he is allowed to
@@ -2372,7 +2580,20 @@
 					# Can he create a case for this unit?
 					# All the new user can create...
 						(@bz_user_id,@create_case_group_id,0,0),
-
+					
+					# User can edit a case for that unit
+					# For Michael, we know he is allowed to
+						(@bz_user_id,@can_edit_case_group_id,0,0),
+					
+					# User can edit all filed in a case, regardless of its role
+					# For Michael, we know he is allowed to
+					# This is because he is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,0,0),
+					
+					# User can edit stakholder/component in the product.
+					# For Michael, we know he is allowed to
+						(@bz_user_id,@can_edit_component_group_id,0,0),
+	
 					# Is the user a creator of the unit?
 					# For Michael, we know he is NOT
 						#(@bz_user_id,@unit_creator_group_id,0,0),
@@ -2387,16 +2608,16 @@
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Michael, we know he is stakeholder 1
-						#(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Michael, the answer is YES
 						(@bz_user_id,@are_occupants_group_id,0,0),
-						#(@bz_user_id,@hide_to_occupants_group_id,0,0),
+						(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is he visible in the list of possible assignees?
 					# For Michael, the answer is YES
@@ -2701,11 +2922,11 @@
 #		- @unit_creator_group_id
 #	- If user is in the role [n] then we make him a member of THE groups
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 # 	- If the user is an occupant then make him a member of
 #		- @are_occupants_group_id
 # 	- If the user is NOT an occupant then make him a member of
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #	- If the user is publicly visible then make him a member of
 #		- @list_visible_assignees_group_id
 #	- If the user can see the publicly visible users then make him a member of
@@ -2736,21 +2957,21 @@
 #		- @are_users_stakeholder_3_group_id
 #		- @are_users_stakeholder_4_group_id
 #		- @are_users_stakeholder_5_group_id
-#		- @hide_to_stakeholder_1_group_id
-#		- @hide_to_stakeholder_2_group_id
-#		- @hide_to_stakeholder_3_group_id
-#		- @hide_to_stakeholder_4_group_id
-#		- @hide_to_stakeholder_5_group_id
+#		- @show_to_stakeholder_1_group_id
+#		- @show_to_stakeholder_2_group_id
+#		- @show_to_stakeholder_3_group_id
+#		- @show_to_stakeholder_4_group_id
+#		- @show_to_stakeholder_5_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user is allowed to create more users only in the same group of stakeholder [n] 
 #		then he is granted permissions to add users to
 #		- @create_case_group_id
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user can decided who is visible in the list of assignee
 #		- @list_visible_assignees_group_id
@@ -2791,7 +3012,20 @@
 					# A user can create a case for this unit? This is true so he can add more users and stakholders there
 					# For Sabrina, we know he is allowed to
 						(@bz_user_id,@create_case_group_id,1,0),
-						
+					
+					# A User can edit a case for that unit
+					# For Sabrina, we know she is allowed to
+						(@bz_user_id,@can_edit_case_group_id,1,0),
+										
+					# A User can edit all filed in a case, regardless of its role
+					# For Sabrina, we know he is allowed to
+					# This is because he NOT is he unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,1,0),
+					
+					# A User can edit stakholder/component in the product.
+					# For Sabrina, we know he is allowed to
+						(@bz_user_id,@can_edit_component_group_id,1,0),
+							
 					# A user is a stakeholder: This is true so he can add more users and stakholders there
 					# For Sabrina, we know he is allowed to ONLY create other Tenants (1)
 						(@bz_user_id,@are_users_stakeholder_1_group_id,1,0),
@@ -2799,16 +3033,16 @@
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Sabrina, we know he is allowed to
 						(@bz_user_id,@are_occupants_group_id,1,0),
-						(@bz_user_id,@hide_to_occupants_group_id,1,0),
+						(@bz_user_id,@show_to_occupants_group_id,1,0),
 					
 					# A user is a visible assignee: This is true so he can add more users and stakholders there
 					# For Sabrina, we know he is allowed to
@@ -2843,13 +3077,26 @@
 					# Can he create a case for this unit?
 					# All the new user can create...
 						(@bz_user_id,@create_case_group_id,0,0),
-
+					
+					# User can edit a case for that unit
+					# For Sabrina, we know she is allowed to
+						(@bz_user_id,@can_edit_case_group_id,0,0),
+					
+					# User can edit all filed in a case, regardless of its role
+					# For Sabrina, we know she is allowed to
+					# This is because he is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,0,0),
+					
+					# User can edit stakholder/component in the product.
+					# For Sabrina, we know she is allowed to
+						(@bz_user_id,@can_edit_component_group_id,0,0),
+	
 					# Is the user a creator of the unit?
-					# For Sabrina, we know he is NOT
+					# For Sabrina, we know she is NOT
 						#(@bz_user_id,@unit_creator_group_id,0,0),
 					
 					# Group to show/hide cases to some stakeholders:
-					# For Sabrina, we know he is stakeholder 1
+					# For Sabrina, we know she is stakeholder 1
 						(@bz_user_id,@are_users_stakeholder_1_group_id,0,0),
 						#(@bz_user_id,@are_users_stakeholder_2_group_id,0,0),
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,0,0),
@@ -2857,17 +3104,17 @@
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,0,0),
 						
 					# Group to show/hide cases to some stakeholders:
-					# For Sabrina, we know he is stakeholder 1
-						#(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+					# For Sabrina, we know she is stakeholder 1
+						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Sabrina, the answer is YES
 						(@bz_user_id,@are_occupants_group_id,0,0),
-						#(@bz_user_id,@hide_to_occupants_group_id,0,0),
+						(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is he visible in the list of possible assignees?
 					# For Sabrina, the answer is YES
@@ -3176,11 +3423,11 @@
 #		- @unit_creator_group_id
 #	- If user is in the role [n] then we make him a member of THE groups
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 # 	- If the user is an occupant then make him a member of
 #		- @are_occupants_group_id
 # 	- If the user is NOT an occupant then make him a member of
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #	- If the user is publicly visible then make him a member of
 #		- @list_visible_assignees_group_id
 #	- If the user can see the publicly visible users then make him a member of
@@ -3211,21 +3458,21 @@
 #		- @are_users_stakeholder_3_group_id
 #		- @are_users_stakeholder_4_group_id
 #		- @are_users_stakeholder_5_group_id
-#		- @hide_to_stakeholder_1_group_id
-#		- @hide_to_stakeholder_2_group_id
-#		- @hide_to_stakeholder_3_group_id
-#		- @hide_to_stakeholder_4_group_id
-#		- @hide_to_stakeholder_5_group_id
+#		- @show_to_stakeholder_1_group_id
+#		- @show_to_stakeholder_2_group_id
+#		- @show_to_stakeholder_3_group_id
+#		- @show_to_stakeholder_4_group_id
+#		- @show_to_stakeholder_5_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user is allowed to create more users only in the same group of stakeholder [n] 
 #		then he is granted permissions to add users to
 #		- @create_case_group_id
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user can decided who is visible in the list of assignee
 #		- @list_visible_assignees_group_id
@@ -3266,6 +3513,20 @@
 					# A user can create a case for this unit? This is true so he can add more users and stakholders there
 					# For Generic user Management Co, we know he is NOT allowed to
 						#(@bz_user_id,@create_case_group_id,1,0),
+					
+					# A User can edit all filed in a case, regardless of its role
+					# For Generic user Management Co, we know he is allowed to
+					# This is because he NOT is he unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,1,0),
+					
+					# A User can edit stakholder/component in the product.
+					# For Generic user Management Co, we know he is NOT allowed to
+						#(@bz_user_id,@can_edit_component_group_id,1,0),
+							
+					# A user can create a case for this unit? This is true so he can add more users and stakholders there
+					# For Generic user Management Co, we know he is NOT allowed to
+						#(@bz_user_id,@create_case_group_id,1,0),
+						
 						
 					# A user is a stakeholder: This is true so he can add more users and stakholders there
 					# For Generic user Management Co, we know he is NOT allowed to create other users
@@ -3274,16 +3535,16 @@
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Generic user Management Co, we know he is NOT allowed to
 						#(@bz_user_id,@are_occupants_group_id,1,0),
-						#(@bz_user_id,@hide_to_occupants_group_id,1,0),
+						#(@bz_user_id,@show_to_occupants_group_id,1,0),
 					
 					# A user is a visible assignee: This is true so he can add more users and stakholders there
 					# For Generic user Management Co, we know he NOT is allowed to
@@ -3318,6 +3579,23 @@
 					# Can he create a case for this unit?
 					# All the new user can create...
 						(@bz_user_id,@create_case_group_id,0,0),
+					
+					# User can edit a case for that unit
+					# For Generic user Management Co, we know she is allowed to
+						#(@bz_user_id,@can_edit_case_group_id,0,0),
+						
+					# User can edit all filed in a case, regardless of its role
+					# For Generic user Management Co, we know she is allowed to
+					# This is because he is NOT the unit creator
+						#(@bz_user_id,@can_edit_all_field_case_group_id,0,0),
+					
+					# User can edit stakholder/component in the product.
+					# For Generic user Management Co, we know he NOT is allowed to
+						#(@bz_user_id,@can_edit_component_group_id,0,0),
+	
+					# Is the user a creator of the unit?
+					# For Generic user Management Co, we know he is NOT
+						#(@bz_user_id,@unit_creator_group_id,0,0),
 
 					# Is the user a creator of the unit?
 					# For Generic user Management Co, we know he is NOT
@@ -3333,16 +3611,16 @@
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Generic user Management Co, we know he is stakeholder 4
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Generic user Management Co, the answer is NO
 						#(@bz_user_id,@are_occupants_group_id,0,0),
-						(@bz_user_id,@hide_to_occupants_group_id,0,0),
+						#(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is he visible in the list of possible assignees?
 					# For Generic user Management Co, the answer is YES
@@ -3354,23 +3632,23 @@
 					
 					# Flags: can he be asked to request?
 					# For Generic user Management Co, the answer is YES
-						(@bz_user_id,@r_group_next_step,0,0),
-						(@bz_user_id,@r_group_solution,0,0),
-						(@bz_user_id,@r_group_budget,0,0),
-						(@bz_user_id,@r_group_attachment,0,0),
-						(@bz_user_id,@r_group_OK_to_pay,0,0),
-						(@bz_user_id,@r_group_is_paid,0,0),
-						(@bz_user_id,@all_r_flags_group_id,0,0);
+						#(@bz_user_id,@r_group_next_step,0,0),
+						#(@bz_user_id,@r_group_solution,0,0),
+						#(@bz_user_id,@r_group_budget,0,0),
+						#(@bz_user_id,@r_group_attachment,0,0),
+						#(@bz_user_id,@r_group_OK_to_pay,0,0),
+						#(@bz_user_id,@r_group_is_paid,0,0),
+						#(@bz_user_id,@all_r_flags_group_id,0,0);
 
 					# Flags: can he approve?
 					# For Generic user Management Co, the answer is NO
-						#(@bz_user_id,@g_group_next_step,0,0),
-						#(@bz_user_id,@g_group_solution,0,0),
-						#(@bz_user_id,@g_group_budget,0,0),
-						#(@bz_user_id,@g_group_attachment,0,0),
-						#(@bz_user_id,@g_group_OK_to_pay,0,0),
-						#(@bz_user_id,@g_group_is_paid,0,0),
-						#(@bz_user_id,@all_g_flags_group_id,0,0);
+						(@bz_user_id,@g_group_next_step,0,0),
+						(@bz_user_id,@g_group_solution,0,0),
+						(@bz_user_id,@g_group_budget,0,0),
+						(@bz_user_id,@g_group_attachment,0,0),
+						(@bz_user_id,@g_group_OK_to_pay,0,0),
+						(@bz_user_id,@g_group_is_paid,0,0),
+						(@bz_user_id,@all_g_flags_group_id,0,0);
 
 		/*Data for the table `series_categories` */
 			INSERT  INTO `series_categories`
@@ -3643,11 +3921,11 @@
 #		- @unit_creator_group_id
 #	- If user is in the role [n] then we make him a member of THE groups
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 # 	- If the user is an occupant then make him a member of
 #		- @are_occupants_group_id
 # 	- If the user is NOT an occupant then make him a member of
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #	- If the user is publicly visible then make him a member of
 #		- @list_visible_assignees_group_id
 #	- If the user can see the publicly visible users then make him a member of
@@ -3678,21 +3956,21 @@
 #		- @are_users_stakeholder_3_group_id
 #		- @are_users_stakeholder_4_group_id
 #		- @are_users_stakeholder_5_group_id
-#		- @hide_to_stakeholder_1_group_id
-#		- @hide_to_stakeholder_2_group_id
-#		- @hide_to_stakeholder_3_group_id
-#		- @hide_to_stakeholder_4_group_id
-#		- @hide_to_stakeholder_5_group_id
+#		- @show_to_stakeholder_1_group_id
+#		- @show_to_stakeholder_2_group_id
+#		- @show_to_stakeholder_3_group_id
+#		- @show_to_stakeholder_4_group_id
+#		- @show_to_stakeholder_5_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user is allowed to create more users only in the same group of stakeholder [n] 
 #		then he is granted permissions to add users to
 #		- @create_case_group_id
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user can decided who is visible in the list of assignee
 #		- @list_visible_assignees_group_id
@@ -3741,16 +4019,16 @@
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Marina, we know she is NOT allowed to
 						#(@bz_user_id,@are_occupants_group_id,1,0),
-						#(@bz_user_id,@hide_to_occupants_group_id,1,0),
+						#(@bz_user_id,@show_to_occupants_group_id,1,0),
 					
 					# A user is a visible assignee: This is true so he can add more users and stakholders there
 					# For Marina, we know she is allowed to
@@ -3800,16 +4078,16 @@
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Marina, we know he is stakeholder 4
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Marina, the answer is NO
 						#(@bz_user_id,@are_occupants_group_id,0,0),
-						(@bz_user_id,@hide_to_occupants_group_id,0,0),
+						(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is she visible in the list of possible assignees?
 					# For Marina, the answer is NO
@@ -4071,11 +4349,11 @@
 #		- @unit_creator_group_id
 #	- If user is in the role [n] then we make him a member of THE groups
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 # 	- If the user is an occupant then make him a member of
 #		- @are_occupants_group_id
 # 	- If the user is NOT an occupant then make him a member of
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #	- If the user is publicly visible then make him a member of
 #		- @list_visible_assignees_group_id
 #	- If the user can see the publicly visible users then make him a member of
@@ -4106,21 +4384,21 @@
 #		- @are_users_stakeholder_3_group_id
 #		- @are_users_stakeholder_4_group_id
 #		- @are_users_stakeholder_5_group_id
-#		- @hide_to_stakeholder_1_group_id
-#		- @hide_to_stakeholder_2_group_id
-#		- @hide_to_stakeholder_3_group_id
-#		- @hide_to_stakeholder_4_group_id
-#		- @hide_to_stakeholder_5_group_id
+#		- @show_to_stakeholder_1_group_id
+#		- @show_to_stakeholder_2_group_id
+#		- @show_to_stakeholder_3_group_id
+#		- @show_to_stakeholder_4_group_id
+#		- @show_to_stakeholder_5_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user is allowed to create more users only in the same group of stakeholder [n] 
 #		then he is granted permissions to add users to
 #		- @create_case_group_id
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user can decided who is visible in the list of assignee
 #		- @list_visible_assignees_group_id
@@ -4169,16 +4447,16 @@
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Celeste, we know she is NOT allowed to
 						#(@bz_user_id,@are_occupants_group_id,1,0),
-						#(@bz_user_id,@hide_to_occupants_group_id,1,0),
+						#(@bz_user_id,@show_to_occupants_group_id,1,0),
 					
 					# A user is a visible assignee: This is true so he can add more users and stakholders there
 					# For Celeste, we know she is NOT allowed to
@@ -4228,16 +4506,16 @@
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Celeste, we know he is stakeholder 4
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Celeste, the answer is NO
 						#(@bz_user_id,@are_occupants_group_id,0,0),
-						(@bz_user_id,@hide_to_occupants_group_id,0,0),
+						(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is she visible in the list of possible assignees?
 					# For Celeste, the answer is NO
@@ -4499,11 +4777,11 @@
 #		- @unit_creator_group_id
 #	- If user is in the role [n] then we make him a member of THE groups
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 # 	- If the user is an occupant then make him a member of
 #		- @are_occupants_group_id
 # 	- If the user is NOT an occupant then make him a member of
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #	- If the user is publicly visible then make him a member of
 #		- @list_visible_assignees_group_id
 #	- If the user can see the publicly visible users then make him a member of
@@ -4534,21 +4812,21 @@
 #		- @are_users_stakeholder_3_group_id
 #		- @are_users_stakeholder_4_group_id
 #		- @are_users_stakeholder_5_group_id
-#		- @hide_to_stakeholder_1_group_id
-#		- @hide_to_stakeholder_2_group_id
-#		- @hide_to_stakeholder_3_group_id
-#		- @hide_to_stakeholder_4_group_id
-#		- @hide_to_stakeholder_5_group_id
+#		- @show_to_stakeholder_1_group_id
+#		- @show_to_stakeholder_2_group_id
+#		- @show_to_stakeholder_3_group_id
+#		- @show_to_stakeholder_4_group_id
+#		- @show_to_stakeholder_5_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user is allowed to create more users only in the same group of stakeholder [n] 
 #		then he is granted permissions to add users to
 #		- @create_case_group_id
 #		- @are_users_stakeholder_[n]_group_id
-#		- @hide_to_stakeholder_[all but n]_group_id
+#		- @show_to_stakeholder_[all but n]_group_id
 #		- @are_occupants_group_id
-#		- @hide_to_occupants_group_id
+#		- @show_to_occupants_group_id
 #
 #	- If the user can decided who is visible in the list of assignee
 #		- @list_visible_assignees_group_id
@@ -4597,16 +4875,16 @@
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,1,0),
 						#(@bz_user_id,@are_users_stakeholder_5_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_1_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_2_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_3_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_4_group_id,1,0),
-						#(@bz_user_id,@hide_to_stakeholder_5_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_1_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_2_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_3_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,1,0),
+						#(@bz_user_id,@show_to_stakeholder_5_group_id,1,0),
 					
 					# A user is an occupant: This is true so he can add more users and stakholders there
 					# For Jocelyn, we know she is NOT allowed to
 						#(@bz_user_id,@are_occupants_group_id,1,0),
-						#(@bz_user_id,@hide_to_occupants_group_id,1,0),
+						#(@bz_user_id,@show_to_occupants_group_id,1,0),
 					
 					# A user is a visible assignee: This is true so he can add more users and stakholders there
 					# For Jocelyn, we know she is NOT allowed to
@@ -4656,16 +4934,16 @@
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Jocelyn, we know he is stakeholder 4
-						(@bz_user_id,@hide_to_stakeholder_1_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_2_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_3_group_id,0,0),
-						#(@bz_user_id,@hide_to_stakeholder_4_group_id,0,0),
-						(@bz_user_id,@hide_to_stakeholder_5_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
+						#(@bz_user_id,@show_to_stakeholder_4_group_id,0,0),
+						(@bz_user_id,@show_to_stakeholder_5_group_id,0,0),
 					
 					# Is he an occupant?
 					# For Jocelyn, the answer is NO
 						#(@bz_user_id,@are_occupants_group_id,0,0),
-						(@bz_user_id,@hide_to_occupants_group_id,0,0),
+						(@bz_user_id,@show_to_occupants_group_id,0,0),
 					
 					# Is she visible in the list of possible assignees?
 					# For Jocelyn, the answer is NO
@@ -4783,6 +5061,9 @@ SET @r_group_is_paid = NULL;
 SET @g_all_flags_group_id = NULL;
 SET @r_all_flags_group_id = NULL;
 SET @all_unit_privileges_group_id = NULL;
+SET @can_edit_case_group_id = NULL;
+SET @can_edit_all_field_case_group_id = NULL;
+SET @can_edit_component_group_id = NULL;
 SET @all_g_tags = NULL;
 SET @all_r_tags = NULL;
 SET @series_2 = NULL;
