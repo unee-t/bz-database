@@ -302,22 +302,6 @@
 
 			# The 'visibility' explanation
 				SET @visibility_explanation = CONCAT(@visibility_explanation_1,@stakeholder,@visibility_explanation_2);
-
-		/*Data for the table `components` */
-		# We need to know if this is the first time we have created a user with this role.
-		#
-		# Because this is a demo user, we know that this is the first time and that this group does not exist.
-		# If this was any other scenario, we will need to check if we already have a record in the table `ut_product_group`
-		# The check is to test if we have a record where
-		# `product_id` = @product_id AND `role_type_id` = @role_type_id AND `group_type_id` = 2
-		# `group_type_id` = 1 is the group for creator of the unit
-		#		This is a special group - we need to expand on this when
-		#		we describe how to grant 'creator' provoleges to another user
-		#		at the moment the 'creator' privilege is only given to the actual creator
-		#		We also need to better document the privileges that a creator has.
-		#
-		# `group_type_id` = 2 is the group to grant access to product/units and bugs/cases.
-		# 
 		
 		/*Data for the table `ut_map_user_unit_details` */
 		# Update the Unee-T table that records information about the user:
@@ -380,21 +364,8 @@
 		# group for the unit creator (first new group we create)
 			SET @unit_creator_group_id = 19;
 
-		# group to grant visibility to this type of role/stakeholder
-		# WE ARE MAKING THIS OBSOLETE AS THIS IS NOT OPTIMAL
-		# ALL THE USER FOR A PRODUCT/UNIT SHOULD BE ABLE TO 
-		#	- HIDE A CASE FROM EVERY OTHER ROLE EXCEPT	
-		#		- IF THEY TRY TO HIDE IT FOR THEIR OWN ROLE
-		#	IN ORDER TO DO THAT THE USER SHOULD BE A MEMBER OF ALL THE GROUPS THAT ALLOW TO HIDE 
-		#	A CASE FROM A GROUP OF USER...
-		#	THIS IS WHY WE NEED 
-		#		- TO CREATE ALL THE GROUPS FOR ALL TYPES OF STAKEHOLDERS
-		#		- GIVE THE GROUP ACCESS CONTROL PERMISSION THAT WE NEED TO THAT GROUP
-		#
-
 		# We need a group that will allow all users to create cases.
 			SET @create_case_group_id = (@unit_creator_group_id+1);
-
 
 		# group to hide cases to this type of role/stakeholder (1)
 			SET @hide_to_stakeholder_1_group_id = (@create_case_group_id+1);
