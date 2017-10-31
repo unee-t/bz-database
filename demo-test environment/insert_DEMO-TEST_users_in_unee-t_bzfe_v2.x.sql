@@ -121,7 +121,7 @@
 		# 	This variable store the text displayed next to the 'visibility' tick in a case
 		# 	We do this that way so we can re-use @visibility_explanation in the script to create several demo users.
 			SET @visibility_explanation_1 = 'Visible only to ';
-			SET @visibility_explanation_2 = ' for this unit (If none are selected, then all roles can see this case).';
+			SET @visibility_explanation_2 = ' for this unit.';
 			
 		# Get the additional data we need
 			SET @unit = (SELECT `name` FROM `products` WHERE `id`=@product_id);
