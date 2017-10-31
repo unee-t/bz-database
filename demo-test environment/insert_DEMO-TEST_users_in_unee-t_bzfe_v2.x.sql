@@ -609,35 +609,22 @@
 				# Can approve all flags
 					# 19 = all_g_flags
 						(@product_id,@all_g_flags_group_id,19,@role_type_id,@timestamp);
-#######
-# WIP
-#######
-################################
-# WHAT IS THE GROUP TYPE ID?
-################################
-				# ?? = Can edit a case
-#						(@product_id,@can_edit_case_group_id,??,@role_type_id,@timestamp),
 
-################################
-# WHAT IS THE GROUP TYPE ID?
-################################
+				# Can edit a case
+					# 25 = Can edit a case
+						(@product_id,@can_edit_case_group_id,25,@role_type_id,@timestamp),
+
 				# Can Edit all field in the case, regardless of its role (for unit creator)
-					# ?? = Can edit all fields in a case regardless of role
-#						(@product_id,@can_edit_all_field_case_group_id,??,@role_type_id,@timestamp),
+					# 26 = Can edit all fields in a case regardless of role
+						(@product_id,@can_edit_all_field_case_group_id,26,@role_type_id,@timestamp),
 
-################################
-# WHAT IS THE GROUP TYPE ID?
-################################
 				# Can Edit component/create new stakeholders
-					# ?? = Can edit stakeholder/components for the product/unit
-#						(@product_id,@can_edit_component_group_id,??,@role_type_id,@timestamp),
+					# 27 = Can edit stakeholder/components for the product/unit
+						(@product_id,@can_edit_component_group_id,27,@role_type_id,@timestamp),
 
-################################
-# WHAT IS THE GROUP TYPE ID?
-################################
 				# Case is visible to all
-					# ?? = Can edit stakeholder/components for the product/unit
-#						(@product_id,@can_see_cases_group_id,??,@role_type_id,@timestamp);
+					# 28 = Can edit stakeholder/components for the product/unit
+						(@product_id,@can_see_cases_group_id,28,@role_type_id,@timestamp);
 
 
 	/* Data for the table `group_group_map` */
