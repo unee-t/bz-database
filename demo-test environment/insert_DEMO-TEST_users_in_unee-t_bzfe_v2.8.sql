@@ -192,6 +192,56 @@
 			(11,'lawrence@example.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
 			(12,'anabelle@example.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
 			(13,'management.co@example.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
+
+	# For the demo we make sure that all the additional users (administrator already exist) can:
+	#	- See all the time tracking information (group id 16)
+	#	- Create Shared queries (group id 17)
+	#	- tag comments (group id 18)
+	
+			INSERT  INTO `user_group_map`
+			(`user_id`
+			,`group_id`
+			,`isbless`
+			,`grant_type`
+			) 
+			VALUES 
+			# The Administrator user can grant permission to all the groups!
+				(2,16,0,0),
+				(2,17,0,0),
+				(2,18,0,0),
+				(3,16,0,0),
+				(3,17,0,0),
+				(3,18,0,0),
+				(4,16,0,0),
+				(4,17,0,0),
+				(4,18,0,0),
+				(5,16,0,0),
+				(5,17,0,0),
+				(5,18,0,0),
+				(6,16,0,0),
+				(6,17,0,0),
+				(6,18,0,0),
+				(7,16,0,0),
+				(7,17,0,0),
+				(7,18,0,0),
+				(8,16,0,0),
+				(8,17,0,0),
+				(8,18,0,0),
+				(9,16,0,0),
+				(9,17,0,0),
+				(9,18,0,0),
+				(10,16,0,0),
+				(10,17,0,0),
+				(10,18,0,0),
+				(11,16,0,0),
+				(11,17,0,0),
+				(11,18,0,0),
+				(12,16,0,0),
+				(12,17,0,0),
+				(12,18,0,0),
+				(13,16,0,0),
+				(13,17,0,0),
+				(13,18,0,0);
 			
 
 # First we Create the Privileges for Leonel (the creator of the Unit)
@@ -517,15 +567,6 @@
 	# 	We will need this as in some scenario when we add a user to a role in an existing product/unit
 	# 	we do NOT need to re-create the group, just grant the new user access to the group.
 
-#########################################################################################
-#	
-#	WE NEED MORE GROUP TYPES SO WE CAN RECORD
-#		- @can_edit_case_group_id
-#		- @can_edit_all_field_case_group_id
-#		- @can_edit_component_group_id
-#
-#########################################################################################
-	
 		INSERT INTO `ut_product_group`
 			(
 			product_id
@@ -608,7 +649,7 @@
 				
 				# Can approve all flags
 					# 19 = all_g_flags
-						(@product_id,@all_g_flags_group_id,19,@role_type_id,@timestamp);
+						(@product_id,@all_g_flags_group_id,19,@role_type_id,@timestamp),
 
 				# Can edit a case
 					# 25 = Can edit a case
@@ -1166,123 +1207,13 @@
 				,`canconfirm`
 				) 
 				VALUES 
-######################################
-# NEED TO TEST IN THE BZ BACK END
-# NEED TO TEST WITH API TOO
-######################################
-				#
-				# the permission we can use are
-				# 0, 0: Cases in this product are never associated with this group. 
-				#	Irrelevant for us...
-				#
-				# We do NOT want 1,0:
-				#		- Does NOT Create a record in the bug_group_map each time a bug/case is created
-				#		- By default SHOW all the bugs UNLESS specifically requested to hide.
-				#			This is a pb because a search would display bug/cases for a stakholder 
-				#			that have NOT been specifically authorized to be shown..
-				#		- Allow member of the correct groups to HIDE a case if needed
-				# 1, 0: Cases in this product are permitted to be restricted to this group. 
-				#		Users who are members of this group will be able to place cases in this group. 
-				#	- This does NOT create a new record in the table `bug_group_map` each time a bug is created
-				# 	- This SHOWS the 'Visibility' tick boxes in the BZ interface!
-				#	- By Default the 'Visibility' tick boxes in the BZ interface is set to 0 (FALSE)!
-				# 	- the 'Visibility' tick boxes in the BZ interface CAN be changed by user ONLY if the user IS in this group
-				#
-				# We do NOT want 1, 1:
-				#	This would create a scenario where a user would exclude himself from this groups
-				#	and hence prevent himself to see this case ever again.
-				# 1, 1: Cases in this product can be placed in this group by anyone with permission to edit the case 
-				#		even if they are not a member of this group.
-				#	- This does NOT create a new record in the table `bug_group_map` each time a bug is created
-				# 	- This SHOWS the 'Visibility' tick boxes in the BZ interface!
-				#	- By Default the 'Visibility' tick boxes in the BZ interface is set to 0 (FALSE)!
-				#	- the 'Visibility' tick boxes in the BZ interface CAN be changed by user even if user is NOT in this group
-				#
-				# We do NOT want 1, 2 :
-				# 	This would be similar to 1, 1: a user could exclude himself from this groups
-				#	and hence prevent himself to see this case ever again.
-				#1, 2: Cases in this product can be placed in this group by anyone with permission to edit the case 
-				#		even if they are not a member of this group. 
-				#		Non-members place cases in this group by default.
-				#	- This DOES CREATE a new record in the table `bug_group_map` each time a bug is created
-				# 	- This SHOWS the 'Visibility' tick boxes in the BZ interface!
-				#	- By Default the 'Visibility' tick boxes in the BZ interface is set to 1 (TRUE)
-				#	- the 'Visibility' tick boxes in the BZ interface CAN be changed by user even if user is NOT in this group
-				#
-				# We do NOT WANT 1, 3 :
-				# 	This would be similar to 1, 0 BUT this would 
-				#		- Create a record in the bug_group_map each time a bug/case is created
-				#		- By default Shows all the bugs UNLESS specifically requested to hide.
-				#			This is necessary or else a search would display bug/cases that have NOT been specifically authorized to be shown
-				#		- Allow member of the correct groups to SHOW a case if needed
-				# 1, 3: Cases in this product are permitted to be restricted to this group. 
-				#		Users who are members of this group will be able to place cases in this group. 
-				#		Non-members will be forced to restrict cases to this group when they initially enter a case in this product. 
-				#	- This DOES CREATE a new record in the table `bug_group_map` each time a bug is created
-				# 	- This SHOWS the 'Visibility' tick boxes in the BZ interface!
-				#	- By Default the 'Visibility' tick boxes in the BZ interface is set to 0 (FALSE)
-				#	- the 'Visibility' tick boxes in the BZ interface can NOT be changed unless you are in this group
-				#
-				# We do NOT want 2, 0 :
-				# 	This would be similar to 1, 0 BUT this would 
-				#		- Create a record in the bug_group_map each time a bug/case is created
-				#		- By default HIDE all the bugs UNLESS specifically requested to show.
-				# 2, 0: Cases in this product are permitted to be restricted to this group 
-				#		Cases are placed in this group by default. 
-				#		Users who are members of this group will be able to place cases in this group. 
-				#	- This DOES CREATE a new record in the table `bug_group_map` each time a bug is created
-				# 	- This SHOWS the 'Visibility' tick boxes in the BZ interface!
-				#	- By Default the 'Visibility' tick boxes in the BZ interface is set to 1 (TRUE)
-				# 	- the 'Visibility' tick boxes in the BZ interface can NOT be changed unless you are in this group
-				#
-				# We do NOT want 2, 1 :
-				# 	This would
-				#		- Create a record in the bug_group_map each time a bug/case is created
-				#		- By default HIDE all the bugs UNLESS specifically requested to show.
-				#		- Create a sceario where a user could exclude himself from this groups
-				#			and hence prevent himself to see this case ever again.
-				# 2, 1 : Cases in this product are permitted to be restricted to this group
-				#		 Cases are placed in this group by default. 
-				#		Users who are members of this group will be able to place cases in this group. 
-				#		Non-members will be able to restrict cases to this group on entry and will do so by default. 
-				#	- This DOES CREATE a new record in the table `bug_group_map` each time a bug is created
-				# 	- This SHOWS the 'Visibility' tick boxes in the BZ interface!
-				#	- By Default the 'Visibility' tick boxes in the BZ interface is set to 1 (TRUE)
-				# 	- the 'Visibility' tick boxes in the BZ interface CAN be changed by user even if user is NOT in this group
-				#
-#######################################
-#
-# This still does NOT work as intended if we use 3,3 for create_case_group_id:
-# This still does NOT work as intended if we use 2,3 for create_case_group_id:
-#	Test:
-#		1- Create a case as administrator
-#			Make sure agent is not the assignee
-#		2- Untick visibility for Agent
-#		3- Impersonate Leonel (Agent)
-#		4- Check if this bug is visible for Leonel 
-#			RESULT: FAIL: Leonel can still see this bug
-#
-#######################################
-				
-				# 2, 3 : Cases in this product are permitted to be restricted to this group 
-				#		Cases are placed in this group by default. 
-				#		Users who are members of this group will be able to place cases in this group. 
-				#		Non-members will be forced to place cases in this group on entry. 
-				#	- This DOES CREATE a new record in the table `bug_group_map` each time a bug is created
-				# 	- This SHOWS the 'Visibility' tick boxes in the BZ interface!
-				#	- By Default the 'Visibility' tick boxes in the BZ interface is set to 1 (TRUE)
-				# 	- the 'Visibility' tick boxes in the BZ interface can NOT be changed unless you are in this group
-				#
-				# We do NOT want 3, 3 :
-				#	This will make the case always visible to everyone...
-				# 3, 3 : Cases in this product are required to be restricted to this group. 
-				#		Users are not given any option.
-				#	- This DOES CREATE a new record in the table `bug_group_map` each time a bug is created
-				#	- By Default the 'Visibility' tick boxes in the BZ interface is set to 1 (TRUE)
-				# 	- This HIDES the 'Visibility' tick boxes in the BZ interface!
-				#
 				# This table is relevant ONLY for the groups that are active for bugs/cases:
 				#	- @create_case_group_id
+				#	- @can_edit_case_group_id
+				#	- @can_edit_all_field_case_group_id
+				#	- @can_edit_component_group_id
+				#
+				#	- @can_see_cases_group_id
 				#	- @show_to_stakeholder_1_group_id
 				#	- @show_to_stakeholder_2_group_id
 				#	- @show_to_stakeholder_3_group_id
@@ -1291,15 +1222,12 @@
 				#	- @show_to_occupants_group_id
 				
 				# The group that allow a user to create cases for a product/unit
-				# Editbugs is necessary so we can do what we need.
 					(@create_case_group_id,@product_id,1,0,0,0,0,0,0),
 					(@can_edit_case_group_id,@product_id,1,0,0,1,0,0,1),
 					(@can_edit_all_field_case_group_id,@product_id,1,0,0,1,0,1,1),
 					(@can_edit_component_group_id,@product_id,0,0,0,0,1,0,0),
 
 				# The group to hide cases from some stakeholders
-				
-				# editcomponents is needed so that the user can create add new users in this product
 					(@can_see_cases_group_id,@product_id,0,2,0,0,0,0,0),
 					(@show_to_stakeholder_1_group_id,@product_id,0,1,1,0,0,0,0),
 					(@show_to_stakeholder_2_group_id,@product_id,0,1,1,0,0,0,0),
@@ -1554,19 +1482,14 @@
 					
 					# Group to show/hide cases to some stakeholders:
 					# For Leonel, we know he is stakeholder 5
-						(@bz_user_id,@are_users_stakeholder_1_group_id,0,0),
+						#(@bz_user_id,@are_users_stakeholder_1_group_id,0,0),
 						#(@bz_user_id,@are_users_stakeholder_2_group_id,0,0),
 						#(@bz_user_id,@are_users_stakeholder_3_group_id,0,0),
 						#(@bz_user_id,@are_users_stakeholder_4_group_id,0,0),
-						#(@bz_user_id,@are_users_stakeholder_5_group_id,0,0),
+						(@bz_user_id,@are_users_stakeholder_5_group_id,0,0),
 						
 					# Group to show/hide cases to some stakeholders:
 					# For Leonel, we know he is stakeholder 5
-					# 
-# This comment is most likely incorrect # But as the creator, he should be able to see all options
-####
-#	WE NEED TO REVIEW THIS AND USE THE GROUP UNIT CREATOR TO DO THAT...
-###
 						#(@bz_user_id,@show_to_stakeholder_1_group_id,0,0),
 						#(@bz_user_id,@show_to_stakeholder_2_group_id,0,0),
 						#(@bz_user_id,@show_to_stakeholder_3_group_id,0,0),
@@ -1715,6 +1638,11 @@
 			(NULL,@bz_user_id,@series_1,@series_3,'All Closed',1,CONCAT('field0-0-0=resolution&type0-0-0=regexp&value0-0-0=.&product=',@unit_for_query,'&component=',@stakeholder),1);
 
 		/*Data for the table `audit_log` */
+##################
+#
+#	THIS NEEDS TO BE REVIEWED - WE HAVE CREATED MORE GROUPS THAN JUST 1!
+#
+##################		
 		INSERT  INTO `audit_log`
 			(`user_id`
 			,`class`

@@ -6,7 +6,8 @@
 #  3- Create and refine this script...
 #
 # This script: 
-#  - creates the classification @building
+#  - creates the classification @building based on the values in the product table from ipi
+#  - update the migration table so that we record the old and new values for the product table in the migration database.
 #  - DOES NOT create any product/unit
 #
 # Tt requires:
@@ -19,7 +20,7 @@ SET @unit_group = 'UG-1';
 SET @unit_group_description = 'Unit Group 1 - This is a way to group units together';
 
 
-# We have everything - Let's do this!
+# We have everything - Do this!
 	INSERT  INTO `classifications`
 		(`id`
 		,`name`
