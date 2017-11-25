@@ -314,52 +314,52 @@
 	# 	already been created for a given product.
 	# 	We will need this as in some scenario when we add a user to a role in an existing product/unit
 	# 	we do NOT need to re-create the group, just grant the new user access to the group.
-	INSERT INTO `ut_product_group`
-		(
-		product_id
-		,group_id
-		,group_type_id
-		,role_type_id
-		,created
-		)
-		VALUES
-		# This is the initial creation for this product/unit. We know that the group_type_id for this group is
-		# 1 = Creator
-			(@product_id,@creator_group_id,1,@role_type_id,@timestamp),
-		# 2 = Access to case as stakeholder
-			(@product_id,@visibility_case_group_id,2,@role_type_id,@timestamp),
-		# 4 = list_stakeholder
-			(@product_id,@list_user_group_id,4,@role_type_id,@timestamp),
-		# 5 = see_stakeholder
-			(@product_id,@see_user_group_id,5,@role_type_id,@timestamp),
-		# 6 = r_a_case_next_step
-			(@product_id,@r_group_next_step,6,@role_type_id,@timestamp),
-		# 7 = g_a_case_next_step
-			(@product_id,@g_group_next_step,7,@role_type_id,@timestamp),
-		# 8 = r_a_case_solution
-			(@product_id,@r_group_solution,8,@role_type_id,@timestamp),
-		# 9 = g_a_case_solution
-			(@product_id,@g_group_solution,9,@role_type_id,@timestamp),
-		# 10 = r_a_case_budget
-			(@product_id,@r_group_budget,10,@role_type_id,@timestamp),
-		# 11 = g_a_case_budget
-			(@product_id,@g_group_budget,11,@role_type_id,@timestamp),
-		# 12 = r_a_attachment_approve
-			(@product_id,@r_group_attachment,12,@role_type_id,@timestamp),
-		# 13 = g_a_attachment_approve
-			(@product_id,@g_group_attachment,13,@role_type_id,@timestamp),
-		# 14 = r_a_attachment_ok_to_pay
-			(@product_id,@r_group_OK_to_pay,14,@role_type_id,@timestamp),
-		# 15 = g_a_attachment_ok_to_pay
-			(@product_id,@g_group_OK_to_pay,15,@role_type_id,@timestamp),
-		# 16 = r_a_attachment_is_paid
-			(@product_id,@r_group_is_paid,16,@role_type_id,@timestamp),
-		# 17 = g_a_attachment_is_paid
-			(@product_id,@g_group_is_paid,17,@role_type_id,@timestamp),
-		# 18 = all_r_flags
-			(@product_id,@all_r_flags_group_id,18,@role_type_id,@timestamp),
-		# 19 = all_g_flags
-			(@product_id,@all_g_flags_group_id,19,@role_type_id,@timestamp);
+		INSERT INTO `ut_product_group`
+			(
+			product_id
+			,group_id
+			,group_type_id
+			,role_type_id
+			,created
+			)
+			VALUES
+			# This is the initial creation for this product/unit. We know that the group_type_id for this group is
+			# 1 = Creator
+				(@product_id,@creator_group_id,1,@role_type_id,@timestamp),
+			# 2 = Access to case as stakeholder
+				(@product_id,@visibility_case_group_id,2,@role_type_id,@timestamp),
+			# 4 = list_stakeholder
+				(@product_id,@list_user_group_id,4,@role_type_id,@timestamp),
+			# 5 = see_stakeholder
+				(@product_id,@see_user_group_id,5,@role_type_id,@timestamp),
+			# 6 = r_a_case_next_step
+				(@product_id,@r_group_next_step,6,@role_type_id,@timestamp),
+			# 7 = g_a_case_next_step
+				(@product_id,@g_group_next_step,7,@role_type_id,@timestamp),
+			# 8 = r_a_case_solution
+				(@product_id,@r_group_solution,8,@role_type_id,@timestamp),
+			# 9 = g_a_case_solution
+				(@product_id,@g_group_solution,9,@role_type_id,@timestamp),
+			# 10 = r_a_case_budget
+				(@product_id,@r_group_budget,10,@role_type_id,@timestamp),
+			# 11 = g_a_case_budget
+				(@product_id,@g_group_budget,11,@role_type_id,@timestamp),
+			# 12 = r_a_attachment_approve
+				(@product_id,@r_group_attachment,12,@role_type_id,@timestamp),
+			# 13 = g_a_attachment_approve
+				(@product_id,@g_group_attachment,13,@role_type_id,@timestamp),
+			# 14 = r_a_attachment_ok_to_pay
+				(@product_id,@r_group_OK_to_pay,14,@role_type_id,@timestamp),
+			# 15 = g_a_attachment_ok_to_pay
+				(@product_id,@g_group_OK_to_pay,15,@role_type_id,@timestamp),
+			# 16 = r_a_attachment_is_paid
+				(@product_id,@r_group_is_paid,16,@role_type_id,@timestamp),
+			# 17 = g_a_attachment_is_paid
+				(@product_id,@g_group_is_paid,17,@role_type_id,@timestamp),
+			# 18 = all_r_flags
+				(@product_id,@all_r_flags_group_id,18,@role_type_id,@timestamp),
+			# 19 = all_g_flags
+				(@product_id,@all_g_flags_group_id,19,@role_type_id,@timestamp);
 
 	/* Data for the table `group_group_map` */
 	# This is where we grant SOME (and DEFINITELY not all) of the privileges in the BZFE
@@ -607,7 +607,8 @@
 				# All the users in the Group @creator_group_id can see the users in the group YYY
 				# The group @creator_group_id has Permission #2 to:
 					# See all the users that are creators
-						(@creator_group_id,@creator_group_id,2),
+						# Not needed: doing this will expose the administrator
+						# (@creator_group_id,@creator_group_id,2),
 					# See all user that have the same role in the unit
 						(@creator_group_id,@visibility_case_group_id,2),
 					# See all the users in the list of visible user for this product
@@ -815,8 +816,8 @@
 				# editcomponents is needed so that the creator can create new users in this product
 				(@creator_group_id,@product_id,1,3,3,0,1,1,1),
 		# NEED TO TEST WITH API
-				# editcomponents might be needed so that the user can create add new users in this product
-				(@visibility_case_group_id,@product_id,1,1,3,0,0,1,1);																					
+				# editcomponents is needed so that the user can create add new users in this product
+				(@visibility_case_group_id,@product_id,1,1,3,0,1,1,1);																					
 
 	/*Data for the table `user_group_map` */
 	# The groups have been defined, we can now tell which group the BZ users needs access to.
@@ -990,8 +991,9 @@
 		(@bz_user_id,'Bugzilla::Group',@g_group_OK_to_pay,'__create__',NULL,CONCAT(@unit,' #',@product_id,' - GA OK to Pay'),@timestamp),
 		(@bz_user_id,'Bugzilla::Group',@r_group_OK_to_pay,'__create__',NULL,CONCAT(@unit,' #',@product_id,' - RA OK to Pay'),@timestamp),
 		(@bz_user_id,'Bugzilla::Group',@g_group_is_paid,'__create__',NULL,CONCAT(@unit,' #',@product_id,' - GA is Paid'),@timestamp),
-		(@bz_user_id,'Bugzilla::Group',@r_group_is_paid,'__create__',NULL,CONCAT(@unit,' #',@product_id,' - RA is Paid'),@timestamp);
-		
+		(@bz_user_id,'Bugzilla::Group',@r_group_is_paid,'__create__',NULL,CONCAT(@unit,' #',@product_id,' - RA is Paid'),@timestamp),
+		(@bz_user_id,'Bugzilla::Group',@all_g_flags_group_id,'__create__',NULL,CONCAT(@unit,' #',@product_id,' - Can approve all flags'),@timestamp),
+		(@bz_user_id,'Bugzilla::Group',@all_r_flags_group_id,'__create__',NULL,CONCAT(@unit,' #',@product_id,' - Can be asked to approve'),@timestamp);
 
 	# We enable the FK check back
 	SET FOREIGN_KEY_CHECKS = 1;
