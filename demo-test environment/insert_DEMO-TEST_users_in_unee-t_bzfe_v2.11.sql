@@ -31,7 +31,7 @@ SET @number_of_units_per_user = 10;
 
 #	IMPORTANT NOTE: users are created in batch of 12 users so we can have various profiles.
 #	We add 1 more user: the administrator.
-#	The below variable is use to determine how many groups of 13 users you want to create:
+#	The @iteration_number_of_users variable is used to determine how many groups of 12 users you want to create:
 #	- 1 = (1x12) + 1 = 13 users
 #	- 2 = (2x12) + 1 = 25 users
 #	- 3 = (3x12) + 1 = 37 users
