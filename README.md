@@ -27,6 +27,13 @@ This has been created so that we can stress test the application a verify perfor
 
 The script is located in the folder demo-test 'environment'.
 It's a MariaDB script that should run in any compatible MariaDB client
+	
+## Before you run this script:
+Open the script and choose a value for the 2 variables:
+* iteration_number_of_users: This variable allow you to users in batches of 12 users.
+* number_of_units_per_user: This variable defines the minium number of units that each user will have created either 
+  * As Tenant and occupant for the first unit
+  * As Landlord for all the units after the first units.
 
 ## How does the script work:
 
@@ -47,11 +54,14 @@ The script will create users in batches of 12 users (on top of the adminsitrator
   * lawrence@example.com. Password: `lawrence`.
   * anabelle@example.com. Password: `anabelle`.
   * management.co@example.com. Password: `management co`.
+
 You can choose to create n batches of users by changing the variable `iteration_number_of_users` at the top of the script.
-Example: if you choose `iteration_number_of_users` = 2, you will have 1 + (12 * 2) = 25 users in you installation.
+
+>Example: if you choose `iteration_number_of_users` = 2, you will have 1 + (12 * 2) = 25 users in you installation.
 
 ### Units:
 The script creates at least 1 unit for each user.
+
 **Important note:** Each unit created will be linked to more than 1 user (more on that later)
 You can define the number of unit created by each user by changing the variable `number_of_units_per_user` at the top of the script.
 
@@ -74,6 +84,8 @@ For each units, we are creating several roles:
 * Occupant
   
 ### Assignment of roles to Units:
+Because of the way the script was written, users are assigned to several units.
+
 The script behaves as such:
 
 #### First batch of units:
@@ -116,10 +128,10 @@ For each unit, the scrip assign one of the users created to one specific role fo
 #### Every Other batch of units:
 After the first batch of unit, we are creating the rest of the units if applicable.
 
-For each unit, the scrip assign one of the users created to one specific role for this unit:
+For each unit after the first batch of units, the script assign the unit creator as the Landlord for that unit.
 * NO Tenant. 
 * NO occupant.This Tenant 
-* A Landlord. This Landlord is also the creator and the occupant of the unit. It can be ANY of the users.
+* A Landlord. This Landlord is also the creator of the unit. It can be ANY of the users.
 * An Agent. This Agent is different from the Landlord and is either:
   * Celeste (or Celeste-n if you have created n batches of users).
   * Jocelyn (or Jocelyn-n if you have created n batches of users).
@@ -150,9 +162,7 @@ For each unit, the scrip assign one of the users created to one specific role fo
 	* A secondary contact for the management company.
 	* A private contact: it's visible only by the users that are also employees of this management company.
 
-## Before you run this script:
-Open the script and choose a value for the 2 variables:
-* iteration_number_of_users: This variable allow you to users in batches of 12 users.
-* number_of_units_per_user: This variable defines the minium number of units that each user will have created either 
-  * As Tenant and occupant for the first unit
-  * As Landlord for all the units after the first units.
+#### Limitations of this script:
+As of today, this script:
+* Does NOT create any case.
+* Creates all the units under the same group of units 'My Units' for each users.
