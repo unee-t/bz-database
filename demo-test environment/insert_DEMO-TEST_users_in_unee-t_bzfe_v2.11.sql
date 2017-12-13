@@ -21,10 +21,10 @@ SET @number_of_units_per_user = 10;
 ##################################################################
 
 #
-# This script Creates demo users in the Unee-T BZFE database v2.10
+# This script Creates demo users in the Unee-T BZFE database v2.11
 #
 # Pre requisite:
-#	- BZFE database v2.10 for Unee-T has been created
+#	- BZFE database v2.11 for Unee-T has been created
 #	- You are in a DEV or DEMO environment
 #	- You have decided the following things
 #
