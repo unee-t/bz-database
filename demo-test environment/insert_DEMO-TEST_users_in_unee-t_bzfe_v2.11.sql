@@ -1,4 +1,25 @@
 # For any question about this script, ask Franck
+
+##################################################################
+#																 #
+# UPDATE THE BELOW VARIABLES TO CREATE MORE UNITS AND MORE USERS #
+#																 #
+##################################################################
+
+# How many users do you want to create
+SET @iteration_number_of_users = 2;
+
+# How many product/unit you want to create for each user
+SET @number_of_units_per_user = 10;
+
+##################################################################
+#																 #
+# THE SCRITP NOW HAS EVERYTHING IT NEEDS, RUN IT TO CREATE       #
+# 	- Users                                                      #
+#	- Units                                                      #
+#																 #
+##################################################################
+
 #
 # This script Creates demo users in the Unee-T BZFE database v2.10
 #
@@ -6,8 +27,8 @@
 #	- BZFE database v2.10 for Unee-T has been created
 #	- You are in a DEV or DEMO environment
 #	- You have decided the following things
+#
 
-# How many users do you want to created
 #	IMPORTANT NOTE: users are created in batch of 12 users so we can have various profiles.
 #	We add 1 more user: the administrator.
 #	The below variable is use to determine how many groups of 13 users you want to create:
@@ -17,27 +38,14 @@
 #	...
 #	- N = Nx13 users
 
-SET @iteration_number_of_users = 2;
-
-# How many product/unit you want to create for each user
-SET @number_of_units_per_user = 10;
-
+################
+#
+#	This is still WIP
 #		- How many Classification you want to create
 #		 This should be rule based: we create a new classification for each group of X units
 SET @number_of_units_per_classification = 25;
-
-#		- How many role per unit/product you want to create
 #
-# Limits of this script:
-#	- We do NOT create any bug
-#
-# How this works:
-#	- Enter the values for the variables you need
-#	- Run the script.
-#
-# We are creating serveral users. To see the list of users, go to the BZFE back end
-#
-#
+################
 
 /*!40101 SET NAMES utf8 */;
 
@@ -181,52 +189,53 @@ DELIMITER $$
 		DECLARE number_of_loops_user INT DEFAULT 1;
 		WHILE number_of_loops_user < @iteration_number_of_users DO
 			SET @additional_user_id = (number_of_loops_user + 1);
+			SET @last_profile_id = (SELECT MAX(`userid`) FROM `profiles`);
 			
-			SET @user_2_id = (((12 * (@additional_user_id - 1)) + 0) + @additional_user_id);
+			SET @user_2_id = (@last_profile_id + 1);
 			SET @user_2_login_name = CONCAT('leonel','_',@additional_user_id,'@example.com');
 			SET @user_2_real_name = CONCAT('Leonel-', @additional_user_id);
 			
-			SET @user_3_id = (((12 * (@additional_user_id - 1)) + 1) + @additional_user_id);
+			SET @user_3_id = (@last_profile_id + 2);
 			SET @user_3_login_name = CONCAT('marley','_',@additional_user_id,'@example.com');
 			SET @user_3_real_name = CONCAT('Marley-', @additional_user_id);
 			
-			SET @user_4_id = (((12 * (@additional_user_id-1)) + 2) + @additional_user_id);
+			SET @user_4_id = (@last_profile_id + 3);
 			SET @user_4_login_name = CONCAT('michael','_',@additional_user_id,'@example.com');
 			SET @user_4_real_name = CONCAT('Michael-', @additional_user_id);
 
-			SET @user_5_id = (((12 * (@additional_user_id-1)) + 3) + @additional_user_id);
+			SET @user_5_id = (@last_profile_id + 4);
 			SET @user_5_login_name = CONCAT('sabrina','_',@additional_user_id,'@example.com');
 			SET @user_5_real_name = CONCAT('Sabrina-', @additional_user_id);
 
-			SET @user_6_id = (((12 * (@additional_user_id-1)) + 4) + @additional_user_id);
+			SET @user_6_id = (@last_profile_id + 5);
 			SET @user_6_login_name = CONCAT('celeste','_',@additional_user_id,'@example.com');
 			SET @user_6_real_name = CONCAT('Celeste-', @additional_user_id);
 
-			SET @user_7_id = (((12 * (@additional_user_id-1)) + 5) + @additional_user_id);
+			SET @user_7_id = (@last_profile_id + 6);
 			SET @user_7_login_name = CONCAT('jocelyn','_',@additional_user_id,'@example.com');
 			SET @user_7_real_name = CONCAT('Jocelyn-', @additional_user_id);
 			
-			SET @user_8_id = (((12 * (@additional_user_id-1)) + 6) + @additional_user_id);
+			SET @user_8_id = (@last_profile_id + 7);
 			SET @user_8_login_name = CONCAT('marina','_',@additional_user_id,'@example.com');
 			SET @user_8_real_name = CONCAT('Marina-', @additional_user_id);
 
-			SET @user_9_id = (((12 * (@additional_user_id-1)) + 7) + @additional_user_id);
+			SET @user_9_id = (@last_profile_id + 8);
 			SET @user_9_login_name = CONCAT('regina','_',@additional_user_id,'@example.com');
 			SET @user_9_real_name = CONCAT('Regina-', @additional_user_id);
 
-			SET @user_10_id = (((12 * (@additional_user_id-1)) + 8) + @additional_user_id);
+			SET @user_10_id = (@last_profile_id + 9);
 			SET @user_10_login_name = CONCAT('marvin','_',@additional_user_id,'@example.com');
 			SET @user_10_real_name = CONCAT('Marvin-', @additional_user_id);
 
-			SET @user_11_id = (((12 * (@additional_user_id-1)) + 9) + @additional_user_id);
+			SET @user_11_id = (@last_profile_id + 10);
 			SET @user_11_login_name = CONCAT('lawrence','_',@additional_user_id,'@example.com');
 			SET @user_11_real_name = CONCAT('Lawrence-', @additional_user_id);
 
-			SET @user_12_id = (((12 * (@additional_user_id-1)) + 10) + @additional_user_id);
+			SET @user_12_id = (@last_profile_id + 11);
 			SET @user_12_login_name = CONCAT('anabelle','_',@additional_user_id,'@example.com');
 			SET @user_12_real_name = CONCAT('Anabelle-', @additional_user_id);
 
-			SET @user_13_id = (((12 * (@additional_user_id-1)) + 11) + @additional_user_id);
+			SET @user_13_id = (@last_profile_id + 12);
 			SET @user_13_login_name = CONCAT('management.co','_',@additional_user_id,'@example.com');
 			SET @user_13_real_name = CONCAT('Management-Co-', @additional_user_id);
 			
@@ -593,42 +602,10 @@ DROP PROCEDURE IF EXISTS insert_classification;
 		(30,'Test Unit 1 A #1-RA is Paid','Ask if it\'s paid (for a bill/attachment)',1,'',0,NULL),
 		(31,'Test Unit 1 A #1-All permissions','Access to All the groups a stakeholder needs for this unit',1,'',0,NULL);
 
-	/*Table structure for table `product_group` */
 
-##########
-#
-#	WIP
-#
+	TRUNCATE TABLE `ut_product_group`;
+	TRUNCATE TABLE `group_control_map`;
 
-		TRUNCATE TABLE `ut_product_group`;
-
-		TRUNCATE TABLE `group_control_map`;
-
-/*		
-			INSERT  INTO `group_control_map`
-				(`group_id`
-				,`product_id`
-				,`entry`
-				,`membercontrol`
-				,`othercontrol`
-				,`canedit`
-				,`editcomponents`
-				,`editbugs`
-				,`canconfirm`
-				) 
-				VALUES 
-				(@create_case_group_id,@product_id,1,0,0,0,0,0,0)
-				,(@can_edit_case_group_id,@product_id,1,0,0,1,0,0,1)
-				,(@can_edit_all_field_case_group_id,@product_id,1,0,0,1,0,1,1)
-				,(@can_edit_component_group_id,@product_id,0,0,0,0,1,0,0)
-				,(@can_see_cases_group_id,@product_id,0,2,0,0,0,0,0)
-				;
-*/
-
-#
-#	END WIP
-#
-##########
 		
 	# We insert the products we need	
 	SET @number_of_units = (@number_of_units_per_user * @iteration_number_of_users * 12);
@@ -649,8 +626,8 @@ DELIMITER $$
 			# How many possible demo user do we have?
 			SET @count_max_demo_user = (@iteration_number_of_users * 12);
 			
-			# For this unit/creator, which user loop is this?
-			SET @user_loop_counter = CEILING(((@product_id - 1)/@count_max_demo_user));
+			# For this unit, which user loop is this?
+			SET @user_loop_counter = CEILING(((@product_id - 1) / @count_max_demo_user));
 			
 			SET @creator_bz_id = (@product_id - (@iteration_number_of_users * ((@user_loop_counter - 1) * 12)));
 					
@@ -1307,10 +1284,10 @@ DELIMITER $$
 											);
 	
 			SET @landlord_bz_id = IF(@iteration_thru_landlord = 1
-										, (3 + ((@user_batch_nber_for_ll-1) * 12))
+										, (3 + ((@user_batch_nber_for_ll - 1) * 12))
 										,IF(@iteration_thru_landlord = 2
-											,(4 + ((@user_batch_nber_for_ll-1) * 12))
-											,(2 + ((@user_batch_nber_for_ll-1) * 12))
+											,(4 + ((@user_batch_nber_for_ll - 1) * 12))
+											,(2 + ((@user_batch_nber_for_ll - 1) * 12))
 										)
 									)
 									;
