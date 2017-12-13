@@ -89,7 +89,7 @@ Because of the way the script was written, users are assigned to several units.
 The script behaves as such:
 
 #### First batch of units:
-For each unit, the scrip assign one of the users created to one specific role for this unit:
+For each unit, the script assigns one of the users created to one specific role for this unit:
 * A Tenant. This Tenant is also the creator and the occupant of the unit.
 * A Landlord. This Landlord is different from the tenant and is either:
   * Marley (or Marley-n if you have created n batches of users).
