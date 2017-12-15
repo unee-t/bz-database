@@ -1,23 +1,27 @@
 # For any question about this script, ask Franck
 
 ##################################################################
-#																 #
+#								 #
 # UPDATE THE BELOW VARIABLES TO CREATE MORE UNITS AND MORE USERS #
-#																 #
+#								 #
 ##################################################################
 
 # How many users do you want to create
+# 2 will create 2*12 users
+# n will create n*12 users
 SET @iteration_number_of_users = 2;
 
 # How many product/unit you want to create for each user
+# 2 iteration of users and 10 units per user will create 2 * 12 * 10 = 240 units
+# n iteration of users and N units per user will create n * 12 * N units
 SET @number_of_units_per_user = 10;
 
 ##################################################################
-#																 #
+#								 #
 # THE SCRITP NOW HAS EVERYTHING IT NEEDS, RUN IT TO CREATE       #
-# 	- Users                                                      #
-#	- Units                                                      #
-#																 #
+# 	- Users                                                  #
+#	- Units                                                  #
+#								 #
 ##################################################################
 
 #
@@ -25,8 +29,6 @@ SET @number_of_units_per_user = 10;
 #
 # Pre requisite:
 #	- BZFE database v2.11 for Unee-T has been created
-#	- You are in a DEV or DEMO environment
-#	- You have decided the following things
 #
 
 #	IMPORTANT NOTE: users are created in batch of 12 users so we can have various profiles.
