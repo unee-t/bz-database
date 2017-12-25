@@ -18,8 +18,9 @@ CREATE TABLE `ut_audit_log`(
 
 
 # We need to add more permissions in the `ut_map_user_unit_details`:
-#	- User is in CC for all cases: this is used when we want a user to be receiving email each time a case is created for the user role.
+# We also create a unique key so that we only have ONE record for each bz_user_id and product_id
 ALTER TABLE `ut_map_user_unit_details` 
+	CHANGE `created` `created` DATETIME   NULL COMMENT 'creation ts' FIRST , 
 	ADD COLUMN `can_see_time_tracking` TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can see the timetracking information for a case' AFTER `role_type_id` , 
 	ADD COLUMN `can_create_shared_queries` TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can create shared queries' AFTER `can_see_time_tracking` , 
 	ADD COLUMN `can_tag_comment` TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can tag comments' AFTER `can_create_shared_queries` , 
@@ -29,5 +30,7 @@ ALTER TABLE `ut_map_user_unit_details`
 	ADD COLUMN `can_edit_case` TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can edit a case for this unit' AFTER `can_create_case` , 
 	ADD COLUMN `can_see_case` TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can the all the public cases for this unit' AFTER `can_edit_case` , 
 	ADD COLUMN `can_edit_all_field_regardless_of_role` TINYINT(1)   NOT NULL DEFAULT 0 COMMENT '1 (TRUE) if the user can edit all the fields in a case he/she has access to regardless of his or her role' AFTER `can_see_case` , 
-	CHANGE `is_flag_requestee` `is_flag_requestee` TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can be asked to approve all flags' AFTER `can_edit_all_field_regardless_of_role` 
-	;
+	CHANGE `is_flag_requestee` `is_flag_requestee` TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can be asked to approve all flags' AFTER `can_edit_all_field_regardless_of_role` , 
+	DROP COLUMN `id_user_unit` , 
+	ADD UNIQUE KEY `bz_profile_id_bz_product_id`(`bz_profile_id`,`bz_unit_id`) , 
+	DROP KEY `PRIMARY` ;
