@@ -12,10 +12,18 @@ CREATE TABLE `ut_audit_log`(
 	`script` MEDIUMTEXT COLLATE utf8_general_ci NULL  COMMENT 'The script that was used to create the record' , 
 	`comment` TEXT COLLATE utf8_general_ci NULL  COMMENT 'More information about what we intended to do' , 
 	PRIMARY KEY (`id_ut_log`) 
-	) ENGINE=INNODB
+	) ENGINE=INNODB DEFAULT CHARSET=utf8
 	;
 
-
+# Add a table to log the action of the scripts we have created
+CREATE TABLE `ut_script_log` (
+	  `id_ut_script_log` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
+	  `datetime` DATETIME DEFAULT NULL COMMENT 'When was this record created',
+	  `script` MEDIUMTEXT DEFAULT NULL COMMENT 'The script that was used to create the record',
+	  `log` TEXT DEFAULT NULL COMMENT 'More information about what we intended to do',
+	  PRIMARY KEY (`id_ut_script_log`)
+	) ENGINE=INNODB DEFAULT CHARSET=utf8
+	;
 
 # We need to add more permissions in the `ut_map_user_unit_details`:
 # We also create a unique key so that we only have ONE record for each bz_user_id and product_id
