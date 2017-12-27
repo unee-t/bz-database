@@ -1499,6 +1499,11 @@ DELIMITER $$
 		,(@component_id_mgt_cny,@role_mgt_cny_pub_name,@product_id,@mgt_cny_1_bz_id,@mgt_cny_1_bz_id,@role_mgt_cny_pub_info,1)
 		;
 
+##################
+#
+# WIP We need to review that as this creates duplicates bz_user_id and product_id
+#
+/*
 	# We update the table 'ut_map_user_unit_details'
 		INSERT INTO `ut_map_user_unit_details`
 			(`created`
@@ -1521,6 +1526,10 @@ DELIMITER $$
 			,(NOW(), @creator_bz_id, @mgt_cny_2_bz_id, @mgt_cny_2_bz_id, @product_id, 4,  @role_mgt_cny_pub_name, 'Created with demo user creation script when we create the component')
 			,(NOW(), @creator_bz_id, @mgt_cny_3_bz_id, @mgt_cny_3_bz_id, @product_id, 4, @role_mgt_cny_pub_name, 'Created with demo user creation script when we create the component')
 			;		
+*/
+#
+#
+####################
 		
 	INSERT INTO `component_cc`
 		(`user_id`
@@ -3015,6 +3024,11 @@ DELIMITER $$
 		,(@component_id_mgt_cny,@role_mgt_cny_pub_name,@product_id,@mgt_cny_1_bz_id,@mgt_cny_1_bz_id,@role_mgt_cny_pub_info,1)
 		;
 
+##################
+#
+# WIP We need to review that as this creates duplicates bz_user_id and product_id
+#
+/*	
 	# We update the table 'ut_map_user_unit_details'
 		INSERT INTO `ut_map_user_unit_details`
 			(`created`
@@ -3036,7 +3050,11 @@ DELIMITER $$
 			,(NOW(), @creator_bz_id, @mgt_cny_2_bz_id, @mgt_cny_2_bz_id, @product_id, 4,  @role_mgt_cny_pub_name, 'Created with demo user creation script when we create the component')
 			,(NOW(), @creator_bz_id, @mgt_cny_3_bz_id, @mgt_cny_3_bz_id, @product_id, 4, @role_mgt_cny_pub_name, 'Created with demo user creation script when we create the component')
 			;		
-		
+*/
+#
+#
+####################
+
 	INSERT INTO `component_cc`
 		(`user_id`
 		,`component_id`
