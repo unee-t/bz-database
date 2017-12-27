@@ -58,7 +58,6 @@ SET @number_of_units_per_classification = 25;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
 # Insert the initial demo users
 	
 	/*We Remove all the existing users in the installation */
@@ -137,51 +136,64 @@ SET @number_of_units_per_classification = 25;
 		VALUES 
 		(1,1,0,0);
 	
-	/* */
-			INSERT  INTO `user_group_map`
-			(`user_id`
-			,`group_id`
-			,`isbless`
-			,`grant_type`
-			) 
-			VALUES 
-				(2,16,0,0),
-				(2,17,0,0),
-				(2,18,0,0),
-				(3,16,0,0),
-				(3,17,0,0),
-				(3,18,0,0),
-				(4,16,0,0),
-				(4,17,0,0),
-				(4,18,0,0),
-				(5,16,0,0),
-				(5,17,0,0),
-				(5,18,0,0),
-				(6,16,0,0),
-				(6,17,0,0),
-				(6,18,0,0),
-				(7,16,0,0),
-				(7,17,0,0),
-				(7,18,0,0),
-				(8,16,0,0),
-				(8,17,0,0),
-				(8,18,0,0),
-				(9,16,0,0),
-				(9,17,0,0),
-				(9,18,0,0),
-				(10,16,0,0),
-				(10,17,0,0),
-				(10,18,0,0),
-				(11,16,0,0),
-				(11,17,0,0),
-				(11,18,0,0),
-				(12,16,0,0),
-				(12,17,0,0),
-				(12,18,0,0),
-				(13,16,0,0),
-				(13,17,0,0),
-				(13,18,0,0);
-			
+	# More user group map permission
+	INSERT  INTO `user_group_map`
+		(`user_id`
+		,`group_id`
+		,`isbless`
+		,`grant_type`
+		) 
+		VALUES 
+		(2,16,0,0),
+		(2,17,0,0),
+		(2,18,0,0),
+		(3,16,0,0),
+		(3,17,0,0),
+		(3,18,0,0),
+		(4,16,0,0),
+		(4,17,0,0),
+		(4,18,0,0),
+		(5,16,0,0),
+		(5,17,0,0),
+		(5,18,0,0),
+		(6,16,0,0),
+		(6,17,0,0),
+		(6,18,0,0),
+		(7,16,0,0),
+		(7,17,0,0),
+		(7,18,0,0),
+		(8,16,0,0),
+		(8,17,0,0),
+		(8,18,0,0),
+		(9,16,0,0),
+		(9,17,0,0),
+		(9,18,0,0),
+		(10,16,0,0),
+		(10,17,0,0),
+		(10,18,0,0),
+		(11,16,0,0),
+		(11,17,0,0),
+		(11,18,0,0),
+		(12,16,0,0),
+		(12,17,0,0),
+		(12,18,0,0),
+		(13,16,0,0),
+		(13,17,0,0),
+		(13,18,0,0);
+
+# For the user_group_map_we use a temp table to avoid duplicates		
+# DELETE the temp table for user_group_map if it exists
+	DROP TABLE IF EXISTS `user_group_map_temp`;
+		
+	# Re-create the temp table
+	CREATE TABLE `user_group_map_temp` (
+	  `user_id` MEDIUMINT(9) NOT NULL,
+	  `group_id` MEDIUMINT(9) NOT NULL,
+	  `isbless` TINYINT(4) NOT NULL DEFAULT '0',
+	  `grant_type` TINYINT(4) NOT NULL DEFAULT '0'
+	) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+
 			
 # We insert more users based on the variable entered by the user:
 DELIMITER $$
@@ -916,7 +928,7 @@ DELIMITER $$
 		
 		# We prepare the permission for the user
 		
-				INSERT  INTO `ut_user_group_map_temp`
+				INSERT  INTO `user_group_map_temp`
 					(`user_id`
 					,`group_id`
 					,`isbless`
@@ -1812,7 +1824,7 @@ DELIMITER $$
 		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
 		SET @unit_creator_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 1));
 
-	INSERT  INTO `ut_user_group_map_temp`
+	INSERT  INTO `user_group_map_temp`
 		(`user_id`
 		,`group_id`
 		,`isbless`
@@ -3249,7 +3261,7 @@ DELIMITER $$
 		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
 		SET @unit_creator_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 1));
 
-	INSERT  INTO `ut_user_group_map_temp`
+	INSERT  INTO `user_group_map_temp`
 		(`user_id`
 		,`group_id`
 		,`isbless`
@@ -3903,14 +3915,15 @@ DROP PROCEDURE IF EXISTS insert_component_rest;
 		, `isbless`
 		, `grant_type`
 	FROM
-		`ut_user_group_map_temp`
+		`user_group_map_temp`
 	GROUP BY `user_id`
 		, `group_id`
 		, `isbless`
 		, `grant_type`
 	;
-
-
+	
+	# Tidy up - we remove the temp table
+	DROP TABLE IF EXISTS `user_group_map_temp`;
 
 
 
