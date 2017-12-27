@@ -28,7 +28,7 @@ SET @number_of_units_per_user = 10;
 # This script Creates demo users in the Unee-T BZFE database
 #
 # Pre requisite:
-#	- BZFE database v2.13 (also compatible with v2.11 and v2.13) for Unee-T has been created
+#	- BZFE database v2.13 for Unee-T has been created
 #
 
 #	IMPORTANT NOTE: users are created in batch of 12 users so we can have various profiles.
@@ -58,22 +58,6 @@ SET @number_of_units_per_classification = 25;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
-# DELETE the temp table if it exists
-	DROP TABLE IF EXISTS `user_group_map_temp`;
-		
-	# Re-create the temp table
-	CREATE TABLE `user_group_map_temp` (
-	  `user_id` MEDIUMINT(9) NOT NULL,
-	  `group_id` MEDIUMINT(9) NOT NULL,
-	  `isbless` TINYINT(4) NOT NULL DEFAULT '0',
-	  `grant_type` TINYINT(4) NOT NULL DEFAULT '0'
-	) ENGINE=INNODB DEFAULT CHARSET=utf8;
-
-	# Add the records that exist in the table user_group_map
-	INSERT INTO `user_group_map_temp`
-		SELECT *
-		FROM `user_group_map`;
 
 # Insert the initial demo users
 	
@@ -1097,7 +1081,7 @@ DELIMITER $$
 	END$$
 DELIMITER ;
 CALL insert_products;
-
+DROP PROCEDURE IF EXISTS insert_products;
 
 ######################
 #
@@ -2724,7 +2708,7 @@ END WHILE;
 END$$
 DELIMITER ;
 CALL insert_component;
-
+DROP PROCEDURE IF EXISTS insert_component;
 
 
 
@@ -3841,7 +3825,7 @@ DELIMITER $$
 # WIP
 #
 #		
-#	INSERT  INTO `ut_series_categories`
+#	INSERT  INTO `series_categories`
 #		(`id`
 #		,`name`
 #		) 
@@ -3853,7 +3837,7 @@ DELIMITER $$
 #	SET @series_1 = (SELECT `id` FROM `ut_series_categories` WHERE `name` = CONCAT(@stakeholder,'_#',@product_id));
 #	SET @series_3 = (SELECT `id` FROM `ut_series_categories` WHERE `name` = CONCAT(@unit,'_#',@product_id));
 #
-#	INSERT  INTO `ut_series`
+#	INSERT  INTO `series`
 #		(`series_id`
 #		,`creator`
 #		,`category`
@@ -3881,7 +3865,7 @@ DELIMITER $$
 #		(NULL,@bz_user_id,@series_1,@series_3,'All Open',1,CONCAT('field0-0-0=resolution&type0-0-0=notregexp&value0-0-0=.&product=',@unit_for_query,'&component=',@stakeholder),1),
 #		(NULL,@bz_user_id,@series_1,@series_3,'All Closed',1,CONCAT('field0-0-0=resolution&type0-0-0=regexp&value0-0-0=.&product=',@unit_for_query,'&component=',@stakeholder),1);
 #
-#	INSERT  INTO `ut_audit_log`
+#	INSERT  INTO `audit_log`
 #		(`user_id`
 #		,`class`
 #		,`object_id`
@@ -3907,6 +3891,7 @@ END WHILE;
 END$$
 DELIMITER ;
 CALL insert_component_rest;
+DROP PROCEDURE IF EXISTS insert_component_rest;
 
 # We give the user the permission they need.
 # We need to do that via an intermediaary table to make sure that we dedup the permissions
@@ -3927,8 +3912,10 @@ CALL insert_component_rest;
 
 
 
-# DELETE the temp table if it exists
-	DROP TABLE IF EXISTS `user_group_map_temp`;
+
+
+
+
 
 
 
