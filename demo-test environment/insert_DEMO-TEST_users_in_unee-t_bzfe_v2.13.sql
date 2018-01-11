@@ -2670,9 +2670,9 @@ DELIMITER $$
 		,(@product_id,@component_id,@group_id_are_users_mgt_cny,22,4,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_see_users_mgt_cny,5,4,@creator_bz_id,@timestamp)
 		# occupant (#)
-		,(@product_id,@component_id,@group_id_show_to_occupant,2,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_occupant,22,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_occupant,5,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_show_to_occupant,2,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_are_users_occupant,22,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_occupant,3,NULL,@creator_bz_id,@timestamp)
 		# invited_by
 		,(@product_id,@component_id,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
@@ -2756,7 +2756,7 @@ DELIMITER $$
 		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
+		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4 AND `role_type_id` IS NULL));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5 AND `role_type_id` IS NULL));
 		SET @unit_creator_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 1));
 #		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));		
