@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS `ut_user_group_map_temp`;
 
 # Add a table to log all the changes initiated by scripts in the BZFE
+DROP TABLE IF EXISTS `ut_audit_log`;
 CREATE TABLE `ut_audit_log`(
 	`id_ut_log` INT(11) NOT NULL  AUTO_INCREMENT COMMENT 'The id of the record in this table' , 
 	`datetime` DATETIME NULL  COMMENT 'When was this record created' , 
@@ -16,6 +17,7 @@ CREATE TABLE `ut_audit_log`(
 	;
 
 # Add a table to log the action of the scripts we have created
+DROP TABLE IF EXISTS `ut_script_log`;
 CREATE TABLE `ut_script_log` (
 	  `id_ut_script_log` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
 	  `datetime` DATETIME DEFAULT NULL COMMENT 'When was this record created',
