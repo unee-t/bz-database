@@ -65,7 +65,7 @@
 	SET @classification_id = 3;
 	
 	# The name and description
-	SET @unit_name = 'A Test Unit - SMBW 1';
+	SET @unit_name = 'A Test Unit - SMBW 4';
 	SET @unit_description = 'Description of the unit. lorem ipsum dolorem';
 
 # The user associated to the unit.	
@@ -1091,48 +1091,48 @@
 		
 	# Log the actions of the script.
 		SET @script_log_message = CONCAT('A new unit #'
-								, @product_id
+								, (SELECT IFNULL(@product_id, 'product_id is NULL'))
 								, ' ('
-								, @unit
+								, (SELECT IFNULL(@unit, 'unit is NULL'))
 								, ') '
 								, ' has been created in the classification: '
-								, @classification_id
+								, (SELECT IFNULL(@classification_id, 'classification_id is NULL'))
 								, '\r\r\We have created the following flags which are restricted to that unit: '
 								, '\r\ - Next Step (#'
-								, @flag_next_step
+								, (SELECT IFNULL(@flag_next_step, 'flag_next_step is NULL'))
 								, ').'
 								, '\r\ - Solution (#'
-								, @flag_solution
+								, (SELECT IFNULL(@flag_solution, 'flag_solution is NULL'))
 								, ').'
 								, '\r\ - Budget (#'
-								, @flag_budget
+								, (SELECT IFNULL(@flag_budget, 'flag_budget is NULL'))
 								, ').'
 								, '\r\ - Attachment (#'
-								, @flag_attachment
+								, (SELECT IFNULL(@flag_attachment, 'flag_attachment is NULL'))
 								, ').'
 								, '\r\ - OK to pay (#'
-								, @flag_ok_to_pay
+								, (SELECT IFNULL(@flag_ok_to_pay, 'flag_ok_to_pay is NULL'))
 								, ').'
 								, '\r\ - Is paid (#'
-								, @flag_is_paid
+								, (SELECT IFNULL(@flag_is_paid, 'flag_is_paid is NULL'))
 								, ').'
 								
 								, '\r\r\We have attributed the component_id for that unit:'
 								, '\r\ - Tenant'
 								, ' role: component #'
-								, @component_id_tenant
+								, (SELECT IFNULL(@component_id_tenant, 'component_id_tenant is NULL'))
 								, '\r\ - Landlord'
 								, ' role: component #'
-								, @component_id_landlord
+								, (SELECT IFNULL(@component_id_landlord, 'component_id_landlord is NULL'))
 								, '\r\ - Agent'
 								, ' role: component #'
-								, @component_id_agent
+								, (SELECT IFNULL(@component_id_agent, 'component_id_agent is NULL'))
 								, '\r\ - Contractor'
 								, ' role: component #'
-								, @component_id_contractor
+								, (SELECT IFNULL(@component_id_contractor, 'component_id_contractor is NULL'))
 								, '\r\ - Management Company'
 								, ' role: component #'
-								, @component_id_mgt_cny
+								, (SELECT IFNULL(@component_id_mgt_cny, 'component_id_mgt_cny is NULL'))
 								
 								, '\r\r\We have also created the groups that we will need for that unit:'
 								
@@ -1141,234 +1141,237 @@
 								, '\r\ - Restrict permission to '
 								, 'tenant'
 								, 'only. Group_id: '
-								, @group_id_show_to_tenant
+								, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
 								, '\r\ - Group for the '
 								, 'tenant'
 								, 'only. Group_id: '
-								, @group_id_are_users_tenant
+								, (SELECT IFNULL(@group_id_are_users_tenant, 'group_id_are_users_tenant is NULL'))
 								, '\r\ - Group to see the users'
 								, 'tenant'
 								, '. Group_id: '
-								, @group_id_see_users_tenant
+								, (SELECT IFNULL(@group_id_see_users_tenant, 'group_id_see_users_tenant is NULL'))
 								
 								, '\r\ - Restrict permission to '
 								, 'landlord'
 								, 'only. Group_id: '
-								, @group_id_show_to_landlord
+								, (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
 								, '\r\ - Group for the '
 								, 'landlord'
 								, 'only. Group_id: '
-								, @group_id_are_users_landlord
+								, (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
 								, '\r\ - Group to see the users'
 								, 'landlord'
 								, '. Group_id: '
-								, @group_id_see_users_landlord
+								, (SELECT IFNULL(@group_id_see_users_landlord, 'group_id_see_users_landlord is NULL'))
 								
 								, '\r\ - Restrict permission to '
 								, 'agent'
 								, 'only. Group_id: '
-								, @group_id_show_to_agent
+								, (SELECT IFNULL(@group_id_show_to_agent, 'group_id_show_to_agent is NULL'))
 								, '\r\ - Group for the '
 								, 'agent'
 								, 'only. Group_id: '
-								, @group_id_are_users_agent
+								, (SELECT IFNULL(@group_id_are_users_agent, 'group_id_are_users_agent is NULL'))
 								, '\r\ - Group to see the users'
 								, 'agent'
 								, '. Group_id: '
-								, @group_id_see_users_agent
+								, (SELECT IFNULL(@group_id_see_users_agent, 'group_id_see_users_agent is NULL'))
 								
 								, '\r\ - Restrict permission to '
 								, 'Contractor'
 								, 'only. Group_id: '
-								, @group_id_show_to_contractor
+								, (SELECT IFNULL(@group_id_show_to_contractor, 'group_id_show_to_contractor is NULL'))
 								, '\r\ - Group for the '
 								, 'Contractor'
 								, 'only. Group_id: '
-								, @group_id_are_users_contractor
+								, (SELECT IFNULL(@group_id_are_users_contractor, 'group_id_are_users_contractor is NULL'))
 								, '\r\ - Group to see the users'
 								, 'Contractor'
 								, '. Group_id: '
-								, @group_id_see_users_contractor
+								, (SELECT IFNULL(@group_id_see_users_contractor, 'group_id_see_users_contractor is NULL'))
 								
 								, '\r\ - Restrict permission to '
 								, 'Management Company'
 								, 'only. Group_id: '
-								, @group_id_show_to_mgt_cny
+								, (SELECT IFNULL(@group_id_show_to_mgt_cny, 'group_id_show_to_mgt_cny is NULL'))
 								, '\r\ - Group for the '
 								, 'Management Company'
 								, 'only. Group_id: '
-								, @group_id_are_users_mgt_cny
+								, (SELECT IFNULL(@group_id_are_users_mgt_cny, 'group_id_are_users_mgt_cny is NULL'))
 								, '\r\ - Group to see the users'
 								, 'Management Company'
 								, '. Group_id: '
-								, @group_id_see_users_mgt_cny
+								, (SELECT IFNULL(@group_id_see_users_mgt_cny, 'group_id_see_users_mgt_cny is NULL'))
 								
 								, '\r\ - Restrict permission to '
 								, 'occupant'
 								, 'only. Group_id: '
-								, @group_id_show_to_occupant
+								, (SELECT IFNULL(@group_id_show_to_occupant, 'group_id_show_to_occupant is NULL'))
 								, '\r\ - Group for the '
 								, 'occupant'
 								, 'only. Group_id: '
-								, @group_id_are_users_occupant
+								, (SELECT IFNULL(@group_id_are_users_occupant, 'group_id_are_users_occupant is NULL'))
 								, '\r\ - Group to see the users'
 								, 'occupant'
 								, '. Group_id: '
-								, @group_id_see_users_occupant
+								, (SELECT IFNULL(@group_id_see_users_occupant, 'group_id_see_users_occupant is NULL'))
 								
 								
 								, '\r\r\The bz user #'
-								, @creator_bz_id
+								, (SELECT IFNULL(@creator_bz_id, 'creator_bz_id is NULL'))
 								, ' (real name: '
-								, @creator_pub_name
+								, (SELECT IFNULL(@creator_pub_name, 'creator_pub_name is NULL'))
 								, ') '
 								, 'is the CREATOR of that unit.'
 								
 								, '\r\r\The first role created for that unit was: '
-								, @role_user_g_description
+								, (SELECT IFNULL(@role_user_g_description, 'role_user_g_description is NULL'))
 								, ' (role_type_id #'
-								, @id_role_type
+								, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
 								, ') '
 								, '\r\The user associated to this role was bz user #'
-								, @bz_user_id
+								, (SELECT IFNULL(@bz_user_id, 'bz_user_id is NULL'))
 								, ' (real name: '
-								, @user_pub_name
+								, (SELECT IFNULL(@user_pub_name, 'user_pub_name is NULL'))
 								, '. This user is the default assignee for this role for that unit.' 
 								, '\r\r\The permission granted to the CREATOR were: '
 								, '\r\ - Permissions to invite other users:'
 								, '\r\   - CAN grant privileges to create new cases for the unit. Group id #'
-								, @create_case_group_id
+								, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
 								, '\r\   - CAN grant privileges to edit existing cases for the unit. Group id #'
-								, @can_edit_case_group_id
+								, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
 								, '\r\   - CAN grant privileges to edit all the fields in a case (regardless of the user role) for the unit. Group id #'
-								, @can_edit_all_field_case_group_id
+								, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
 								, '\r\   - CAN grant privileges to edit and create any roles for the unit. Group id #'
-								, @can_edit_component_group_id
+								, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
 								, '\r\   - CAN grant privileges to see the public cases for the unit. Group id #'
-								, @can_see_cases_group_id
+								, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
 								, '\r\   - CAN grant privileges to grant approval for any flag for the unit. Group id #'
-								, @all_g_flags_group_id
+								, (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
 								, '\r\   - CAN grant privileges to ask for approval for any flag for the unit. Group id #'
-								, @all_r_flags_group_id
+								, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
 								, '\r\   - CAN grant privileges to add a user to the list of user who are visible assignees for the unit. Group id #'
-								, @list_visible_assignees_group_id
+								, (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
 								, '\r\   - CAN grant privileges to add user to the list of visible assignee for the unit. Group id #'
-								, @see_visible_assignees_group_id
+								, (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
 								, '\r\   - CAN grant privileges to be a member of the stakeholders for the unit. Group id #'
-								, @active_stakeholder_group_id
+								, (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
 								, '\r\   - Can grant privileges to be a member of the group for the unit creators for the unit. Group id #'
-								, @unit_creator_group_id
+								, (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
 								, '\r\   - Can grant privileges to be a member of group for users who have been invited by the creator (him/herself). Group id #'
-								, @group_id_are_users_invited_by
+								, (SELECT IFNULL(@group_id_are_users_invited_by, 'group_id_are_users_invited_by is NULL'))
 								, '\r\   - Can grant privileges to see the users who have been invited by the creator (him/herself). Group id #'
-								, @group_id_are_users_invited_by
+								, (SELECT IFNULL(@group_id_are_users_invited_by, 'group_id_are_users_invited_by is NULL'))
 
+								
 								, '\r\ - Permissions on units and cases for the CREATOR:'
 								, '\r\   - CAN create new cases for the unit. Group id #'
-								, @create_case_group_id
+								, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
 								, '\r\   - CAN edit existing cases for the unit. Group id #'
-								, @can_edit_case_group_id
+								, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
 								, '\r\   - CAN edit all the fields in a case (regardless of the user role) for the unit. Group id #'
-								, @can_edit_all_field_case_group_id
+								, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
 								, '\r\   - CAN edit and create any roles for the unit. Group id #'
-								, @can_edit_component_group_id
+								, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
 								, '\r\   - CAN see the public cases for the unit. Group id #'
-								, @can_see_cases_group_id
+								, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
 								, '\r\   - CAN grant approval for any flag for the unit. Group id #'
-								, @all_g_flags_group_id
+								, (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
 								, '\r\   - CAN ask for approval for any flag for the unit. Group id #'
-								, @all_r_flags_group_id
+								, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
 								, '\r\   - Is in the list of user who are visible assignees for the unit. Group id #'
-								, @list_visible_assignees_group_id
+								, (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
 								, '\r\   - CAN see th users in the list of visible assignee for the unit. Group id #'
-								, @see_visible_assignees_group_id
+								, (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
 								, '\r\   - Is a member of the stakeholders for the unit. Group id #'
-								, @active_stakeholder_group_id
+								, (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
 								, '\r\   - Is a member of the group for the unit creators for the unit. Group id #'
-								, @unit_creator_group_id
+								, (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
 								, '\r\   - Can see the users who have been invited by the creator (him/herself). Group id #'
-								, @group_id_are_users_invited_by
+								, (SELECT IFNULL(@group_id_are_users_invited_by, 'group_id_are_users_invited_by is NULL'))
+								
 								
 								, '\r\r\We also created the following permissions for the INVITED user:'
 								, '\r\ - Permissions to invite other users:'
 								, '\r\   - CAN grant privileges to create new cases for the unit. Group id #'
-								, @create_case_group_id
+								, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
 								, '\r\   - CAN grant privileges to edit existing cases for the unit. Group id #'
-								, @can_edit_case_group_id
+								, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
 								, '\r\   - CAN grant privileges to edit all the fields in a case (regardless of the user role) for the unit. Group id #'
-								, @can_edit_all_field_case_group_id
+								, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
 								, '\r\   - CAN grant privileges to edit and create any roles for the unit. Group id #'
-								, @can_edit_component_group_id
+								, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
 								, '\r\   - CAN grant privileges to see the public cases for the unit. Group id #'
-								, @can_see_cases_group_id
+								, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
 								, '\r\   - CAN grant privileges to grant approval for any flag for the unit. Group id #'
-								, @all_g_flags_group_id
+								, (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
 								, '\r\   - CAN grant privileges to ask for approval for any flag for the unit. Group id #'
-								, @all_r_flags_group_id
+								, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
 								, '\r\   - CAN grant privileges to add a user to the list of user who are visible assignees for the unit. Group id #'
-								, @list_visible_assignees_group_id
+								, (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
 								, '\r\   - CAN grant privileges to add user to the list of visible assignee for the unit. Group id #'
-								, @see_visible_assignees_group_id
+								, (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
 								, '\r\   - CAN grant privileges to be a member of the stakeholders for the unit. Group id #'
-								, @active_stakeholder_group_id
+								, (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
 								, '\r\   - CAN NOT grant privileges to be a member of the group for the unit creators for the unit. Group id #'
-								, @unit_creator_group_id
+								, (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
 								, '\r\   - CAN grant privileges to a see cases restricted to the role type: '
-								, @role_user_g_description
+								, (SELECT IFNULL(@role_user_g_description, 'role_user_g_description is NULL'))
 								, ' for this unit. This allow the invited user to invite other user to see the cases that are restricted to this group. Group id #'
-								, @group_id_show_to_user_role
+								, (SELECT IFNULL(@group_id_show_to_user_role, 'group_id_show_to_user_role is NULL'))
 								, '\r\   - CAN grant privileges to be a member of the group of the visible users in the role type: '
-								, @role_user_g_description
+								, (SELECT IFNULL(@role_user_g_description, 'role_user_g_description is NULL'))
 								, ' for this unit. Group id #'
-								, @group_id_are_users_same_role
+								, (SELECT IFNULL(@group_id_are_users_same_role, 'group_id_are_users_same_role is NULL'))
 								, '\r\   - CAN grant privileges to see the users that are member of the group of the visible users in the role type: '
-								, @role_user_g_description
+								, (SELECT IFNULL(@role_user_g_description, 'role_user_g_description is NULL'))
 								, ' for this unit. Group id #'
-								, @group_id_see_users_same_role
+								, (SELECT IFNULL(@group_id_see_users_same_role, 'group_id_see_users_same_role is NULL'))
+
 
 								, '\r\ - Permissions on units and cases for the INVITED user:'
 								, '\r\   - CAN create new cases for the unit. Group id #'
-								, @create_case_group_id
+								, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
 								, '\r\   - CAN edit existing cases for the unit. Group id #'
-								, @can_edit_case_group_id
+								, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
 								, '\r\   - can NOT edit all the fields in a case (regardless of the user role) for the unit. Group id #'
-								, @can_edit_all_field_case_group_id
+								, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
 								, '\r\   - can NOT edit and create any roles for the unit (he can only invite to this role for that unit). Group id #'
-								, @can_edit_component_group_id
+								, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
 								, '\r\   - CAN see the public cases for the unit. Group id #'
-								, @can_see_cases_group_id
+								, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
 								, '\r\   - CAN grant approval for any flag for the unit. Group id #'
-								, @all_g_flags_group_id
+								, (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
 								, '\r\   - CAN ask for approval for any flag for the unit. Group id #'
-								, @all_r_flags_group_id
+								, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
 								, '\r\   - Is in the list of user who are visible assignees for the unit. Group id #'
-								, @list_visible_assignees_group_id
+								, (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
 								, '\r\   - CAN see the users in the list of visible assignee for the unit. Group id #'
-								, @see_visible_assignees_group_id
+								, (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
 								, '\r\   - Is a member of the stakeholders for the unit. Group id #'
-								, @active_stakeholder_group_id
+								, (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
 								, '\r\   - is NOT a member of the group for the unit creators for the unit. Group id #'
-								, @unit_creator_group_id
+								, (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
 								, '\r\   - CAN see cases restricted to the role type: '
-								, @role_user_g_description
+								, (SELECT IFNULL(@role_user_g_description, 'role_user_g_description is NULL'))
 								, ' for this unit. Group id #'
-								, @group_id_show_to_user_role
+								, (SELECT IFNULL(@group_id_show_to_user_role, 'group_id_show_to_user_role is NULL'))
 								, '\r\   - Is a member of the group of the visible users in the role type: '
-								, @role_user_g_description
+								, (SELECT IFNULL(@role_user_g_description, 'role_user_g_description is NULL'))
 								, ' for this unit. Group id #'
-								, @group_id_are_users_same_role
+								, (SELECT IFNULL(@group_id_are_users_same_role, 'group_id_are_users_same_role is NULL'))
 								, '\r\   - CAN see the users that are member of the group of the visible users in the role type: '
-								, @role_user_g_description
+								, (SELECT IFNULL(@role_user_g_description, 'role_user_g_description is NULL'))
 								, ' for this unit. Group id #'
-								, @group_id_see_users_same_role
+								, (SELECT IFNULL(@group_id_see_users_same_role, 'group_id_see_users_same_role is NULL'))
 								, '\r\r\We also have recorded that the user #'
-								, @bz_user_id
+								, (SELECT IFNULL(@bz_user_id, 'bz_user_id is NULL'))
 								, ' has been invited by the user #'
-								, @creator_bz_id
+								, (SELECT IFNULL(@creator_bz_id, 'creator_bz_id is NULL'))
 								, ' for the unit #'
-								, @product_id
+								, (SELECT IFNULL(@product_id, 'product_id is NULL'))
 								, ' and the role: '
-								, @role_user_g_description
+								, (SELECT IFNULL(@role_user_g_description, 'role_user_g_description is NULL'))
 								);
 		
 		INSERT INTO `ut_script_log`
