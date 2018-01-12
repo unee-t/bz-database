@@ -65,7 +65,7 @@
 	SET @classification_id = 3;
 	
 	# The name and description
-	SET @unit_name = 'A Test Unit - SMBW 5';
+	SET @unit_name = 'A Test Unit - SMBW 1';
 	SET @unit_description = 'Description of the unit. lorem ipsum dolorem';
 
 # The user associated to the unit.	
