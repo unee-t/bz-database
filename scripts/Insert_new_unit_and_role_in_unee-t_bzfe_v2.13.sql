@@ -757,8 +757,7 @@
 											`role_type_id` = @role_type_id
 											)
 											);
-		(SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
-
+	
 	# We have everything, we can now create the first component/role for the unit.
 		INSERT INTO `components`
 			(`id`
