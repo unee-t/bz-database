@@ -18,7 +18,7 @@ SET @number_of_units_per_user = 1;
 
 ##################################################################
 #								 #
-# THE SCRITP NOW HAS EVERYTHING IT NEEDS, RUN IT TO CREATE       #
+# THE SCRIPT NOW HAS EVERYTHING IT NEEDS, RUN IT TO CREATE       #
 # 	- Users                                                  #
 #	- Units                                                  #
 #								 #

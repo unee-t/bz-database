@@ -9,26 +9,42 @@
 # Built for BZFE database v2.13
 #
 # Use this script only if the Unit DOES NOT EXIST YET in the BZFE
+# 
+# This script will create:
+# 	- a new product/unit.
+#	- All the flags associtated to this unit.
+#	- all the component_id for all the roles we will need for that unit
+#	- all the groups we need to grant the permissions we want for that unit
+#	- The first role for this unit
 #
 # The user will be made a member of the groups that allows the following rights
 #	- See all the time tracking information (group id 16)
 #	- Create Shared queries (group id 17)
 #	- tag comments (group id 18)
+#
+# For the unit he/she will be able to:
 #	- Create a case for this product
 #	- Can edit a case for this product
 #	- Can edit ALL the fields in a case that he/she has access to, regardless of the role he/she has
+#
+######################
 #	WARNING: The below permission is VERY powerful and the main reason why it is 
 #	NOT a good idea to give users accesses to the BZFE as they could break a lot of things there...
+######################
 #	- Can create any new role and also edit the product/unit and all the roles/components in the product
+#
 #	- Can see the cases that are made visible to all users.
 #	- Can see the cases that are limited to his/her role.
+#
+######################
+#	WARNING: The below permission makes the show/hide user functionality less efficient...
+######################
 #	- Can request any flag
-#	WARNING: This makes the show/hide user functionality less efficient...
+#
 #	- Can approve any flag (and hence is visible by all the users that can request flags)
-#	- Is a visible assignee
 #	- Can see all the visible assignee
-#	- Is one of the active stakeholderd for this product/unit.
-#	- 
+#	- Is one of the publicly visible assignee for this product/unit.
+#
 #
 # Limits of this script:
 #	- DO NOT USE if the unit already exists in the BZ database
@@ -505,25 +521,16 @@
 #
 ######################
 	
-	# We need t know the next available Id for the component:
-	SET @component_id = ((SELECT MAX(`id`) FROM `components`) + 1);
+	# We will create all component_id for all the components/roles we need
+	# We need to know the next available Id for the component:
+		SET @component_id_tenant = ((SELECT MAX(`id`) FROM `components`) + 1);
+		SET @component_id_landlord = (@component_id_tenant + 1);
+		SET @component_id_agent = (@component_id_landlord + 1);
+		SET @component_id_contractor = (@component_id_agent + 1);
+		SET @component_id_mgt_cny = (@component_id_contractor + 1);
 	
 	SET @visibility_explanation_1 = 'Visible only to ';
 	SET @visibility_explanation_2 = ' for this unit.';
-	
-	# We have everything, we can now create the first component/role for the unit.
-		INSERT INTO `components`
-			(`id`
-			,`name`
-			,`product_id`
-			,`initialowner`
-			,`initialqacontact`
-			,`description`
-			,`isactive`
-			) 
-			VALUES
-			(@component_id,@role_user_g_description,@product_id,@bz_user_id,@bz_user_id,@user_role_desc,1)
-			;
 
 #####################
 #
@@ -549,34 +556,119 @@
 #
 #####################
 
-	# We now create the groups we need
-		# For the user - based on the user role:
+	# We now create the groups we will need now and in the future for this unit...
+	# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
+	# This will avoid a scenario where we need to grant permission to see occupants for instances but the group for occupants does not exist yet...
+		SET @visibility_explanation_1 = 'Visible only to ';
+		SET @visibility_explanation_2 = ' for this unit.';
+		
+		# For the tenant
 			# Visibility group
-			SET @group_id_show_to_user_role = ((SELECT MAX(`id`) FROM `groups`) + 1);
-			SET @group_name_show_to_user_role = (CONCAT(@unit_for_group,'-',@component_id, '-',@role_user_g_description));
-			SET @group_description_user_role = (CONCAT(@visibility_explanation_1,@role_user_g_description,@visibility_explanation_2));
+			SET @group_id_show_to_tenant = ((SELECT MAX(`id`) FROM `groups`) + 1);
+			SET @group_name_show_to_tenant = (CONCAT(@unit,'-limit-to-Tenant'));
+			SET @group_description_tenant = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1),@visibility_explanation_2));
 		
-			# Is in user Group for the role we just created
-			SET @group_id_are_users_same_role = (@group_id_show_to_user_role + 1);
-			SET @group_name_are_users_same_role = (CONCAT(@unit_for_group,'-',@component_id, '-List-', @role_user_g_description));
-			SET @group_description_are_users_same_role = (CONCAT('list the ',@role_user_g_description,'-', @unit));
+			# Is in tenant user Group
+			SET @group_id_are_users_tenant = (@group_id_show_to_tenant + 1);
+			SET @group_name_are_users_tenant = (CONCAT(@unit,'-List-Tenant'));
+			SET @group_description_are_users_tenant = (CONCAT('list the tenant(s)', @unit));
 			
-			# Can See other users in the same Group
-			SET @group_id_see_users_same_role = (@group_id_are_users_same_role + 1);
-			SET @group_name_see_users_same_role = (CONCAT(@unit_for_group,'-',@component_id,'-Can-see-',@role_user_g_description));
-			SET @group_description_see_users_same_role = (CONCAT('See the list of ', @role_user_g_description,' for ', @unit));
+			# Can See tenant user Group
+			SET @group_id_see_users_tenant = (@group_id_are_users_tenant + 1);
+			SET @group_name_see_users_tenant = (CONCAT(@unit,'-Can-see-Tenant'));
+			SET @group_description_see_users_tenant = (CONCAT('See the list of tenant(s) for ', @unit));
+	
+		# For the Landlord
+			# Visibility group 
+			SET @group_id_show_to_landlord = (@group_id_see_users_tenant + 1);
+			SET @group_name_show_to_landlord = (CONCAT(@unit,'-Limit-to-Landlord'));
+			SET @group_description_show_to_landlord = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2),@visibility_explanation_2));
+			
+			# Is in landlord user Group
+			SET @group_id_are_users_landlord = (@group_id_show_to_landlord + 1);
+			SET @group_name_are_users_landlord = (CONCAT(@unit,'-List-landlord'));
+			SET @group_description_are_users_landlord = (CONCAT('list the landlord(s)', @unit));
+			
+			# Can See landlord user Group
+			SET @group_id_see_users_landlord = (@group_id_are_users_landlord + 1);
+			SET @group_name_see_users_landlord = (CONCAT(@unit,'-Can-see-lanldord'));
+			SET @group_description_see_users_landlord = (CONCAT('See the list of lanldord(s) for ', @unit));
+			
+		# For the agent
+			# Visibility group 
+			SET @group_id_show_to_agent = (@group_id_see_users_landlord + 1);
+			SET @group_name_show_to_agent = (CONCAT(@unit,'-limit-to-Agent'));
+			SET @group_description_show_to_agent = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5),@visibility_explanation_2));
+			
+			# Is in Agent user Group
+			SET @group_id_are_users_agent = (@group_id_show_to_agent + 1);
+			SET @group_name_are_users_agent = (CONCAT(@unit,'-List-agent'));
+			SET @group_description_are_users_agent = (CONCAT('list the agent(s)', @unit));
+			
+			# Can See Agent user Group
+			SET @group_id_see_users_agent = (@group_id_are_users_agent + 1);
+			SET @group_name_see_users_agent = (CONCAT(@unit,'-Can-see-agent'));
+			SET @group_description_see_users_agent = (CONCAT('See the list of agent(s) for ', @unit));
 		
+		# For the contractor
+			# Visibility group 
+			SET @group_id_show_to_contractor = (@group_id_see_users_agent + 1);
+			SET @group_name_show_to_contractor = (CONCAT(@unit,'-limit-to-Contractor-Employee'));
+			SET @group_description_show_to_contractor = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3),@visibility_explanation_2));
+			
+			# Is in contractor user Group
+			SET @group_id_are_users_contractor = (@group_id_show_to_contractor + 1);
+			SET @group_name_are_users_contractor = (CONCAT(@unit,'-List-contractor-employee'));
+			SET @group_description_are_users_contractor = (CONCAT('list the contractor employee(s)', @unit));
+			
+			# Can See contractor user Group
+			SET @group_id_see_users_contractor = (@group_id_are_users_contractor + 1);
+			SET @group_name_see_users_contractor = (CONCAT(@unit,'-Can-see-contractor-employee'));
+			SET @group_description_see_users_contractor = (CONCAT('See the list of contractor employee(s) for ', @unit));
+			
+		# For the Mgt Cny
+			# Visibility group
+			SET @group_id_show_to_mgt_cny = (@group_id_see_users_contractor + 1);
+			SET @group_name_show_to_mgt_cny = (CONCAT(@unit,'-limit-to-Mgt-Cny-Employee'));
+			SET @group_description_show_to_mgt_cny = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4),@visibility_explanation_2));
+			
+			# Is in mgt cny user Group
+			SET @group_id_are_users_mgt_cny = (@group_id_show_to_mgt_cny + 1);
+			SET @group_name_are_users_mgt_cny = (CONCAT(@unit,'-List-Mgt-Cny-Employee'));
+			SET @group_description_are_users_mgt_cny = (CONCAT('list the Mgt Cny Employee(s)', @unit));
+			
+			# Can See mgt cny user Group
+			SET @group_id_see_users_mgt_cny = (@group_id_are_users_mgt_cny + 1);
+			SET @group_name_see_users_mgt_cny = (CONCAT(@unit,'-Can-see-Mgt-Cny-Employee'));
+			SET @group_description_see_users_mgt_cny = (CONCAT('See the list of Mgt Cny Employee(s) for ', @unit));
+		
+		# For the occupant
+			# Visibility group
+			SET @group_id_show_to_occupant = (@group_id_see_users_mgt_cny + 1);
+			SET @group_name_show_to_occupant = (CONCAT(@unit,'limit-to-occupant'));
+			SET @group_description_show_to_occupant = (CONCAT(@visibility_explanation_1,'Occupants'));
+			
+			# Is in occupant user Group
+			SET @group_id_are_users_occupant = (@group_id_show_to_occupant + 1);
+			SET @group_name_are_users_occupant = (CONCAT(@unit,'-List-occupant'));
+			SET @group_description_are_users_occupant = (CONCAT('list-the-occupant(s)-', @unit));
+			
+			# Can See occupant user Group
+			SET @group_id_see_users_occupant = (@group_id_are_users_occupant + 1);
+			SET @group_name_see_users_occupant = (CONCAT(@unit,'-Can-see-occupant'));
+			SET @group_description_see_users_occupant = (CONCAT('See the list of occupant(s) for ', @unit));
+			
 		# For the people invited by this user:
 			# Is in invited_by user Group
-			SET @group_id_are_users_invited_by = (@group_id_see_users_same_role + 1);
-			SET @group_name_are_users_invited_by = (CONCAT(@unit_for_group,'-List-invited-by-', @creator_pub_name));
-			SET @group_description_are_users_invited_by = (CONCAT('list the users invited_by ', @creator_pub_name,' for unit:', @unit));
+			SET @group_id_are_users_invited_by = (@group_id_see_users_occupant + 1);
+			SET @group_name_are_users_invited_by = (CONCAT(@unit,'-List-invited-by'));
+			SET @group_description_are_users_invited_by = (CONCAT('list the invited_by(s)', @unit));
 			
 			# Can See users in invited_by user Group
 			SET @group_id_see_users_invited_by = (@group_id_are_users_invited_by + 1);
-			SET @group_name_see_users_invited_by = (CONCAT(@unit_for_group,'-Can-see-invited-by-', @creator_pub_name));
-			SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by ', @creator_pub_name,' for ', @unit));
-			
+			SET @group_name_see_users_invited_by = (CONCAT(@unit,'-Can-see-invited-by'));
+			SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
+
 	# We have everything: we can create the groups we need!
 		INSERT  INTO `groups`
 			(`id`
@@ -588,9 +680,24 @@
 			,`icon_url`
 			) 
 			VALUES 
-			(@group_id_show_to_user_role,@group_name_show_to_user_role,@group_description_user_role,1,'',1,NULL)
-			,(@group_id_are_users_same_role,@group_name_are_users_same_role,@group_description_are_users_same_role,1,'',0,NULL)
-			,(@group_id_see_users_same_role,@group_name_see_users_same_role,@group_description_see_users_same_role,1,'',0,NULL)
+			(@group_id_show_to_tenant,@group_name_show_to_tenant,@group_description_tenant,1,'',1,NULL)
+			,(@group_id_are_users_tenant,@group_name_are_users_tenant,@group_description_are_users_tenant,1,'',0,NULL)
+			,(@group_id_see_users_tenant,@group_name_see_users_tenant,@group_description_see_users_tenant,1,'',0,NULL)
+			,(@group_id_show_to_landlord,@group_name_show_to_landlord,@group_description_show_to_landlord,1,'',1,NULL)
+			,(@group_id_are_users_landlord,@group_name_are_users_landlord,@group_description_are_users_landlord,1,'',0,NULL)
+			,(@group_id_see_users_landlord,@group_name_see_users_landlord,@group_description_see_users_landlord,1,'',0,NULL)
+			,(@group_id_show_to_agent,@group_name_show_to_agent,@group_description_show_to_agent,1,'',1,NULL)
+			,(@group_id_are_users_agent,@group_name_are_users_agent,@group_description_are_users_agent,1,'',0,NULL)
+			,(@group_id_see_users_agent,@group_name_see_users_agent,@group_description_see_users_agent,1,'',0,NULL)
+			,(@group_id_show_to_contractor,@group_name_show_to_contractor,@group_description_show_to_contractor,1,'',1,NULL)
+			,(@group_id_are_users_contractor,@group_name_are_users_contractor,@group_description_are_users_contractor,1,'',0,NULL)
+			,(@group_id_see_users_contractor,@group_name_see_users_contractor,@group_description_see_users_contractor,1,'',0,NULL)
+			,(@group_id_show_to_mgt_cny,@group_name_show_to_mgt_cny,@group_description_show_to_mgt_cny,1,'',1,NULL)
+			,(@group_id_are_users_mgt_cny,@group_name_are_users_mgt_cny,@group_description_are_users_mgt_cny,1,'',0,NULL)
+			,(@group_id_see_users_mgt_cny,@group_name_see_users_mgt_cny,@group_description_see_users_mgt_cny,1,'',0,NULL)
+			,(@group_id_show_to_occupant,@group_name_show_to_occupant,@group_description_show_to_occupant,1,'',1,NULL)
+			,(@group_id_are_users_occupant,@group_name_are_users_occupant,@group_description_are_users_occupant,1,'',0,NULL)
+			,(@group_id_see_users_occupant,@group_name_see_users_occupant,@group_description_see_users_occupant,1,'',0,NULL)
 			,(@group_id_are_users_invited_by,@group_name_are_users_invited_by,@group_description_are_users_invited_by,1,'',0,NULL)
 			,(@group_id_see_users_invited_by,@group_name_see_users_invited_by,@group_description_see_users_invited_by,1,'',0,NULL)
 			;
@@ -610,13 +717,62 @@
 		,created
 		)
 		VALUES
-		(@product_id,@component_id,@group_id_show_to_user_role,2,@id_role_type,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_same_role,22,@id_role_type,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_same_role,5,@id_role_type,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_invited_by,31,@id_role_type,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_invited_by,32,@id_role_type,@creator_bz_id,@timestamp)
+		# Tenant (1)
+		(@product_id,@component_id_tenant,@group_id_show_to_tenant,2,1,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_tenant,@group_id_are_users_tenant,22,1,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_tenant,@group_id_see_users_tenant,5,1,@creator_bz_id,@timestamp)
+		# Landlord (2)
+		,(@product_id,@component_id_landlord,@group_id_show_to_landlord,2,2,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_landlord,@group_id_are_users_landlord,22,2,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_landlord,@group_id_see_users_landlord,5,2,@creator_bz_id,@timestamp)
+		# Agent (5)
+		,(@product_id,@component_id_agent,@group_id_show_to_agent,2,5,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_agent,@group_id_are_users_agent,22,5,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_agent,@group_id_see_users_agent,5,5,@creator_bz_id,@timestamp)
+		# contractor (3)
+		,(@product_id,@component_id_contractor,@group_id_show_to_contractor,2,3,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_contractor,@group_id_are_users_contractor,22,3,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_contractor,@group_id_see_users_contractor,5,3,@creator_bz_id,@timestamp)
+		# mgt_cny (4)
+		,(@product_id,@component_id_mgt_cny,@group_id_show_to_mgt_cny,2,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_mgt_cny,@group_id_are_users_mgt_cny,22,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_mgt_cny,@group_id_see_users_mgt_cny,5,4,@creator_bz_id,@timestamp)
+		# occupant (#)
+		,(@product_id,NULL,@group_id_show_to_occupant,2,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_are_users_occupant,22,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_see_users_occupant,3,NULL,@creator_bz_id,@timestamp)
+		# invited_by
+		,(@product_id,NULL,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
 		;
 	
+	# What is the component_id for this role?
+		SET @component_id_this_role = (SELECT `component_id` 
+											FROM `ut_product_group` 
+											WHERE 
+											(`product_id` = @product_id 
+											AND 
+											`group_type_id` = 2
+											AND
+											`role_type_id` = @role_type_id
+											)
+											);
+		(SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
+
+	# We have everything, we can now create the first component/role for the unit.
+		INSERT INTO `components`
+			(`id`
+			,`name`
+			,`product_id`
+			,`initialowner`
+			,`initialqacontact`
+			,`description`
+			,`isactive`
+			) 
+			VALUES
+			(@component_id_this_role,@role_user_g_description,@product_id,@bz_user_id,@bz_user_id,@user_role_desc,1)
+			;
+		
 	# Data for the table `group_group_map`
 	# We use a temporary table to do this, this is to avoid duplicate in the group_group_map table
 		INSERT  INTO `group_group_map_temp`
@@ -635,14 +791,33 @@
 			VALUES 
 			# group to grant membership
 			# Admin can grant membership to all.
-			(1,@group_id_show_to_user_role,1)
-			,(1,@group_id_are_users_same_role,1)
-			,(1,@group_id_see_users_same_role,1)
+			(1,@group_id_show_to_tenant,1)
+			,(1,@group_id_are_users_tenant,1)
+			,(1,@group_id_see_users_tenant,1)
+			,(1,@group_id_show_to_landlord,1)
+			,(1,@group_id_are_users_landlord,1)
+			,(1,@group_id_see_users_landlord,1)
+			,(1,@group_id_show_to_agent,1)
+			,(1,@group_id_are_users_agent,1)
+			,(1,@group_id_see_users_agent,1)
+			,(1,@group_id_show_to_contractor,1)
+			,(1,@group_id_are_users_contractor,1)
+			,(1,@group_id_see_users_contractor,1)
+			,(1,@group_id_show_to_mgt_cny,1)
+			,(1,@group_id_are_users_mgt_cny,1)
+			,(1,@group_id_see_users_mgt_cny,1)
+			,(1,@group_id_show_to_occupant,1)
+			,(1,@group_id_are_users_occupant,1)
+			,(1,@group_id_see_users_occupant,1)
 			,(1,@group_id_are_users_invited_by,1)
 			,(1,@group_id_see_users_invited_by,1)
 			
 			# Visibility groups
-			,(@group_id_see_users_same_role,@group_id_are_users_same_role,2)
+			,(@group_id_see_users_tenant,@group_id_are_users_tenant,2)
+			,(@group_id_see_users_landlord,@group_id_are_users_landlord,2)
+			,(@group_id_see_users_agent,@group_id_are_users_contractor,2)
+			,(@group_id_see_users_mgt_cny,@group_id_are_users_mgt_cny,2)
+			,(@group_id_see_users_occupant,@group_id_are_users_occupant,2)
 			,(@group_id_see_users_invited_by,@group_id_are_users_invited_by,2)
 			;
 
@@ -658,22 +833,44 @@
 		,`canconfirm`
 		) 
 		VALUES 
-		(@group_id_show_to_user_role,@product_id,0,2,0,0,0,0,0)
+		(@group_id_show_to_tenant,@product_id,0,2,0,0,0,0,0)
+		,(@group_id_show_to_landlord,@product_id,0,2,0,0,0,0,0)
+		,(@group_id_show_to_agent,@product_id,0,2,0,0,0,0,0)
+		,(@group_id_show_to_contractor,@product_id,0,2,0,0,0,0,0)
+		,(@group_id_show_to_mgt_cny,@product_id,0,2,0,0,0,0,0)
+		,(@group_id_show_to_occupant,@product_id,0,2,0,0,0,0,0)
 		;
 	
 	# We now assign the user permission for all the users we have created.
+	# We need to get the id of these groups from the ut_product_table_based on the product_id!
 		# Groups created when we create the product
-		# We need to ge these from the ut_product_table_based on the product_id!
-		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
-		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
-		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
-		SET @can_edit_component_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 27));
-		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
-		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
-		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
-		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5 AND `role_type_id` IS NULL));
-		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
+			SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
+			SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
+			SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
+			SET @can_edit_component_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 27));
+			SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
+			SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
+			SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
+			SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
+			SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5 AND `role_type_id` IS NULL));
+			SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
+
+		# For the user - based on the user role:
+			# Visibility group
+			SET @group_id_show_to_user_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = @id_role_type));
+		
+			# Is in user Group for the role we just created
+			SET @group_id_are_users_same_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = @id_role_type));
+			
+			# Can See other users in the same Group
+			SET @group_id_see_users_same_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5 AND `role_type_id` = @id_role_type));
+		
+		# For the people invited by this user:
+			# Is in invited_by user Group
+			SET @group_id_are_users_invited_by = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 31 AND `role_type_id` = NULL));
+			
+			# Can See users in invited_by user Group
+			SET @group_id_see_users_invited_by = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 32 AND `role_type_id` = NULL));
 		
 	INSERT  INTO `user_group_map_temp`
 		(`user_id`
@@ -919,12 +1116,114 @@
 								, '\r\ - Is paid (#'
 								, @flag_is_paid
 								, ').'
+								
+								, '\r\r\We have attributed the component_id for that unit:'
+								, '\r\ - Tenant'
+								, ' role: component #'
+								, @component_id_tenant
+								, '\r\ - Landlord'
+								, ' role: component #'
+								, @component_id_landlord
+								, '\r\ - Agent'
+								, ' role: component #'
+								, @component_id_agent
+								, '\r\ - Contractor'
+								, ' role: component #'
+								, @component_id_contractor
+								, '\r\ - Management Company'
+								, ' role: component #'
+								, @component_id_mgt_cny
+								
+								, '\r\r\We have also created the groups that we will need for that unit:'
+								
+								
+								
+								, '\r\ - Restrict permission to '
+								, 'tenant'
+								, 'only. Group_id: '
+								, @group_id_show_to_tenant
+								, '\r\ - Group for the '
+								, 'tenant'
+								, 'only. Group_id: '
+								, @group_id_are_users_tenant
+								, '\r\ - Group to see the users'
+								, 'tenant'
+								, '. Group_id: '
+								, @group_id_see_users_tenant
+								
+								, '\r\ - Restrict permission to '
+								, 'landlord'
+								, 'only. Group_id: '
+								, @group_id_show_to_landlord
+								, '\r\ - Group for the '
+								, 'landlord'
+								, 'only. Group_id: '
+								, @group_id_are_users_landlord
+								, '\r\ - Group to see the users'
+								, 'landlord'
+								, '. Group_id: '
+								, @group_id_see_users_landlord
+								
+								, '\r\ - Restrict permission to '
+								, 'agent'
+								, 'only. Group_id: '
+								, @group_id_show_to_agent
+								, '\r\ - Group for the '
+								, 'agent'
+								, 'only. Group_id: '
+								, @group_id_are_users_agent
+								, '\r\ - Group to see the users'
+								, 'agent'
+								, '. Group_id: '
+								, @group_id_see_users_agent
+								
+								, '\r\ - Restrict permission to '
+								, 'Contractor'
+								, 'only. Group_id: '
+								, @group_id_show_to_contractor
+								, '\r\ - Group for the '
+								, 'Contractor'
+								, 'only. Group_id: '
+								, @group_id_are_users_contractor
+								, '\r\ - Group to see the users'
+								, 'Contractor'
+								, '. Group_id: '
+								, @group_id_see_users_contractor
+								
+								, '\r\ - Restrict permission to '
+								, 'Management Company'
+								, 'only. Group_id: '
+								, @group_id_show_to_mgt_cny
+								, '\r\ - Group for the '
+								, 'Management Company'
+								, 'only. Group_id: '
+								, @group_id_are_users_mgt_cny
+								, '\r\ - Group to see the users'
+								, 'Management Company'
+								, '. Group_id: '
+								, @group_id_see_users_mgt_cny
+								
+								, '\r\ - Restrict permission to '
+								, 'occupant'
+								, 'only. Group_id: '
+								, @group_id_show_to_occupant
+								, '\r\ - Group for the '
+								, 'occupant'
+								, 'only. Group_id: '
+								, @group_id_are_users_occupant
+								, '\r\ - Group to see the users'
+								, 'occupant'
+								, '. Group_id: '
+								, @group_id_see_users_occupant
+								
+								
 								, '\r\r\The bz user #'
 								, @creator_bz_id
 								, ' (real name: '
 								, @creator_pub_name
 								, ') '
 								, 'is the CREATOR of that unit.'
+								
 								, '\r\r\The first role created for that unit was: '
 								, @role_user_g_description
 								, ' (role_type_id #'
@@ -963,9 +1262,7 @@
 								, @group_id_are_users_invited_by
 								, '\r\   - Can grant privileges to see the users who have been invited by the creator (him/herself). Group id #'
 								, @group_id_are_users_invited_by
-								
-								
-								
+
 								, '\r\ - Permissions on units and cases for the CREATOR:'
 								, '\r\   - CAN create new cases for the unit. Group id #'
 								, @create_case_group_id
@@ -991,7 +1288,6 @@
 								, @unit_creator_group_id
 								, '\r\   - Can see the users who have been invited by the creator (him/herself). Group id #'
 								, @group_id_are_users_invited_by
-								
 								
 								, '\r\r\We also created the following permissions for the INVITED user:'
 								, '\r\ - Permissions to invite other users:'
@@ -1030,9 +1326,6 @@
 								, ' for this unit. Group id #'
 								, @group_id_see_users_same_role
 
-								
-								
-								
 								, '\r\ - Permissions on units and cases for the INVITED user:'
 								, '\r\   - CAN create new cases for the unit. Group id #'
 								, @create_case_group_id
