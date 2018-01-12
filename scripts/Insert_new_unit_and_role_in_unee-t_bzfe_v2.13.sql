@@ -65,7 +65,7 @@
 	SET @classification_id = 3;
 	
 	# The name and description
-	SET @unit_name = 'A Test Unit - SMBW 4';
+	SET @unit_name = 'A Test Unit - SMBW 5';
 	SET @unit_description = 'Description of the unit. lorem ipsum dolorem';
 
 # The user associated to the unit.	
@@ -866,10 +866,10 @@
 		
 		# For the people invited by this user:
 			# Is in invited_by user Group
-			SET @group_id_are_users_invited_by = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 31 AND `role_type_id` = NULL));
+			SET @group_id_are_users_invited_by = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 31));
 			
 			# Can See users in invited_by user Group
-			SET @group_id_see_users_invited_by = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 32 AND `role_type_id` = NULL));
+			SET @group_id_see_users_invited_by = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 32));
 		
 	INSERT  INTO `user_group_map_temp`
 		(`user_id`
