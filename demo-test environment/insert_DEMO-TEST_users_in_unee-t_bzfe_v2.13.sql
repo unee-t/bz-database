@@ -439,7 +439,7 @@ DELIMITER $$
 
 			SET @script_log_message = CONCAT('We have just finished loop #'
 									, number_of_loops_user
-									, ' .'
+									, ' for user creation.'
 									);
 			
 			INSERT INTO `ut_script_log`
@@ -2652,27 +2652,27 @@ DELIMITER $$
 		# Tenant (1)
 		(@product_id,@component_id_tenant,@group_id_show_to_tenant,2,1,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id_tenant,@group_id_are_users_tenant,22,1,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id_tenant,@group_id_see_users_tenant,5,1,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_tenant,@group_id_see_users_tenant,37,1,@creator_bz_id,@timestamp)
 		# Landlord (2)
 		,(@product_id,@component_id_landlord,@group_id_show_to_landlord,2,2,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id_landlord,@group_id_are_users_landlord,22,2,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id_landlord,@group_id_see_users_landlord,5,2,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_landlord,@group_id_see_users_landlord,37,2,@creator_bz_id,@timestamp)
 		# Agent (5)
 		,(@product_id,@component_id_agent,@group_id_show_to_agent,2,5,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id_agent,@group_id_are_users_agent,22,5,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id_agent,@group_id_see_users_agent,5,5,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_agent,@group_id_see_users_agent,37,5,@creator_bz_id,@timestamp)
 		# contractor (3)
 		,(@product_id,@component_id_contractor,@group_id_show_to_contractor,2,3,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id_contractor,@group_id_are_users_contractor,22,3,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id_contractor,@group_id_see_users_contractor,5,3,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_contractor,@group_id_see_users_contractor,37,3,@creator_bz_id,@timestamp)
 		# mgt_cny (4)
 		,(@product_id,@component_id_mgt_cny,@group_id_show_to_mgt_cny,2,4,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id_mgt_cny,@group_id_are_users_mgt_cny,22,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id_mgt_cny,@group_id_see_users_mgt_cny,5,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_mgt_cny,@group_id_see_users_mgt_cny,37,4,@creator_bz_id,@timestamp)
 		# occupant (#)
-		,(@product_id,NULL,@group_id_show_to_occupant,2,NULL,@creator_bz_id,@timestamp)
-		,(@product_id,NULL,@group_id_are_users_occupant,22,NULL,@creator_bz_id,@timestamp)
-		,(@product_id,NULL,@group_id_see_users_occupant,3,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_show_to_occupant,24,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_are_users_occupant,3,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_see_users_occupant,36,NULL,@creator_bz_id,@timestamp)
 		# invited_by
 		,(@product_id,NULL,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,NULL,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
@@ -4116,19 +4116,19 @@ DELIMITER $$
 		# Landlord (2)
 		(@product_id,@component_id,@group_id_show_to_landlord,2,2,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_are_users_landlord,22,2,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_landlord,5,2,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_landlord,37,2,@creator_bz_id,@timestamp)
 		# Agent (5)
 		,(@product_id,@component_id,@group_id_show_to_agent,2,5,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_are_users_agent,22,5,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_agent,5,5,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_agent,37,5,@creator_bz_id,@timestamp)
 		# contractor (3)
 		,(@product_id,@component_id,@group_id_show_to_contractor,2,3,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_are_users_contractor,22,3,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_contractor,5,3,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_contractor,37,3,@creator_bz_id,@timestamp)
 		# mgt_cny (4)
 		,(@product_id,@component_id,@group_id_show_to_mgt_cny,2,4,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_are_users_mgt_cny,22,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_mgt_cny,5,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_mgt_cny,37,4,@creator_bz_id,@timestamp)
 		# invited_by
 		,(@product_id,@component_id,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
