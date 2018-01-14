@@ -22,8 +22,6 @@
 #	  We will have a different script for that
 #	- DO NOT USE if the role DOES NOT exists in the BZ database
 #	  We will have a different script for that
-#	- DO NOT USE if the user is also an occupant of the unit
-#	  We will have a different script for that
 #
 #
 #################################################################
