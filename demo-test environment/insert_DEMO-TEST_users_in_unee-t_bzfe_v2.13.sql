@@ -9,26 +9,26 @@
 # How many users do you want to create
 # 2 will create 2*12 users
 # n will create n*12 users
-SET @iteration_number_of_users = 2;
+SET @iteration_number_of_users = 1;
 
 # How many product/unit you want to create for each user
 # 2 iteration of users and 10 units per user will create 2 * 12 * 10 = 240 units
 # n iteration of users and N units per user will create n * 12 * N units
-SET @number_of_units_per_user = 10;
+SET @number_of_units_per_user = 1;
 
 ##################################################################
 #								 #
-# THE SCRITP NOW HAS EVERYTHING IT NEEDS, RUN IT TO CREATE       #
+# THE SCRIPT NOW HAS EVERYTHING IT NEEDS, RUN IT TO CREATE       #
 # 	- Users                                                  #
 #	- Units                                                  #
 #								 #
 ##################################################################
 
 #
-# This script Creates demo users in the Unee-T BZFE database v2.11
+# This script Creates demo users in the Unee-T BZFE database
 #
 # Pre requisite:
-#	- BZFE database v2.11 for Unee-T has been created
+#	- BZFE database v2.13 for Unee-T has been created
 #
 
 #	IMPORTANT NOTE: users are created in batch of 12 users so we can have various profiles.
@@ -49,6 +49,9 @@ SET @number_of_units_per_classification = 25;
 #
 ################
 
+# Info about this script
+	SET @script = 'insert_DEMO-TEST_users_in_unee-t_bzfe_v2.13.sql';
+
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
@@ -57,7 +60,6 @@ SET @number_of_units_per_classification = 25;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
 
 # Insert the initial demo users
 	
@@ -92,6 +94,24 @@ SET @number_of_units_per_classification = 25;
 			(12,'anabelle@example.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
 			(13,'management.co@example.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
 
+		# Log the actions of the script.
+
+			SET @script_log_message = CONCAT('A new batch of #'
+									, (@iteration_number_of_users * 12)
+									, ' users has been created.'
+									);
+			
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(NOW(), @script, @script_log_message)
+				;
+			
+			SET @script_log_message = NULL;
+
 		# We record the information about the users that we have just created
 		
 			INSERT INTO `ut_map_user_unit_details`
@@ -118,6 +138,24 @@ SET @number_of_units_per_classification = 25;
 			,(NOW(), 1, 13, 13, 'Management Co', 'Created as a demo user with demo user creation script')
 			;
 			
+		# Log the actions of the script.
+
+			SET @script_log_message = CONCAT('Information about the user have been recorded'
+									, ' in the table'
+									, ' ut_map_user_unit_details'
+									);
+			
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(NOW(), @script, @script_log_message)
+				;
+			
+			SET @script_log_message = NULL;
+
 			
 	# For the demo we make sure that all the additional users (administrator already exist) can:
 	#	- See all the time tracking information (group id 16)
@@ -125,7 +163,7 @@ SET @number_of_units_per_classification = 25;
 	#	- tag comments (group id 18)
 	
 	/* We cleanup the user_group_map table */
-	TRUNCATE `user_group_map`;	
+	TRUNCATE `user_group_map`;
 
 	/*Data for the table `user_group_map` */
 	INSERT  INTO `user_group_map`
@@ -137,51 +175,106 @@ SET @number_of_units_per_classification = 25;
 		VALUES 
 		(1,1,0,0);
 	
-	/* */
-			INSERT  INTO `user_group_map`
-			(`user_id`
-			,`group_id`
-			,`isbless`
-			,`grant_type`
-			) 
-			VALUES 
-				(2,16,0,0),
-				(2,17,0,0),
-				(2,18,0,0),
-				(3,16,0,0),
-				(3,17,0,0),
-				(3,18,0,0),
-				(4,16,0,0),
-				(4,17,0,0),
-				(4,18,0,0),
-				(5,16,0,0),
-				(5,17,0,0),
-				(5,18,0,0),
-				(6,16,0,0),
-				(6,17,0,0),
-				(6,18,0,0),
-				(7,16,0,0),
-				(7,17,0,0),
-				(7,18,0,0),
-				(8,16,0,0),
-				(8,17,0,0),
-				(8,18,0,0),
-				(9,16,0,0),
-				(9,17,0,0),
-				(9,18,0,0),
-				(10,16,0,0),
-				(10,17,0,0),
-				(10,18,0,0),
-				(11,16,0,0),
-				(11,17,0,0),
-				(11,18,0,0),
-				(12,16,0,0),
-				(12,17,0,0),
-				(12,18,0,0),
-				(13,16,0,0),
-				(13,17,0,0),
-				(13,18,0,0);
-			
+	# More user group map permission
+	INSERT  INTO `user_group_map`
+		(`user_id`
+		,`group_id`
+		,`isbless`
+		,`grant_type`
+		) 
+		VALUES 
+		(2,16,0,0),
+		(2,17,0,0),
+		(2,18,0,0),
+		(3,16,0,0),
+		(3,17,0,0),
+		(3,18,0,0),
+		(4,16,0,0),
+		(4,17,0,0),
+		(4,18,0,0),
+		(5,16,0,0),
+		(5,17,0,0),
+		(5,18,0,0),
+		(6,16,0,0),
+		(6,17,0,0),
+		(6,18,0,0),
+		(7,16,0,0),
+		(7,17,0,0),
+		(7,18,0,0),
+		(8,16,0,0),
+		(8,17,0,0),
+		(8,18,0,0),
+		(9,16,0,0),
+		(9,17,0,0),
+		(9,18,0,0),
+		(10,16,0,0),
+		(10,17,0,0),
+		(10,18,0,0),
+		(11,16,0,0),
+		(11,17,0,0),
+		(11,18,0,0),
+		(12,16,0,0),
+		(12,17,0,0),
+		(12,18,0,0),
+		(13,16,0,0),
+		(13,17,0,0),
+		(13,18,0,0);
+
+
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' user_group_map'
+								, ' has been re-initialized.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
+
+# For the user_group_map_we use a temp table to avoid duplicates		
+# DELETE the temp table for user_group_map if it exists
+	DROP TABLE IF EXISTS `user_group_map_temp`;
+		
+	# Re-create the temp table
+	CREATE TABLE `user_group_map_temp` (
+	  `user_id` MEDIUMINT(9) NOT NULL,
+	  `group_id` MEDIUMINT(9) NOT NULL,
+	  `isbless` TINYINT(4) NOT NULL DEFAULT '0',
+	  `grant_type` TINYINT(4) NOT NULL DEFAULT '0'
+	) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+/*
+	# Add the records that exist in the table user_group_map
+	INSERT INTO `user_group_map_temp`
+		SELECT *
+		FROM `user_group_map`;
+*/
+
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' user_group_map_temp'
+								, ' has been created and NO initial data entered.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
 			
 # We insert more users based on the variable entered by the user:
 DELIMITER $$
@@ -342,6 +435,25 @@ DELIMITER $$
 			,(NOW(), 1, @user_13_id, @user_13_id, @user_13_real_name, 'Created as a demo user with demo user creation script')
 			;
 
+		# Log the actions of the script.
+
+			SET @script_log_message = CONCAT('We have just finished loop #'
+									, number_of_loops_user
+									, ' for user creation.'
+									);
+			
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(NOW(), @script, @script_log_message)
+				;
+			
+			SET @script_log_message = NULL;
+		
+		# Increment the number of loops
 			SET number_of_loops_user = (number_of_loops_user + 1);
 		END WHILE;
 	END$$
@@ -356,6 +468,24 @@ DROP PROCEDURE IF EXISTS insert_users;
 	INSERT  INTO `classifications`(`id`,`name`,`description`,`sortkey`) VALUES 
 	(1,'Test Units','These are TEST units that you have created or where I have been invited',0),
 	(2,'My Units','These are the units that you have created or where I have been invited',0);
+
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' classifications'
+								, ' has been reset and initial data entered.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
 
 /* FOR NOW, WE WILL CREATE ALL THE NEW PRODUCTS IN THE 'Test Units' Classification.*/
 # AS WE DEVELOP THE SCRIPT WE WILL CHANGE THAT TO CREATE A CLASSIFICATION EACH TIME WE CREATE A GROUP OF
@@ -408,17 +538,71 @@ DROP PROCEDURE IF EXISTS insert_classification;
 		INSERT  INTO `products`(`id`,`name`,`classification_id`,`description`,`isactive`,`defaultmilestone`,`allows_unconfirmed`) VALUES 
 		(1,'Test Unit 1 A',1,'Demo unit 1.\r\nThis unit is located at:\r\nProperty A address. \r\nWe can add a few comment about the unit if needed.',1,'---',1);
 
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' products'
+								, ' has been reset and initial data entered.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
+
 	/*Data for the table `milestones` */
 		TRUNCATE TABLE `milestones`;
 
 		INSERT  INTO `milestones`(`id`,`product_id`,`value`,`sortkey`,`isactive`) VALUES 
 		(1,1,'---',0,1);
 
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' milestones'
+								, ' has been reset and initial data entered.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
+
 	/*Data for the table `versions` */
 		TRUNCATE TABLE `versions`;
 
 		INSERT  INTO `versions`(`id`,`value`,`product_id`,`isactive`) VALUES 
 		(1,'---',1,1);
+
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' versions'
+								, ' has been reset and initial data entered.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
 
 	/*Data for the table `flagtypes` */
 		TRUNCATE TABLE `flagtypes`;
@@ -446,7 +630,24 @@ DROP PROCEDURE IF EXISTS insert_classification;
 			,(5,'Test_Unit_1_A_P1_OK_to_pay','Approval to pay this bill.','','a',1,1,1,1,20,27,28)
 			,(6,'Test_Unit_1_A_P1_is_paid','Confirm if this bill has been paid.','','a',1,1,1,1,30,29,30)
 			;
+
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' flagtypes'
+								, ' has been reset and initial data entered.'
+								);
 		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;		
 
 	/*Data for the table `flaginclusions` */
 		TRUNCATE TABLE `flaginclusions`;
@@ -459,11 +660,28 @@ DROP PROCEDURE IF EXISTS insert_classification;
 		(5,1,NULL),
 		(6,1,NULL);
 
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' flaginclusions'
+								, ' has been reset and initial data entered.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;		
 
 	/*Data for the table `group_group_map` */
 		TRUNCATE TABLE `group_group_map`;
 
-		insert  into `group_group_map`(`member_id`,`grantor_id`,`grant_type`) values 
+		INSERT  INTO `group_group_map`(`member_id`,`grantor_id`,`grant_type`) VALUES 
 		(1,1,0),
 		(1,1,1),
 		(1,1,2),
@@ -565,13 +783,30 @@ DROP PROCEDURE IF EXISTS insert_classification;
 		(31,29,0),
 		(31,30,0);
 
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('The table'
+								, ' group_group_map'
+								, ' has been reset and initial data entered.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;	
+
 	/*Table structure for table `groups` */
 		TRUNCATE `groups`;	
 
 
 	/*Data for the table `groups` */
 
-		insert  into `groups`(`id`,`name`,`description`,`isbuggroup`,`userregexp`,`isactive`,`icon_url`) values 
+		INSERT  INTO `groups`(`id`,`name`,`description`,`isbuggroup`,`userregexp`,`isactive`,`icon_url`) VALUES 
 		(1,'admin','Administrators',0,'',1,NULL),
 		(2,'tweakparams','Can change Parameters',0,'',1,NULL),
 		(3,'editusers','Can edit or disable users',0,'',1,NULL),
@@ -605,9 +840,62 @@ DROP PROCEDURE IF EXISTS insert_classification;
 		(31,'Test Unit 1 A #1-All permissions','Access to All the groups a stakeholder needs for this unit',1,'',0,NULL);
 
 
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('The table'
+								, ' groups'
+								, ' has been reset and initial data entered.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;	
+
 	TRUNCATE TABLE `ut_product_group`;
+	
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' ut_product_group'
+								, ' has been truncated - no info for product_id #1.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
+	
 	TRUNCATE TABLE `group_control_map`;
 
+	# Log the actions of the script.
+
+		SET @script_log_message = CONCAT('The table'
+								, ' group_control_map'
+								, ' has been truncated - no info for product_id #1.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;	
 		
 	# We insert the products we need	
 	SET @number_of_units = (@number_of_units_per_user * @iteration_number_of_users * 12);
@@ -621,8 +909,46 @@ DELIMITER $$
 		# We have already created a TEST product 1, we add demo units on top of that one
 		WHILE loops_products <= (@number_of_units + 1) DO
 			SET FOREIGN_KEY_CHECKS = 0;
-			SET @product_id = loops_products;
+			SET @product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
+			SET @milestones = ((SELECT MAX(`id`) FROM `milestones`) + 1);
+			SET @versions = ((SELECT MAX(`id`) FROM `versions`) + 1);
+			SET @create_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+			SET @can_edit_case_group_id = (@create_case_group_id + 1);
+			SET @can_edit_all_field_case_group_id = (@can_edit_case_group_id + 1);
+			SET @can_edit_component_group_id = (@can_edit_all_field_case_group_id + 1);
+			SET @can_see_cases_group_id = (@can_edit_component_group_id + 1);
+			SET @all_g_flags_group_id = (@can_see_cases_group_id + 1);
+			SET @all_r_flags_group_id = (@all_g_flags_group_id + 1);
+			SET @list_visible_assignees_group_id = (@all_r_flags_group_id + 1);
+			SET @see_visible_assignees_group_id = (@list_visible_assignees_group_id + 1);
+			SET @unit_creator_group_id = (@see_visible_assignees_group_id + 1);
+#			SET @active_stakeholder_group_id = (@unit_creator_group_id + 1);
 
+##################
+# We minimize the number of group we create until we have a workaround for the login perf:
+#	There will be only 1 group for flag approver and flag requester				
+#			SET @g_group_next_step = (@active_stakeholder_group_id+1);
+#			SET @r_group_next_step = (@g_group_next_step+1);
+#			SET @g_group_solution = (@r_group_next_step+1);
+#			SET @r_group_solution = (@g_group_solution+1);
+#			SET @g_group_budget = (@r_group_solution+1);
+#			SET @r_group_budget = (@g_group_budget+1);
+#			SET @g_group_attachment = (@r_group_budget+1);
+#			SET @r_group_attachment = (@g_group_attachment+1);
+#			SET @g_group_OK_to_pay = (@r_group_attachment+1);
+#			SET @r_group_OK_to_pay = (@g_group_OK_to_pay+1);
+#			SET @g_group_is_paid = (@r_group_OK_to_pay+1);
+#			SET @r_group_is_paid = (@g_group_is_paid+1);
+######################
+			
+			# We need to have ids for the flagtypes we will create
+			SET @flag_next_step = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+			SET @flag_solution = (@flag_next_step+1);
+			SET @flag_budget = (@flag_solution+1);
+			SET @flag_attachment = (@flag_budget+1);
+			SET @flag_ok_to_pay = (@flag_attachment+1);
+			SET @flag_is_paid = (@flag_ok_to_pay+1);
+			
 			# Each user will be associated to a product.
 			
 			# How many possible demo user do we have?
@@ -670,9 +996,11 @@ DELIMITER $$
 				SET @unit_for_flag = REPLACE(@unit_for_flag,'?','_');
 				SET @unit_for_flag = REPLACE(@unit_for_flag,'/','_');
 				SET @unit_for_flag = REPLACE(@unit_for_flag,'\\','_');
+				SET @unit_for_group = REPLACE(@unit_for_flag,'_','-');
 				SET @unit_description = CONCAT('The description for Unit #',@product_id);
 				SET @default_milestone = '---';
 				SET @timestamp = NOW();
+				
 				INSERT INTO `products`
 					(`id`
 					,`name`
@@ -683,8 +1011,27 @@ DELIMITER $$
 					,`allows_unconfirmed`
 					)
 					VALUES
-					(NULL,@unit,@classification_id,@unit_description,1,@default_milestone,1);
-#				SET @product_id = LAST_INSERT_ID();
+					(@product_id,@unit,@classification_id,@unit_description,1,@default_milestone,1);
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted product #'
+											, @product_id
+											, ' in the table'
+											, ' products'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;	
+					
 				INSERT INTO `milestones`
 					(`id`
 					,`product_id`
@@ -693,7 +1040,30 @@ DELIMITER $$
 					,`isactive`
 					)
 					VALUES
-					(NULL,@product_id,@default_milestone,0,1);
+					(@milestones, @product_id, @default_milestone,0,1);
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted milestones #'
+											, @milestones
+											, ' in the table'
+											, ' milestones'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;	
+					
 				INSERT INTO `versions`
 					(`id`
 					,`value`
@@ -701,7 +1071,29 @@ DELIMITER $$
 					,`isactive`
 					)
 					VALUES
-					(NULL,@default_milestone,@product_id,1);
+					(@versions,@default_milestone,@product_id,1);
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted versions #'
+											, @versions
+											, ' in the table'
+											, ' versions'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;	
 
 				INSERT  INTO `groups`
 					(`id`
@@ -713,36 +1105,31 @@ DELIMITER $$
 					,`icon_url`
 					) 
 					VALUES 
-					(NULL,CONCAT(@unit,'-Can Create Cases'),'User can create cases for this unit.',1,'',1,NULL);
-				SET @create_case_group_id = LAST_INSERT_ID();
-				SET @can_edit_case_group_id = (@create_case_group_id+1);
-				SET @can_edit_all_field_case_group_id = (@can_edit_case_group_id+1);
-				SET @can_edit_component_group_id = (@can_edit_all_field_case_group_id+1);
-				SET @can_see_cases_group_id = (@can_edit_component_group_id+1);
-				SET @all_g_flags_group_id = (@can_see_cases_group_id+1);
-				SET @all_r_flags_group_id = (@all_g_flags_group_id+1);
-				SET @list_visible_assignees_group_id = (@all_r_flags_group_id+1);
-				SET @see_visible_assignees_group_id = (@list_visible_assignees_group_id+1);
-				SET @active_stakeholder_group_id = (@see_visible_assignees_group_id+1);
-				SET @unit_creator_group_id = (@active_stakeholder_group_id+1)
-				;
-##################
-# We minimize the number of group we create until we have a workaround for the login perf:
-#	There will be only 1 group for flag approver and flag requester				
-#				SET @g_group_next_step = (@active_stakeholder_group_id+1);
-#				SET @r_group_next_step = (@g_group_next_step+1);
-#				SET @g_group_solution = (@r_group_next_step+1);
-#				SET @r_group_solution = (@g_group_solution+1);
-#				SET @g_group_budget = (@r_group_solution+1);
-#				SET @r_group_budget = (@g_group_budget+1);
-#				SET @g_group_attachment = (@r_group_budget+1);
-#				SET @r_group_attachment = (@g_group_attachment+1);
-#				SET @g_group_OK_to_pay = (@r_group_attachment+1);
-#				SET @r_group_OK_to_pay = (@g_group_OK_to_pay+1);
-#				SET @g_group_is_paid = (@r_group_OK_to_pay+1);
-#				SET @r_group_is_paid = (@g_group_is_paid+1);
-######################
+					(@create_case_group_id,CONCAT(@unit,'-Can Create Cases'),'User can create cases for this unit.',1,'',1,NULL)
+					;
 
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @create_case_group_id
+											, ' a create_case_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;	
 
 				INSERT  INTO `groups`
 					(`id`
@@ -754,31 +1141,334 @@ DELIMITER $$
 					,`icon_url`
 					) 
 					VALUES 
-					(@can_edit_case_group_id,CONCAT(@unit,'-Can edit'),'user in this can edit a case they have access to',1,'',1,NULL),
-					(@can_edit_all_field_case_group_id,CONCAT(@unit,'-Can edit all fields'),'user in this can edit all fields in a case they have access to, regardless of its role',1,'',1,NULL),
-					(@can_edit_component_group_id,CONCAT(@unit,'-Can edit components'),'user in this can edit components/stakholders and permission for the unit',1,'',1,NULL),
-					(@can_see_cases_group_id,CONCAT(@unit,'-Visible to all'),'All users in this unit can see this case for the unit',1,'',1,NULL),
-					(@all_g_flags_group_id,CONCAT(@unit,'-Can approve all flags'),'user in this group are allowed to approve all flags',0,'',1,NULL),
-					(@all_r_flags_group_id,CONCAT(@unit,'-Can be asked to approve all flags'),'user in this group are visible in the list of flag approver',0,'',1,NULL),
-					(@list_visible_assignees_group_id,CONCAT(@unit,'-List stakeholder'),'List all the users which are visible assignee(s) for this unit',0,'',1,NULL),
-					(@see_visible_assignees_group_id,CONCAT(@unit,'-See stakeholder'),'Can see all the users which are stakeholders for this unit',0,'',1,NULL),
-					(@active_stakeholder_group_id,CONCAT(@unit,'-Active stakeholder'),'For users who have a role in this unit as of today',1,'',1,NULL),
-					(@unit_creator_group_id,CONCAT(@unit,'-Unit Creators'),'This is the group for the unit creator',0,'',1,NULL);
+					(@can_edit_case_group_id,CONCAT(@unit_for_group,'-Can edit'),'user in this can edit a case they have access to',1,'',1,NULL)
+					;
 
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @can_edit_case_group_id
+											, ' a can_edit_case_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;
+
+				INSERT  INTO `groups`
+					(`id`
+					,`name`
+					,`description`
+					,`isbuggroup`
+					,`userregexp`
+					,`isactive`
+					,`icon_url`
+					) 
+					VALUES 
+					(@can_edit_all_field_case_group_id,CONCAT(@unit_for_group,'-Can edit all fields'),'user in this can edit all fields in a case they have access to, regardless of its role',1,'',1,NULL)
+					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @can_edit_all_field_case_group_id
+											, ' a can_edit_all_field_case_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;
+
+				INSERT  INTO `groups`
+					(`id`
+					,`name`
+					,`description`
+					,`isbuggroup`
+					,`userregexp`
+					,`isactive`
+					,`icon_url`
+					) 
+					VALUES 
+					(@can_edit_component_group_id,CONCAT(@unit_for_group,'-Can edit components'),'user in this can edit components/stakholders and permission for the unit',1,'',1,NULL)
+					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @can_edit_component_group_id
+											, ' a can_edit_component_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;
+
+				INSERT  INTO `groups`
+					(`id`
+					,`name`
+					,`description`
+					,`isbuggroup`
+					,`userregexp`
+					,`isactive`
+					,`icon_url`
+					) 
+					VALUES 
+					(@can_see_cases_group_id,CONCAT(@unit_for_group,'-Visible to all'),'All users in this unit can see this case for the unit',1,'',1,NULL)
+					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @can_see_cases_group_id
+											, ' a can_see_cases_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;					
+
+				INSERT  INTO `groups`
+					(`id`
+					,`name`
+					,`description`
+					,`isbuggroup`
+					,`userregexp`
+					,`isactive`
+					,`icon_url`
+					) 
+					VALUES 
+					(@all_g_flags_group_id,CONCAT(@unit_for_group,'-Can approve all flags'),'user in this group are allowed to approve all flags',0,'',1,NULL)
+					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @all_g_flags_group_id
+											, ' a all_g_flags_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;					
+
+				INSERT  INTO `groups`
+					(`id`
+					,`name`
+					,`description`
+					,`isbuggroup`
+					,`userregexp`
+					,`isactive`
+					,`icon_url`
+					) 
+					VALUES 
+					(@all_r_flags_group_id,CONCAT(@unit_for_group,'-Can be asked to approve all flags'),'user in this group are visible in the list of flag approver',0,'',1,NULL)
+					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @all_r_flags_group_id
+											, ' a all_r_flags_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;					
+
+				INSERT  INTO `groups`
+					(`id`
+					,`name`
+					,`description`
+					,`isbuggroup`
+					,`userregexp`
+					,`isactive`
+					,`icon_url`
+					) 
+					VALUES 
+					(@list_visible_assignees_group_id,CONCAT(@unit_for_group,'-List stakeholder'),'List all the users which are visible assignee(s) for this unit',0,'',1,NULL)
+					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @list_visible_assignees_group_id
+											, ' a list_visible_assignees_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;							
+
+				INSERT  INTO `groups`
+					(`id`
+					,`name`
+					,`description`
+					,`isbuggroup`
+					,`userregexp`
+					,`isactive`
+					,`icon_url`
+					) 
+					VALUES 
+					(@see_visible_assignees_group_id,CONCAT(@unit_for_group,'-See stakeholder'),'Can see all the users which are stakeholders for this unit',0,'',1,NULL)
+					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @see_visible_assignees_group_id
+											, ' a see_visible_assignees_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;						
+
+				INSERT  INTO `groups`
+					(`id`
+					,`name`
+					,`description`
+					,`isbuggroup`
+					,`userregexp`
+					,`isactive`
+					,`icon_url`
+					) 
+					VALUES 
+					(@unit_creator_group_id,CONCAT(@unit_for_group,'-Unit Creators'),'This is the group for the unit creator',0,'',1,NULL)
+					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('We have inserted group #'
+											, @unit_creator_group_id
+											, ' a unit_creator_group'
+											, ' in the table'
+											, ' groups'
+											, ' for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;					
+					
 ##################
 # Once we fix the login performance issue, we will be able to re-create these groups.
-#					(@g_group_next_step,CONCAT(@unit,'-GA Next Step'),'Grant approval for the Next step in a case',0,'',1,NULL),
-#					(@r_group_next_step,CONCAT(@unit,'-RA Next Step'),'Request approval for the Next step in a case',0,'',1,NULL),
-#					(@g_group_solution,CONCAT(@unit,'-GA Solution'),'Grant approval for the Solution in a case',0,'',1,NULL),
-#					(@r_group_solution,CONCAT(@unit,'-RA Solution'),'Request approval for the Solution in a case',0,'',1,NULL),
-#					(@g_group_budget,CONCAT(@unit,'-GA Budget'),'Grant approval for the Budget in a case',0,'',1,NULL),
-#					(@r_group_budget,CONCAT(@unit,'-RA Budget'),'Request approval for the Budget in a case',0,'',1,NULL),
-#					(@g_group_attachment,CONCAT(@unit,'-GA Attachment'),'Grant approval for an Attachment in a case',0,'',1,NULL),
-#					(@r_group_attachment,CONCAT(@unit,'-RA Attachment'),'Request approval for an Attachment in a case',0,'',1,NULL),
-#					(@g_group_OK_to_pay,CONCAT(@unit,'-GA OK to Pay'),'Grant approval to pay (for a bill/attachment)',0,'',1,NULL),
-#					(@r_group_OK_to_pay,CONCAT(@unit,'-RA OK to Pay'),'Request approval to pay (for a bill/attachment)',0,'',1,NULL),
-#					(@g_group_is_paid,CONCAT(@unit,'-GA is Paid'),'Confirm that it\'s paid (for a bill/attachment)',0,'',1,NULL),
-#					(@r_group_is_paid,CONCAT(@unit,'-RA is Paid'),'Ask if it\'s paid (for a bill/attachment)',0,'',1,NULL),
+#					(@g_group_next_step,CONCAT(@unit_for_group,'-GA Next Step'),'Grant approval for the Next step in a case',0,'',1,NULL),
+#					(@r_group_next_step,CONCAT(@unit_for_group,'-RA Next Step'),'Request approval for the Next step in a case',0,'',1,NULL),
+#					(@g_group_solution,CONCAT(@unit_for_group,'-GA Solution'),'Grant approval for the Solution in a case',0,'',1,NULL),
+#					(@r_group_solution,CONCAT(@unit_for_group,'-RA Solution'),'Request approval for the Solution in a case',0,'',1,NULL),
+#					(@g_group_budget,CONCAT(@unit_for_group,'-GA Budget'),'Grant approval for the Budget in a case',0,'',1,NULL),
+#					(@r_group_budget,CONCAT(@unit_for_group,'-RA Budget'),'Request approval for the Budget in a case',0,'',1,NULL),
+#					(@g_group_attachment,CONCAT(@unit_for_group,'-GA Attachment'),'Grant approval for an Attachment in a case',0,'',1,NULL),
+#					(@r_group_attachment,CONCAT(@unit_for_group,'-RA Attachment'),'Request approval for an Attachment in a case',0,'',1,NULL),
+#					(@g_group_OK_to_pay,CONCAT(@unit_for_group,'-GA OK to Pay'),'Grant approval to pay (for a bill/attachment)',0,'',1,NULL),
+#					(@r_group_OK_to_pay,CONCAT(@unit_for_group,'-RA OK to Pay'),'Request approval to pay (for a bill/attachment)',0,'',1,NULL),
+#					(@g_group_is_paid,CONCAT(@unit_for_group,'-GA is Paid'),'Confirm that it\'s paid (for a bill/attachment)',0,'',1,NULL),
+#					(@r_group_is_paid,CONCAT(@unit_for_group,'-RA is Paid'),'Ask if it\'s paid (for a bill/attachment)',0,'',1,NULL),
 #################
 				
 				SET @role_type_id = NULL;
@@ -803,7 +1493,7 @@ DELIMITER $$
 					(@product_id,NULL,@all_g_flags_group_id,19,@role_type_id,@creator_bz_id,@timestamp),
 					(@product_id,NULL,@list_visible_assignees_group_id,4,NULL,@creator_bz_id,@timestamp),
 					(@product_id,NULL,@see_visible_assignees_group_id,5,NULL,@creator_bz_id,@timestamp),
-					(@product_id,NULL,@active_stakeholder_group_id,29,NULL,@creator_bz_id,@timestamp),
+#					(@product_id,NULL,@active_stakeholder_group_id,29,NULL,@creator_bz_id,@timestamp),
 					(@product_id,NULL,@unit_creator_group_id,1,NULL,@creator_bz_id,@timestamp)
 					;
 ##################
@@ -821,6 +1511,27 @@ DELIMITER $$
 #					(@product_id,NULL,@g_group_OK_to_pay,15,@role_type_id,@creator_bz_id,@timestamp),
 #					(@product_id,NULL,@g_group_is_paid,17,@role_type_id,@creator_bz_id,@timestamp),
 #################
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('The Table'
+											, ' ut_product_group'
+											, ' has been updated for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;	
+
 				INSERT  INTO `group_group_map`
 					(`member_id`
 					,`grantor_id`
@@ -860,7 +1571,7 @@ DELIMITER $$
 					,(1,@all_r_flags_group_id,1)
 					,(1,@list_visible_assignees_group_id,1)
 					,(1,@see_visible_assignees_group_id,1)
-					,(1,@active_stakeholder_group_id,1)
+#					,(1,@active_stakeholder_group_id,1)
 					,(1,@unit_creator_group_id,1)
 					# Visibility groups:
 ##################
@@ -876,6 +1587,26 @@ DELIMITER $$
 					,(@see_visible_assignees_group_id,@list_visible_assignees_group_id,2)
 					,(@unit_creator_group_id,@unit_creator_group_id,2)
 					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('The Table'
+											, ' group_group_map'
+											, ' has been updated for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;	
 					
 				INSERT  INTO `group_control_map`
 					(`group_id`
@@ -896,6 +1627,26 @@ DELIMITER $$
 					,(@can_see_cases_group_id,@product_id,0,2,0,0,0,0,0)
 					;
 
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('The Table'
+											, ' group_control_map'
+											, ' has been updated for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;	
+					
 		# We update the table 'ut_map_user_unit_details'
 			UPDATE `ut_map_user_unit_details`
 			SET
@@ -911,11 +1662,31 @@ DELIMITER $$
 				, `comment` = CONCAT(`comment`, '\r\n The user is a creator for the Demo unit-', @product_id)
 			WHERE `bz_profile_id` = @creator_bz_id
 			;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('The Table'
+											, ' ut_map_user_unit_details'
+											, ' has been updated for product #'
+											, @product_id
+											, ' for the creator of the unit: bz user id:'
+											, @creator_bz_id
+											);
 					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;						
 		
 		# We prepare the permission for the user
 		
-				INSERT  INTO `ut_user_group_map_temp`
+				INSERT  INTO `user_group_map_temp`
 					(`user_id`
 					,`group_id`
 					,`isbless`
@@ -947,7 +1718,6 @@ DELIMITER $$
 					(@creator_bz_id,@all_r_flags_group_id,1,0),
 					(@creator_bz_id,@list_visible_assignees_group_id,1,0),
 					(@creator_bz_id,@see_visible_assignees_group_id,1,0),
-					(@creator_bz_id,@active_stakeholder_group_id,1,0),
 					(@creator_bz_id,@unit_creator_group_id,1,0),
 
 					# Creator (support.nobody@lmbhousing.com) is a member of the following groups:
@@ -975,8 +1745,28 @@ DELIMITER $$
 					(@creator_bz_id,@all_r_flags_group_id,0,0),
 					(@creator_bz_id,@list_visible_assignees_group_id,0,0),
 					(@creator_bz_id,@see_visible_assignees_group_id,0,0),
-					(@creator_bz_id,@active_stakeholder_group_id,0,0),
+#					(@creator_bz_id,@active_stakeholder_group_id,0,0),
 					(@creator_bz_id,@unit_creator_group_id,0,0);
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('The Table'
+											, ' user_group_map_temp'
+											, ' has been updated for product #'
+											, @product_id
+											, '.'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;
 					
 				INSERT INTO `flagtypes`
 					(`id`
@@ -993,35 +1783,53 @@ DELIMITER $$
 					,`request_group_id`
 					) 
 					VALUES 
-					(NULL,CONCAT('Next_Step_',@unit),'Approval for the Next Step of the case.','','b',1,1,1,1,10,@g_group_next_step,@r_group_next_step);
-				SET @flag_next_step = LAST_INSERT_ID();
-				SET @flag_solution = (@flag_next_step+1);
-				SET @flag_budget = (@flag_solution+1);
-				SET @flag_attachment = (@flag_budget+1);
-				SET @flag_ok_to_pay = (@flag_attachment+1);
-				SET @flag_is_paid = (@flag_ok_to_pay+1);
-
-				INSERT INTO `flagtypes`
-					(`id`
-					,`name`
-					,`description`
-					,`cc_list`
-					,`target_type`
-					,`is_active`
-					,`is_requestable`
-					,`is_requesteeble`
-					,`is_multiplicable`
-					,`sortkey`
-					,`grant_group_id`
-					,`request_group_id`
-					) 
-					VALUES 
-					(@flag_solution,CONCAT('Solution_',@unit),'Approval for the Solution of this case.','','b',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
-					,(@flag_budget,CONCAT('Budget_',@unit),'Approval for the Budget for this case.','','b',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
-					,(@flag_attachment,CONCAT('Attachment_',@unit),'Approval for this Attachment.','','a',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
-					,(@flag_ok_to_pay,CONCAT('OK_to_pay_',@unit),'Approval to pay this bill.','','a',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
-					,(@flag_is_paid,CONCAT('is_paid_',@unit),'Confirm if this bill has been paid.','','a',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
+					(@flag_next_step,CONCAT('Next_Step_',@unit_for_flag),'Approval for the Next Step of the case.','','b',1,1,1,1,10,@g_group_next_step,@r_group_next_step)
+					,(@flag_solution,CONCAT('Solution_',@unit_for_flag),'Approval for the Solution of this case.','','b',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
+					,(@flag_budget,CONCAT('Budget_',@unit_for_flag),'Approval for the Budget for this case.','','b',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
+					,(@flag_attachment,CONCAT('Attachment_',@unit_for_flag),'Approval for this Attachment.','','a',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
+					,(@flag_ok_to_pay,CONCAT('OK_to_pay_',@unit_for_flag),'Approval to pay this bill.','','a',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
+					,(@flag_is_paid,CONCAT('is_paid_',@unit_for_flag),'Confirm if this bill has been paid.','','a',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
 					;
+
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('The Table'
+											, ' flagtypes'
+											, ' has been updated for product #'
+											, @product_id
+											, '.'
+											, ' We have created the following flagtypes: /r/'
+											, '#'
+											, @flag_next_step
+											, ' Next Step. /r/'
+											, '#'
+											, @flag_solution
+											, ' Solution (case). /r/'
+											, '#'
+											, @flag_budget
+											, ' Budget (Case). /r/'
+											, '#'
+											, @flag_attachment
+											, ' Approve attachment. /r/'
+											, '#'
+											, @flag_ok_to_pay
+											, ' OK to Pay (Attachment). /r/'
+											, '#'
+											, @flag_is_paid
+											, ' Is Paid (Attachment).'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;
+
 				DELETE FROM `flaginclusions` WHERE `product_id` = @product_id;
 				INSERT INTO `flaginclusions`
 					(`type_id`
@@ -1037,6 +1845,45 @@ DELIMITER $$
 					,(@flag_is_paid,@product_id,NULL)
 					;
 
+				# Log the actions of the script.
+
+					SET @script_log_message = CONCAT('The Table'
+											, ' flaginclusions'
+											, ' has been updated for product #'
+											, @product_id
+											, '.'
+											, ' For the flagtypes: /r/'
+											, '#'
+											, @flag_next_step
+											, ' Next Step. /r/'
+											, '#'
+											, @flag_solution
+											, ' Solution (case). /r/'
+											, '#'
+											, @flag_budget
+											, ' Budget (Case). /r/'
+											, '#'
+											, @flag_attachment
+											, ' Approve attachment. /r/'
+											, '#'
+											, @flag_ok_to_pay
+											, ' OK to Pay (Attachment). /r/'
+											, '#'
+											, @flag_is_paid
+											, ' Is Paid (Attachment).'
+											);
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
+						;
+					
+					SET @script_log_message = NULL;
+					
 				INSERT  INTO `audit_log`
 					(`user_id`
 					,`class`
@@ -1047,32 +1894,32 @@ DELIMITER $$
 					,`at_time`
 					) 
 					VALUES 
-					(@bz_user_id,'Bugzilla::Group',@create_case_group_id,'__create__',NULL,CONCAT(@unit,'-Can Create Cases'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@can_edit_case_group_id,'__create__',NULL,CONCAT(@unit,'-Can edit'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@can_edit_all_field_case_group_id,'__create__',NULL,CONCAT(@unit,'-Can edit all fields'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@can_edit_component_group_id,'__create__',NULL,CONCAT(@unit,'-Can edit components'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@can_see_cases_group_id,'__create__',NULL,CONCAT(@unit,'-Visible to all'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@create_case_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can Create Cases'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@can_edit_case_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can edit'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@can_edit_all_field_case_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can edit all fields'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@can_edit_component_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can edit components'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@can_see_cases_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Visible to all'),@timestamp),
 ##################
 # Once we fix the login performance issue, we will be able to re-create these groups.
-#					(@bz_user_id,'Bugzilla::Group',@g_group_next_step,'__create__',NULL,CONCAT(@unit,'-GA Next Step'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@r_group_next_step,'__create__',NULL,CONCAT(@unit,'-RA Next Step'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@g_group_solution,'__create__',NULL,CONCAT(@unit,'-GA Solution'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@r_group_solution,'__create__',NULL,CONCAT(@unit,'-RA Solution'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@g_group_budget,'__create__',NULL,CONCAT(@unit,'-GA Budget'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@r_group_budget,'__create__',NULL,CONCAT(@unit,'-RA Budget'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@g_group_attachment,'__create__',NULL,CONCAT(@unit,'-GA Attachment'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@r_group_attachment,'__create__',NULL,CONCAT(@unit,'-RA Attachment'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@g_group_OK_to_pay,'__create__',NULL,CONCAT(@unit,'-GA OK to Pay'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@r_group_OK_to_pay,'__create__',NULL,CONCAT(@unit,'-RA OK to Pay'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@g_group_is_paid,'__create__',NULL,CONCAT(@unit,'-GA is Paid'),@timestamp),
-#					(@bz_user_id,'Bugzilla::Group',@r_group_is_paid,'__create__',NULL,CONCAT(@unit,'-RA is Paid'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@g_group_next_step,'__create__',NULL,CONCAT(@unit_for_group,'-GA Next Step'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@r_group_next_step,'__create__',NULL,CONCAT(@unit_for_group,'-RA Next Step'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@g_group_solution,'__create__',NULL,CONCAT(@unit_for_group,'-GA Solution'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@r_group_solution,'__create__',NULL,CONCAT(@unit_for_group,'-RA Solution'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@g_group_budget,'__create__',NULL,CONCAT(@unit_for_group,'-GA Budget'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@r_group_budget,'__create__',NULL,CONCAT(@unit_for_group,'-RA Budget'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@g_group_attachment,'__create__',NULL,CONCAT(@unit_for_group,'-GA Attachment'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@r_group_attachment,'__create__',NULL,CONCAT(@unit_for_group,'-RA Attachment'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@g_group_OK_to_pay,'__create__',NULL,CONCAT(@unit_for_group,'-GA OK to Pay'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@r_group_OK_to_pay,'__create__',NULL,CONCAT(@unit_for_group,'-RA OK to Pay'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@g_group_is_paid,'__create__',NULL,CONCAT(@unit_for_group,'-GA is Paid'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@r_group_is_paid,'__create__',NULL,CONCAT(@unit_for_group,'-RA is Paid'),@timestamp),
 ######################
-					(@bz_user_id,'Bugzilla::Group',@all_g_flags_group_id,'__create__',NULL,CONCAT(@unit,'-Can approve all flags'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@all_r_flags_group_id,'__create__',NULL,CONCAT(@unit,'-Can be asked to approve'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@list_visible_assignees_group_id,'__create__',NULL,CONCAT(@unit,'-list stakeholder(s)'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@see_visible_assignees_group_id,'__create__',NULL,CONCAT(@unit,'-see stakeholder(s)'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@active_stakeholder_group_id,'__create__',NULL,CONCAT(@unit,'-Active stakeholder'),@timestamp),
-					(@bz_user_id,'Bugzilla::Group',@unit_creator_group_id,'__create__',NULL,CONCAT(@unit,'-Unit Creators'),@timestamp);
+					(@bz_user_id,'Bugzilla::Group',@all_g_flags_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can approve all flags'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@all_r_flags_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can be asked to approve'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@list_visible_assignees_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-list stakeholder(s)'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@see_visible_assignees_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-see stakeholder(s)'),@timestamp),
+#					(@bz_user_id,'Bugzilla::Group',@active_stakeholder_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Active stakeholder'),@timestamp),
+					(@bz_user_id,'Bugzilla::Group',@unit_creator_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Unit Creators'),@timestamp);
 				
 		SET loops_products = (loops_products + 1);
 		SET FOREIGN_KEY_CHECKS = 1;
@@ -1080,7 +1927,7 @@ DELIMITER $$
 	END$$
 DELIMITER ;
 CALL insert_products;
-
+DROP PROCEDURE IF EXISTS insert_products;
 
 ######################
 #
@@ -1107,6 +1954,27 @@ TRUNCATE TABLE `series`;
 	(2,'-All-'),
 	(3,'Test_stakeholder_1'),
 	(1,'Test_Unit_1_A');
+
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('The Table'
+								, ' components and series_categories'
+								, ' have been reset for ALL products'
+								, '.'
+								, ' The table'
+								, ' series'
+								, ' has been truncated'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+	
+		SET @script_log_message = NULL;
 
 ###############################################################
 # We do the component/roles insert in 2 batches:
@@ -1486,6 +2354,47 @@ DELIMITER $$
 		,(@component_id_mgt_cny,@role_mgt_cny_pub_name,@product_id,@mgt_cny_1_bz_id,@mgt_cny_1_bz_id,@role_mgt_cny_pub_info,1)
 		;
 
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('We have inserted the components/roles:'
+								, 'Tenant (#'
+								, @component_id_tenant
+								, '), '
+								, 'Landlord (#'
+								, @component_id_landlord
+								, '), '
+								, 'Agent (#'
+								, @component_id_agent
+								, '), '
+								, 'Contractor (#'
+								, @component_id_contractor
+								, '), '
+								, 'Management Company (#'
+								, @component_id_contractor
+								, '), '
+								, ' in the Table'
+								, ' components'
+								, ' for the product #'
+								, @product_id
+								, '.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+	
+		SET @script_log_message = NULL;
+		
+		
+##################
+#
+# WIP We need to review that as this creates duplicates bz_user_id and product_id
+#
+/*
 	# We update the table 'ut_map_user_unit_details'
 		INSERT INTO `ut_map_user_unit_details`
 			(`created`
@@ -1508,6 +2417,10 @@ DELIMITER $$
 			,(NOW(), @creator_bz_id, @mgt_cny_2_bz_id, @mgt_cny_2_bz_id, @product_id, 4,  @role_mgt_cny_pub_name, 'Created with demo user creation script when we create the component')
 			,(NOW(), @creator_bz_id, @mgt_cny_3_bz_id, @mgt_cny_3_bz_id, @product_id, 4, @role_mgt_cny_pub_name, 'Created with demo user creation script when we create the component')
 			;		
+*/
+#
+#
+####################
 		
 	INSERT INTO `component_cc`
 		(`user_id`
@@ -1519,6 +2432,43 @@ DELIMITER $$
 		,(@mgt_cny_2_bz_id, @component_id_mgt_cny)
 		,(@mgt_cny_3_bz_id, @component_id_mgt_cny)
 		;
+
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('We have inserted the users in default CC for:'
+								, 'Contractor BZ user #'
+								, @contractor_2_bz_id
+								, '), '
+								, 'Contractor BZ user #'
+								, @contractor_3_bz_id
+								, '), '
+								, 'for the role #'
+								, @component_id_contractor
+								, '. /r/ We also added: /r/ '
+								, 'Mgt Company BZ user #'
+								, @mgt_cny_2_bz_id
+								, '), '
+								, 'Mgt Company BZ user #'
+								, @mgt_cny_3_bz_id
+								, '), '
+								, 'for the role #'
+								, @component_id_mgt_cny
+								, ' in the Table'
+								, ' component_cc'
+								, ' for the product #'
+								, @product_id
+								, '.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+	
+		SET @script_log_message = NULL;		
 		
 	# We now create the groups we need
 		# For the tenant
@@ -1607,12 +2557,12 @@ DELIMITER $$
 			SET @group_name_show_to_occupant = (CONCAT(@unit,'-occupant'));
 			SET @group_description_show_to_occupant = (CONCAT(@visibility_explanation_1,'Occupants'));
 			
-			# Is in contractor user Group
+			# Is in occupant user Group
 			SET @group_id_are_users_occupant = (@group_id_show_to_occupant + 1);
 			SET @group_name_are_users_occupant = (CONCAT(@unit,'-List-occupant'));
 			SET @group_description_are_users_occupant = (CONCAT('list-the-occupant(s)-', @unit));
 			
-			# Can See contractor user Group
+			# Can See occupant user Group
 			SET @group_id_see_users_occupant = (@group_id_are_users_occupant + 1);
 			SET @group_name_see_users_occupant = (CONCAT(@unit,'-Can-see-occupant'));
 			SET @group_description_see_users_occupant = (CONCAT('See the list of occupant(s) for ', @unit));
@@ -1640,25 +2590,25 @@ DELIMITER $$
 			) 
 			VALUES 
 			(@group_id_show_to_tenant,@group_name_show_to_tenant,@group_description_tenant,1,'',1,NULL)
-			,(@group_id_are_users_tenant,@group_name_are_users_tenant,@group_description_are_users_tenant,0,'',1,NULL)
-			,(@group_id_see_users_tenant,@group_name_see_users_tenant,@group_description_see_users_tenant,0,'',1,NULL)
+			,(@group_id_are_users_tenant,@group_name_are_users_tenant,@group_description_are_users_tenant,1,'',0,NULL)
+			,(@group_id_see_users_tenant,@group_name_see_users_tenant,@group_description_see_users_tenant,1,'',0,NULL)
 			,(@group_id_show_to_landlord,@group_name_show_to_landlord,@group_description_show_to_landlord,1,'',1,NULL)
-			,(@group_id_are_users_landlord,@group_name_are_users_landlord,@group_description_are_users_landlord,0,'',1,NULL)
-			,(@group_id_see_users_landlord,@group_name_see_users_landlord,@group_description_see_users_landlord,0,'',1,NULL)
+			,(@group_id_are_users_landlord,@group_name_are_users_landlord,@group_description_are_users_landlord,1,'',0,NULL)
+			,(@group_id_see_users_landlord,@group_name_see_users_landlord,@group_description_see_users_landlord,1,'',0,NULL)
 			,(@group_id_show_to_agent,@group_name_show_to_agent,@group_description_show_to_agent,1,'',1,NULL)
-			,(@group_id_are_users_agent,@group_name_are_users_agent,@group_description_are_users_agent,0,'',1,NULL)
-			,(@group_id_see_users_agent,@group_name_see_users_agent,@group_description_see_users_agent,0,'',1,NULL)
+			,(@group_id_are_users_agent,@group_name_are_users_agent,@group_description_are_users_agent,1,'',0,NULL)
+			,(@group_id_see_users_agent,@group_name_see_users_agent,@group_description_see_users_agent,1,'',0,NULL)
 			,(@group_id_show_to_contractor,@group_name_show_to_contractor,@group_description_show_to_contractor,1,'',1,NULL)
-			,(@group_id_are_users_contractor,@group_name_are_users_contractor,@group_description_are_users_contractor,0,'',1,NULL)
-			,(@group_id_see_users_contractor,@group_name_see_users_contractor,@group_description_see_users_contractor,0,'',1,NULL)
+			,(@group_id_are_users_contractor,@group_name_are_users_contractor,@group_description_are_users_contractor,1,'',0,NULL)
+			,(@group_id_see_users_contractor,@group_name_see_users_contractor,@group_description_see_users_contractor,1,'',0,NULL)
 			,(@group_id_show_to_mgt_cny,@group_name_show_to_mgt_cny,@group_description_show_to_mgt_cny,1,'',1,NULL)
-			,(@group_id_are_users_mgt_cny,@group_name_are_users_mgt_cny,@group_description_are_users_mgt_cny,0,'',1,NULL)
-			,(@group_id_see_users_mgt_cny,@group_name_see_users_mgt_cny,@group_description_see_users_mgt_cny,0,'',1,NULL)
+			,(@group_id_are_users_mgt_cny,@group_name_are_users_mgt_cny,@group_description_are_users_mgt_cny,1,'',0,NULL)
+			,(@group_id_see_users_mgt_cny,@group_name_see_users_mgt_cny,@group_description_see_users_mgt_cny,1,'',0,NULL)
 			,(@group_id_show_to_occupant,@group_name_show_to_occupant,@group_description_show_to_occupant,1,'',1,NULL)
-			,(@group_id_are_users_occupant,@group_name_are_users_occupant,@group_description_are_users_occupant,0,'',1,NULL)
-			,(@group_id_see_users_occupant,@group_name_see_users_occupant,@group_description_see_users_occupant,0,'',1,NULL)
-			,(@group_id_are_users_invited_by,@group_name_are_users_invited_by,@group_description_are_users_invited_by,0,'',1,NULL)
-			,(@group_id_see_users_invited_by,@group_name_see_users_invited_by,@group_description_see_users_invited_by,0,'',1,NULL)
+			,(@group_id_are_users_occupant,@group_name_are_users_occupant,@group_description_are_users_occupant,1,'',0,NULL)
+			,(@group_id_see_users_occupant,@group_name_see_users_occupant,@group_description_see_users_occupant,1,'',0,NULL)
+			,(@group_id_are_users_invited_by,@group_name_are_users_invited_by,@group_description_are_users_invited_by,1,'',0,NULL)
+			,(@group_id_see_users_invited_by,@group_name_see_users_invited_by,@group_description_see_users_invited_by,1,'',0,NULL)
 			;
 	########################
 	#
@@ -1700,32 +2650,32 @@ DELIMITER $$
 		)
 		VALUES
 		# Tenant (1)
-		(@product_id,@component_id,@group_id_show_to_tenant,2,1,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_tenant,22,1,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_tenant,5,1,@creator_bz_id,@timestamp)
+		(@product_id,@component_id_tenant,@group_id_show_to_tenant,2,1,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_tenant,@group_id_are_users_tenant,22,1,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_tenant,@group_id_see_users_tenant,37,1,@creator_bz_id,@timestamp)
 		# Landlord (2)
-		,(@product_id,@component_id,@group_id_show_to_landlord,2,2,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_landlord,22,2,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_landlord,5,2,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_landlord,@group_id_show_to_landlord,2,2,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_landlord,@group_id_are_users_landlord,22,2,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_landlord,@group_id_see_users_landlord,37,2,@creator_bz_id,@timestamp)
 		# Agent (5)
-		,(@product_id,@component_id,@group_id_show_to_agent,2,5,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_agent,22,5,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_agent,5,5,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_agent,@group_id_show_to_agent,2,5,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_agent,@group_id_are_users_agent,22,5,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_agent,@group_id_see_users_agent,37,5,@creator_bz_id,@timestamp)
 		# contractor (3)
-		,(@product_id,@component_id,@group_id_show_to_contractor,2,3,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_contractor,22,3,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_contractor,5,3,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_contractor,@group_id_show_to_contractor,2,3,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_contractor,@group_id_are_users_contractor,22,3,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_contractor,@group_id_see_users_contractor,37,3,@creator_bz_id,@timestamp)
 		# mgt_cny (4)
-		,(@product_id,@component_id,@group_id_show_to_mgt_cny,2,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_mgt_cny,22,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_mgt_cny,5,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_mgt_cny,@group_id_show_to_mgt_cny,2,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_mgt_cny,@group_id_are_users_mgt_cny,22,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id_mgt_cny,@group_id_see_users_mgt_cny,37,4,@creator_bz_id,@timestamp)
 		# occupant (#)
-		,(@product_id,@component_id,@group_id_show_to_occupant,2,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_are_users_occupant,22,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_occupant,5,4,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_show_to_occupant,24,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_are_users_occupant,3,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_see_users_occupant,36,NULL,@creator_bz_id,@timestamp)
 		# invited_by
-		,(@product_id,@component_id,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
 		;
 
 /*Data for the table `group_group_map` */
@@ -1806,12 +2756,12 @@ DELIMITER $$
 		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
+		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4 AND `role_type_id` IS NULL));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5 AND `role_type_id` IS NULL));
-		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
 		SET @unit_creator_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 1));
+#		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));		
 
-	INSERT  INTO `ut_user_group_map_temp`
+	INSERT  INTO `user_group_map_temp`
 		(`user_id`
 		,`group_id`
 		,`isbless`
@@ -1911,7 +2861,7 @@ DELIMITER $$
 				,(@tenant_bz_id, @all_r_flags_group_id, 1, 0)
 				,(@tenant_bz_id, @list_visible_assignees_group_id, 1, 0)
 				,(@tenant_bz_id, @see_visible_assignees_group_id, 1, 0)
-				,(@tenant_bz_id, @active_stakeholder_group_id, 1, 0)
+#				,(@tenant_bz_id, @active_stakeholder_group_id, 1, 0)
 #				,(@tenant_bz_id, @unit_creator_group_id, 1, 0)
 			
 				# Groups created when we create the components
@@ -1947,7 +2897,7 @@ DELIMITER $$
 				,(@tenant_bz_id, @all_r_flags_group_id, 0, 0)
 				,(@tenant_bz_id, @list_visible_assignees_group_id, 0, 0)
 				,(@tenant_bz_id, @see_visible_assignees_group_id, 0, 0)
-				,(@tenant_bz_id, @active_stakeholder_group_id, 0, 0)
+#				,(@tenant_bz_id, @active_stakeholder_group_id, 0, 0)
 #				,(@tenant_bz_id, @unit_creator_group_id, 0, 0)
 			
 				# Groups created when we create the components
@@ -1984,7 +2934,7 @@ DELIMITER $$
 				,(@landlord_bz_id, @all_r_flags_group_id, 1, 0)
 				,(@landlord_bz_id, @list_visible_assignees_group_id, 1, 0)
 				,(@landlord_bz_id, @see_visible_assignees_group_id, 1, 0)
-				,(@landlord_bz_id, @active_stakeholder_group_id, 1, 0)
+#				,(@landlord_bz_id, @active_stakeholder_group_id, 1, 0)
 #				,(@landlord_bz_id, @unit_creator_group_id, 1, 0)
 			
 				# Groups created when we create the components
@@ -2020,7 +2970,7 @@ DELIMITER $$
 				,(@landlord_bz_id, @all_r_flags_group_id, 0, 0)
 				,(@landlord_bz_id, @list_visible_assignees_group_id, 0, 0)
 				,(@landlord_bz_id, @see_visible_assignees_group_id, 0, 0)
-				,(@landlord_bz_id, @active_stakeholder_group_id, 0, 0)
+#				,(@landlord_bz_id, @active_stakeholder_group_id, 0, 0)
 #				,(@landlord_bz_id, @unit_creator_group_id, 0, 0)
 			
 				# Groups created when we create the components
@@ -2057,7 +3007,7 @@ DELIMITER $$
 				,(@agent_bz_id, @all_r_flags_group_id, 1, 0)
 				,(@agent_bz_id, @list_visible_assignees_group_id, 1, 0)
 				,(@agent_bz_id, @see_visible_assignees_group_id, 1, 0)
-				,(@agent_bz_id, @active_stakeholder_group_id, 1, 0)
+#				,(@agent_bz_id, @active_stakeholder_group_id, 1, 0)
 #				,(@agent_bz_id, @unit_creator_group_id, 1, 0)
 			
 				# Groups created when we create the components
@@ -2093,7 +3043,7 @@ DELIMITER $$
 				,(@agent_bz_id, @all_r_flags_group_id, 0, 0)
 				,(@agent_bz_id, @list_visible_assignees_group_id, 0, 0)
 				,(@agent_bz_id, @see_visible_assignees_group_id, 0, 0)
-				,(@agent_bz_id, @active_stakeholder_group_id, 0, 0)
+#				,(@agent_bz_id, @active_stakeholder_group_id, 0, 0)
 #				,(@agent_bz_id, @unit_creator_group_id, 0, 0)
 			
 				# Groups created when we create the components
@@ -2131,7 +3081,7 @@ DELIMITER $$
 					,(@contractor_1_bz_id, @all_r_flags_group_id, 1, 0)
 					,(@contractor_1_bz_id, @list_visible_assignees_group_id, 1, 0)
 					,(@contractor_1_bz_id, @see_visible_assignees_group_id, 1, 0)
-					,(@contractor_1_bz_id, @active_stakeholder_group_id, 1, 0)
+#					,(@contractor_1_bz_id, @active_stakeholder_group_id, 1, 0)
 #					,(@contractor_1_bz_id, @unit_creator_group_id, 1, 0)
 				
 					# Groups created when we create the components
@@ -2167,7 +3117,7 @@ DELIMITER $$
 					,(@contractor_1_bz_id, @all_r_flags_group_id, 0, 0)
 					,(@contractor_1_bz_id, @list_visible_assignees_group_id, 0, 0)
 					,(@contractor_1_bz_id, @see_visible_assignees_group_id, 0, 0)
-					,(@contractor_1_bz_id, @active_stakeholder_group_id, 0, 0)
+#					,(@contractor_1_bz_id, @active_stakeholder_group_id, 0, 0)
 #					,(@contractor_1_bz_id, @unit_creator_group_id, 0, 0)
 				
 					# Groups created when we create the components
@@ -2353,7 +3303,7 @@ DELIMITER $$
 					,(@mgt_cny_1_bz_id, @all_r_flags_group_id, 1, 0)
 					,(@mgt_cny_1_bz_id, @list_visible_assignees_group_id, 1, 0)
 					,(@mgt_cny_1_bz_id, @see_visible_assignees_group_id, 1, 0)
-					,(@mgt_cny_1_bz_id, @active_stakeholder_group_id, 1, 0)
+#					,(@mgt_cny_1_bz_id, @active_stakeholder_group_id, 1, 0)
 #					,(@mgt_cny_1_bz_id, @unit_creator_group_id, 1, 0)
 				
 					# Groups created when we create the components
@@ -2389,7 +3339,7 @@ DELIMITER $$
 					,(@mgt_cny_1_bz_id, @all_r_flags_group_id, 0, 0)
 					,(@mgt_cny_1_bz_id, @list_visible_assignees_group_id, 0, 0)
 					,(@mgt_cny_1_bz_id, @see_visible_assignees_group_id, 0, 0)
-					,(@mgt_cny_1_bz_id, @active_stakeholder_group_id, 0, 0)
+#					,(@mgt_cny_1_bz_id, @active_stakeholder_group_id, 0, 0)
 #					,(@mgt_cny_1_bz_id, @unit_creator_group_id, 0, 0)
 				
 					# Groups created when we create the components
@@ -2574,7 +3524,7 @@ DELIMITER $$
 				,(@occupant_bz_id, @all_r_flags_group_id, 1, 0)
 				,(@occupant_bz_id, @list_visible_assignees_group_id, 1, 0)
 				,(@occupant_bz_id, @see_visible_assignees_group_id, 1, 0)
-				,(@occupant_bz_id, @active_stakeholder_group_id, 1, 0)
+#				,(@occupant_bz_id, @active_stakeholder_group_id, 1, 0)
 #				,(@occupant_bz_id, @unit_creator_group_id, 1, 0)
 			
 				# Groups created when we create the components
@@ -2610,7 +3560,7 @@ DELIMITER $$
 				,(@occupant_bz_id, @all_r_flags_group_id, 0, 0)
 				,(@occupant_bz_id, @list_visible_assignees_group_id, 0, 0)
 				,(@occupant_bz_id, @see_visible_assignees_group_id, 0, 0)
-				,(@occupant_bz_id, @active_stakeholder_group_id, 0, 0)
+#				,(@occupant_bz_id, @active_stakeholder_group_id, 0, 0)
 #				,(@occupant_bz_id, @unit_creator_group_id, 0, 0)
 			
 				# Groups created when we create the components
@@ -2707,7 +3657,7 @@ END WHILE;
 END$$
 DELIMITER ;
 CALL insert_component;
-
+DROP PROCEDURE IF EXISTS insert_component;
 
 
 
@@ -3002,6 +3952,11 @@ DELIMITER $$
 		,(@component_id_mgt_cny,@role_mgt_cny_pub_name,@product_id,@mgt_cny_1_bz_id,@mgt_cny_1_bz_id,@role_mgt_cny_pub_info,1)
 		;
 
+##################
+#
+# WIP We need to review that as this creates duplicates bz_user_id and product_id
+#
+/*	
 	# We update the table 'ut_map_user_unit_details'
 		INSERT INTO `ut_map_user_unit_details`
 			(`created`
@@ -3023,7 +3978,11 @@ DELIMITER $$
 			,(NOW(), @creator_bz_id, @mgt_cny_2_bz_id, @mgt_cny_2_bz_id, @product_id, 4,  @role_mgt_cny_pub_name, 'Created with demo user creation script when we create the component')
 			,(NOW(), @creator_bz_id, @mgt_cny_3_bz_id, @mgt_cny_3_bz_id, @product_id, 4, @role_mgt_cny_pub_name, 'Created with demo user creation script when we create the component')
 			;		
-		
+*/
+#
+#
+####################
+
 	INSERT INTO `component_cc`
 		(`user_id`
 		,`component_id`
@@ -3124,19 +4083,19 @@ DELIMITER $$
 			) 
 			VALUES 
 			(@group_id_show_to_landlord,@group_name_show_to_landlord,@group_description_show_to_landlord,1,'',1,NULL)
-			,(@group_id_are_users_landlord,@group_name_are_users_landlord,@group_description_are_users_landlord,0,'',1,NULL)
-			,(@group_id_see_users_landlord,@group_name_see_users_landlord,@group_description_see_users_landlord,0,'',1,NULL)
+			,(@group_id_are_users_landlord,@group_name_are_users_landlord,@group_description_are_users_landlord,1,'',0,NULL)
+			,(@group_id_see_users_landlord,@group_name_see_users_landlord,@group_description_see_users_landlord,1,'',0,NULL)
 			,(@group_id_show_to_agent,@group_name_show_to_agent,@group_description_show_to_agent,1,'',1,NULL)
-			,(@group_id_are_users_agent,@group_name_are_users_agent,@group_description_are_users_agent,0,'',1,NULL)
-			,(@group_id_see_users_agent,@group_name_see_users_agent,@group_description_see_users_agent,0,'',1,NULL)
+			,(@group_id_are_users_agent,@group_name_are_users_agent,@group_description_are_users_agent,1,'',0,NULL)
+			,(@group_id_see_users_agent,@group_name_see_users_agent,@group_description_see_users_agent,1,'',0,NULL)
 			,(@group_id_show_to_contractor,@group_name_show_to_contractor,@group_description_show_to_contractor,1,'',1,NULL)
-			,(@group_id_are_users_contractor,@group_name_are_users_contractor,@group_description_are_users_contractor,0,'',1,NULL)
-			,(@group_id_see_users_contractor,@group_name_see_users_contractor,@group_description_see_users_contractor,0,'',1,NULL)
+			,(@group_id_are_users_contractor,@group_name_are_users_contractor,@group_description_are_users_contractor,1,'',0,NULL)
+			,(@group_id_see_users_contractor,@group_name_see_users_contractor,@group_description_see_users_contractor,1,'',0,NULL)
 			,(@group_id_show_to_mgt_cny,@group_name_show_to_mgt_cny,@group_description_show_to_mgt_cny,1,'',1,NULL)
-			,(@group_id_are_users_mgt_cny,@group_name_are_users_mgt_cny,@group_description_are_users_mgt_cny,0,'',1,NULL)
-			,(@group_id_see_users_mgt_cny,@group_name_see_users_mgt_cny,@group_description_see_users_mgt_cny,0,'',1,NULL)
-			,(@group_id_are_users_invited_by,@group_name_are_users_invited_by,@group_description_are_users_invited_by,0,'',1,NULL)
-			,(@group_id_see_users_invited_by,@group_name_see_users_invited_by,@group_description_see_users_invited_by,0,'',1,NULL)
+			,(@group_id_are_users_mgt_cny,@group_name_are_users_mgt_cny,@group_description_are_users_mgt_cny,1,'',0,NULL)
+			,(@group_id_see_users_mgt_cny,@group_name_see_users_mgt_cny,@group_description_see_users_mgt_cny,1,'',0,NULL)
+			,(@group_id_are_users_invited_by,@group_name_are_users_invited_by,@group_description_are_users_invited_by,1,'',0,NULL)
+			,(@group_id_see_users_invited_by,@group_name_see_users_invited_by,@group_description_see_users_invited_by,1,'',0,NULL)
 			;
 
 	# we capture the groups and products that we have created for future reference.
@@ -3157,19 +4116,19 @@ DELIMITER $$
 		# Landlord (2)
 		(@product_id,@component_id,@group_id_show_to_landlord,2,2,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_are_users_landlord,22,2,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_landlord,5,2,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_landlord,37,2,@creator_bz_id,@timestamp)
 		# Agent (5)
 		,(@product_id,@component_id,@group_id_show_to_agent,2,5,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_are_users_agent,22,5,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_agent,5,5,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_agent,37,5,@creator_bz_id,@timestamp)
 		# contractor (3)
 		,(@product_id,@component_id,@group_id_show_to_contractor,2,3,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_are_users_contractor,22,3,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_contractor,5,3,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_contractor,37,3,@creator_bz_id,@timestamp)
 		# mgt_cny (4)
 		,(@product_id,@component_id,@group_id_show_to_mgt_cny,2,4,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_are_users_mgt_cny,22,4,@creator_bz_id,@timestamp)
-		,(@product_id,@component_id,@group_id_see_users_mgt_cny,5,4,@creator_bz_id,@timestamp)
+		,(@product_id,@component_id,@group_id_see_users_mgt_cny,37,4,@creator_bz_id,@timestamp)
 		# invited_by
 		,(@product_id,@component_id,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,@component_id,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
@@ -3245,10 +4204,10 @@ DELIMITER $$
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
 		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5 AND `role_type_id` IS NULL));
-		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
 		SET @unit_creator_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 1));
+#		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
 
-	INSERT  INTO `ut_user_group_map_temp`
+	INSERT  INTO `user_group_map_temp`
 		(`user_id`
 		,`group_id`
 		,`isbless`
@@ -3336,7 +4295,7 @@ DELIMITER $$
 				,(@landlord_bz_id, @all_r_flags_group_id, 1, 0)
 				,(@landlord_bz_id, @list_visible_assignees_group_id, 1, 0)
 				,(@landlord_bz_id, @see_visible_assignees_group_id, 1, 0)
-				,(@landlord_bz_id, @active_stakeholder_group_id, 1, 0)
+#				,(@landlord_bz_id, @active_stakeholder_group_id, 1, 0)
 #				,(@landlord_bz_id, @unit_creator_group_id, 1, 0)
 			
 				# Groups created when we create the components
@@ -3366,7 +4325,7 @@ DELIMITER $$
 				,(@landlord_bz_id, @all_r_flags_group_id, 0, 0)
 				,(@landlord_bz_id, @list_visible_assignees_group_id, 0, 0)
 				,(@landlord_bz_id, @see_visible_assignees_group_id, 0, 0)
-				,(@landlord_bz_id, @active_stakeholder_group_id, 0, 0)
+#				,(@landlord_bz_id, @active_stakeholder_group_id, 0, 0)
 #				,(@landlord_bz_id, @unit_creator_group_id, 0, 0)
 			
 				# Groups created when we create the components
@@ -3397,7 +4356,7 @@ DELIMITER $$
 				,(@agent_bz_id, @all_r_flags_group_id, 1, 0)
 				,(@agent_bz_id, @list_visible_assignees_group_id, 1, 0)
 				,(@agent_bz_id, @see_visible_assignees_group_id, 1, 0)
-				,(@agent_bz_id, @active_stakeholder_group_id, 1, 0)
+#				,(@agent_bz_id, @active_stakeholder_group_id, 1, 0)
 #				,(@agent_bz_id, @unit_creator_group_id, 1, 0)
 			
 				# Groups created when we create the components
@@ -3427,7 +4386,7 @@ DELIMITER $$
 				,(@agent_bz_id, @all_r_flags_group_id, 0, 0)
 				,(@agent_bz_id, @list_visible_assignees_group_id, 0, 0)
 				,(@agent_bz_id, @see_visible_assignees_group_id, 0, 0)
-				,(@agent_bz_id, @active_stakeholder_group_id, 0, 0)
+#				,(@agent_bz_id, @active_stakeholder_group_id, 0, 0)
 #				,(@agent_bz_id, @unit_creator_group_id, 0, 0)
 			
 				# Groups created when we create the components
@@ -3459,7 +4418,7 @@ DELIMITER $$
 					,(@contractor_1_bz_id, @all_r_flags_group_id, 1, 0)
 					,(@contractor_1_bz_id, @list_visible_assignees_group_id, 1, 0)
 					,(@contractor_1_bz_id, @see_visible_assignees_group_id, 1, 0)
-					,(@contractor_1_bz_id, @active_stakeholder_group_id, 1, 0)
+#					,(@contractor_1_bz_id, @active_stakeholder_group_id, 1, 0)
 #					,(@contractor_1_bz_id, @unit_creator_group_id, 1, 0)
 				
 					# Groups created when we create the components
@@ -3489,7 +4448,7 @@ DELIMITER $$
 					,(@contractor_1_bz_id, @all_r_flags_group_id, 0, 0)
 					,(@contractor_1_bz_id, @list_visible_assignees_group_id, 0, 0)
 					,(@contractor_1_bz_id, @see_visible_assignees_group_id, 0, 0)
-					,(@contractor_1_bz_id, @active_stakeholder_group_id, 0, 0)
+#					,(@contractor_1_bz_id, @active_stakeholder_group_id, 0, 0)
 #					,(@contractor_1_bz_id, @unit_creator_group_id, 0, 0)
 				
 					# Groups created when we create the components
@@ -3645,7 +4604,7 @@ DELIMITER $$
 					,(@mgt_cny_1_bz_id, @all_r_flags_group_id, 1, 0)
 					,(@mgt_cny_1_bz_id, @list_visible_assignees_group_id, 1, 0)
 					,(@mgt_cny_1_bz_id, @see_visible_assignees_group_id, 1, 0)
-					,(@mgt_cny_1_bz_id, @active_stakeholder_group_id, 1, 0)
+#					,(@mgt_cny_1_bz_id, @active_stakeholder_group_id, 1, 0)
 #					,(@mgt_cny_1_bz_id, @unit_creator_group_id, 1, 0)
 				
 					# Groups created when we create the components
@@ -3675,7 +4634,7 @@ DELIMITER $$
 					,(@mgt_cny_1_bz_id, @all_r_flags_group_id, 0, 0)
 					,(@mgt_cny_1_bz_id, @list_visible_assignees_group_id, 0, 0)
 					,(@mgt_cny_1_bz_id, @see_visible_assignees_group_id, 0, 0)
-					,(@mgt_cny_1_bz_id, @active_stakeholder_group_id, 0, 0)
+#					,(@mgt_cny_1_bz_id, @active_stakeholder_group_id, 0, 0)
 #					,(@mgt_cny_1_bz_id, @unit_creator_group_id, 0, 0)
 				
 					# Groups created when we create the components
@@ -3824,7 +4783,7 @@ DELIMITER $$
 # WIP
 #
 #		
-#	INSERT  INTO `ut_series_categories`
+#	INSERT  INTO `series_categories`
 #		(`id`
 #		,`name`
 #		) 
@@ -3836,7 +4795,7 @@ DELIMITER $$
 #	SET @series_1 = (SELECT `id` FROM `ut_series_categories` WHERE `name` = CONCAT(@stakeholder,'_#',@product_id));
 #	SET @series_3 = (SELECT `id` FROM `ut_series_categories` WHERE `name` = CONCAT(@unit,'_#',@product_id));
 #
-#	INSERT  INTO `ut_series`
+#	INSERT  INTO `series`
 #		(`series_id`
 #		,`creator`
 #		,`category`
@@ -3864,7 +4823,7 @@ DELIMITER $$
 #		(NULL,@bz_user_id,@series_1,@series_3,'All Open',1,CONCAT('field0-0-0=resolution&type0-0-0=notregexp&value0-0-0=.&product=',@unit_for_query,'&component=',@stakeholder),1),
 #		(NULL,@bz_user_id,@series_1,@series_3,'All Closed',1,CONCAT('field0-0-0=resolution&type0-0-0=regexp&value0-0-0=.&product=',@unit_for_query,'&component=',@stakeholder),1);
 #
-#	INSERT  INTO `ut_audit_log`
+#	INSERT  INTO `audit_log`
 #		(`user_id`
 #		,`class`
 #		,`object_id`
@@ -3890,6 +4849,7 @@ END WHILE;
 END$$
 DELIMITER ;
 CALL insert_component_rest;
+DROP PROCEDURE IF EXISTS insert_component_rest;
 
 # We give the user the permission they need.
 # We need to do that via an intermediaary table to make sure that we dedup the permissions
@@ -3901,22 +4861,53 @@ CALL insert_component_rest;
 		, `isbless`
 		, `grant_type`
 	FROM
-		`ut_user_group_map_temp`
+		`user_group_map_temp`
 	GROUP BY `user_id`
 		, `group_id`
 		, `isbless`
 		, `grant_type`
 	;
 
+	# Log the actions of the script.
 
+		SET @script_log_message = CONCAT('The table'
+								, ' user_group_map'
+								, ' has been updated with the deduplucated values from the table'
+								, ' user_group_map_temp'
+								, '.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
+	
+	# Tidy up - we remove the temp table
+	DROP TABLE IF EXISTS `user_group_map_temp`;
 
+	# Log the actions of the script.
 
-
-
-
-
-
-
+		SET @script_log_message = CONCAT('The table'
+								, ' user_group_map_temp'
+								, ' has been deleted.'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
