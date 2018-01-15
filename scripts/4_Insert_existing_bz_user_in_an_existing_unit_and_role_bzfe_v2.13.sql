@@ -144,7 +144,6 @@
 	# We get the information that we need about the user:
 		SET @user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id);
 	
-	
 	# We record the information about the users that we have just updated
 	# If this is the first time we record something for this user for this unit, we create a new record.
 	# If there is already a record for that user for this unit, then we are updating the information
