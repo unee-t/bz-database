@@ -388,7 +388,22 @@
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_see_users_mgt_cny)
 				)
 				;
-
+						
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user group #'
+										, @bz_user_group_id
+										, ' for the product #'
+										, @product_id
+										);
+			
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
 
 # Add the new group rights for the product
 # We need to create several procedures for each permissions
