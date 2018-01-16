@@ -24,7 +24,6 @@
 #	  We will have a different script for that
 #	- DO NOT USE if the role DOES NOT exists in the BZ database
 #	  We will have a different script for that
-#	- It gets MESSY if you do not realize that you are updating existing group permissions...
 #
 #################################################################
 #																#
