@@ -22,7 +22,7 @@
 #	  We will have a different script for that
 #	- DO NOT USE if the role DOES NOT exists in the BZ database
 #	  We will have a different script for that
-#
+#	- It gets MESSY if you do not realize that you are updating existing group permissions...
 #
 #################################################################
 #																#
@@ -33,11 +33,11 @@
 # The unit:
 
 	# enter the BZ product id for the unit
-	SET @product_id = 14;
+	SET @product_id = 276;
 	
 # The BZ group that you want to associat to the unit.
 	# BZ user groupid of the user that you want to associate to the unit.
-	SET @bz_user_group_id = 3;
+	SET @bz_user_group_id = 47;
 
 	# Is the BZ user group a group for the occupants of the unit?
 	SET @group_is_occupant = 0;
@@ -75,6 +75,7 @@
 		SET @group_can_create_new_cases = 1;
 		SET @group_can_edit_a_case = 1;
 		SET @group_can_see_all_public_cases = 1;
+		# This is mandatory for triage users!
 		SET @group_can_edit_all_field_in_a_case_regardless_of_role = 0;
 		SET @user_group_is_publicly_visible = 0;
 		SET @user_group_can_see_publicly_visible = 1;
@@ -83,7 +84,10 @@
 
 		# WARNING: The below permission makes the show/hide user functionality less efficient...
 		# A user who can directly ask to approve will automatically see all the approvers for the flags...
+		
+		# This should read: can_be_asked_to_approve_and_approve
 		SET @group_can_ask_to_approve = 1;
+		# This should read: can_request_to_approve
 		SET @group_can_approve = 0;
 	
 	# Permission to create or alter other users:
@@ -344,7 +348,55 @@
 		INSERT INTO `ut_group_group_map_temp`
 			SELECT *
 			FROM `group_group_map`;
-	
+################
+#
+# THIS IS WIP - THIS DOES NOT WORK - IT DELETE ALL THE RECORDS IN THE 'group_group_map table'...
+#
+/*			
+		# We make sure that we remove all the permission that we had previously created for this group and for this product
+		# This is to make sure that we are starting from a fresh start...
+		DELETE FROM `ut_group_group_map_temp`
+			WHERE (
+				(`member_id` = @bz_user_group_id AND `grantor_id` = @can_see_time_tracking_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_create_shared_queries_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_tag_comment_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @create_case_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_edit_case_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_edit_all_field_case_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_edit_component_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_see_cases_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @all_r_flags_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @all_g_flags_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @list_visible_assignees_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @see_visible_assignees_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @active_stakeholder_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @unit_creator_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_show_to_occupant)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_are_users_occupant)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_see_users_occupant)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_show_to_tenant)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_are_users_tenant)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_see_users_tenant)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_show_to_landlord)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_are_users_landlord)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_see_users_landlord)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_show_to_agent)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_are_users_agent)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_see_users_agent)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_show_to_contractor)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_are_users_contractor)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_see_users_contractor)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_show_to_mgt_cny)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_are_users_mgt_cny)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_see_users_mgt_cny)
+				)
+			;
+*/
+#
+#
+################
+
+
 
 # Add the new group rights for the product
 # We need to create several procedures for each permissions
