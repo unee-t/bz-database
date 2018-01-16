@@ -85,9 +85,9 @@
 		# WARNING: The below permission makes the show/hide user functionality less efficient...
 		# A user who can directly ask to approve will automatically see all the approvers for the flags...
 		
-		# This should read: can_be_asked_to_approve_and_approve
+		# 1 if you want the group of user to be able to ASK for a flag approval ('?')
 		SET @group_can_ask_to_approve = 1;
-		# This should read: can_request_to_approve
+		# 1 if you want the group of user to be able to APPROVE ('+') or REJECT ('-') flags
 		SET @group_can_approve = 0;
 	
 	# Permission to create or alter other users:
