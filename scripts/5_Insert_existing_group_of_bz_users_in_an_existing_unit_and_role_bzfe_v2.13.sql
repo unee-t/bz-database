@@ -348,11 +348,7 @@
 		INSERT INTO `ut_group_group_map_temp`
 			SELECT *
 			FROM `group_group_map`;
-################
-#
-# THIS IS WIP - THIS DOES NOT WORK - IT DELETE ALL THE RECORDS IN THE 'group_group_map table'...
-#
-/*			
+			
 		# We make sure that we remove all the permission that we had previously created for this group and for this product
 		# This is to make sure that we are starting from a fresh start...
 		DELETE FROM `ut_group_group_map_temp`
@@ -390,12 +386,7 @@
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_are_users_mgt_cny)
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @group_id_see_users_mgt_cny)
 				)
-			;
-*/
-#
-#
-################
-
+				;
 
 
 # Add the new group rights for the product
