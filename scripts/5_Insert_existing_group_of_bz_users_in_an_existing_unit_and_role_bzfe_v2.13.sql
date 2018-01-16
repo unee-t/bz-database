@@ -14,8 +14,10 @@
 #	- the Unit/Product ALREADY EXISTS in the BZFE
 #	- the Role/component ALREADY EXISTS in the BZFE
 #	- The Group of user already EXISTS in the BZFE
+#	- Make sure that you use the script '2_Insert_new_unit_and_role_in_unee-t_bzfe_v2.13.sql' to create the product/unit.
+#	  This will guarantee that all the permissions groups that we need for that user already exist in the BZFE
 #
-# This will guarantee that all the permissions groups that we need for that user already exist in the BZFE
+# This script also works if you need to reset the permission for a given group of users for a certain product,
 #
 # Limits of this script:
 #	- DO NOT USE if the unit DOES NOT exists in the BZ database
