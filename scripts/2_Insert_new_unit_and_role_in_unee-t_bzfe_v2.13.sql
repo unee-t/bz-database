@@ -361,84 +361,6 @@
 		)
 		VALUES
 		(NULL,@default_milestone,@product_id,1);		
-
-# We now Create the flagtypes and flags for this new unit:
-	SET @flag_next_step = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
-	SET @flag_solution = (@flag_next_step + 1);
-	SET @flag_budget = (@flag_solution + 1);
-	SET @flag_attachment = (@flag_budget + 1);
-	SET @flag_ok_to_pay = (@flag_attachment + 1);
-	SET @flag_is_paid = (@flag_ok_to_pay + 1);
-
-	INSERT INTO `flagtypes`
-		(`id`
-		,`name`
-		,`description`
-		,`cc_list`
-		,`target_type`
-		,`is_active`
-		,`is_requestable`
-		,`is_requesteeble`
-		,`is_multiplicable`
-		,`sortkey`
-		,`grant_group_id`
-		,`request_group_id`
-		) 
-		VALUES 
-		(@flag_next_step,CONCAT('Next_Step_',@unit_for_flag),'Approval for the Next Step of the case.','','b',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
-		,(@flag_solution,CONCAT('Solution_',@unit_for_flag),'Approval for the Solution of this case.','','b',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
-		,(@flag_budget,CONCAT('Budget_',@unit_for_flag),'Approval for the Budget for this case.','','b',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
-		,(@flag_attachment,CONCAT('Attachment_',@unit_for_flag),'Approval for this Attachment.','','a',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
-		,(@flag_ok_to_pay,CONCAT('OK_to_pay_',@unit_for_flag),'Approval to pay this bill.','','a',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
-		,(@flag_is_paid,CONCAT('is_paid_',@unit_for_flag),'Confirm if this bill has been paid.','','a',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
-		;
-	
-	INSERT INTO `flaginclusions`
-		(`type_id`
-		,`product_id`
-		,`component_id`
-		) 
-		VALUES
-		(@flag_next_step,@product_id,NULL)
-		,(@flag_solution,@product_id,NULL)
-		,(@flag_budget,@product_id,NULL)
-		,(@flag_attachment,@product_id,NULL)
-		,(@flag_ok_to_pay,@product_id,NULL)
-		,(@flag_is_paid,@product_id,NULL)
-		;
-
-	# Log the actions of the script.
-		SET @script_log_message = CONCAT('We have created the following flags which are restricted to that unit: '
-								, '\r\ - Next Step (#'
-								, (SELECT IFNULL(@flag_next_step, 'flag_next_step is NULL'))
-								, ').'
-								, '\r\ - Solution (#'
-								, (SELECT IFNULL(@flag_solution, 'flag_solution is NULL'))
-								, ').'
-								, '\r\ - Budget (#'
-								, (SELECT IFNULL(@flag_budget, 'flag_budget is NULL'))
-								, ').'
-								, '\r\ - Attachment (#'
-								, (SELECT IFNULL(@flag_attachment, 'flag_attachment is NULL'))
-								, ').'
-								, '\r\ - OK to pay (#'
-								, (SELECT IFNULL(@flag_ok_to_pay, 'flag_ok_to_pay is NULL'))
-								, ').'
-								, '\r\ - Is paid (#'
-								, (SELECT IFNULL(@flag_is_paid, 'flag_is_paid is NULL'))
-								, ').'
-								);
-		
-		INSERT INTO `ut_script_log`
-			(`datetime`
-			, `script`
-			, `log`
-			)
-			VALUES
-			(NOW(), @script, @script_log_message)
-			;
-		
-		SET @script_log_message = NULL;	
 			
 # We create the goups we need
 	
@@ -800,7 +722,85 @@
 		,(@product_id,NULL,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,NULL,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
 		;
+
+# We now Create the flagtypes and flags for this new unit (we NEEDED the group ids:
+	SET @flag_next_step = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+	SET @flag_solution = (@flag_next_step + 1);
+	SET @flag_budget = (@flag_solution + 1);
+	SET @flag_attachment = (@flag_budget + 1);
+	SET @flag_ok_to_pay = (@flag_attachment + 1);
+	SET @flag_is_paid = (@flag_ok_to_pay + 1);
+
+	INSERT INTO `flagtypes`
+		(`id`
+		,`name`
+		,`description`
+		,`cc_list`
+		,`target_type`
+		,`is_active`
+		,`is_requestable`
+		,`is_requesteeble`
+		,`is_multiplicable`
+		,`sortkey`
+		,`grant_group_id`
+		,`request_group_id`
+		) 
+		VALUES 
+		(@flag_next_step,CONCAT('Next_Step_',@unit_for_flag),'Approval for the Next Step of the case.','','b',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
+		,(@flag_solution,CONCAT('Solution_',@unit_for_flag),'Approval for the Solution of this case.','','b',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
+		,(@flag_budget,CONCAT('Budget_',@unit_for_flag),'Approval for the Budget for this case.','','b',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
+		,(@flag_attachment,CONCAT('Attachment_',@unit_for_flag),'Approval for this Attachment.','','a',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
+		,(@flag_ok_to_pay,CONCAT('OK_to_pay_',@unit_for_flag),'Approval to pay this bill.','','a',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
+		,(@flag_is_paid,CONCAT('is_paid_',@unit_for_flag),'Confirm if this bill has been paid.','','a',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
+		;
 	
+	INSERT INTO `flaginclusions`
+		(`type_id`
+		,`product_id`
+		,`component_id`
+		) 
+		VALUES
+		(@flag_next_step,@product_id,NULL)
+		,(@flag_solution,@product_id,NULL)
+		,(@flag_budget,@product_id,NULL)
+		,(@flag_attachment,@product_id,NULL)
+		,(@flag_ok_to_pay,@product_id,NULL)
+		,(@flag_is_paid,@product_id,NULL)
+		;
+
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('We have created the following flags which are restricted to that unit: '
+								, '\r\ - Next Step (#'
+								, (SELECT IFNULL(@flag_next_step, 'flag_next_step is NULL'))
+								, ').'
+								, '\r\ - Solution (#'
+								, (SELECT IFNULL(@flag_solution, 'flag_solution is NULL'))
+								, ').'
+								, '\r\ - Budget (#'
+								, (SELECT IFNULL(@flag_budget, 'flag_budget is NULL'))
+								, ').'
+								, '\r\ - Attachment (#'
+								, (SELECT IFNULL(@flag_attachment, 'flag_attachment is NULL'))
+								, ').'
+								, '\r\ - OK to pay (#'
+								, (SELECT IFNULL(@flag_ok_to_pay, 'flag_ok_to_pay is NULL'))
+								, ').'
+								, '\r\ - Is paid (#'
+								, (SELECT IFNULL(@flag_is_paid, 'flag_is_paid is NULL'))
+								, ').'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;	
+		
 # We configure the group permissions:
 	# Data for the table `group_group_map`
 	# We use a temporary table to do this, this is to avoid duplicate in the group_group_map table
