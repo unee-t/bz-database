@@ -392,8 +392,43 @@
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user group #'
 										, @bz_user_group_id
-										, ' for the product #'
-										, @product_id
+										, '\r\- can_see_time_tracking: 0'
+										, '\r\- can_create_shared_queries: 0'
+										, '\r\- can_tag_comment: 0'
+										, '\r\- can_see_occupant: 0'
+										, '\r\- can_see_tenant: 0'
+										, '\r\- can_see_landlord: 0'
+										, '\r\- can_see_agent: 0'
+										, '\r\- can_see_contractor: 0'
+										, '\r\- can_see_mgt_cny: 0'
+										, '\r\- can_create_new_cases: 0'
+										, '\r\- can_edit_a_case: 0'
+										, '\r\- can_see_all_public_cases: 0'
+										, '\r\- can_edit_all_field_in_a_case_regardless_of_role: 0'
+										, '\r\- user_is_publicly_visible: 0'
+										, '\r\- user_can_see_publicly_visible: 0'
+										, '\r\- can_ask_to_approve: 0'
+										, '\r\- can_approve: 0'					
+										, '\r\- show_to_tenant: 0'
+										, '\r\- are_users_tenant: 0'
+										, '\r\- see_users_tenant: 0'
+										, '\r\- show_to_landlord: 0'
+										, '\r\- are_users_landlord: 0'
+										, '\r\- see_users_landlord: 0'
+										, '\r\- show_to_agent: 0'
+										, '\r\- are_users_agent: 0'
+										, '\r\- see_users_agent: 0'
+										, '\r\- show_to_contractor: 0'
+										, '\r\- are_users_contractor: 0'
+										, '\r\- see_users_contractor: 0'
+										, '\r\- show_to_mgt_cny: 0'
+										, '\r\- are_users_mgt_cny: 0'
+										, '\r\- see_users_mgt_cny: 0'
+										, '\r\- show_to_occupant: 0'
+										, '\r\- are_users_occupant: 0'
+										, '\r\- see_users_occupant: 0'
+										, '\r\For the product #'
+										, @product_id										
 										);
 			
 				INSERT INTO `ut_script_log`
@@ -405,6 +440,410 @@
 					(NOW(), @script, @script_log_message)
 					;
 
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @can_see_time_tracking_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @can_create_shared_queries_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @can_tag_comment_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @create_case_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @can_edit_case_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @can_edit_all_field_case_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @can_edit_component_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @can_see_cases_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @all_r_flags_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @all_g_flags_group_id
+						, '. We do this for all permissions!')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @list_visible_assignees_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @see_visible_assignees_group_id
+						, '. We do this for all permissions!')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @active_stakeholder_group_id
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @unit_creator_group_id
+						, '. We do this for all permissions!')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_show_to_occupant
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_are_users_occupant
+						, '. We do this for all permissions!')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_see_users_occupant
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_show_to_tenant
+						, '. We do this for all permissions!')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_are_users_tenant
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_see_users_tenant
+						, '. We do this for all permissions!')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_show_to_landlord
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_are_users_landlord
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_see_users_landlord
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_show_to_agent
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_are_users_agent
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_see_users_agent
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_show_to_contractor
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_are_users_contractor
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_see_users_contractor
+						, '. We do this for all permissions!')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_show_to_mgt_cny
+						, '. We do this for all permissions!')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_are_users_mgt_cny
+						, '. We do this for all permissions!')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user group id ='
+						, @bz_user_group_id
+						, ' the group id = '
+						, @group_id_see_users_mgt_cny
+						, '. We do this for all permissions!')
+						)
+					 ;
+				 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				
 # Add the new group rights for the product
 # We need to create several procedures for each permissions
 #	- time_tracking_permission
@@ -536,7 +975,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN create shared queries.'
 										);
@@ -592,7 +1031,7 @@ BEGIN
 				;
 				
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN tag comments.'
 										);
@@ -650,7 +1089,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN see case that are limited to occupants'
 										, ' for the unit #'
@@ -712,7 +1151,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' is an occupant in the unit #'
 										, @product_id
@@ -771,7 +1210,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' can see occupant in the unit '
 										, @product_id
@@ -834,7 +1273,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN create new cases for unit '
 										, @product_id
@@ -894,7 +1333,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN edit a cases for unit '
 										, @product_id
@@ -958,7 +1397,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN see all public cases for unit '
 										, @product_id
@@ -1018,7 +1457,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN edit a cases for unit regardless of the user role in the case'
 										, @product_id
@@ -1077,7 +1516,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' is one of the visible assignee for cases for this unit.'
 										, @product_id
@@ -1139,7 +1578,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN see the publicly visible users for the case for this unit.'
 										, @product_id
@@ -1199,7 +1638,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN ask for approval for all flags.'
 										, @product_id
@@ -1260,7 +1699,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN approve for all flags.'
 										, @product_id
@@ -1322,7 +1761,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN see case that are limited to tenants'
 										, ' for the unit #'
@@ -1384,7 +1823,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' is a tenant in the unit #'
 										, @product_id
@@ -1443,7 +1882,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' can see tenant in the unit '
 										, @product_id
@@ -1502,7 +1941,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN see case that are limited to landlords'
 										, ' for the unit #'
@@ -1563,7 +2002,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' is a landlord for the unit #'
 										, @product_id
@@ -1622,7 +2061,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' can see tenant in the unit '
 										, @product_id
@@ -1681,7 +2120,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN see case that are limited to agents'
 										, ' for the unit #'
@@ -1742,7 +2181,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' is an agent for the unit #'
 										, @product_id
@@ -1801,7 +2240,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' can see agents for the unit '
 										, @product_id
@@ -1860,7 +2299,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN see case that are limited to contractors'
 										, ' for the unit #'
@@ -1921,7 +2360,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' is a contractor for the unit #'
 										, @product_id
@@ -1980,7 +2419,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' can see employee of Contractor for the unit '
 										, @product_id
@@ -2043,7 +2482,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' CAN see case that are limited to Mgt Cny'
 										, ' for the unit #'
@@ -2104,7 +2543,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' is a Mgt Cny for the unit #'
 										, @product_id
@@ -2163,7 +2602,7 @@ BEGIN
 				;
 
 			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user group#'
+				SET @script_log_message = CONCAT('the bz user group #'
 										, @bz_user_group_id
 										, ' can see Mgt Cny for the unit '
 										, @product_id
