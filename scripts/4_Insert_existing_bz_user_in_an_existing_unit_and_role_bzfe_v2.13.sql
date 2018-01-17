@@ -844,16 +844,67 @@
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
-				
-###########
-#
-# WIP! AT THIS POINT WE HAVE NOT YET RESET THE PERMISSIONS IF THE USER NEEDS TO BE IN CC FOR THE CASE
-#
-###########
-
 		
+		# Reset the permission for this user to be in CC for a case for this unit.
+			DELETE FROM `component_cc`
+				WHERE (`user_id` = @bz_user_id 
+					AND `component_id` = @component_id)
+				;
+				
+			# Log the actions of the script.
+				SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
+				
+				SET @script_log_message = CONCAT('We have revoked the permissions for the bz user #'
+										, @bz_user_id
+										, ' to be in CC for the product #'
+										, @product_id
+										, ' for the role #'
+										, @id_role_type
+										, ' ('
+										, @role_user_g_description
+										, ')'
+										);
 			
-			
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'component_cc';
+				
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the component id = '
+						, @component_id
+						, '.')
+						)
+					;
+				
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;					
 			
 # Add the new user rights for the product
 # We need to create several procedures for each permissions
