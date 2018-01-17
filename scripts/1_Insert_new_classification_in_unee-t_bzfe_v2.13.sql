@@ -35,7 +35,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = 'Insert_new_classification_in_unee-t_bzfe_v2.13.sql';
+	SET @script = '1_Insert_new_classification_in_unee-t_bzfe_v2.13.sql';
 
 # Get the classification id for the new group of units.
 	SET @classification_id = ((SELECT MAX(`id`) FROM `classifications`) + 1);
