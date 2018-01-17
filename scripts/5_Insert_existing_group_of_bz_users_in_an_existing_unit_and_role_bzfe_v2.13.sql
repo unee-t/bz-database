@@ -1991,7 +1991,7 @@ DROP PROCEDURE IF EXISTS group_are_users_landlord;
 DELIMITER $$
 CREATE PROCEDURE group_are_users_landlord()
 BEGIN
-	IF (@id_role_type = 1)
+	IF (@id_role_type = 2)
 	THEN INSERT INTO `ut_group_group_map_temp`
 				(`member_id`
 				,`grantor_id`
@@ -2591,7 +2591,7 @@ DROP PROCEDURE IF EXISTS group_can_see_users_mgt_cny;
 DELIMITER $$
 CREATE PROCEDURE group_can_see_users_mgt_cny()
 BEGIN
-	IF (@group_can_see_contractor = 1)
+	IF (@group_can_see_mgt_cny = 1)
 	THEN INSERT INTO `ut_group_group_map_temp`
 				(`member_id`
 				,`grantor_id`
