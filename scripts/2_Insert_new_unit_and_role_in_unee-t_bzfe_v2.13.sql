@@ -132,7 +132,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = 'Insert_new_unit_and_role_in_unee-t_bzfe_v2.13.sql';
+	SET @script = '2_Insert_new_unit_and_role_in_unee-t_bzfe_v2.13.sql';
 
 # Timestamp	
 	SET @timestamp = NOW();
