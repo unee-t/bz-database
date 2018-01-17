@@ -460,7 +460,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, @can_see_time_tracking_group_id
@@ -472,7 +472,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, @can_create_shared_queries_group_id
@@ -484,7 +484,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, @can_tag_comment_group_id
@@ -496,7 +496,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
@@ -508,7 +508,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
@@ -520,7 +520,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
@@ -532,7 +532,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
@@ -544,7 +544,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
@@ -556,7 +556,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
@@ -568,7 +568,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
@@ -580,7 +580,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
@@ -592,7 +592,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
@@ -604,7 +604,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
@@ -616,7 +616,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
@@ -628,7 +628,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_show_to_occupant, 'group_id_show_to_occupant is NULL'))
@@ -640,7 +640,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_are_users_occupant, 'group_id_are_users_occupant is NULL'))
@@ -652,7 +652,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_see_users_occupant, 'group_id_see_users_occupant is NULL'))
@@ -664,7 +664,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
@@ -676,7 +676,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_are_users_tenant, 'group_id_are_users_tenant is NULL'))
@@ -688,7 +688,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_see_users_tenant, 'group_id_see_users_tenant is NULL'))
@@ -700,7 +700,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
@@ -712,7 +712,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
@@ -724,7 +724,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_see_users_landlord, 'group_id_see_users_landlord is NULL'))
@@ -736,7 +736,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_show_to_agent, 'group_id_show_to_agent is NULL'))
@@ -748,7 +748,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_are_users_agent, 'group_id_are_users_agent is NULL'))
@@ -760,7 +760,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_see_users_agent, 'group_id_see_users_agent is NULL'))
@@ -772,7 +772,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_show_to_contractor, 'group_id_show_to_contractor is NULL'))
@@ -784,7 +784,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_are_users_contractor, 'group_id_are_users_contractor is NULL'))
@@ -796,7 +796,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_see_users_contractor, 'group_id_see_users_contractor is NULL'))
@@ -808,7 +808,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_show_to_mgt_cny, 'group_id_show_to_mgt_cny is NULL'))
@@ -820,7 +820,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_are_users_mgt_cny, 'group_id_are_users_mgt_cny is NULL'))
@@ -832,7 +832,7 @@
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
 						, @script
-						, CONCAT('Remove the record where BZ user id ='
+						, CONCAT('Remove the record where BZ user group id ='
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@group_id_see_users_mgt_cny, 'group_id_see_users_mgt_cny is NULL'))
