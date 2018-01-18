@@ -365,17 +365,66 @@
 # We create the goups we need
 	
 	# Groups common to all components/roles for this unit
-		SET @create_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-		SET @can_edit_case_group_id = (@create_case_group_id + 1);
-		SET @can_edit_all_field_case_group_id = (@can_edit_case_group_id + 1);
-		SET @can_edit_component_group_id = (@can_edit_all_field_case_group_id + 1);
-		SET @can_see_cases_group_id = (@can_edit_component_group_id + 1);
-		SET @all_g_flags_group_id = (@can_see_cases_group_id + 1);
-		SET @all_r_flags_group_id = (@all_g_flags_group_id + 1);
-		SET @list_visible_assignees_group_id = (@all_r_flags_group_id + 1);
-		SET @see_visible_assignees_group_id = (@list_visible_assignees_group_id + 1);
-		SET @active_stakeholder_group_id = (@see_visible_assignees_group_id + 1);
-		SET @unit_creator_group_id = (@active_stakeholder_group_id + 1);
+		# Allow user to create a case for this unit
+			SET @create_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+			SET @group_name_create_case_group = (CONCAT(@unit_for_group,'-01-Can-Create-Cases'));
+			SET @group_description_create_case_group = 'User can create cases for this unit.';
+			
+		# Allow user to create a case for this unit
+			SET @can_edit_case_group_id = (@create_case_group_id + 1);
+			SET @group_name_can_edit_case_group = (CONCAT(@unit_for_group,'-01-Can-Edit-Cases'));
+			SET @group_description_can_edit_case_group = 'User can edit a case they have access to';
+			
+		# Allow user to see the cases for this unit
+			SET @can_see_cases_group_id = (@can_edit_case_group_id + 1);
+			SET @group_name_can_see_cases_group = (CONCAT(@unit_for_group,'-02-Case-Is-Visible-To-All'));
+			SET @group_description_can_see_cases_group = 'User can see the public cases for the unit';
+			
+		# Allow user to edit the case for this unit
+			SET @can_edit_all_field_case_group_id = (@can_see_cases_group_id + 1);
+			SET @group_name_can_edit_all_field_case_group = (CONCAT(@unit_for_group,'-03-Can-Always-Edit-all-Fields'));
+			SET @group_description_can_edit_all_field_case_group = 'Triage - User can edit all fields in a case they have access to, regardless of role';
+			
+		# Allow user to edit all the fields in a case, regardless of user role for this unit
+			SET @can_edit_component_group_id = (@can_edit_all_field_case_group_id + 1);
+			SET @group_name_can_edit_component_group = (CONCAT(@unit_for_group,'-04-Can-Edit-Components'));
+			SET @group_description_can_edit_component_group = 'User can edit components/roles for the unit';
+	
+	# The groups related to Flags
+		# Allow user to  for this unit
+			SET @all_g_flags_group_id = (@can_edit_component_group_id + 1);
+			SET @group_name_all_g_flags_group = (CONCAT(@unit_for_group,'-05-Can-Approve-All-Flags'));
+			SET @group_description_all_g_flags_group = 'User can approve all flags';
+			
+		# Allow user to  for this unit
+			SET @all_r_flags_group_id = (@all_g_flags_group_id + 1);
+			SET @group_name_all_r_flags_group = (CONCAT(@unit_for_group,'-05-Can-Be-Asked-To-Approve-All-Flags'));
+			SET @group_description_all_r_flags_group = 'User can be asked specifically to approve any flag';
+			
+		
+	# The Groups that control user visibility
+		# Allow user to  for this unit
+			SET @list_visible_assignees_group_id = (@all_r_flags_group_id + 1);
+			SET @group_name_list_visible_assignees_group = (CONCAT(@unit_for_group,'-06-List-Public-Assignee'));
+			SET @group_description_list_visible_assignees_group = 'User are visible assignee(s) for this unit';
+			
+		# Allow user to  for this unit
+			SET @see_visible_assignees_group_id = (@list_visible_assignees_group_id + 1);
+			SET @group_name_see_visible_assignees_group = (CONCAT(@unit_for_group,'-06-Can-See-Public-Assignee'));
+			SET @group_description_see_visible_assignees_group = 'User can see all visible assignee(s) for this unit';
+			
+	
+	# Other Misc Groups
+		# Allow user to  for this unit
+			SET @active_stakeholder_group_id = (@see_visible_assignees_group_id + 1);
+			SET @group_name_active_stakeholder_group = (CONCAT(@unit_for_group,'-07-Active-Stakeholder'));
+			SET @group_description_active_stakeholder_group = 'Users who have a role in this unit as of today (WIP)';
+			
+		# Allow user to  for this unit
+			SET @unit_creator_group_id = (@active_stakeholder_group_id + 1);
+			SET @group_name_unit_creator_group = (CONCAT(@unit_for_group,'-07-Unit-Creator'));
+			SET @group_description_unit_creator_group = 'User is considered to be the creator of the unit';
+			
 
 	# We now create the groups we will need now and in the future for this unit...
 	# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
@@ -385,108 +434,108 @@
 		# For the tenant
 			# Visibility group
 			SET @group_id_show_to_tenant = (@unit_creator_group_id + 1);
-			SET @group_name_show_to_tenant = (CONCAT(@unit_for_group,'-limit-to-Tenant'));
+			SET @group_name_show_to_tenant = (CONCAT(@unit_for_group,'-02-Limit-to-Tenant'));
 			SET @group_description_tenant = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1),@visibility_explanation_2));
 		
 			# Is in tenant user Group
 			SET @group_id_are_users_tenant = (@group_id_show_to_tenant + 1);
-			SET @group_name_are_users_tenant = (CONCAT(@unit_for_group,'-List-Tenant'));
+			SET @group_name_are_users_tenant = (CONCAT(@unit_for_group,'-06-List-Tenant'));
 			SET @group_description_are_users_tenant = (CONCAT('list the tenant(s)', @unit));
 			
 			# Can See tenant user Group
 			SET @group_id_see_users_tenant = (@group_id_are_users_tenant + 1);
-			SET @group_name_see_users_tenant = (CONCAT(@unit_for_group,'-Can-see-Tenant'));
+			SET @group_name_see_users_tenant = (CONCAT(@unit_for_group,'-06-Can-see-Tenant'));
 			SET @group_description_see_users_tenant = (CONCAT('See the list of tenant(s) for ', @unit));
 	
 		# For the Landlord
 			# Visibility group 
 			SET @group_id_show_to_landlord = (@group_id_see_users_tenant + 1);
-			SET @group_name_show_to_landlord = (CONCAT(@unit_for_group,'-Limit-to-Landlord'));
+			SET @group_name_show_to_landlord = (CONCAT(@unit_for_group,'-02-Limit-to-Landlord'));
 			SET @group_description_show_to_landlord = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2),@visibility_explanation_2));
 			
 			# Is in landlord user Group
 			SET @group_id_are_users_landlord = (@group_id_show_to_landlord + 1);
-			SET @group_name_are_users_landlord = (CONCAT(@unit_for_group,'-List-landlord'));
+			SET @group_name_are_users_landlord = (CONCAT(@unit_for_group,'-06-List-landlord'));
 			SET @group_description_are_users_landlord = (CONCAT('list the landlord(s)', @unit));
 			
 			# Can See landlord user Group
 			SET @group_id_see_users_landlord = (@group_id_are_users_landlord + 1);
-			SET @group_name_see_users_landlord = (CONCAT(@unit_for_group,'-Can-see-lanldord'));
+			SET @group_name_see_users_landlord = (CONCAT(@unit_for_group,'-06-Can-see-lanldord'));
 			SET @group_description_see_users_landlord = (CONCAT('See the list of lanldord(s) for ', @unit));
 			
 		# For the agent
 			# Visibility group 
 			SET @group_id_show_to_agent = (@group_id_see_users_landlord + 1);
-			SET @group_name_show_to_agent = (CONCAT(@unit_for_group,'-limit-to-Agent'));
+			SET @group_name_show_to_agent = (CONCAT(@unit_for_group,'-02-Limit-to-Agent'));
 			SET @group_description_show_to_agent = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5),@visibility_explanation_2));
 			
 			# Is in Agent user Group
 			SET @group_id_are_users_agent = (@group_id_show_to_agent + 1);
-			SET @group_name_are_users_agent = (CONCAT(@unit_for_group,'-List-agent'));
+			SET @group_name_are_users_agent = (CONCAT(@unit_for_group,'-06-List-agent'));
 			SET @group_description_are_users_agent = (CONCAT('list the agent(s)', @unit));
 			
 			# Can See Agent user Group
 			SET @group_id_see_users_agent = (@group_id_are_users_agent + 1);
-			SET @group_name_see_users_agent = (CONCAT(@unit_for_group,'-Can-see-agent'));
+			SET @group_name_see_users_agent = (CONCAT(@unit_for_group,'-06-Can-see-agent'));
 			SET @group_description_see_users_agent = (CONCAT('See the list of agent(s) for ', @unit));
 		
 		# For the contractor
 			# Visibility group 
 			SET @group_id_show_to_contractor = (@group_id_see_users_agent + 1);
-			SET @group_name_show_to_contractor = (CONCAT(@unit_for_group,'-limit-to-Contractor-Employee'));
+			SET @group_name_show_to_contractor = (CONCAT(@unit_for_group,'-02-Limit-to-Contractor-Employee'));
 			SET @group_description_show_to_contractor = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3),@visibility_explanation_2));
 			
 			# Is in contractor user Group
 			SET @group_id_are_users_contractor = (@group_id_show_to_contractor + 1);
-			SET @group_name_are_users_contractor = (CONCAT(@unit_for_group,'-List-contractor-employee'));
+			SET @group_name_are_users_contractor = (CONCAT(@unit_for_group,'-06-List-contractor-employee'));
 			SET @group_description_are_users_contractor = (CONCAT('list the contractor employee(s)', @unit));
 			
 			# Can See contractor user Group
 			SET @group_id_see_users_contractor = (@group_id_are_users_contractor + 1);
-			SET @group_name_see_users_contractor = (CONCAT(@unit_for_group,'-Can-see-contractor-employee'));
+			SET @group_name_see_users_contractor = (CONCAT(@unit_for_group,'-06-Can-see-contractor-employee'));
 			SET @group_description_see_users_contractor = (CONCAT('See the list of contractor employee(s) for ', @unit));
 			
 		# For the Mgt Cny
 			# Visibility group
 			SET @group_id_show_to_mgt_cny = (@group_id_see_users_contractor + 1);
-			SET @group_name_show_to_mgt_cny = (CONCAT(@unit_for_group,'-limit-to-Mgt-Cny-Employee'));
+			SET @group_name_show_to_mgt_cny = (CONCAT(@unit_for_group,'-02-Limit-to-Mgt-Cny-Employee'));
 			SET @group_description_show_to_mgt_cny = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4),@visibility_explanation_2));
 			
 			# Is in mgt cny user Group
 			SET @group_id_are_users_mgt_cny = (@group_id_show_to_mgt_cny + 1);
-			SET @group_name_are_users_mgt_cny = (CONCAT(@unit_for_group,'-List-Mgt-Cny-Employee'));
+			SET @group_name_are_users_mgt_cny = (CONCAT(@unit_for_group,'-06-List-Mgt-Cny-Employee'));
 			SET @group_description_are_users_mgt_cny = (CONCAT('list the Mgt Cny Employee(s)', @unit));
 			
 			# Can See mgt cny user Group
 			SET @group_id_see_users_mgt_cny = (@group_id_are_users_mgt_cny + 1);
-			SET @group_name_see_users_mgt_cny = (CONCAT(@unit_for_group,'-Can-see-Mgt-Cny-Employee'));
+			SET @group_name_see_users_mgt_cny = (CONCAT(@unit_for_group,'-06-Can-see-Mgt-Cny-Employee'));
 			SET @group_description_see_users_mgt_cny = (CONCAT('See the list of Mgt Cny Employee(s) for ', @unit));
 		
 		# For the occupant
 			# Visibility group
 			SET @group_id_show_to_occupant = (@group_id_see_users_mgt_cny + 1);
-			SET @group_name_show_to_occupant = (CONCAT(@unit_for_group,'-limit-to-occupant'));
+			SET @group_name_show_to_occupant = (CONCAT(@unit_for_group,'-02-Limit-to-occupant'));
 			SET @group_description_show_to_occupant = (CONCAT(@visibility_explanation_1,'Occupants'));
 			
 			# Is in occupant user Group
 			SET @group_id_are_users_occupant = (@group_id_show_to_occupant + 1);
-			SET @group_name_are_users_occupant = (CONCAT(@unit_for_group,'-List-occupant'));
+			SET @group_name_are_users_occupant = (CONCAT(@unit_for_group,'-06-List-occupant'));
 			SET @group_description_are_users_occupant = (CONCAT('list-the-occupant(s)-', @unit));
 			
 			# Can See occupant user Group
 			SET @group_id_see_users_occupant = (@group_id_are_users_occupant + 1);
-			SET @group_name_see_users_occupant = (CONCAT(@unit_for_group,'-Can-see-occupant'));
+			SET @group_name_see_users_occupant = (CONCAT(@unit_for_group,'-06-Can-see-occupant'));
 			SET @group_description_see_users_occupant = (CONCAT('See the list of occupant(s) for ', @unit));
 			
 		# For the people invited by this user:
 			# Is in invited_by user Group
 			SET @group_id_are_users_invited_by = (@group_id_see_users_occupant + 1);
-			SET @group_name_are_users_invited_by = (CONCAT(@unit_for_group,'-List-invited-by'));
+			SET @group_name_are_users_invited_by = (CONCAT(@unit_for_group,'-06-List-invited-by'));
 			SET @group_description_are_users_invited_by = (CONCAT('list the invited_by(s)', @unit));
 			
 			# Can See users in invited_by user Group
 			SET @group_id_see_users_invited_by = (@group_id_are_users_invited_by + 1);
-			SET @group_name_see_users_invited_by = (CONCAT(@unit_for_group,'-Can-see-invited-by'));
+			SET @group_name_see_users_invited_by = (CONCAT(@unit_for_group,'-06-Can-see-invited-by'));
 			SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
 
 	# We can populate the 'groups' table now.
@@ -500,17 +549,17 @@
 			,`icon_url`
 			) 
 			VALUES 
-			(@create_case_group_id,CONCAT(@unit_for_group,'-Can Create Cases'),'User can create cases for this unit.',1,'',1,NULL)
-			,(@can_edit_case_group_id,CONCAT(@unit_for_group,'-Can edit'),'user in this can edit a case they have access to',1,'',1,NULL)
-			,(@can_edit_all_field_case_group_id,CONCAT(@unit_for_group,'-Can edit all fields'),'user in this can edit all fields in a case they have access to, regardless of its role',1,'',1,NULL)
-			,(@can_edit_component_group_id,CONCAT(@unit_for_group,'-Can edit components'),'user in this can edit components/stakholders and permission for the unit',1,'',1,NULL)
-			,(@can_see_cases_group_id,CONCAT(@unit_for_group,'-Visible to all'),'All users in this unit can see this case for the unit',1,'',1,NULL)
-			,(@all_g_flags_group_id,CONCAT(@unit_for_group,'-Can approve all flags'),'user in this group are allowed to approve all flags',1,'',0,NULL)
-			,(@all_r_flags_group_id,CONCAT(@unit_for_group,'-Can be asked to approve all flags'),'user in this group are visible in the list of flag approver',1,'',0,NULL)
-			,(@list_visible_assignees_group_id,CONCAT(@unit_for_group,'-List stakeholder'),'List all the users which are visible assignee(s) for this unit',1,'',0,NULL)
-			,(@see_visible_assignees_group_id,CONCAT(@unit_for_group,'-See stakeholder'),'Can see all the users which are stakeholders for this unit',1,'',0,NULL)
-			,(@active_stakeholder_group_id,CONCAT(@unit_for_group,'-Active stakeholder'),'For users who have a role in this unit as of today',1,'',1,NULL)
-			,(@unit_creator_group_id,CONCAT(@unit_for_group,'-Unit Creators'),'This is the group for the unit creator',1,'',0,NULL)
+			(@create_case_group_id,@group_name_create_case_group,@group_description_create_case_group,1,'',1,NULL)
+			,(@can_edit_case_group_id,@group_name_can_edit_case_group,@group_description_can_edit_case_group,1,'',1,NULL)
+			,(@can_see_cases_group_id,@group_name_can_see_cases_group,@group_description_can_see_cases_group,1,'',1,NULL)
+			,(@can_edit_all_field_case_group_id,@group_name_can_edit_all_field_case_group,@group_description_can_edit_all_field_case_group,1,'',1,NULL)
+			,(@can_edit_component_group_id,@group_name_can_edit_component_group,@group_description_can_edit_component_group,1,'',1,NULL)
+			,(@all_g_flags_group_id,@group_name_all_g_flags_group,@group_description_all_g_flags_group,1,'',0,NULL)
+			,(@all_r_flags_group_id,@group_name_all_r_flags_group,@group_description_all_r_flags_group,1,'',0,NULL)
+			,(@list_visible_assignees_group_id,@group_name_list_visible_assignees_group,@group_description_list_visible_assignees_group,1,'',0,NULL)
+			,(@see_visible_assignees_group_id,@group_name_see_visible_assignees_group,@group_description_see_visible_assignees_group,1,'',0,NULL)
+			,(@active_stakeholder_group_id,@group_name_active_stakeholder_group,@group_description_active_stakeholder_group,1,'',1,NULL)
+			,(@unit_creator_group_id,@group_name_unit_creator_group,@group_description_unit_creator_group,1,'',0,NULL)
 			,(@group_id_show_to_tenant,@group_name_show_to_tenant,@group_description_tenant,1,'',1,NULL)
 			,(@group_id_are_users_tenant,@group_name_are_users_tenant,@group_description_are_users_tenant,1,'',0,NULL)
 			,(@group_id_see_users_tenant,@group_name_see_users_tenant,@group_description_see_users_tenant,1,'',0,NULL)
