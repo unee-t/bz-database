@@ -465,7 +465,7 @@
 		# For the occupant
 			# Visibility group
 			SET @group_id_show_to_occupant = (@group_id_see_users_mgt_cny + 1);
-			SET @group_name_show_to_occupant = (CONCAT(@unit_for_group,'limit-to-occupant'));
+			SET @group_name_show_to_occupant = (CONCAT(@unit_for_group,'-limit-to-occupant'));
 			SET @group_description_show_to_occupant = (CONCAT(@visibility_explanation_1,'Occupants'));
 			
 			# Is in occupant user Group
