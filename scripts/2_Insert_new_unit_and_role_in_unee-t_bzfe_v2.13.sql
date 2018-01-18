@@ -398,8 +398,8 @@
 			
 		# Allow user to  for this unit
 			SET @all_r_flags_group_id = (@all_g_flags_group_id + 1);
-			SET @group_name_all_r_flags_group = (CONCAT(@unit_for_group,'-05-Can-Be-Asked-To-Approve-All-Flags'));
-			SET @group_description_all_r_flags_group = 'User can be asked specifically to approve any flag';
+			SET @group_name_all_r_flags_group = (CONCAT(@unit_for_group,'-05-Can-Request-All-Flags'));
+			SET @group_description_all_r_flags_group = 'User can request a Flag to be approved';
 			
 		
 	# The Groups that control user visibility
