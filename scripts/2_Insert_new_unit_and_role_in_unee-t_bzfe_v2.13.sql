@@ -385,108 +385,108 @@
 		# For the tenant
 			# Visibility group
 			SET @group_id_show_to_tenant = (@unit_creator_group_id + 1);
-			SET @group_name_show_to_tenant = (CONCAT(@unit,'-limit-to-Tenant'));
+			SET @group_name_show_to_tenant = (CONCAT(@unit_for_group,'-limit-to-Tenant'));
 			SET @group_description_tenant = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1),@visibility_explanation_2));
 		
 			# Is in tenant user Group
 			SET @group_id_are_users_tenant = (@group_id_show_to_tenant + 1);
-			SET @group_name_are_users_tenant = (CONCAT(@unit,'-List-Tenant'));
+			SET @group_name_are_users_tenant = (CONCAT(@unit_for_group,'-List-Tenant'));
 			SET @group_description_are_users_tenant = (CONCAT('list the tenant(s)', @unit));
 			
 			# Can See tenant user Group
 			SET @group_id_see_users_tenant = (@group_id_are_users_tenant + 1);
-			SET @group_name_see_users_tenant = (CONCAT(@unit,'-Can-see-Tenant'));
+			SET @group_name_see_users_tenant = (CONCAT(@unit_for_group,'-Can-see-Tenant'));
 			SET @group_description_see_users_tenant = (CONCAT('See the list of tenant(s) for ', @unit));
 	
 		# For the Landlord
 			# Visibility group 
 			SET @group_id_show_to_landlord = (@group_id_see_users_tenant + 1);
-			SET @group_name_show_to_landlord = (CONCAT(@unit,'-Limit-to-Landlord'));
+			SET @group_name_show_to_landlord = (CONCAT(@unit_for_group,'-Limit-to-Landlord'));
 			SET @group_description_show_to_landlord = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2),@visibility_explanation_2));
 			
 			# Is in landlord user Group
 			SET @group_id_are_users_landlord = (@group_id_show_to_landlord + 1);
-			SET @group_name_are_users_landlord = (CONCAT(@unit,'-List-landlord'));
+			SET @group_name_are_users_landlord = (CONCAT(@unit_for_group,'-List-landlord'));
 			SET @group_description_are_users_landlord = (CONCAT('list the landlord(s)', @unit));
 			
 			# Can See landlord user Group
 			SET @group_id_see_users_landlord = (@group_id_are_users_landlord + 1);
-			SET @group_name_see_users_landlord = (CONCAT(@unit,'-Can-see-lanldord'));
+			SET @group_name_see_users_landlord = (CONCAT(@unit_for_group,'-Can-see-lanldord'));
 			SET @group_description_see_users_landlord = (CONCAT('See the list of lanldord(s) for ', @unit));
 			
 		# For the agent
 			# Visibility group 
 			SET @group_id_show_to_agent = (@group_id_see_users_landlord + 1);
-			SET @group_name_show_to_agent = (CONCAT(@unit,'-limit-to-Agent'));
+			SET @group_name_show_to_agent = (CONCAT(@unit_for_group,'-limit-to-Agent'));
 			SET @group_description_show_to_agent = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5),@visibility_explanation_2));
 			
 			# Is in Agent user Group
 			SET @group_id_are_users_agent = (@group_id_show_to_agent + 1);
-			SET @group_name_are_users_agent = (CONCAT(@unit,'-List-agent'));
+			SET @group_name_are_users_agent = (CONCAT(@unit_for_group,'-List-agent'));
 			SET @group_description_are_users_agent = (CONCAT('list the agent(s)', @unit));
 			
 			# Can See Agent user Group
 			SET @group_id_see_users_agent = (@group_id_are_users_agent + 1);
-			SET @group_name_see_users_agent = (CONCAT(@unit,'-Can-see-agent'));
+			SET @group_name_see_users_agent = (CONCAT(@unit_for_group,'-Can-see-agent'));
 			SET @group_description_see_users_agent = (CONCAT('See the list of agent(s) for ', @unit));
 		
 		# For the contractor
 			# Visibility group 
 			SET @group_id_show_to_contractor = (@group_id_see_users_agent + 1);
-			SET @group_name_show_to_contractor = (CONCAT(@unit,'-limit-to-Contractor-Employee'));
+			SET @group_name_show_to_contractor = (CONCAT(@unit_for_group,'-limit-to-Contractor-Employee'));
 			SET @group_description_show_to_contractor = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3),@visibility_explanation_2));
 			
 			# Is in contractor user Group
 			SET @group_id_are_users_contractor = (@group_id_show_to_contractor + 1);
-			SET @group_name_are_users_contractor = (CONCAT(@unit,'-List-contractor-employee'));
+			SET @group_name_are_users_contractor = (CONCAT(@unit_for_group,'-List-contractor-employee'));
 			SET @group_description_are_users_contractor = (CONCAT('list the contractor employee(s)', @unit));
 			
 			# Can See contractor user Group
 			SET @group_id_see_users_contractor = (@group_id_are_users_contractor + 1);
-			SET @group_name_see_users_contractor = (CONCAT(@unit,'-Can-see-contractor-employee'));
+			SET @group_name_see_users_contractor = (CONCAT(@unit_for_group,'-Can-see-contractor-employee'));
 			SET @group_description_see_users_contractor = (CONCAT('See the list of contractor employee(s) for ', @unit));
 			
 		# For the Mgt Cny
 			# Visibility group
 			SET @group_id_show_to_mgt_cny = (@group_id_see_users_contractor + 1);
-			SET @group_name_show_to_mgt_cny = (CONCAT(@unit,'-limit-to-Mgt-Cny-Employee'));
+			SET @group_name_show_to_mgt_cny = (CONCAT(@unit_for_group,'-limit-to-Mgt-Cny-Employee'));
 			SET @group_description_show_to_mgt_cny = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4),@visibility_explanation_2));
 			
 			# Is in mgt cny user Group
 			SET @group_id_are_users_mgt_cny = (@group_id_show_to_mgt_cny + 1);
-			SET @group_name_are_users_mgt_cny = (CONCAT(@unit,'-List-Mgt-Cny-Employee'));
+			SET @group_name_are_users_mgt_cny = (CONCAT(@unit_for_group,'-List-Mgt-Cny-Employee'));
 			SET @group_description_are_users_mgt_cny = (CONCAT('list the Mgt Cny Employee(s)', @unit));
 			
 			# Can See mgt cny user Group
 			SET @group_id_see_users_mgt_cny = (@group_id_are_users_mgt_cny + 1);
-			SET @group_name_see_users_mgt_cny = (CONCAT(@unit,'-Can-see-Mgt-Cny-Employee'));
+			SET @group_name_see_users_mgt_cny = (CONCAT(@unit_for_group,'-Can-see-Mgt-Cny-Employee'));
 			SET @group_description_see_users_mgt_cny = (CONCAT('See the list of Mgt Cny Employee(s) for ', @unit));
 		
 		# For the occupant
 			# Visibility group
 			SET @group_id_show_to_occupant = (@group_id_see_users_mgt_cny + 1);
-			SET @group_name_show_to_occupant = (CONCAT(@unit,'limit-to-occupant'));
+			SET @group_name_show_to_occupant = (CONCAT(@unit_for_group,'limit-to-occupant'));
 			SET @group_description_show_to_occupant = (CONCAT(@visibility_explanation_1,'Occupants'));
 			
 			# Is in occupant user Group
 			SET @group_id_are_users_occupant = (@group_id_show_to_occupant + 1);
-			SET @group_name_are_users_occupant = (CONCAT(@unit,'-List-occupant'));
+			SET @group_name_are_users_occupant = (CONCAT(@unit_for_group,'-List-occupant'));
 			SET @group_description_are_users_occupant = (CONCAT('list-the-occupant(s)-', @unit));
 			
 			# Can See occupant user Group
 			SET @group_id_see_users_occupant = (@group_id_are_users_occupant + 1);
-			SET @group_name_see_users_occupant = (CONCAT(@unit,'-Can-see-occupant'));
+			SET @group_name_see_users_occupant = (CONCAT(@unit_for_group,'-Can-see-occupant'));
 			SET @group_description_see_users_occupant = (CONCAT('See the list of occupant(s) for ', @unit));
 			
 		# For the people invited by this user:
 			# Is in invited_by user Group
 			SET @group_id_are_users_invited_by = (@group_id_see_users_occupant + 1);
-			SET @group_name_are_users_invited_by = (CONCAT(@unit,'-List-invited-by'));
+			SET @group_name_are_users_invited_by = (CONCAT(@unit_for_group,'-List-invited-by'));
 			SET @group_description_are_users_invited_by = (CONCAT('list the invited_by(s)', @unit));
 			
 			# Can See users in invited_by user Group
 			SET @group_id_see_users_invited_by = (@group_id_are_users_invited_by + 1);
-			SET @group_name_see_users_invited_by = (CONCAT(@unit,'-Can-see-invited-by'));
+			SET @group_name_see_users_invited_by = (CONCAT(@unit_for_group,'-Can-see-invited-by'));
 			SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
 
 	# We can populate the 'groups' table now.
