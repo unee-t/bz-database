@@ -155,6 +155,7 @@
 		
 	# For the temporary users:
 		# Tenant
+			SET @component_id_tenant = ((SELECT MAX(`id`) FROM `components`) + 1);
 			SET @role_user_g_description_tenant = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 1);
 			SET @user_pub_name_tenant = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_tenant);
 			SET @role_user_pub_info_tenant = CONCAT(@user_pub_name_tenant
@@ -166,6 +167,7 @@
 			SET @user_role_desc_tenant = @role_user_pub_info_tenant;
 
 		# Landlord
+			SET @component_id_landlord = (@component_id_tenant + 1);
 			SET @role_user_g_description_landlord = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 2);
 			SET @user_pub_name_landlord = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_landlord);
 			SET @role_user_pub_info_landlord = CONCAT(@user_pub_name_landlord
@@ -177,6 +179,7 @@
 			SET @user_role_desc_landlord = @role_user_pub_info_landlord;
 		
 		# Agent
+			SET @component_id_agent = (@component_id_landlord + 1);
 			SET @role_user_g_description_agent = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 5);
 			SET @user_pub_name_agent = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_agent);
 			SET @role_user_pub_info_agent = CONCAT(@user_pub_name_agent
@@ -188,6 +191,7 @@
 			SET @user_role_desc_agent = @role_user_pub_info_agent;
 		
 		# Contractor
+			SET @component_id_contractor = (@component_id_agent + 1);
 			SET @role_user_g_description_contractor = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 3);
 			SET @user_pub_name_contractor = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_contractor);
 			SET @role_user_pub_info_contractor = CONCAT(@user_pub_name_contractor
@@ -206,6 +210,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
 
 # Groups that do NOT exist yet, they were NOT created as part of the migration
 
@@ -578,13 +583,6 @@
 		;
 		
 # Now we insert the component/roles that we did not create during the migration
-	
-	# We will create all component_id for all the components/roles we need
-	# We need to know the next available Id for the component:
-		SET @component_id_tenant = ((SELECT MAX(`id`) FROM `components`) + 1);
-		SET @component_id_landlord = (@component_id_tenant + 1);
-		SET @component_id_agent = (@component_id_landlord + 1);
-		SET @component_id_contractor = (@component_id_agent + 1);
 	
 	# We have everything, we can now create the other component/role for the unit.
 		INSERT INTO `components`
