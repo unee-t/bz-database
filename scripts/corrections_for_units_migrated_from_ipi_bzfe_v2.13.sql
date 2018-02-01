@@ -145,9 +145,9 @@
 		SET @unit_for_flag = REPLACE(@unit_for_flag,'?','_');
 		SET @unit_for_flag = REPLACE(@unit_for_flag,'/','_');
 		SET @unit_for_flag = REPLACE(@unit_for_flag,'\\','_');
-		SET @unit_for_group = REPLACE(@unit_for_flag,'_','-');
-		SET @unit_for_group = REPLACE(@unit_for_group,'---','-');
 		SET @unit_for_group = REPLACE(@unit_for_group,'----','-');
+		SET @unit_for_group = REPLACE(@unit_for_group,'---','-');
+		SET @unit_for_group = REPLACE(@unit_for_flag,'_','-');
 
 	# For the creator
 	# This is NOT needed: we are just updating things...
