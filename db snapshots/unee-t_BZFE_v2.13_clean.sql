@@ -1,5 +1,5 @@
 /*
-SQLyog Ultimate v12.5.0 (64 bit)
+SQLyog Ultimate v12.5.1 (64 bit)
 MySQL - 10.2.10-MariaDB-10.2.10+maria~jessie : Database - bugzilla
 *********************************************************************
 */
@@ -222,7 +222,12 @@ insert  into `audit_log`(`user_id`,`class`,`object_id`,`field`,`removed`,`added`
 (1,'Bugzilla::Field',4,'description','Unit','Product','2017-10-27 00:34:42'),
 (1,'Bugzilla::Field',6,'description','Case Category','Platform','2017-10-27 00:34:42'),
 (1,'Bugzilla::Field',8,'description','Source','OS/Version','2017-10-27 00:34:42'),
-(1,'Bugzilla::Field',15,'description','Role','Component','2017-10-27 00:34:42');
+(1,'Bugzilla::Field',15,'description','Role','Component','2017-10-27 00:34:42'),
+(1,'Bugzilla::User',2,'__create__',NULL,'temporary.agent@example.com','2018-02-02 01:08:41'),
+(1,'Bugzilla::User',3,'__create__',NULL,'temporary.landlord@example.com','2018-02-02 01:14:19'),
+(1,'Bugzilla::User',4,'__create__',NULL,'temporary.tenant@example.com','2018-02-02 01:14:40'),
+(1,'Bugzilla::User',5,'__create__',NULL,'temporary.contractor@example.com','2018-02-02 01:14:55'),
+(1,'Bugzilla::User',6,'__create__',NULL,'temporary.mgt.cny@example.com','2018-02-02 01:15:20');
 
 /*Table structure for table `bug_cf_ipi_clust_3_roadbook_for` */
 
@@ -564,6 +569,56 @@ CREATE TABLE `cc` (
 
 /*Data for the table `cc` */
 
+/*Table structure for table `cf_claim_type` */
+
+DROP TABLE IF EXISTS `cf_claim_type`;
+
+CREATE TABLE `cf_claim_type` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `value` varchar(64) NOT NULL,
+  `sortkey` smallint(6) NOT NULL DEFAULT 0,
+  `isactive` tinyint(4) NOT NULL DEFAULT 1,
+  `visibility_value_id` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cf_claim_type_value_idx` (`value`),
+  KEY `cf_claim_type_sortkey_idx` (`sortkey`,`value`),
+  KEY `cf_claim_type_visibility_value_id_idx` (`visibility_value_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cf_claim_type` */
+
+insert  into `cf_claim_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
+(1,'---',0,1,NULL),
+(2,'Electrical (Rep)',1005,1,2),
+(3,'Plumbing (Rep)',1010,1,2),
+(4,'Aircon/Heating (Rep)',1015,1,2),
+(5,'Inventory (Rep)',1020,1,2),
+(6,'Internet (Rep)',1025,1,2),
+(7,'Cable TV (Rep)',1030,1,2),
+(8,'Other (Rep)',1035,1,2),
+(9,'Aircon/Heating (Mtce)',1505,1,3),
+(10,'Equipment (Mtce)',1510,1,3),
+(11,'Plumbing (Mtce)',1515,1,3),
+(12,'Other (Mtce)',1525,1,3),
+(13,'Key',2505,1,6),
+(14,'Resident Card',2510,1,6),
+(15,'Carpark',2515,1,6),
+(16,'Kitchen Equip.',2520,1,6),
+(17,'Furnitures',2525,1,6),
+(18,'Other Equip.',2530,1,6),
+(19,'Structure',3005,1,7),
+(20,'Carpentry',3010,1,7),
+(21,'Parquet/Flooring',3015,1,7),
+(22,'Painting',3020,1,7),
+(23,'Other Renov.',3025,1,7),
+(24,'Setup',3505,1,8),
+(25,'Light Renovation',3510,1,8),
+(26,'Refurbishing',3515,1,8),
+(27,'Handover',3520,1,8),
+(28,'Other Projects',3530,1,8),
+(29,'Viewing/Visit',4505,1,4),
+(30,'Other',4510,1,4);
+
 /*Table structure for table `cf_ipi_clust_3_action_type` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_3_action_type`;
@@ -723,6 +778,31 @@ insert  into `cf_ipi_clust_4_status_standby`(`id`,`value`,`sortkey`,`isactive`,`
 (2,'PENDING PMT',10,1,NULL),
 (3,'OTHER',20,1,NULL);
 
+/*Table structure for table `cf_ipi_clust_5_budget_approver` */
+
+DROP TABLE IF EXISTS `cf_ipi_clust_5_budget_approver`;
+
+CREATE TABLE `cf_ipi_clust_5_budget_approver` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `value` varchar(64) NOT NULL,
+  `sortkey` smallint(6) NOT NULL DEFAULT 0,
+  `isactive` tinyint(4) NOT NULL DEFAULT 1,
+  `visibility_value_id` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cf_ipi_budget_approver_value_idx` (`value`),
+  KEY `cf_ipi_budget_approver_sortkey_idx` (`sortkey`,`value`),
+  KEY `cf_ipi_budget_approver_visibility_value_id_idx` (`visibility_value_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cf_ipi_clust_5_budget_approver` */
+
+insert  into `cf_ipi_clust_5_budget_approver`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
+(1,'---',0,1,NULL),
+(3,'Demo Person 1 (landlord)',0,1,2),
+(4,'Demo Person 4 (Agent)',20,1,2),
+(5,'Demo Person 5 (Tenant)',40,1,2),
+(6,'Demo Person 1 (Tenant)',0,1,3);
+
 /*Table structure for table `cf_ipi_clust_6_claim_type` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_6_claim_type`;
@@ -805,6 +885,27 @@ insert  into `cf_ipi_clust_6_claim_type`(`id`,`value`,`sortkey`,`isactive`,`visi
 (61,'Early Check IN/OUT',4060,1,8),
 (62,'High Chair',4065,1,8),
 (63,'Equipment',1040,1,2);
+
+/*Table structure for table `cf_ipi_clust_7_payment_type` */
+
+DROP TABLE IF EXISTS `cf_ipi_clust_7_payment_type`;
+
+CREATE TABLE `cf_ipi_clust_7_payment_type` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `value` varchar(64) NOT NULL,
+  `sortkey` smallint(6) NOT NULL DEFAULT 0,
+  `isactive` tinyint(4) NOT NULL DEFAULT 1,
+  `visibility_value_id` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cf_ipi_payment_type_value_idx` (`value`),
+  KEY `cf_ipi_payment_type_visibility_value_id_idx` (`visibility_value_id`),
+  KEY `cf_ipi_payment_type_sortkey_idx` (`sortkey`,`value`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cf_ipi_clust_7_payment_type` */
+
+insert  into `cf_ipi_clust_7_payment_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
+(1,'---',0,1,NULL);
 
 /*Table structure for table `cf_ipi_clust_7_spe_payment_type` */
 
@@ -1061,7 +1162,322 @@ insert  into `email_setting`(`user_id`,`relationship`,`event`) values
 (1,5,11),
 (1,5,50),
 (1,100,100),
-(1,100,101);
+(1,100,101),
+(2,0,0),
+(2,0,1),
+(2,0,2),
+(2,0,3),
+(2,0,4),
+(2,0,5),
+(2,0,6),
+(2,0,7),
+(2,0,9),
+(2,0,10),
+(2,0,11),
+(2,0,50),
+(2,1,0),
+(2,1,1),
+(2,1,2),
+(2,1,3),
+(2,1,4),
+(2,1,5),
+(2,1,6),
+(2,1,7),
+(2,1,9),
+(2,1,10),
+(2,1,11),
+(2,1,50),
+(2,2,0),
+(2,2,1),
+(2,2,2),
+(2,2,3),
+(2,2,4),
+(2,2,5),
+(2,2,6),
+(2,2,7),
+(2,2,8),
+(2,2,9),
+(2,2,10),
+(2,2,11),
+(2,2,50),
+(2,3,0),
+(2,3,1),
+(2,3,2),
+(2,3,3),
+(2,3,4),
+(2,3,5),
+(2,3,6),
+(2,3,7),
+(2,3,9),
+(2,3,10),
+(2,3,11),
+(2,3,50),
+(2,5,0),
+(2,5,1),
+(2,5,2),
+(2,5,3),
+(2,5,4),
+(2,5,5),
+(2,5,6),
+(2,5,7),
+(2,5,9),
+(2,5,10),
+(2,5,11),
+(2,5,50),
+(2,100,100),
+(2,100,101),
+(3,0,0),
+(3,0,1),
+(3,0,2),
+(3,0,3),
+(3,0,4),
+(3,0,5),
+(3,0,6),
+(3,0,7),
+(3,0,9),
+(3,0,10),
+(3,0,11),
+(3,0,50),
+(3,1,0),
+(3,1,1),
+(3,1,2),
+(3,1,3),
+(3,1,4),
+(3,1,5),
+(3,1,6),
+(3,1,7),
+(3,1,9),
+(3,1,10),
+(3,1,11),
+(3,1,50),
+(3,2,0),
+(3,2,1),
+(3,2,2),
+(3,2,3),
+(3,2,4),
+(3,2,5),
+(3,2,6),
+(3,2,7),
+(3,2,8),
+(3,2,9),
+(3,2,10),
+(3,2,11),
+(3,2,50),
+(3,3,0),
+(3,3,1),
+(3,3,2),
+(3,3,3),
+(3,3,4),
+(3,3,5),
+(3,3,6),
+(3,3,7),
+(3,3,9),
+(3,3,10),
+(3,3,11),
+(3,3,50),
+(3,5,0),
+(3,5,1),
+(3,5,2),
+(3,5,3),
+(3,5,4),
+(3,5,5),
+(3,5,6),
+(3,5,7),
+(3,5,9),
+(3,5,10),
+(3,5,11),
+(3,5,50),
+(3,100,100),
+(3,100,101),
+(4,0,0),
+(4,0,1),
+(4,0,2),
+(4,0,3),
+(4,0,4),
+(4,0,5),
+(4,0,6),
+(4,0,7),
+(4,0,9),
+(4,0,10),
+(4,0,11),
+(4,0,50),
+(4,1,0),
+(4,1,1),
+(4,1,2),
+(4,1,3),
+(4,1,4),
+(4,1,5),
+(4,1,6),
+(4,1,7),
+(4,1,9),
+(4,1,10),
+(4,1,11),
+(4,1,50),
+(4,2,0),
+(4,2,1),
+(4,2,2),
+(4,2,3),
+(4,2,4),
+(4,2,5),
+(4,2,6),
+(4,2,7),
+(4,2,8),
+(4,2,9),
+(4,2,10),
+(4,2,11),
+(4,2,50),
+(4,3,0),
+(4,3,1),
+(4,3,2),
+(4,3,3),
+(4,3,4),
+(4,3,5),
+(4,3,6),
+(4,3,7),
+(4,3,9),
+(4,3,10),
+(4,3,11),
+(4,3,50),
+(4,5,0),
+(4,5,1),
+(4,5,2),
+(4,5,3),
+(4,5,4),
+(4,5,5),
+(4,5,6),
+(4,5,7),
+(4,5,9),
+(4,5,10),
+(4,5,11),
+(4,5,50),
+(4,100,100),
+(4,100,101),
+(5,0,0),
+(5,0,1),
+(5,0,2),
+(5,0,3),
+(5,0,4),
+(5,0,5),
+(5,0,6),
+(5,0,7),
+(5,0,9),
+(5,0,10),
+(5,0,11),
+(5,0,50),
+(5,1,0),
+(5,1,1),
+(5,1,2),
+(5,1,3),
+(5,1,4),
+(5,1,5),
+(5,1,6),
+(5,1,7),
+(5,1,9),
+(5,1,10),
+(5,1,11),
+(5,1,50),
+(5,2,0),
+(5,2,1),
+(5,2,2),
+(5,2,3),
+(5,2,4),
+(5,2,5),
+(5,2,6),
+(5,2,7),
+(5,2,8),
+(5,2,9),
+(5,2,10),
+(5,2,11),
+(5,2,50),
+(5,3,0),
+(5,3,1),
+(5,3,2),
+(5,3,3),
+(5,3,4),
+(5,3,5),
+(5,3,6),
+(5,3,7),
+(5,3,9),
+(5,3,10),
+(5,3,11),
+(5,3,50),
+(5,5,0),
+(5,5,1),
+(5,5,2),
+(5,5,3),
+(5,5,4),
+(5,5,5),
+(5,5,6),
+(5,5,7),
+(5,5,9),
+(5,5,10),
+(5,5,11),
+(5,5,50),
+(5,100,100),
+(5,100,101),
+(6,0,0),
+(6,0,1),
+(6,0,2),
+(6,0,3),
+(6,0,4),
+(6,0,5),
+(6,0,6),
+(6,0,7),
+(6,0,9),
+(6,0,10),
+(6,0,11),
+(6,0,50),
+(6,1,0),
+(6,1,1),
+(6,1,2),
+(6,1,3),
+(6,1,4),
+(6,1,5),
+(6,1,6),
+(6,1,7),
+(6,1,9),
+(6,1,10),
+(6,1,11),
+(6,1,50),
+(6,2,0),
+(6,2,1),
+(6,2,2),
+(6,2,3),
+(6,2,4),
+(6,2,5),
+(6,2,6),
+(6,2,7),
+(6,2,8),
+(6,2,9),
+(6,2,10),
+(6,2,11),
+(6,2,50),
+(6,3,0),
+(6,3,1),
+(6,3,2),
+(6,3,3),
+(6,3,4),
+(6,3,5),
+(6,3,6),
+(6,3,7),
+(6,3,9),
+(6,3,10),
+(6,3,11),
+(6,3,50),
+(6,5,0),
+(6,5,1),
+(6,5,2),
+(6,5,3),
+(6,5,4),
+(6,5,5),
+(6,5,6),
+(6,5,7),
+(6,5,9),
+(6,5,10),
+(6,5,11),
+(6,5,50),
+(6,100,100),
+(6,100,101);
 
 /*Table structure for table `field_visibility` */
 
@@ -1579,7 +1995,10 @@ CREATE TABLE `logincookies` (
 /*Data for the table `logincookies` */
 
 insert  into `logincookies`(`cookie`,`userid`,`ipaddr`,`lastused`) values 
-('RqGl4m3Qf8',1,NULL,'2018-01-14 10:01:00');
+('db9hO4H56s',1,'172.56.16.54','2018-02-02 01:15:27'),
+('lopEuu60bW',1,'67.169.76.147','2018-02-02 01:12:38'),
+('RqGl4m3Qf8',1,NULL,'2018-01-14 10:01:00'),
+('TT91x5XMAg',1,'172.56.16.54','2018-02-02 01:15:20');
 
 /*Table structure for table `longdescs` */
 
@@ -1865,12 +2284,17 @@ CREATE TABLE `profiles` (
   PRIMARY KEY (`userid`),
   UNIQUE KEY `profiles_login_name_idx` (`login_name`),
   UNIQUE KEY `profiles_extern_id_idx` (`extern_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `profiles` */
 
 insert  into `profiles`(`userid`,`login_name`,`cryptpassword`,`realname`,`disabledtext`,`disable_mail`,`mybugslink`,`extern_id`,`is_enabled`,`last_seen_date`) values 
-(1,'administrator@example.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,'2018-01-14 00:00:00');
+(1,'administrator@example.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,'2018-02-02 00:00:00'),
+(2,'temporary.agent@example.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
+(3,'temporary.landlord@example.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
+(4,'temporary.tenant@example.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
+(5,'temporary.contractor@example.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
+(6,'temporary.mgt.cny@example.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL);
 
 /*Table structure for table `profiles_activity` */
 
@@ -1892,12 +2316,17 @@ CREATE TABLE `profiles_activity` (
   CONSTRAINT `fk_profiles_activity_fieldid_fielddefs_id` FOREIGN KEY (`fieldid`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_profiles_activity_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_profiles_activity_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `profiles_activity` */
 
 insert  into `profiles_activity`(`id`,`userid`,`who`,`profiles_when`,`fieldid`,`oldvalue`,`newvalue`) values 
-(1,1,1,'2017-11-25 00:28:50',33,NULL,'2017-11-25 00:28:50');
+(1,1,1,'2017-11-25 00:28:50',33,NULL,'2017-11-25 00:28:50'),
+(2,2,1,'2018-02-02 01:08:41',33,NULL,'2018-02-02 01:08:41'),
+(3,3,1,'2018-02-02 01:14:19',33,NULL,'2018-02-02 01:14:19'),
+(4,4,1,'2018-02-02 01:14:40',33,NULL,'2018-02-02 01:14:40'),
+(5,5,1,'2018-02-02 01:14:55',33,NULL,'2018-02-02 01:14:55'),
+(6,6,1,'2018-02-02 01:15:20',33,NULL,'2018-02-02 01:15:20');
 
 /*Table structure for table `quips` */
 
@@ -2203,10 +2632,15 @@ insert  into `tokens`(`userid`,`issuedate`,`token`,`tokentype`,`eventdata`) valu
 (1,'2017-12-02 10:44:58','1Er7WpupQ0','session','edit_parameters'),
 (1,'2018-01-14 10:00:57','b4tOLgprs3','session','edit_parameters'),
 (1,'2018-01-14 10:00:46','BR8dyLAKFa','session','edit_parameters'),
+(1,'2018-02-02 01:14:40','F6szm0OqT0','session','edit_user'),
 (1,'2017-12-02 10:44:51','FjkvDQ9nBM','session','edit_parameters'),
+(1,'2018-02-02 01:14:19','HvG0QLg7GS','session','edit_user'),
+(1,'2018-02-02 01:14:55','Ky2Q7zgTFY','session','edit_user'),
 (1,'2017-12-02 10:45:01','NHwnvVjUAZ','session','edit_parameters'),
 (1,'2017-12-02 10:45:06','qugmzUEqDX','session','edit_parameters'),
-(1,'2017-12-02 10:45:11','RzQ0UBTUQZ','session','edit_parameters');
+(1,'2017-12-02 10:45:11','RzQ0UBTUQZ','session','edit_parameters'),
+(1,'2018-02-02 01:15:20','TGjj7QzQNu','session','edit_user'),
+(1,'2018-02-02 01:08:41','WbrvQ9AO9U','session','edit_user');
 
 /*Table structure for table `ts_error` */
 
@@ -2346,6 +2780,66 @@ CREATE TABLE `ut_audit_log` (
 
 /*Data for the table `ut_audit_log` */
 
+/*Table structure for table `ut_bug_status` */
+
+DROP TABLE IF EXISTS `ut_bug_status`;
+
+CREATE TABLE `ut_bug_status` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `value` varchar(64) NOT NULL,
+  `sortkey` smallint(6) NOT NULL DEFAULT 0,
+  `isactive` tinyint(4) NOT NULL DEFAULT 1,
+  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `is_open` tinyint(4) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ut_bug_status_value_idx` (`value`),
+  KEY `ut_bug_status_sortkey_idx` (`sortkey`,`value`),
+  KEY `ut_bug_status_visibility_value_id_idx` (`visibility_value_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_bug_status` */
+
+insert  into `ut_bug_status`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`,`is_open`) values 
+(1,'UNCONFIRMED',10,1,NULL,1),
+(2,'CONFIRMED',20,1,NULL,1),
+(3,'IN_PROGRESS',30,1,NULL,1),
+(4,'RESOLVED',60,1,NULL,0),
+(5,'VERIFIED',70,1,NULL,0),
+(6,'REOPENED',40,1,NULL,1),
+(7,'STAND BY',50,1,NULL,1),
+(8,'CLOSED',80,1,NULL,0);
+
+/*Table structure for table `ut_cf_ipi_clust_3_action_type` */
+
+DROP TABLE IF EXISTS `ut_cf_ipi_clust_3_action_type`;
+
+CREATE TABLE `ut_cf_ipi_clust_3_action_type` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `value` varchar(64) NOT NULL,
+  `sortkey` smallint(6) NOT NULL DEFAULT 0,
+  `isactive` tinyint(4) NOT NULL DEFAULT 1,
+  `visibility_value_id` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cf_ipi_clust_3_action_type_value_idx` (`value`),
+  KEY `cf_ipi_clust_3_action_type_sortkey_idx` (`sortkey`,`value`),
+  KEY `cf_ipi_clust_3_action_type_visibility_value_id_idx` (`visibility_value_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_cf_ipi_clust_3_action_type` */
+
+insert  into `ut_cf_ipi_clust_3_action_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
+(1,'---',0,1,NULL),
+(2,'Diagnose',10,1,NULL),
+(3,'Fix',15,1,NULL),
+(4,'Diagnose and Fix',20,1,NULL),
+(5,'Supervise',25,1,NULL),
+(6,'Deliver',30,1,NULL),
+(7,'Collect',35,1,NULL),
+(8,'Purchase',40,1,NULL),
+(9,'Install',45,1,NULL),
+(10,'Check',50,1,NULL),
+(11,'Other',55,1,NULL);
+
 /*Table structure for table `ut_contractor_types` */
 
 DROP TABLE IF EXISTS `ut_contractor_types`;
@@ -2384,6 +2878,131 @@ CREATE TABLE `ut_contractors` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_contractors` */
+
+/*Table structure for table `ut_fielddefs` */
+
+DROP TABLE IF EXISTS `ut_fielddefs`;
+
+CREATE TABLE `ut_fielddefs` (
+  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  `type` smallint(6) NOT NULL DEFAULT 0,
+  `custom` tinyint(4) NOT NULL DEFAULT 0,
+  `description` tinytext NOT NULL,
+  `long_desc` varchar(255) NOT NULL DEFAULT '',
+  `mailhead` tinyint(4) NOT NULL DEFAULT 0,
+  `sortkey` smallint(6) NOT NULL,
+  `obsolete` tinyint(4) NOT NULL DEFAULT 0,
+  `enter_bug` tinyint(4) NOT NULL DEFAULT 0,
+  `buglist` tinyint(4) NOT NULL DEFAULT 0,
+  `visibility_field_id` mediumint(9) DEFAULT NULL,
+  `value_field_id` mediumint(9) DEFAULT NULL,
+  `reverse_desc` tinytext DEFAULT NULL,
+  `is_mandatory` tinyint(4) NOT NULL DEFAULT 0,
+  `is_numeric` tinyint(4) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ut_fielddefs_name_idx` (`name`),
+  KEY `ut_fielddefs_sortkey_idx` (`sortkey`),
+  KEY `ut_fielddefs_value_field_id_idx` (`value_field_id`),
+  KEY `ut_fielddefs_is_mandatory_idx` (`is_mandatory`),
+  KEY `fk_ut_fielddefs_visibility_field_id_fielddefs_id` (`visibility_field_id`),
+  CONSTRAINT `fk_ut_fielddefs_value_field_id_fielddefs_id` FOREIGN KEY (`value_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_ut_fielddefs_visibility_field_id_fielddefs_id` FOREIGN KEY (`visibility_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_fielddefs` */
+
+insert  into `ut_fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`mailhead`,`sortkey`,`obsolete`,`enter_bug`,`buglist`,`visibility_field_id`,`value_field_id`,`reverse_desc`,`is_mandatory`,`is_numeric`) values 
+(1,'bug_id',0,0,'Bug #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
+(2,'short_desc',0,0,'Summary','',1,200,0,0,1,NULL,NULL,NULL,1,0),
+(3,'classification',2,0,'Classification','',1,300,0,0,1,NULL,NULL,NULL,0,0),
+(4,'product',2,0,'Product','',1,400,0,0,1,NULL,NULL,NULL,1,0),
+(5,'version',0,0,'Version','',1,500,0,0,1,NULL,NULL,NULL,1,0),
+(6,'rep_platform',2,0,'Platform','',1,600,0,0,1,NULL,NULL,NULL,0,0),
+(7,'bug_file_loc',0,0,'URL','',1,700,0,0,1,NULL,NULL,NULL,0,0),
+(8,'op_sys',2,0,'OS/Version','',1,800,0,0,1,NULL,NULL,NULL,0,0),
+(9,'bug_status',2,0,'Status','',1,900,0,0,1,NULL,NULL,NULL,0,0),
+(10,'status_whiteboard',0,0,'Status Whiteboard','',1,1000,0,0,1,NULL,NULL,NULL,0,0),
+(11,'keywords',8,0,'Keywords','',1,1100,0,0,1,NULL,NULL,NULL,0,0),
+(12,'resolution',2,0,'Resolution','',0,1200,0,0,1,NULL,NULL,NULL,0,0),
+(13,'bug_severity',2,0,'Severity','',1,1300,0,0,1,NULL,NULL,NULL,0,0),
+(14,'priority',2,0,'Priority','',1,1400,0,0,1,NULL,NULL,NULL,0,0),
+(15,'component',2,0,'Component','',1,1500,0,0,1,NULL,NULL,NULL,1,0),
+(16,'assigned_to',0,0,'AssignedTo','',1,1600,0,0,1,NULL,NULL,NULL,0,0),
+(17,'reporter',0,0,'ReportedBy','',1,1700,0,0,1,NULL,NULL,NULL,0,0),
+(18,'qa_contact',0,0,'QAContact','',1,1800,0,0,1,NULL,NULL,NULL,0,0),
+(19,'assigned_to_realname',0,0,'AssignedToName','',0,1900,0,0,1,NULL,NULL,NULL,0,0),
+(20,'reporter_realname',0,0,'ReportedByName','',0,2000,0,0,1,NULL,NULL,NULL,0,0),
+(21,'qa_contact_realname',0,0,'QAContactName','',0,2100,0,0,1,NULL,NULL,NULL,0,0),
+(22,'cc',0,0,'CC','',1,2200,0,0,0,NULL,NULL,NULL,0,0),
+(23,'dependson',0,0,'Depends on','',1,2300,0,0,1,NULL,NULL,NULL,0,1),
+(24,'blocked',0,0,'Blocks','',1,2400,0,0,1,NULL,NULL,NULL,0,1),
+(25,'attachments.description',0,0,'Attachment description','',0,2500,0,0,0,NULL,NULL,NULL,0,0),
+(26,'attachments.filename',0,0,'Attachment filename','',0,2600,0,0,0,NULL,NULL,NULL,0,0),
+(27,'attachments.mimetype',0,0,'Attachment mime type','',0,2700,0,0,0,NULL,NULL,NULL,0,0),
+(28,'attachments.ispatch',0,0,'Attachment is patch','',0,2800,0,0,0,NULL,NULL,NULL,0,1),
+(29,'attachments.isobsolete',0,0,'Attachment is obsolete','',0,2900,0,0,0,NULL,NULL,NULL,0,1),
+(30,'attachments.isprivate',0,0,'Attachment is private','',0,3000,0,0,0,NULL,NULL,NULL,0,1),
+(31,'attachments.submitter',0,0,'Attachment creator','',0,3100,0,0,0,NULL,NULL,NULL,0,0),
+(32,'target_milestone',0,0,'Target Milestone','',1,3200,0,0,1,NULL,NULL,NULL,0,0),
+(33,'creation_ts',0,0,'Creation date','',0,3300,0,0,1,NULL,NULL,NULL,0,0),
+(34,'delta_ts',0,0,'Last changed date','',0,3400,0,0,1,NULL,NULL,NULL,0,0),
+(35,'longdesc',0,0,'Comment','',0,3500,0,0,0,NULL,NULL,NULL,0,0),
+(36,'longdescs.isprivate',0,0,'Comment is private','',0,3600,0,0,0,NULL,NULL,NULL,0,1),
+(37,'longdescs.count',0,0,'Number of Comments','',0,3700,0,0,1,NULL,NULL,NULL,0,1),
+(38,'alias',0,0,'Alias','',0,3800,0,0,1,NULL,NULL,NULL,0,0),
+(39,'everconfirmed',0,0,'Ever Confirmed','',0,3900,0,0,0,NULL,NULL,NULL,0,1),
+(40,'reporter_accessible',0,0,'Reporter Accessible','',0,4000,0,0,0,NULL,NULL,NULL,0,1),
+(41,'cclist_accessible',0,0,'CC Accessible','',0,4100,0,0,0,NULL,NULL,NULL,0,1),
+(42,'bug_group',0,0,'Group','',1,4200,0,0,0,NULL,NULL,NULL,0,0),
+(43,'estimated_time',0,0,'Estimated Hours','',1,4300,0,0,1,NULL,NULL,NULL,0,1),
+(44,'remaining_time',0,0,'Remaining Hours','',0,4400,0,0,1,NULL,NULL,NULL,0,1),
+(45,'deadline',5,0,'Deadline','',1,4500,0,0,1,NULL,NULL,NULL,0,0),
+(46,'commenter',0,0,'Commenter','',0,4600,0,0,0,NULL,NULL,NULL,0,0),
+(47,'flagtypes.name',0,0,'Flags','',0,4700,0,0,1,NULL,NULL,NULL,0,0),
+(48,'requestees.login_name',0,0,'Flag Requestee','',0,4800,0,0,0,NULL,NULL,NULL,0,0),
+(49,'setters.login_name',0,0,'Flag Setter','',0,4900,0,0,0,NULL,NULL,NULL,0,0),
+(50,'work_time',0,0,'Hours Worked','',0,5000,0,0,1,NULL,NULL,NULL,0,1),
+(51,'percentage_complete',0,0,'Percentage Complete','',0,5100,0,0,1,NULL,NULL,NULL,0,1),
+(52,'content',0,0,'Content','',0,5200,0,0,0,NULL,NULL,NULL,0,0),
+(53,'attach_data.thedata',0,0,'Attachment data','',0,5300,0,0,0,NULL,NULL,NULL,0,0),
+(54,'owner_idle_time',0,0,'Time Since Assignee Touched','',0,5400,0,0,0,NULL,NULL,NULL,0,0),
+(55,'see_also',7,0,'See Also','',0,5500,0,0,0,NULL,NULL,NULL,0,0),
+(56,'tag',8,0,'Personal Tags','',0,5600,0,0,1,NULL,NULL,NULL,0,0),
+(57,'last_visit_ts',5,0,'Last Visit','',0,5700,0,0,1,NULL,NULL,NULL,0,0),
+(58,'comment_tag',0,0,'Comment Tag','',0,5800,0,0,0,NULL,NULL,NULL,0,0),
+(59,'days_elapsed',0,0,'Days since bug changed','',0,5900,0,0,0,NULL,NULL,NULL,0,0),
+(60,'cf_ipi_clust_4_status_in_progress',2,1,'Progression','More information about the case when the status is \"IN PROGRESS\".',0,10,0,1,1,9,NULL,NULL,0,0),
+(61,'cf_ipi_clust_4_status_standby',2,1,'Stand By Cause','More information about the case when the status is \"STAND BY\"',0,20,0,0,1,9,NULL,NULL,0,0),
+(62,'cf_ipi_clust_2_room',1,1,'Room(s)','Information about the room(s) where the case is located',0,600,0,1,1,NULL,NULL,NULL,0,0),
+(63,'cf_ipi_clust_6_claim_type',2,1,'Case Type','The Case Type allows us to better organize Cases. It depends on the Case Category.',0,600,0,1,1,NULL,6,NULL,0,0),
+(64,'cf_ipi_clust_1_solution',4,1,'Solution','The CURRENT solution that we have to solve this. This could (and in many occasion WILL) change over time. It can also be empty if we don\'t know what the solution is yet. It is different from the NEXT STEP field.',0,3215,0,1,1,NULL,NULL,NULL,0,0),
+(65,'cf_ipi_clust_1_next_step',4,1,'Next Step','Detailed description of the next step for the Case ASSIGNEE. This is different from the solution and from the field action.',0,3220,0,0,1,NULL,NULL,NULL,0,0),
+(66,'cf_ipi_clust_1_next_step_date',9,1,'Next Step Date','The date when the Next Step needs to happen.',0,3225,0,0,1,NULL,NULL,NULL,0,0),
+(67,'cf_ipi_clust_3_field_action',4,1,'Action Details','Describe in details what needs to be done. This text will appear in the roadbook.',0,3245,0,0,1,NULL,NULL,NULL,0,0),
+(68,'cf_ipi_clust_3_field_action_from',5,1,'Scheduled From','The Start date for the action on the field. It is also possible to add a start time.',0,3250,0,0,1,NULL,NULL,NULL,0,0),
+(69,'cf_ipi_clust_3_field_action_until',5,1,'Scheduled Until','The End date for the action on the field. It is also possible to add an end time.',0,3255,0,0,1,NULL,NULL,NULL,0,0),
+(70,'cf_ipi_clust_3_action_type',2,1,'Action Type','What type of action do we need to do on the field?',0,3260,0,0,1,NULL,NULL,NULL,0,0),
+(71,'cf_ipi_clust_3_nber_field_visits',10,1,'Field Visits','Number of visits or trips done to diagnose and solve this case. DO NOT include the visits by the supervisors/managers for Quality Control purposes. Increases Each time there is a new visit SCHEDULED. Decrease during debrief if cancelled.',0,3205,0,0,1,NULL,NULL,NULL,0,0),
+(72,'cf_ipi_clust_3_roadbook_for',3,1,'Action For','In whose roadbook shall Field Action appear? This can change over time. It is possible to choose more than 1 person if needed.',0,3235,0,0,1,NULL,NULL,NULL,0,0),
+(73,'cf_ipi_clust_5_approved_budget',1,1,'Approved Budget','What is the budget that has been APPROVED to solve this. This can be different from the actual cost of the purchase or total cost for solving the case. This allows us to monitor how good we are when we have to estimate a budget.',0,3275,0,0,1,NULL,NULL,NULL,0,0),
+(74,'cf_ipi_clust_5_budget',1,1,'Estimated Budget','The LATEST estimate for the budget we need to fix the problem. This can change with time and might be different than the approved budget as we gather more information.',0,3265,0,0,1,NULL,NULL,NULL,0,0),
+(75,'cf_ipi_clust_8_contract_id',1,1,'Customer ID','The internal ID for the contract with the customer.',0,3270,0,0,1,NULL,NULL,NULL,0,0),
+(76,'cf_ipi_clust_9_acct_action',3,1,'Accounting Action','Detailed description of the expected action from ACCOUNTING. This is different from the solution, from the field action or the next step.',0,3300,0,0,1,92,NULL,NULL,0,0),
+(77,'cf_ipi_clust_9_inv_ll',1,1,'Invoice Amount (LL)','What is the amount of the invoice that we need to generate to the LANDLORD for this claim?',0,3305,0,0,1,92,NULL,NULL,0,0),
+(78,'cf_ipi_clust_9_inv_det_ll',1,1,'Invoice Details (LL)','Use this if there are has specific requirement on our invoice to the Landlord. Accounting will use this to prepare the invoice and explain to the Lanldord why we have invoiced/paid him that way...',0,3310,0,0,1,92,NULL,NULL,0,0),
+(79,'cf_ipi_clust_9_inv_cust',4,1,'Invoice Amount (Cust)','What is the amount of the invoice that we need to generate to the CUSTOMER for this claim?',0,3315,0,0,1,92,NULL,NULL,0,0),
+(80,'cf_ipi_clust_9_inv_det_cust',4,1,'Invoice Details (Cust)','Details about the invoice: what do we need to know about this invoice? What is the information/message that we need to send to the customer together with this invoice?',0,3320,0,0,1,92,NULL,NULL,0,0),
+(81,'cf_ipi_clust_5_spe_action_purchase_list',1,1,'Purchase List','Enter the list of things that we need to purchase. If the list is too long, attach a file to the claim with the detailed list and only summarize what we need to purchase here. IN Unee-T IT\'S EASIER TO USE APPROVED ATTACHMENTS TO DO THIS',0,9905,0,0,1,92,NULL,NULL,0,0),
+(83,'cf_ipi_clust_5_spe_approval_for',4,1,'Approval For','Explain why you require an approval. The approver will use this information to better understand the whole situtation. IN Unee-T IT\'S BETTER TO DO THIS WHEN YOU APPROVE AN ATTACHMENT',0,9910,0,0,1,92,NULL,NULL,0,0),
+(84,'cf_ipi_clust_5_spe_approval_comment',4,1,'Approval Comment','This is to explain/comment about the approval/rejection of what was requested. IN Unee-T IT\'S BETTER TO DO THIS WHEN WE APPROVE AN ATTACHMENT.',0,9915,0,0,1,92,NULL,NULL,0,0),
+(85,'cf_ipi_clust_5_spe_contractor',4,1,'Contractor ID','The name of the contractor that has been assigned to work on this case. IN Unee-T THIS HAS BEEN MOVED. THE CONTRACTOR IS A STAKEHOLDER.',0,9920,0,0,1,92,NULL,NULL,0,0),
+(87,'cf_ipi_clust_5_spe_purchase_cost',1,1,'Purchase Cost','What was the ACTUAL purchase cost for the purchase we did. This can be (and usually is) slightly different from the approved budget (but NOT higher than the approved budget).',0,9925,0,0,1,92,NULL,NULL,0,0),
+(88,'cf_ipi_clust_7_spe_bill_number',1,1,'Bill Nber','The Supplier\'s invoice number. This is so that accounting can easily find explanations about a supplier invoice if this is needed. IN Unee-T THIS HAS BEEN MOVED TO ATTACHMENTS',0,9930,0,0,1,92,NULL,NULL,0,0),
+(89,'cf_ipi_clust_7_spe_payment_type',2,1,'Payment Type','How will we pay the contractor? This is important information so that accounting can prepare the payment accordingly. This will ensure we pay our supplier as fast as possible and minimize the risk of misunderstandings.',0,9935,0,0,1,92,NULL,NULL,0,0),
+(90,'cf_ipi_clust_7_spe_contractor_payment',4,1,'Contractor Payment','Use this if the supplier has specific requirement about the payment. Accounting will use this to explain to the supplier why we have invoiced/paid him that way...',0,9940,0,0,1,92,NULL,NULL,0,0),
+(91,'cf_ipi_clust_8_spe_customer',1,1,'Customer','The name of the customer. IN Unee-T WE USE THE CUSTOMER ID INSTEAD',0,9945,0,0,1,92,NULL,NULL,0,0),
+(92,'cf_specific_for',2,1,'Field For','The name and id of the Unee-T customer that can see these fields',0,9900,0,0,1,NULL,NULL,NULL,0,0);
 
 /*Table structure for table `ut_group_types` */
 
@@ -2603,6 +3222,36 @@ CREATE TABLE `ut_product_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_product_group` */
+
+/*Table structure for table `ut_rep_platform` */
+
+DROP TABLE IF EXISTS `ut_rep_platform`;
+
+CREATE TABLE `ut_rep_platform` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `value` varchar(64) NOT NULL,
+  `sortkey` smallint(6) NOT NULL DEFAULT 0,
+  `isactive` tinyint(4) NOT NULL DEFAULT 1,
+  `visibility_value_id` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `rep_platform_value_idx` (`value`),
+  KEY `rep_platform_sortkey_idx` (`sortkey`,`value`),
+  KEY `rep_platform_visibility_value_id_idx` (`visibility_value_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_rep_platform` */
+
+insert  into `ut_rep_platform`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
+(1,'---',5,1,NULL),
+(2,'Repair',10,1,NULL),
+(3,'Maintenance',15,1,NULL),
+(4,'Housekeeping',20,1,NULL),
+(5,'Devices',25,1,NULL),
+(6,'Renovation',30,1,NULL),
+(7,'Complex Project',35,1,NULL),
+(8,'Extra Service',40,1,NULL),
+(9,'Utilities',45,1,NULL),
+(10,'Other',50,1,NULL);
 
 /*Table structure for table `ut_role_types` */
 
