@@ -53,13 +53,13 @@
 # The unit:
 
 	# BZ Classification id for the unit that you want to create (default is 2)
-	SET @classification_id = 3;
+	SET @classification_id = 2;
 
 	# The name and description
-	SET @unit_name = 'A Test Unit';
+	SET @unit_name = 'OxfordCaps - Test Unit 2';
 	SET @unit_condo = '';
 	SET @unit_surface = '';
-	SET @unit_description_details = 'Description of the unit. lorem ipsum dolorem';
+	SET @unit_description_details = '3 Bedrooms flat';
 	SET @unit_address = 'Address of the Unit';
 	SET @matterport_url = '';
 	SET @unit_description = CONCAT(
@@ -68,17 +68,21 @@
 				, IF (@unit_condo = '', '', @unit_condo)
 				, IF (@unit_condo = '', '', '</br>')
 				
-				, IF(@unit_surface = '', '', '<br>Size of the unit : ')
-				, IF(@unit_surface = '', '', @unit_surface)
-				, IF(@unit_surface = '', '', ' sqft.</br>')
+				, IF (@unit_surface = '', '', '<br>')
+				, IF (@unit_surface = '', '', @unit_description_details)
+				, IF (@unit_surface = '', '', ' sqft.</br>')
 				
-				, IF(@unit_address = '', '', '<br>')
-				, IF(@unit_address = '', '', @unit_address)
-				, IF(@unit_address = '', '', '</br>')
+				, IF (@unit_surface = '', '', '<br>Size of the unit : ')
+				, IF (@unit_surface = '', '', @unit_surface)
+				, IF (@unit_surface = '', '', ' sqft.</br>')
 				
-				, IF(@matterport_url = '', '', '<br><a href=\"')
-				, IF(@matterport_url = '', '', @matterport_url)
-				, IF(@matterport_url = '', '', '\" target=\"_blank\">Virtual Visit</a></br>')
+				, IF (@unit_address = '', '', '<br>')
+				, IF (@unit_address = '', '', @unit_address)
+				, IF (@unit_address = '', '', '</br>')
+				
+				, IF (@matterport_url = '', '', '<br><a href=\"')
+				, IF (@matterport_url = '', '', @matterport_url)
+				, IF (@matterport_url = '', '', '\" target=\"_blank\">Virtual Visit</a></br>')
 				)
 				;
 	
