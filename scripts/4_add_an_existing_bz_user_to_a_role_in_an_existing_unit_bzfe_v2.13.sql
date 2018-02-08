@@ -74,28 +74,6 @@
 # Timestamp	
 	SET @timestamp = NOW();
 
-# We need to get the component for ALL the roles for this product
-# We do that using dummy users for all the roles different from the user role.	
-#		- agent -> temporary.agent.dev@unee-t.com
-#		- landlord  -> temporary.landlord.dev@unee-t.com
-#		- Tenant  -> temporary.tenant.dev@unee-t.com
-#		- Contractor  -> temporary.contractor.dev@unee-t.com
-	
-# Enter the BZ user id for the dummy users.
-# This is needed so that we can retrieve the component_id for that product.
-# We use this method to make sure that we have a component for this role for this unit.
-
-	#	- Tenant 1
-		SET @bz_user_id_dummy_tenant = 93;
-	# 	- Landlord 2
-		SET @bz_user_id_dummy_landlord = 91;
-	#	- Agent 5
-		SET @bz_user_id_dummy_agent = 89;
-	#	- Contractor 3
-		SET @bz_user_id_dummy_contractor = 90;
-	#	- Management company 4
-		SET @bz_user_id_dummy_mgt_cny = 92;
-
 # The Groups to grant the global permissions for the user
 
 	# This should not change, it was hard coded when we created Unee-T
