@@ -56,7 +56,7 @@
 	SET @classification_id = 2;
 
 	# The name and description
-	SET @unit_name = 'OxfordCaps - Test Unit 2';
+	SET @unit_name = 'Test Unit 2';
 	SET @unit_condo = '';
 	SET @unit_surface = '';
 	SET @unit_description_details = '3 Bedrooms flat';
@@ -69,7 +69,7 @@
 				, IF (@unit_condo = '', '', '</br>')
 				
 				, IF (@unit_surface = '', '', '<br>')
-				, IF (@unit_surface = '', '', @unit_description_details)
+				, IF (@unit_description_details = '', '', @unit_description_details)
 				, IF (@unit_surface = '', '', ' sqft.</br>')
 				
 				, IF (@unit_surface = '', '', '<br>Size of the unit : ')
