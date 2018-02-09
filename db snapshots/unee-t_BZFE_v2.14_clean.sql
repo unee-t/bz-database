@@ -23,8 +23,6 @@ CREATE TABLE `attach_data` (
   CONSTRAINT `fk_attach_data_id_attachments_attach_id` FOREIGN KEY (`id`) REFERENCES `attachments` (`attach_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 MAX_ROWS=100000 AVG_ROW_LENGTH=1000000;
 
-/*Data for the table `attach_data` */
-
 /*Table structure for table `attachments` */
 
 DROP TABLE IF EXISTS `attachments`;
@@ -50,8 +48,6 @@ CREATE TABLE `attachments` (
   CONSTRAINT `fk_attachments_submitter_id_profiles_userid` FOREIGN KEY (`submitter_id`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `attachments` */
-
 /*Table structure for table `audit_log` */
 
 DROP TABLE IF EXISTS `audit_log`;
@@ -69,166 +65,6 @@ CREATE TABLE `audit_log` (
   CONSTRAINT `fk_audit_log_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `audit_log` */
-
-insert  into `audit_log`(`user_id`,`class`,`object_id`,`field`,`removed`,`added`,`at_time`) values 
-(1,'Bugzilla::Field',1,'__create__',NULL,'bug_id','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',2,'__create__',NULL,'short_desc','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',3,'__create__',NULL,'classification','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',4,'__create__',NULL,'product','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',5,'__create__',NULL,'version','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',6,'__create__',NULL,'rep_platform','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',7,'__create__',NULL,'bug_file_loc','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',8,'__create__',NULL,'op_sys','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',9,'__create__',NULL,'bug_status','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',10,'__create__',NULL,'status_whiteboard','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',11,'__create__',NULL,'keywords','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',12,'__create__',NULL,'resolution','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',13,'__create__',NULL,'bug_severity','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',14,'__create__',NULL,'priority','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',15,'__create__',NULL,'component','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',16,'__create__',NULL,'assigned_to','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',17,'__create__',NULL,'reporter','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',18,'__create__',NULL,'qa_contact','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',19,'__create__',NULL,'assigned_to_realname','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',20,'__create__',NULL,'reporter_realname','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',21,'__create__',NULL,'qa_contact_realname','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',22,'__create__',NULL,'cc','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',23,'__create__',NULL,'dependson','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',24,'__create__',NULL,'blocked','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',25,'__create__',NULL,'attachments.description','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',26,'__create__',NULL,'attachments.filename','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',27,'__create__',NULL,'attachments.mimetype','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',28,'__create__',NULL,'attachments.ispatch','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',29,'__create__',NULL,'attachments.isobsolete','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',30,'__create__',NULL,'attachments.isprivate','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',31,'__create__',NULL,'attachments.submitter','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',32,'__create__',NULL,'target_milestone','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',33,'__create__',NULL,'creation_ts','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',34,'__create__',NULL,'delta_ts','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',35,'__create__',NULL,'longdesc','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',36,'__create__',NULL,'longdescs.isprivate','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',37,'__create__',NULL,'longdescs.count','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',38,'__create__',NULL,'alias','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',39,'__create__',NULL,'everconfirmed','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',40,'__create__',NULL,'reporter_accessible','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',41,'__create__',NULL,'cclist_accessible','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',42,'__create__',NULL,'bug_group','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',43,'__create__',NULL,'estimated_time','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',44,'__create__',NULL,'remaining_time','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',45,'__create__',NULL,'deadline','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',46,'__create__',NULL,'commenter','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',47,'__create__',NULL,'flagtypes.name','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',48,'__create__',NULL,'requestees.login_name','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',49,'__create__',NULL,'setters.login_name','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',50,'__create__',NULL,'work_time','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',51,'__create__',NULL,'percentage_complete','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',52,'__create__',NULL,'content','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',53,'__create__',NULL,'attach_data.thedata','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',54,'__create__',NULL,'owner_idle_time','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',55,'__create__',NULL,'see_also','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',56,'__create__',NULL,'tag','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',57,'__create__',NULL,'last_visit_ts','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',58,'__create__',NULL,'comment_tag','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',59,'__create__',NULL,'days_elapsed','2017-11-25 00:28:48'),
-(1,'Bugzilla::Classification',1,'__create__',NULL,'Unclassified','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',1,'__create__',NULL,'admin','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',2,'__create__',NULL,'tweakparams','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',3,'__create__',NULL,'editusers','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',4,'__create__',NULL,'creategroups','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',5,'__create__',NULL,'editclassifications','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',6,'__create__',NULL,'editcomponents','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',7,'__create__',NULL,'editkeywords','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',8,'__create__',NULL,'editbugs','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',9,'__create__',NULL,'canconfirm','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',10,'__create__',NULL,'bz_canusewhineatothers','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',11,'__create__',NULL,'bz_canusewhines','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',12,'__create__',NULL,'bz_sudoers','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',13,'__create__',NULL,'bz_sudo_protect','2017-11-25 00:28:48'),
-(1,'Bugzilla::Group',14,'__create__',NULL,'bz_quip_moderators','2017-11-25 00:28:48'),
-(1,'Bugzilla::User',1,'__create__',NULL,'contributor@example.com','2017-11-25 00:28:48'),
-(1,'Bugzilla::Product',1,'__create__',NULL,'TestProduct','2017-11-25 00:28:48'),
-(1,'Bugzilla::Version',1,'__create__',NULL,'unspecified','2017-11-25 00:28:48'),
-(1,'Bugzilla::Milestone',1,'__create__',NULL,'---','2017-11-25 00:28:48'),
-(1,'Bugzilla::Component',1,'__create__',NULL,'TestComponent','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',60,'__create__',NULL,'cf_ipi_clust_4_status_in_progress','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',61,'__create__',NULL,'cf_ipi_clust_4_status_standby','2017-10-26 07:39:41'),
-(1,'Bugzilla::Field',62,'__create__',NULL,'cf_ipi_clust_2_room','2017-10-26 07:40:37'),
-(1,'Bugzilla::Field',63,'__create__',NULL,'cf_ipi_clust_6_claim_type','2017-10-26 07:42:07'),
-(1,'Bugzilla::Field',64,'__create__',NULL,'cf_ipi_clust_1_solution','2017-10-26 07:46:20'),
-(1,'Bugzilla::Field',65,'__create__',NULL,'cf_ipi_clust_1_next_step','2017-10-26 07:47:01'),
-(1,'Bugzilla::Field',66,'__create__',NULL,'cf_ipi_clust_1_next_step_date','2017-10-26 07:48:15'),
-(1,'Bugzilla::Field',67,'__create__',NULL,'cf_ipi_clust_3_field_action','2017-10-26 07:51:11'),
-(1,'Bugzilla::Field',68,'__create__',NULL,'cf_ipi_clust_3_field_action_from','2017-10-26 07:52:16'),
-(1,'Bugzilla::Field',68,'sortkey','3227','3250','2017-10-26 07:52:30'),
-(1,'Bugzilla::Field',69,'__create__',NULL,'cf_ipi_clust_3_field_action_until','2017-10-26 07:53:11'),
-(1,'Bugzilla::Field',70,'__create__',NULL,'cf_ipi_clust_3_action_type','2017-10-26 07:55:10'),
-(1,'Bugzilla::Field',71,'__create__',NULL,'cf_ipi_clust_3_nber_field_visits','2017-10-26 07:58:57'),
-(1,'Bugzilla::Field',72,'__create__',NULL,'cf_ipi_clust_3_roadbook_for','2017-10-26 11:55:25'),
-(1,'Bugzilla::Field',73,'__create__',NULL,'cf_ipi_clust_5_approved_budget','2017-10-26 12:04:03'),
-(1,'Bugzilla::Field',74,'__create__',NULL,'cf_ipi_clust_5_budget','2017-10-26 12:05:49'),
-(1,'Bugzilla::Field',74,'sortkey','3255','3260','2017-10-26 12:06:30'),
-(1,'Bugzilla::Field',74,'sortkey','3260','3265','2017-10-26 12:06:37'),
-(1,'Bugzilla::Field',75,'__create__',NULL,'cf_ipi_clust_8_contract_id','2017-10-26 12:12:07'),
-(1,'Bugzilla::Field',75,'description','Contract ID','Customer ID','2017-10-26 12:13:32'),
-(1,'Bugzilla::Field',76,'__create__',NULL,'cf_ipi_clust_9_acct_action','2017-10-26 12:18:07'),
-(1,'Bugzilla::Field',77,'__create__',NULL,'cf_ipi_clust_9_inv_ll','2017-10-26 12:19:44'),
-(1,'Bugzilla::Field',76,'sortkey','3325','3300','2017-10-26 12:20:16'),
-(1,'Bugzilla::Field',78,'__create__',NULL,'cf_ipi_clust_9_inv_det_ll','2017-10-26 12:20:51'),
-(1,'Bugzilla::Field',79,'__create__',NULL,'cf_ipi_clust_9_inv_cust','2017-10-26 12:21:36'),
-(1,'Bugzilla::Field',80,'__create__',NULL,'cf_ipi_clust_9_inv_det_cust','2017-10-26 12:22:07'),
-(1,'Bugzilla::Field',81,'__create__',NULL,'cf_ipi_clust_5_spe_action_purchase_list','2017-10-26 12:26:20'),
-(1,'Bugzilla::Field',81,'sortkey','3245','9900','2017-10-26 12:26:46'),
-(1,'Bugzilla::Field',82,'__create__',NULL,'cf_ipi_clust_5_approval_for','2017-10-26 12:28:50'),
-(1,'Bugzilla::Field',82,'obsolete','0','1','2017-10-26 12:29:20'),
-(1,'Bugzilla::Field',82,'__remove__','cf_ipi_clust_5_approval_for',NULL,'2017-10-26 12:29:31'),
-(1,'Bugzilla::Field',83,'__create__',NULL,'cf_ipi_clust_5_spe_approval_for','2017-10-26 12:30:51'),
-(1,'Bugzilla::Field',84,'__create__',NULL,'cf_ipi_clust_5_spe_approval_comment','2017-10-26 12:32:07'),
-(1,'Bugzilla::Field',85,'__create__',NULL,'cf_ipi_clust_5_spe_contractor','2017-10-26 12:34:34'),
-(1,'Bugzilla::Field',86,'__create__',NULL,'cf_ipi_clust_5_contractor','2017-10-26 20:57:34'),
-(1,'Bugzilla::Field',86,'obsolete','0','1','2017-10-26 20:58:21'),
-(1,'Bugzilla::Field',86,'__remove__','cf_ipi_clust_5_contractor',NULL,'2017-10-26 20:58:26'),
-(1,'Bugzilla::Field',87,'__create__',NULL,'cf_ipi_clust_5_spe_purchase_cost','2017-10-26 21:04:48'),
-(1,'Bugzilla::Field',88,'__create__',NULL,'cf_ipi_clust_7_spe_bill_number','2017-10-26 21:07:01'),
-(1,'Bugzilla::Field',89,'__create__',NULL,'cf_ipi_clust_7_spe_payment_type','2017-10-26 21:08:17'),
-(1,'Bugzilla::Field',90,'__create__',NULL,'cf_ipi_clust_7_spe_contractor_payment','2017-10-26 21:09:57'),
-(1,'Bugzilla::Field',91,'__create__',NULL,'cf_ipi_clust_8_spe_customer','2017-10-26 21:11:41'),
-(1,'Bugzilla::Field',1,'description','Case #','Bug #','2017-10-26 22:36:07'),
-(1,'Bugzilla::Field',4,'description','Unit','Product','2017-10-26 22:36:07'),
-(1,'Bugzilla::Field',6,'description','Case Category','Platform','2017-10-26 22:36:07'),
-(1,'Bugzilla::Field',8,'description','Source','OS/Version','2017-10-26 22:36:07'),
-(1,'Bugzilla::Field',15,'description','Role','Component','2017-10-26 22:36:07'),
-(1,'Bugzilla::Field',63,'value_field_id',NULL,'6','2017-10-26 22:44:02'),
-(1,'Bugzilla::Field',61,'visibility_field_id',NULL,'9','2017-10-26 22:50:09'),
-(1,'Bugzilla::Field',92,'__create__',NULL,'cf_specific_for','2017-10-26 23:00:34'),
-(1,'Bugzilla::Field::Choice::cf_specific_for',2,'__create__',NULL,'LMB - #1','2017-10-26 23:01:14'),
-(1,'Bugzilla::Field',81,'sortkey','9900','9905','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',81,'visibility_field_id',NULL,'92','2017-11-25 00:28:48'),
-(1,'Bugzilla::Field',83,'visibility_field_id',NULL,'92','2017-10-26 23:03:49'),
-(1,'Bugzilla::Field',84,'visibility_field_id',NULL,'92','2017-10-26 23:04:05'),
-(1,'Bugzilla::Field',85,'visibility_field_id',NULL,'92','2017-10-26 23:04:37'),
-(1,'Bugzilla::Field',87,'visibility_field_id',NULL,'92','2017-10-26 23:04:46'),
-(1,'Bugzilla::Field',88,'visibility_field_id',NULL,'92','2017-10-26 23:04:54'),
-(1,'Bugzilla::Field',89,'visibility_field_id',NULL,'92','2017-10-26 23:05:05'),
-(1,'Bugzilla::Field',90,'visibility_field_id',NULL,'92','2017-10-26 23:05:14'),
-(1,'Bugzilla::Field',91,'visibility_field_id',NULL,'92','2017-10-26 23:05:42'),
-(1,'Bugzilla::Field',76,'visibility_field_id',NULL,'92','2017-10-26 23:06:17'),
-(1,'Bugzilla::Field',77,'visibility_field_id',NULL,'92','2017-10-26 23:06:27'),
-(1,'Bugzilla::Field',78,'visibility_field_id',NULL,'92','2017-10-26 23:06:37'),
-(1,'Bugzilla::Field',79,'visibility_field_id',NULL,'92','2017-10-26 23:06:45'),
-(1,'Bugzilla::Field',80,'visibility_field_id',NULL,'92','2017-10-26 23:06:52'),
-(1,'Bugzilla::Field',1,'description','Case #','Bug #','2017-10-27 00:34:42'),
-(1,'Bugzilla::Field',3,'description','Unit Group','Classification','2017-10-27 00:34:42'),
-(1,'Bugzilla::Field',4,'description','Unit','Product','2017-10-27 00:34:42'),
-(1,'Bugzilla::Field',6,'description','Case Category','Platform','2017-10-27 00:34:42'),
-(1,'Bugzilla::Field',8,'description','Source','OS/Version','2017-10-27 00:34:42'),
-(1,'Bugzilla::Field',15,'description','Role','Component','2017-10-27 00:34:42'),
-(1,'Bugzilla::User',2,'__create__',NULL,'temporary.agent@example.com','2018-02-02 01:08:41'),
-(1,'Bugzilla::User',3,'__create__',NULL,'temporary.landlord@example.com','2018-02-02 01:14:19'),
-(1,'Bugzilla::User',4,'__create__',NULL,'temporary.tenant@example.com','2018-02-02 01:14:40'),
-(1,'Bugzilla::User',5,'__create__',NULL,'temporary.contractor@example.com','2018-02-02 01:14:55'),
-(1,'Bugzilla::User',6,'__create__',NULL,'temporary.mgt.cny@example.com','2018-02-02 01:15:20');
-
 /*Table structure for table `bug_cf_ipi_clust_3_roadbook_for` */
 
 DROP TABLE IF EXISTS `bug_cf_ipi_clust_3_roadbook_for`;
@@ -241,8 +77,6 @@ CREATE TABLE `bug_cf_ipi_clust_3_roadbook_for` (
   CONSTRAINT `fk_0da76aa50ea9cec77ea8e213c8655f99` FOREIGN KEY (`value`) REFERENCES `cf_ipi_clust_3_roadbook_for` (`value`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bug_cf_ipi_clust_3_roadbook_for_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `bug_cf_ipi_clust_3_roadbook_for` */
 
 /*Table structure for table `bug_cf_ipi_clust_9_acct_action` */
 
@@ -257,8 +91,6 @@ CREATE TABLE `bug_cf_ipi_clust_9_acct_action` (
   CONSTRAINT `fk_e5fc7a4f159b990bfcdfcaf844d0728b` FOREIGN KEY (`value`) REFERENCES `cf_ipi_clust_9_acct_action` (`value`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `bug_cf_ipi_clust_9_acct_action` */
-
 /*Table structure for table `bug_group_map` */
 
 DROP TABLE IF EXISTS `bug_group_map`;
@@ -271,8 +103,6 @@ CREATE TABLE `bug_group_map` (
   CONSTRAINT `fk_bug_group_map_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_bug_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `bug_group_map` */
 
 /*Table structure for table `bug_see_also` */
 
@@ -287,8 +117,6 @@ CREATE TABLE `bug_see_also` (
   UNIQUE KEY `bug_see_also_bug_id_idx` (`bug_id`,`value`),
   CONSTRAINT `fk_bug_see_also_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `bug_see_also` */
 
 /*Table structure for table `bug_severity` */
 
@@ -305,15 +133,6 @@ CREATE TABLE `bug_severity` (
   KEY `bug_severity_sortkey_idx` (`sortkey`,`value`),
   KEY `bug_severity_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
-/*Data for the table `bug_severity` */
-
-insert  into `bug_severity`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'DEAL BREAKER!',100,1,NULL),
-(2,'critical',200,1,NULL),
-(3,'major',300,1,NULL),
-(4,'normal',400,1,NULL),
-(5,'minor',500,1,NULL);
 
 /*Table structure for table `bug_status` */
 
@@ -332,18 +151,6 @@ CREATE TABLE `bug_status` (
   KEY `bug_status_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
-/*Data for the table `bug_status` */
-
-insert  into `bug_status`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`,`is_open`) values 
-(1,'UNCONFIRMED',10,1,NULL,1),
-(2,'CONFIRMED',20,1,NULL,1),
-(3,'IN_PROGRESS',30,1,NULL,1),
-(4,'RESOLVED',60,1,NULL,0),
-(5,'VERIFIED',70,1,NULL,0),
-(6,'REOPENED',40,1,NULL,1),
-(7,'STAND BY',50,1,NULL,1),
-(8,'CLOSED',80,1,NULL,0);
-
 /*Table structure for table `bug_tag` */
 
 DROP TABLE IF EXISTS `bug_tag`;
@@ -356,8 +163,6 @@ CREATE TABLE `bug_tag` (
   CONSTRAINT `fk_bug_tag_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_bug_tag_tag_id_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `bug_tag` */
 
 /*Table structure for table `bug_user_last_visit` */
 
@@ -375,8 +180,6 @@ CREATE TABLE `bug_user_last_visit` (
   CONSTRAINT `fk_bug_user_last_visit_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_bug_user_last_visit_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `bug_user_last_visit` */
 
 /*Table structure for table `bugs` */
 
@@ -460,8 +263,6 @@ CREATE TABLE `bugs` (
   CONSTRAINT `fk_bugs_reporter_profiles_userid` FOREIGN KEY (`reporter`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `bugs` */
-
 /*Table structure for table `bugs_activity` */
 
 DROP TABLE IF EXISTS `bugs_activity`;
@@ -492,8 +293,6 @@ CREATE TABLE `bugs_activity` (
   CONSTRAINT `fk_bugs_activity_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `bugs_activity` */
-
 /*Table structure for table `bugs_aliases` */
 
 DROP TABLE IF EXISTS `bugs_aliases`;
@@ -505,8 +304,6 @@ CREATE TABLE `bugs_aliases` (
   KEY `bugs_aliases_bug_id_idx` (`bug_id`),
   CONSTRAINT `fk_bugs_aliases_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `bugs_aliases` */
 
 /*Table structure for table `bugs_fulltext` */
 
@@ -523,8 +320,6 @@ CREATE TABLE `bugs_fulltext` (
   FULLTEXT KEY `bugs_fulltext_comments_noprivate_idx` (`comments_noprivate`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-/*Data for the table `bugs_fulltext` */
-
 /*Table structure for table `bz_schema` */
 
 DROP TABLE IF EXISTS `bz_schema`;
@@ -533,11 +328,6 @@ CREATE TABLE `bz_schema` (
   `schema_data` longblob NOT NULL,
   `version` decimal(3,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `bz_schema` */
-
-insert  into `bz_schema`(`schema_data`,`version`) values 
-('$VAR1 = {\n          \'attach_data\' => {\n                             \'FIELDS\' => [\n                                           \'id\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'PRIMARYKEY\' => 1,\n                                             \'REFERENCES\' => {\n                                                               \'COLUMN\' => \'attach_id\',\n                                                               \'DELETE\' => \'CASCADE\',\n                                                               \'TABLE\' => \'attachments\',\n                                                               \'created\' => 1\n                                                             },\n                                             \'TYPE\' => \'INT3\'\n                                           },\n                                           \'thedata\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'LONGBLOB\'\n                                           }\n                                         ]\n                           },\n          \'attachments\' => {\n                             \'FIELDS\' => [\n                                           \'attach_id\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'PRIMARYKEY\' => 1,\n                                             \'TYPE\' => \'MEDIUMSERIAL\'\n                                           },\n                                           \'bug_id\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'REFERENCES\' => {\n                                                               \'COLUMN\' => \'bug_id\',\n                                                               \'DELETE\' => \'CASCADE\',\n                                                               \'TABLE\' => \'bugs\',\n                                                               \'created\' => 1\n                                                             },\n                                             \'TYPE\' => \'INT3\'\n                                           },\n                                           \'creation_ts\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'DATETIME\'\n                                           },\n                                           \'modification_time\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'DATETIME\'\n                                           },\n                                           \'description\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'TINYTEXT\'\n                                           },\n                                           \'mimetype\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'TINYTEXT\'\n                                           },\n                                           \'ispatch\',\n                                           {\n                                             \'DEFAULT\' => \'FALSE\',\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'BOOLEAN\'\n                                           },\n                                           \'filename\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'varchar(255)\'\n                                           },\n                                           \'submitter_id\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'REFERENCES\' => {\n                                                               \'COLUMN\' => \'userid\',\n                                                               \'TABLE\' => \'profiles\',\n                                                               \'created\' => 1\n                                                             },\n                                             \'TYPE\' => \'INT3\'\n                                           },\n                                           \'isobsolete\',\n                                           {\n                                             \'DEFAULT\' => \'FALSE\',\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'BOOLEAN\'\n                                           },\n                                           \'isprivate\',\n                                           {\n                                             \'DEFAULT\' => \'FALSE\',\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'BOOLEAN\'\n                                           }\n                                         ],\n                             \'INDEXES\' => [\n                                            \'attachments_bug_id_idx\',\n                                            [\n                                              \'bug_id\'\n                                            ],\n                                            \'attachments_creation_ts_idx\',\n                                            [\n                                              \'creation_ts\'\n                                            ],\n                                            \'attachments_modification_time_idx\',\n                                            [\n                                              \'modification_time\'\n                                            ],\n                                            \'attachments_submitter_id_idx\',\n                                            [\n                                              \'submitter_id\',\n                                              \'bug_id\'\n                                            ]\n                                          ]\n                           },\n          \'audit_log\' => {\n                           \'FIELDS\' => [\n                                         \'user_id\',\n                                         {\n                                           \'REFERENCES\' => {\n                                                             \'COLUMN\' => \'userid\',\n                                                             \'DELETE\' => \'SET NULL\',\n                                                             \'TABLE\' => \'profiles\',\n                                                             \'created\' => 1\n                                                           },\n                                           \'TYPE\' => \'INT3\'\n                                         },\n                                         \'class\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'varchar(255)\'\n                                         },\n                                         \'object_id\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'INT4\'\n                                         },\n                                         \'field\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'varchar(64)\'\n                                         },\n                                         \'removed\',\n                                         {\n                                           \'TYPE\' => \'MEDIUMTEXT\'\n                                         },\n                                         \'added\',\n                                         {\n                                           \'TYPE\' => \'MEDIUMTEXT\'\n                                         },\n                                         \'at_time\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'DATETIME\'\n                                         }\n                                       ],\n                           \'INDEXES\' => [\n                                          \'audit_log_class_idx\',\n                                          [\n                                            \'class\',\n                                            \'at_time\'\n                                          ]\n                                        ]\n                         },\n          \'bug_cf_ipi_clust_3_roadbook_for\' => {\n                                                 \'FIELDS\' => [\n                                                               \'bug_id\',\n                                                               {\n                                                                 \'NOTNULL\' => 1,\n                                                                 \'REFERENCES\' => {\n                                                                                   \'COLUMN\' => \'bug_id\',\n                                                                                   \'DELETE\' => \'CASCADE\',\n                                                                                   \'TABLE\' => \'bugs\',\n                                                                                   \'created\' => 1\n                                                                                 },\n                                                                 \'TYPE\' => \'INT3\'\n                                                               },\n                                                               \'value\',\n                                                               {\n                                                                 \'NOTNULL\' => 1,\n                                                                 \'REFERENCES\' => {\n                                                                                   \'COLUMN\' => \'value\',\n                                                                                   \'TABLE\' => \'cf_ipi_clust_3_roadbook_for\',\n                                                                                   \'created\' => 1\n                                                                                 },\n                                                                 \'TYPE\' => \'varchar(64)\'\n                                                               }\n                                                             ],\n                                                 \'INDEXES\' => [\n                                                                \'bug_cf_ipi_clust_3_roadbook_for_bug_id_idx\',\n                                                                {\n                                                                  \'FIELDS\' => [\n                                                                                \'bug_id\',\n                                                                                \'value\'\n                                                                              ],\n                                                                  \'TYPE\' => \'UNIQUE\'\n                                                                }\n                                                              ]\n                                               },\n          \'bug_cf_ipi_clust_9_acct_action\' => {\n                                                \'FIELDS\' => [\n                                                              \'bug_id\',\n                                                              {\n                                                                \'NOTNULL\' => 1,\n                                                                \'REFERENCES\' => {\n                                                                                  \'COLUMN\' => \'bug_id\',\n                                                                                  \'DELETE\' => \'CASCADE\',\n                                                                                  \'TABLE\' => \'bugs\',\n                                                                                  \'created\' => 1\n                                                                                },\n                                                                \'TYPE\' => \'INT3\'\n                                                              },\n                                                              \'value\',\n                                                              {\n                                                                \'NOTNULL\' => 1,\n                                                                \'REFERENCES\' => {\n                                                                                  \'COLUMN\' => \'value\',\n                                                                                  \'TABLE\' => \'cf_ipi_clust_9_acct_action\',\n                                                                                  \'created\' => 1\n                                                                                },\n                                                                \'TYPE\' => \'varchar(64)\'\n                                                              }\n                                                            ],\n                                                \'INDEXES\' => [\n                                                               \'bug_cf_ipi_clust_9_acct_action_bug_id_idx\',\n                                                               {\n                                                                 \'FIELDS\' => [\n                                                                               \'bug_id\',\n                                                                               \'value\'\n                                                                             ],\n                                                                 \'TYPE\' => \'UNIQUE\'\n                                                               }\n                                                             ]\n                                              },\n          \'bug_group_map\' => {\n                               \'FIELDS\' => [\n                                             \'bug_id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'bug_id\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'bugs\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'group_id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'id\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'groups\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'bug_group_map_bug_id_idx\',\n                                              {\n                                                \'FIELDS\' => [\n                                                              \'bug_id\',\n                                                              \'group_id\'\n                                                            ],\n                                                \'TYPE\' => \'UNIQUE\'\n                                              },\n                                              \'bug_group_map_group_id_idx\',\n                                              [\n                                                \'group_id\'\n                                              ]\n                                            ]\n                             },\n          \'bug_see_also\' => {\n                              \'FIELDS\' => [\n                                            \'id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'PRIMARYKEY\' => 1,\n                                              \'TYPE\' => \'MEDIUMSERIAL\'\n                                            },\n                                            \'bug_id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'bug_id\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'bugs\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            },\n                                            \'value\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'varchar(255)\'\n                                            },\n                                            \'class\',\n                                            {\n                                              \'DEFAULT\' => \'\\\'\\\'\',\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'varchar(255)\'\n                                            }\n                                          ],\n                              \'INDEXES\' => [\n                                             \'bug_see_also_bug_id_idx\',\n                                             {\n                                               \'FIELDS\' => [\n                                                             \'bug_id\',\n                                                             \'value\'\n                                                           ],\n                                               \'TYPE\' => \'UNIQUE\'\n                                             }\n                                           ]\n                            },\n          \'bug_severity\' => {\n                              \'FIELDS\' => [\n                                            \'id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'PRIMARYKEY\' => 1,\n                                              \'TYPE\' => \'SMALLSERIAL\'\n                                            },\n                                            \'value\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'varchar(64)\'\n                                            },\n                                            \'sortkey\',\n                                            {\n                                              \'DEFAULT\' => 0,\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'INT2\'\n                                            },\n                                            \'isactive\',\n                                            {\n                                              \'DEFAULT\' => \'TRUE\',\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'BOOLEAN\'\n                                            },\n                                            \'visibility_value_id\',\n                                            {\n                                              \'TYPE\' => \'INT2\'\n                                            }\n                                          ],\n                              \'INDEXES\' => [\n                                             \'bug_severity_value_idx\',\n                                             {\n                                               \'FIELDS\' => [\n                                                             \'value\'\n                                                           ],\n                                               \'TYPE\' => \'UNIQUE\'\n                                             },\n                                             \'bug_severity_sortkey_idx\',\n                                             [\n                                               \'sortkey\',\n                                               \'value\'\n                                             ],\n                                             \'bug_severity_visibility_value_id_idx\',\n                                             [\n                                               \'visibility_value_id\'\n                                             ]\n                                           ]\n                            },\n          \'bug_status\' => {\n                            \'FIELDS\' => [\n                                          \'id\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'PRIMARYKEY\' => 1,\n                                            \'TYPE\' => \'SMALLSERIAL\'\n                                          },\n                                          \'value\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'varchar(64)\'\n                                          },\n                                          \'sortkey\',\n                                          {\n                                            \'DEFAULT\' => 0,\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'INT2\'\n                                          },\n                                          \'isactive\',\n                                          {\n                                            \'DEFAULT\' => \'TRUE\',\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'BOOLEAN\'\n                                          },\n                                          \'visibility_value_id\',\n                                          {\n                                            \'TYPE\' => \'INT2\'\n                                          },\n                                          \'is_open\',\n                                          {\n                                            \'DEFAULT\' => \'TRUE\',\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'BOOLEAN\'\n                                          }\n                                        ],\n                            \'INDEXES\' => [\n                                           \'bug_status_value_idx\',\n                                           {\n                                             \'FIELDS\' => [\n                                                           \'value\'\n                                                         ],\n                                             \'TYPE\' => \'UNIQUE\'\n                                           },\n                                           \'bug_status_sortkey_idx\',\n                                           [\n                                             \'sortkey\',\n                                             \'value\'\n                                           ],\n                                           \'bug_status_visibility_value_id_idx\',\n                                           [\n                                             \'visibility_value_id\'\n                                           ]\n                                         ]\n                          },\n          \'bug_tag\' => {\n                         \'FIELDS\' => [\n                                       \'bug_id\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'REFERENCES\' => {\n                                                           \'COLUMN\' => \'bug_id\',\n                                                           \'DELETE\' => \'CASCADE\',\n                                                           \'TABLE\' => \'bugs\',\n                                                           \'created\' => 1\n                                                         },\n                                         \'TYPE\' => \'INT3\'\n                                       },\n                                       \'tag_id\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'REFERENCES\' => {\n                                                           \'COLUMN\' => \'id\',\n                                                           \'DELETE\' => \'CASCADE\',\n                                                           \'TABLE\' => \'tag\',\n                                                           \'created\' => 1\n                                                         },\n                                         \'TYPE\' => \'INT3\'\n                                       }\n                                     ],\n                         \'INDEXES\' => [\n                                        \'bug_tag_bug_id_idx\',\n                                        {\n                                          \'FIELDS\' => [\n                                                        \'bug_id\',\n                                                        \'tag_id\'\n                                                      ],\n                                          \'TYPE\' => \'UNIQUE\'\n                                        }\n                                      ]\n                       },\n          \'bug_user_last_visit\' => {\n                                     \'FIELDS\' => [\n                                                   \'id\',\n                                                   {\n                                                     \'NOTNULL\' => 1,\n                                                     \'PRIMARYKEY\' => 1,\n                                                     \'TYPE\' => \'INTSERIAL\'\n                                                   },\n                                                   \'user_id\',\n                                                   {\n                                                     \'NOTNULL\' => 1,\n                                                     \'REFERENCES\' => {\n                                                                       \'COLUMN\' => \'userid\',\n                                                                       \'DELETE\' => \'CASCADE\',\n                                                                       \'TABLE\' => \'profiles\',\n                                                                       \'created\' => 1\n                                                                     },\n                                                     \'TYPE\' => \'INT3\'\n                                                   },\n                                                   \'bug_id\',\n                                                   {\n                                                     \'NOTNULL\' => 1,\n                                                     \'REFERENCES\' => {\n                                                                       \'COLUMN\' => \'bug_id\',\n                                                                       \'DELETE\' => \'CASCADE\',\n                                                                       \'TABLE\' => \'bugs\',\n                                                                       \'created\' => 1\n                                                                     },\n                                                     \'TYPE\' => \'INT3\'\n                                                   },\n                                                   \'last_visit_ts\',\n                                                   {\n                                                     \'NOTNULL\' => 1,\n                                                     \'TYPE\' => \'DATETIME\'\n                                                   }\n                                                 ],\n                                     \'INDEXES\' => [\n                                                    \'bug_user_last_visit_idx\',\n                                                    {\n                                                      \'FIELDS\' => [\n                                                                    \'user_id\',\n                                                                    \'bug_id\'\n                                                                  ],\n                                                      \'TYPE\' => \'UNIQUE\'\n                                                    },\n                                                    \'bug_user_last_visit_last_visit_ts_idx\',\n                                                    [\n                                                      \'last_visit_ts\'\n                                                    ]\n                                                  ]\n                                   },\n          \'bugs\' => {\n                      \'FIELDS\' => [\n                                    \'bug_id\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'PRIMARYKEY\' => 1,\n                                      \'TYPE\' => \'MEDIUMSERIAL\'\n                                    },\n                                    \'assigned_to\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'REFERENCES\' => {\n                                                        \'COLUMN\' => \'userid\',\n                                                        \'TABLE\' => \'profiles\',\n                                                        \'created\' => 1\n                                                      },\n                                      \'TYPE\' => \'INT3\'\n                                    },\n                                    \'bug_file_loc\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'bug_severity\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'bug_status\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'creation_ts\',\n                                    {\n                                      \'TYPE\' => \'DATETIME\'\n                                    },\n                                    \'delta_ts\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'DATETIME\'\n                                    },\n                                    \'short_desc\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'op_sys\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'priority\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'product_id\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'REFERENCES\' => {\n                                                        \'COLUMN\' => \'id\',\n                                                        \'TABLE\' => \'products\',\n                                                        \'created\' => 1\n                                                      },\n                                      \'TYPE\' => \'INT2\'\n                                    },\n                                    \'rep_platform\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'reporter\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'REFERENCES\' => {\n                                                        \'COLUMN\' => \'userid\',\n                                                        \'TABLE\' => \'profiles\',\n                                                        \'created\' => 1\n                                                      },\n                                      \'TYPE\' => \'INT3\'\n                                    },\n                                    \'version\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'component_id\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'REFERENCES\' => {\n                                                        \'COLUMN\' => \'id\',\n                                                        \'TABLE\' => \'components\',\n                                                        \'created\' => 1\n                                                      },\n                                      \'TYPE\' => \'INT3\'\n                                    },\n                                    \'resolution\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'target_milestone\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'---\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'qa_contact\',\n                                    {\n                                      \'REFERENCES\' => {\n                                                        \'COLUMN\' => \'userid\',\n                                                        \'TABLE\' => \'profiles\',\n                                                        \'created\' => 1\n                                                      },\n                                      \'TYPE\' => \'INT3\'\n                                    },\n                                    \'status_whiteboard\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'lastdiffed\',\n                                    {\n                                      \'TYPE\' => \'DATETIME\'\n                                    },\n                                    \'everconfirmed\',\n                                    {\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'BOOLEAN\'\n                                    },\n                                    \'reporter_accessible\',\n                                    {\n                                      \'DEFAULT\' => \'TRUE\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'BOOLEAN\'\n                                    },\n                                    \'cclist_accessible\',\n                                    {\n                                      \'DEFAULT\' => \'TRUE\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'BOOLEAN\'\n                                    },\n                                    \'estimated_time\',\n                                    {\n                                      \'DEFAULT\' => \'0\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'decimal(7,2)\'\n                                    },\n                                    \'remaining_time\',\n                                    {\n                                      \'DEFAULT\' => \'0\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'decimal(7,2)\'\n                                    },\n                                    \'deadline\',\n                                    {\n                                      \'TYPE\' => \'DATETIME\'\n                                    },\n                                    \'cf_ipi_clust_4_status_in_progress\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'---\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'cf_ipi_clust_4_status_standby\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'---\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'cf_ipi_clust_2_room\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_6_claim_type\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'---\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'cf_ipi_clust_1_solution\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_1_next_step\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_1_next_step_date\',\n                                    {\n                                      \'TYPE\' => \'DATE\'\n                                    },\n                                    \'cf_ipi_clust_3_field_action\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_3_field_action_from\',\n                                    {\n                                      \'TYPE\' => \'DATETIME\'\n                                    },\n                                    \'cf_ipi_clust_3_field_action_until\',\n                                    {\n                                      \'TYPE\' => \'DATETIME\'\n                                    },\n                                    \'cf_ipi_clust_3_action_type\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'---\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'cf_ipi_clust_3_nber_field_visits\',\n                                    {\n                                      \'DEFAULT\' => 0,\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'INT4\'\n                                    },\n                                    \'cf_ipi_clust_5_approved_budget\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_5_budget\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_8_contract_id\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_9_inv_ll\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_9_inv_det_ll\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_9_inv_cust\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_9_inv_det_cust\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_5_spe_action_purchase_list\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_5_spe_approval_for\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_5_spe_approval_comment\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_5_spe_contractor\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_5_spe_purchase_cost\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_7_spe_bill_number\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_ipi_clust_7_spe_payment_type\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'---\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    },\n                                    \'cf_ipi_clust_7_spe_contractor_payment\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'MEDIUMTEXT\'\n                                    },\n                                    \'cf_ipi_clust_8_spe_customer\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(255)\'\n                                    },\n                                    \'cf_specific_for\',\n                                    {\n                                      \'DEFAULT\' => \'\\\'---\\\'\',\n                                      \'NOTNULL\' => 1,\n                                      \'TYPE\' => \'varchar(64)\'\n                                    }\n                                  ],\n                      \'INDEXES\' => [\n                                     \'bugs_assigned_to_idx\',\n                                     [\n                                       \'assigned_to\'\n                                     ],\n                                     \'bugs_creation_ts_idx\',\n                                     [\n                                       \'creation_ts\'\n                                     ],\n                                     \'bugs_delta_ts_idx\',\n                                     [\n                                       \'delta_ts\'\n                                     ],\n                                     \'bugs_bug_severity_idx\',\n                                     [\n                                       \'bug_severity\'\n                                     ],\n                                     \'bugs_bug_status_idx\',\n                                     [\n                                       \'bug_status\'\n                                     ],\n                                     \'bugs_op_sys_idx\',\n                                     [\n                                       \'op_sys\'\n                                     ],\n                                     \'bugs_priority_idx\',\n                                     [\n                                       \'priority\'\n                                     ],\n                                     \'bugs_product_id_idx\',\n                                     [\n                                       \'product_id\'\n                                     ],\n                                     \'bugs_reporter_idx\',\n                                     [\n                                       \'reporter\'\n                                     ],\n                                     \'bugs_version_idx\',\n                                     [\n                                       \'version\'\n                                     ],\n                                     \'bugs_component_id_idx\',\n                                     [\n                                       \'component_id\'\n                                     ],\n                                     \'bugs_resolution_idx\',\n                                     [\n                                       \'resolution\'\n                                     ],\n                                     \'bugs_target_milestone_idx\',\n                                     [\n                                       \'target_milestone\'\n                                     ],\n                                     \'bugs_qa_contact_idx\',\n                                     [\n                                       \'qa_contact\'\n                                     ]\n                                   ]\n                    },\n          \'bugs_activity\' => {\n                               \'FIELDS\' => [\n                                             \'id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'PRIMARYKEY\' => 1,\n                                               \'TYPE\' => \'INTSERIAL\'\n                                             },\n                                             \'bug_id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'bug_id\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'bugs\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'attach_id\',\n                                             {\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'attach_id\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'attachments\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'who\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'userid\',\n                                                                 \'TABLE\' => \'profiles\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'bug_when\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'DATETIME\'\n                                             },\n                                             \'fieldid\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'id\',\n                                                                 \'TABLE\' => \'fielddefs\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'added\',\n                                             {\n                                               \'TYPE\' => \'varchar(255)\'\n                                             },\n                                             \'removed\',\n                                             {\n                                               \'TYPE\' => \'varchar(255)\'\n                                             },\n                                             \'comment_id\',\n                                             {\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'comment_id\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'longdescs\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT4\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'bugs_activity_bug_id_idx\',\n                                              [\n                                                \'bug_id\'\n                                              ],\n                                              \'bugs_activity_who_idx\',\n                                              [\n                                                \'who\'\n                                              ],\n                                              \'bugs_activity_bug_when_idx\',\n                                              [\n                                                \'bug_when\'\n                                              ],\n                                              \'bugs_activity_fieldid_idx\',\n                                              [\n                                                \'fieldid\'\n                                              ],\n                                              \'bugs_activity_added_idx\',\n                                              [\n                                                \'added\'\n                                              ],\n                                              \'bugs_activity_removed_idx\',\n                                              [\n                                                \'removed\'\n                                              ]\n                                            ]\n                             },\n          \'bugs_aliases\' => {\n                              \'FIELDS\' => [\n                                            \'alias\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'varchar(40)\'\n                                            },\n                                            \'bug_id\',\n                                            {\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'bug_id\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'bugs\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            }\n                                          ],\n                              \'INDEXES\' => [\n                                             \'bugs_aliases_bug_id_idx\',\n                                             [\n                                               \'bug_id\'\n                                             ],\n                                             \'bugs_aliases_alias_idx\',\n                                             {\n                                               \'FIELDS\' => [\n                                                             \'alias\'\n                                                           ],\n                                               \'TYPE\' => \'UNIQUE\'\n                                             }\n                                           ]\n                            },\n          \'bugs_fulltext\' => {\n                               \'FIELDS\' => [\n                                             \'bug_id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'PRIMARYKEY\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'bug_id\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'bugs\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'short_desc\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'varchar(255)\'\n                                             },\n                                             \'comments\',\n                                             {\n                                               \'TYPE\' => \'LONGTEXT\'\n                                             },\n                                             \'comments_noprivate\',\n                                             {\n                                               \'TYPE\' => \'LONGTEXT\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'bugs_fulltext_short_desc_idx\',\n                                              {\n                                                \'FIELDS\' => [\n                                                              \'short_desc\'\n                                                            ],\n                                                \'TYPE\' => \'FULLTEXT\'\n                                              },\n                                              \'bugs_fulltext_comments_idx\',\n                                              {\n                                                \'FIELDS\' => [\n                                                              \'comments\'\n                                                            ],\n                                                \'TYPE\' => \'FULLTEXT\'\n                                              },\n                                              \'bugs_fulltext_comments_noprivate_idx\',\n                                              {\n                                                \'FIELDS\' => [\n                                                              \'comments_noprivate\'\n                                                            ],\n                                                \'TYPE\' => \'FULLTEXT\'\n                                              }\n                                            ]\n                             },\n          \'bz_schema\' => {\n                           \'FIELDS\' => [\n                                         \'schema_data\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'LONGBLOB\'\n                                         },\n                                         \'version\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'decimal(3,2)\'\n                                         }\n                                       ]\n                         },\n          \'category_group_map\' => {\n                                    \'FIELDS\' => [\n                                                  \'category_id\',\n                                                  {\n                                                    \'NOTNULL\' => 1,\n                                                    \'REFERENCES\' => {\n                                                                      \'COLUMN\' => \'id\',\n                                                                      \'DELETE\' => \'CASCADE\',\n                                                                      \'TABLE\' => \'series_categories\',\n                                                                      \'created\' => 1\n                                                                    },\n                                                    \'TYPE\' => \'INT2\'\n                                                  },\n                                                  \'group_id\',\n                                                  {\n                                                    \'NOTNULL\' => 1,\n                                                    \'REFERENCES\' => {\n                                                                      \'COLUMN\' => \'id\',\n                                                                      \'DELETE\' => \'CASCADE\',\n                                                                      \'TABLE\' => \'groups\',\n                                                                      \'created\' => 1\n                                                                    },\n                                                    \'TYPE\' => \'INT3\'\n                                                  }\n                                                ],\n                                    \'INDEXES\' => [\n                                                   \'category_group_map_category_id_idx\',\n                                                   {\n                                                     \'FIELDS\' => [\n                                                                   \'category_id\',\n                                                                   \'group_id\'\n                                                                 ],\n                                                     \'TYPE\' => \'UNIQUE\'\n                                                   }\n                                                 ]\n                                  },\n          \'cc\' => {\n                    \'FIELDS\' => [\n                                  \'bug_id\',\n                                  {\n                                    \'NOTNULL\' => 1,\n                                    \'REFERENCES\' => {\n                                                      \'COLUMN\' => \'bug_id\',\n                                                      \'DELETE\' => \'CASCADE\',\n                                                      \'TABLE\' => \'bugs\',\n                                                      \'created\' => 1\n                                                    },\n                                    \'TYPE\' => \'INT3\'\n                                  },\n                                  \'who\',\n                                  {\n                                    \'NOTNULL\' => 1,\n                                    \'REFERENCES\' => {\n                                                      \'COLUMN\' => \'userid\',\n                                                      \'DELETE\' => \'CASCADE\',\n                                                      \'TABLE\' => \'profiles\',\n                                                      \'created\' => 1\n                                                    },\n                                    \'TYPE\' => \'INT3\'\n                                  }\n                                ],\n                    \'INDEXES\' => [\n                                   \'cc_bug_id_idx\',\n                                   {\n                                     \'FIELDS\' => [\n                                                   \'bug_id\',\n                                                   \'who\'\n                                                 ],\n                                     \'TYPE\' => \'UNIQUE\'\n                                   },\n                                   \'cc_who_idx\',\n                                   [\n                                     \'who\'\n                                   ]\n                                 ]\n                  },\n          \'cf_ipi_clust_3_action_type\' => {\n                                            \'FIELDS\' => [\n                                                          \'id\',\n                                                          {\n                                                            \'NOTNULL\' => 1,\n                                                            \'PRIMARYKEY\' => 1,\n                                                            \'TYPE\' => \'SMALLSERIAL\'\n                                                          },\n                                                          \'value\',\n                                                          {\n                                                            \'NOTNULL\' => 1,\n                                                            \'TYPE\' => \'varchar(64)\'\n                                                          },\n                                                          \'sortkey\',\n                                                          {\n                                                            \'DEFAULT\' => 0,\n                                                            \'NOTNULL\' => 1,\n                                                            \'TYPE\' => \'INT2\'\n                                                          },\n                                                          \'isactive\',\n                                                          {\n                                                            \'DEFAULT\' => \'TRUE\',\n                                                            \'NOTNULL\' => 1,\n                                                            \'TYPE\' => \'BOOLEAN\'\n                                                          },\n                                                          \'visibility_value_id\',\n                                                          {\n                                                            \'TYPE\' => \'INT2\'\n                                                          }\n                                                        ],\n                                            \'INDEXES\' => [\n                                                           \'cf_ipi_clust_3_action_type_sortkey_idx\',\n                                                           [\n                                                             \'sortkey\',\n                                                             \'value\'\n                                                           ],\n                                                           \'cf_ipi_clust_3_action_type_value_idx\',\n                                                           {\n                                                             \'FIELDS\' => [\n                                                                           \'value\'\n                                                                         ],\n                                                             \'TYPE\' => \'UNIQUE\'\n                                                           },\n                                                           \'cf_ipi_clust_3_action_type_visibility_value_id_idx\',\n                                                           [\n                                                             \'visibility_value_id\'\n                                                           ]\n                                                         ]\n                                          },\n          \'cf_ipi_clust_3_roadbook_for\' => {\n                                             \'FIELDS\' => [\n                                                           \'id\',\n                                                           {\n                                                             \'NOTNULL\' => 1,\n                                                             \'PRIMARYKEY\' => 1,\n                                                             \'TYPE\' => \'SMALLSERIAL\'\n                                                           },\n                                                           \'value\',\n                                                           {\n                                                             \'NOTNULL\' => 1,\n                                                             \'TYPE\' => \'varchar(64)\'\n                                                           },\n                                                           \'sortkey\',\n                                                           {\n                                                             \'DEFAULT\' => 0,\n                                                             \'NOTNULL\' => 1,\n                                                             \'TYPE\' => \'INT2\'\n                                                           },\n                                                           \'isactive\',\n                                                           {\n                                                             \'DEFAULT\' => \'TRUE\',\n                                                             \'NOTNULL\' => 1,\n                                                             \'TYPE\' => \'BOOLEAN\'\n                                                           },\n                                                           \'visibility_value_id\',\n                                                           {\n                                                             \'TYPE\' => \'INT2\'\n                                                           }\n                                                         ],\n                                             \'INDEXES\' => [\n                                                            \'cf_ipi_clust_3_roadbook_for_value_idx\',\n                                                            {\n                                                              \'FIELDS\' => [\n                                                                            \'value\'\n                                                                          ],\n                                                              \'TYPE\' => \'UNIQUE\'\n                                                            },\n                                                            \'cf_ipi_clust_3_roadbook_for_visibility_value_id_idx\',\n                                                            [\n                                                              \'visibility_value_id\'\n                                                            ],\n                                                            \'cf_ipi_clust_3_roadbook_for_sortkey_idx\',\n                                                            [\n                                                              \'sortkey\',\n                                                              \'value\'\n                                                            ]\n                                                          ]\n                                           },\n          \'cf_ipi_clust_4_status_in_progress\' => {\n                                                   \'FIELDS\' => [\n                                                                 \'id\',\n                                                                 {\n                                                                   \'NOTNULL\' => 1,\n                                                                   \'PRIMARYKEY\' => 1,\n                                                                   \'TYPE\' => \'SMALLSERIAL\'\n                                                                 },\n                                                                 \'value\',\n                                                                 {\n                                                                   \'NOTNULL\' => 1,\n                                                                   \'TYPE\' => \'varchar(64)\'\n                                                                 },\n                                                                 \'sortkey\',\n                                                                 {\n                                                                   \'DEFAULT\' => 0,\n                                                                   \'NOTNULL\' => 1,\n                                                                   \'TYPE\' => \'INT2\'\n                                                                 },\n                                                                 \'isactive\',\n                                                                 {\n                                                                   \'DEFAULT\' => \'TRUE\',\n                                                                   \'NOTNULL\' => 1,\n                                                                   \'TYPE\' => \'BOOLEAN\'\n                                                                 },\n                                                                 \'visibility_value_id\',\n                                                                 {\n                                                                   \'TYPE\' => \'INT2\'\n                                                                 }\n                                                               ],\n                                                   \'INDEXES\' => [\n                                                                  \'cf_ipi_clust_4_status_in_progress_visibility_value_id_idx\',\n                                                                  [\n                                                                    \'visibility_value_id\'\n                                                                  ],\n                                                                  \'cf_ipi_clust_4_status_in_progress_value_idx\',\n                                                                  {\n                                                                    \'FIELDS\' => [\n                                                                                  \'value\'\n                                                                                ],\n                                                                    \'TYPE\' => \'UNIQUE\'\n                                                                  },\n                                                                  \'cf_ipi_clust_4_status_in_progress_sortkey_idx\',\n                                                                  [\n                                                                    \'sortkey\',\n                                                                    \'value\'\n                                                                  ]\n                                                                ]\n                                                 },\n          \'cf_ipi_clust_4_status_standby\' => {\n                                               \'FIELDS\' => [\n                                                             \'id\',\n                                                             {\n                                                               \'NOTNULL\' => 1,\n                                                               \'PRIMARYKEY\' => 1,\n                                                               \'TYPE\' => \'SMALLSERIAL\'\n                                                             },\n                                                             \'value\',\n                                                             {\n                                                               \'NOTNULL\' => 1,\n                                                               \'TYPE\' => \'varchar(64)\'\n                                                             },\n                                                             \'sortkey\',\n                                                             {\n                                                               \'DEFAULT\' => 0,\n                                                               \'NOTNULL\' => 1,\n                                                               \'TYPE\' => \'INT2\'\n                                                             },\n                                                             \'isactive\',\n                                                             {\n                                                               \'DEFAULT\' => \'TRUE\',\n                                                               \'NOTNULL\' => 1,\n                                                               \'TYPE\' => \'BOOLEAN\'\n                                                             },\n                                                             \'visibility_value_id\',\n                                                             {\n                                                               \'TYPE\' => \'INT2\'\n                                                             }\n                                                           ],\n                                               \'INDEXES\' => [\n                                                              \'cf_ipi_clust_4_status_standby_value_idx\',\n                                                              {\n                                                                \'FIELDS\' => [\n                                                                              \'value\'\n                                                                            ],\n                                                                \'TYPE\' => \'UNIQUE\'\n                                                              },\n                                                              \'cf_ipi_clust_4_status_standby_visibility_value_id_idx\',\n                                                              [\n                                                                \'visibility_value_id\'\n                                                              ],\n                                                              \'cf_ipi_clust_4_status_standby_sortkey_idx\',\n                                                              [\n                                                                \'sortkey\',\n                                                                \'value\'\n                                                              ]\n                                                            ]\n                                             },\n          \'cf_ipi_clust_6_claim_type\' => {\n                                           \'FIELDS\' => [\n                                                         \'id\',\n                                                         {\n                                                           \'NOTNULL\' => 1,\n                                                           \'PRIMARYKEY\' => 1,\n                                                           \'TYPE\' => \'SMALLSERIAL\'\n                                                         },\n                                                         \'value\',\n                                                         {\n                                                           \'NOTNULL\' => 1,\n                                                           \'TYPE\' => \'varchar(64)\'\n                                                         },\n                                                         \'sortkey\',\n                                                         {\n                                                           \'DEFAULT\' => 0,\n                                                           \'NOTNULL\' => 1,\n                                                           \'TYPE\' => \'INT2\'\n                                                         },\n                                                         \'isactive\',\n                                                         {\n                                                           \'DEFAULT\' => \'TRUE\',\n                                                           \'NOTNULL\' => 1,\n                                                           \'TYPE\' => \'BOOLEAN\'\n                                                         },\n                                                         \'visibility_value_id\',\n                                                         {\n                                                           \'TYPE\' => \'INT2\'\n                                                         }\n                                                       ],\n                                           \'INDEXES\' => [\n                                                          \'cf_ipi_clust_6_claim_type_value_idx\',\n                                                          {\n                                                            \'FIELDS\' => [\n                                                                          \'value\'\n                                                                        ],\n                                                            \'TYPE\' => \'UNIQUE\'\n                                                          },\n                                                          \'cf_ipi_clust_6_claim_type_sortkey_idx\',\n                                                          [\n                                                            \'sortkey\',\n                                                            \'value\'\n                                                          ],\n                                                          \'cf_ipi_clust_6_claim_type_visibility_value_id_idx\',\n                                                          [\n                                                            \'visibility_value_id\'\n                                                          ]\n                                                        ]\n                                         },\n          \'cf_ipi_clust_7_spe_payment_type\' => {\n                                                 \'FIELDS\' => [\n                                                               \'id\',\n                                                               {\n                                                                 \'NOTNULL\' => 1,\n                                                                 \'PRIMARYKEY\' => 1,\n                                                                 \'TYPE\' => \'SMALLSERIAL\'\n                                                               },\n                                                               \'value\',\n                                                               {\n                                                                 \'NOTNULL\' => 1,\n                                                                 \'TYPE\' => \'varchar(64)\'\n                                                               },\n                                                               \'sortkey\',\n                                                               {\n                                                                 \'DEFAULT\' => 0,\n                                                                 \'NOTNULL\' => 1,\n                                                                 \'TYPE\' => \'INT2\'\n                                                               },\n                                                               \'isactive\',\n                                                               {\n                                                                 \'DEFAULT\' => \'TRUE\',\n                                                                 \'NOTNULL\' => 1,\n                                                                 \'TYPE\' => \'BOOLEAN\'\n                                                               },\n                                                               \'visibility_value_id\',\n                                                               {\n                                                                 \'TYPE\' => \'INT2\'\n                                                               }\n                                                             ],\n                                                 \'INDEXES\' => [\n                                                                \'cf_ipi_clust_7_spe_payment_type_visibility_value_id_idx\',\n                                                                [\n                                                                  \'visibility_value_id\'\n                                                                ],\n                                                                \'cf_ipi_clust_7_spe_payment_type_sortkey_idx\',\n                                                                [\n                                                                  \'sortkey\',\n                                                                  \'value\'\n                                                                ],\n                                                                \'cf_ipi_clust_7_spe_payment_type_value_idx\',\n                                                                {\n                                                                  \'FIELDS\' => [\n                                                                                \'value\'\n                                                                              ],\n                                                                  \'TYPE\' => \'UNIQUE\'\n                                                                }\n                                                              ]\n                                               },\n          \'cf_ipi_clust_9_acct_action\' => {\n                                            \'FIELDS\' => [\n                                                          \'id\',\n                                                          {\n                                                            \'NOTNULL\' => 1,\n                                                            \'PRIMARYKEY\' => 1,\n                                                            \'TYPE\' => \'SMALLSERIAL\'\n                                                          },\n                                                          \'value\',\n                                                          {\n                                                            \'NOTNULL\' => 1,\n                                                            \'TYPE\' => \'varchar(64)\'\n                                                          },\n                                                          \'sortkey\',\n                                                          {\n                                                            \'DEFAULT\' => 0,\n                                                            \'NOTNULL\' => 1,\n                                                            \'TYPE\' => \'INT2\'\n                                                          },\n                                                          \'isactive\',\n                                                          {\n                                                            \'DEFAULT\' => \'TRUE\',\n                                                            \'NOTNULL\' => 1,\n                                                            \'TYPE\' => \'BOOLEAN\'\n                                                          },\n                                                          \'visibility_value_id\',\n                                                          {\n                                                            \'TYPE\' => \'INT2\'\n                                                          }\n                                                        ],\n                                            \'INDEXES\' => [\n                                                           \'cf_ipi_clust_9_acct_action_visibility_value_id_idx\',\n                                                           [\n                                                             \'visibility_value_id\'\n                                                           ],\n                                                           \'cf_ipi_clust_9_acct_action_sortkey_idx\',\n                                                           [\n                                                             \'sortkey\',\n                                                             \'value\'\n                                                           ],\n                                                           \'cf_ipi_clust_9_acct_action_value_idx\',\n                                                           {\n                                                             \'FIELDS\' => [\n                                                                           \'value\'\n                                                                         ],\n                                                             \'TYPE\' => \'UNIQUE\'\n                                                           }\n                                                         ]\n                                          },\n          \'cf_specific_for\' => {\n                                 \'FIELDS\' => [\n                                               \'id\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'PRIMARYKEY\' => 1,\n                                                 \'TYPE\' => \'SMALLSERIAL\'\n                                               },\n                                               \'value\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'varchar(64)\'\n                                               },\n                                               \'sortkey\',\n                                               {\n                                                 \'DEFAULT\' => 0,\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'INT2\'\n                                               },\n                                               \'isactive\',\n                                               {\n                                                 \'DEFAULT\' => \'TRUE\',\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'BOOLEAN\'\n                                               },\n                                               \'visibility_value_id\',\n                                               {\n                                                 \'TYPE\' => \'INT2\'\n                                               }\n                                             ],\n                                 \'INDEXES\' => [\n                                                \'cf_specific_for_sortkey_idx\',\n                                                [\n                                                  \'sortkey\',\n                                                  \'value\'\n                                                ],\n                                                \'cf_specific_for_value_idx\',\n                                                {\n                                                  \'FIELDS\' => [\n                                                                \'value\'\n                                                              ],\n                                                  \'TYPE\' => \'UNIQUE\'\n                                                },\n                                                \'cf_specific_for_visibility_value_id_idx\',\n                                                [\n                                                  \'visibility_value_id\'\n                                                ]\n                                              ]\n                               },\n          \'classifications\' => {\n                                 \'FIELDS\' => [\n                                               \'id\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'PRIMARYKEY\' => 1,\n                                                 \'TYPE\' => \'SMALLSERIAL\'\n                                               },\n                                               \'name\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'varchar(64)\'\n                                               },\n                                               \'description\',\n                                               {\n                                                 \'TYPE\' => \'MEDIUMTEXT\'\n                                               },\n                                               \'sortkey\',\n                                               {\n                                                 \'DEFAULT\' => \'0\',\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'INT2\'\n                                               }\n                                             ],\n                                 \'INDEXES\' => [\n                                                \'classifications_name_idx\',\n                                                {\n                                                  \'FIELDS\' => [\n                                                                \'name\'\n                                                              ],\n                                                  \'TYPE\' => \'UNIQUE\'\n                                                }\n                                              ]\n                               },\n          \'component_cc\' => {\n                              \'FIELDS\' => [\n                                            \'user_id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'userid\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'profiles\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            },\n                                            \'component_id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'id\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'components\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            }\n                                          ],\n                              \'INDEXES\' => [\n                                             \'component_cc_user_id_idx\',\n                                             {\n                                               \'FIELDS\' => [\n                                                             \'component_id\',\n                                                             \'user_id\'\n                                                           ],\n                                               \'TYPE\' => \'UNIQUE\'\n                                             }\n                                           ]\n                            },\n          \'components\' => {\n                            \'FIELDS\' => [\n                                          \'id\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'PRIMARYKEY\' => 1,\n                                            \'TYPE\' => \'MEDIUMSERIAL\'\n                                          },\n                                          \'name\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'varchar(64)\'\n                                          },\n                                          \'product_id\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'REFERENCES\' => {\n                                                              \'COLUMN\' => \'id\',\n                                                              \'DELETE\' => \'CASCADE\',\n                                                              \'TABLE\' => \'products\',\n                                                              \'created\' => 1\n                                                            },\n                                            \'TYPE\' => \'INT2\'\n                                          },\n                                          \'initialowner\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'REFERENCES\' => {\n                                                              \'COLUMN\' => \'userid\',\n                                                              \'TABLE\' => \'profiles\',\n                                                              \'created\' => 1\n                                                            },\n                                            \'TYPE\' => \'INT3\'\n                                          },\n                                          \'initialqacontact\',\n                                          {\n                                            \'REFERENCES\' => {\n                                                              \'COLUMN\' => \'userid\',\n                                                              \'DELETE\' => \'SET NULL\',\n                                                              \'TABLE\' => \'profiles\',\n                                                              \'created\' => 1\n                                                            },\n                                            \'TYPE\' => \'INT3\'\n                                          },\n                                          \'description\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'MEDIUMTEXT\'\n                                          },\n                                          \'isactive\',\n                                          {\n                                            \'DEFAULT\' => \'TRUE\',\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'BOOLEAN\'\n                                          }\n                                        ],\n                            \'INDEXES\' => [\n                                           \'components_product_id_idx\',\n                                           {\n                                             \'FIELDS\' => [\n                                                           \'product_id\',\n                                                           \'name\'\n                                                         ],\n                                             \'TYPE\' => \'UNIQUE\'\n                                           },\n                                           \'components_name_idx\',\n                                           [\n                                             \'name\'\n                                           ]\n                                         ]\n                          },\n          \'dependencies\' => {\n                              \'FIELDS\' => [\n                                            \'blocked\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'bug_id\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'bugs\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            },\n                                            \'dependson\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'bug_id\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'bugs\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            }\n                                          ],\n                              \'INDEXES\' => [\n                                             \'dependencies_blocked_idx\',\n                                             {\n                                               \'FIELDS\' => [\n                                                             \'blocked\',\n                                                             \'dependson\'\n                                                           ],\n                                               \'TYPE\' => \'UNIQUE\'\n                                             },\n                                             \'dependencies_dependson_idx\',\n                                             [\n                                               \'dependson\'\n                                             ]\n                                           ]\n                            },\n          \'duplicates\' => {\n                            \'FIELDS\' => [\n                                          \'dupe_of\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'REFERENCES\' => {\n                                                              \'COLUMN\' => \'bug_id\',\n                                                              \'DELETE\' => \'CASCADE\',\n                                                              \'TABLE\' => \'bugs\',\n                                                              \'created\' => 1\n                                                            },\n                                            \'TYPE\' => \'INT3\'\n                                          },\n                                          \'dupe\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'PRIMARYKEY\' => 1,\n                                            \'REFERENCES\' => {\n                                                              \'COLUMN\' => \'bug_id\',\n                                                              \'DELETE\' => \'CASCADE\',\n                                                              \'TABLE\' => \'bugs\',\n                                                              \'created\' => 1\n                                                            },\n                                            \'TYPE\' => \'INT3\'\n                                          }\n                                        ]\n                          },\n          \'email_bug_ignore\' => {\n                                  \'FIELDS\' => [\n                                                \'user_id\',\n                                                {\n                                                  \'NOTNULL\' => 1,\n                                                  \'REFERENCES\' => {\n                                                                    \'COLUMN\' => \'userid\',\n                                                                    \'DELETE\' => \'CASCADE\',\n                                                                    \'TABLE\' => \'profiles\',\n                                                                    \'created\' => 1\n                                                                  },\n                                                  \'TYPE\' => \'INT3\'\n                                                },\n                                                \'bug_id\',\n                                                {\n                                                  \'NOTNULL\' => 1,\n                                                  \'REFERENCES\' => {\n                                                                    \'COLUMN\' => \'bug_id\',\n                                                                    \'DELETE\' => \'CASCADE\',\n                                                                    \'TABLE\' => \'bugs\',\n                                                                    \'created\' => 1\n                                                                  },\n                                                  \'TYPE\' => \'INT3\'\n                                                }\n                                              ],\n                                  \'INDEXES\' => [\n                                                 \'email_bug_ignore_user_id_idx\',\n                                                 {\n                                                   \'FIELDS\' => [\n                                                                 \'user_id\',\n                                                                 \'bug_id\'\n                                                               ],\n                                                   \'TYPE\' => \'UNIQUE\'\n                                                 }\n                                               ]\n                                },\n          \'email_setting\' => {\n                               \'FIELDS\' => [\n                                             \'user_id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'userid\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'profiles\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'relationship\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'INT1\'\n                                             },\n                                             \'event\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'INT1\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'email_setting_user_id_idx\',\n                                              {\n                                                \'FIELDS\' => [\n                                                              \'user_id\',\n                                                              \'relationship\',\n                                                              \'event\'\n                                                            ],\n                                                \'TYPE\' => \'UNIQUE\'\n                                              }\n                                            ]\n                             },\n          \'field_visibility\' => {\n                                  \'FIELDS\' => [\n                                                \'field_id\',\n                                                {\n                                                  \'REFERENCES\' => {\n                                                                    \'COLUMN\' => \'id\',\n                                                                    \'DELETE\' => \'CASCADE\',\n                                                                    \'TABLE\' => \'fielddefs\',\n                                                                    \'created\' => 1\n                                                                  },\n                                                  \'TYPE\' => \'INT3\'\n                                                },\n                                                \'value_id\',\n                                                {\n                                                  \'NOTNULL\' => 1,\n                                                  \'TYPE\' => \'INT2\'\n                                                }\n                                              ],\n                                  \'INDEXES\' => [\n                                                 \'field_visibility_field_id_idx\',\n                                                 {\n                                                   \'FIELDS\' => [\n                                                                 \'field_id\',\n                                                                 \'value_id\'\n                                                               ],\n                                                   \'TYPE\' => \'UNIQUE\'\n                                                 }\n                                               ]\n                                },\n          \'fielddefs\' => {\n                           \'FIELDS\' => [\n                                         \'id\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'PRIMARYKEY\' => 1,\n                                           \'TYPE\' => \'MEDIUMSERIAL\'\n                                         },\n                                         \'name\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'varchar(64)\'\n                                         },\n                                         \'type\',\n                                         {\n                                           \'DEFAULT\' => 0,\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'INT2\'\n                                         },\n                                         \'custom\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'description\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'TINYTEXT\'\n                                         },\n                                         \'long_desc\',\n                                         {\n                                           \'DEFAULT\' => \'\\\'\\\'\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'varchar(255)\'\n                                         },\n                                         \'mailhead\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'sortkey\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'INT2\'\n                                         },\n                                         \'obsolete\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'enter_bug\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'buglist\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'visibility_field_id\',\n                                         {\n                                           \'REFERENCES\' => {\n                                                             \'COLUMN\' => \'id\',\n                                                             \'TABLE\' => \'fielddefs\',\n                                                             \'created\' => 1\n                                                           },\n                                           \'TYPE\' => \'INT3\'\n                                         },\n                                         \'value_field_id\',\n                                         {\n                                           \'REFERENCES\' => {\n                                                             \'COLUMN\' => \'id\',\n                                                             \'TABLE\' => \'fielddefs\',\n                                                             \'created\' => 1\n                                                           },\n                                           \'TYPE\' => \'INT3\'\n                                         },\n                                         \'reverse_desc\',\n                                         {\n                                           \'TYPE\' => \'TINYTEXT\'\n                                         },\n                                         \'is_mandatory\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'is_numeric\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         }\n                                       ],\n                           \'INDEXES\' => [\n                                          \'fielddefs_name_idx\',\n                                          {\n                                            \'FIELDS\' => [\n                                                          \'name\'\n                                                        ],\n                                            \'TYPE\' => \'UNIQUE\'\n                                          },\n                                          \'fielddefs_sortkey_idx\',\n                                          [\n                                            \'sortkey\'\n                                          ],\n                                          \'fielddefs_value_field_id_idx\',\n                                          [\n                                            \'value_field_id\'\n                                          ],\n                                          \'fielddefs_is_mandatory_idx\',\n                                          [\n                                            \'is_mandatory\'\n                                          ]\n                                        ]\n                         },\n          \'flagexclusions\' => {\n                                \'FIELDS\' => [\n                                              \'type_id\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'id\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'flagtypes\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT2\'\n                                              },\n                                              \'product_id\',\n                                              {\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'id\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'products\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT2\'\n                                              },\n                                              \'component_id\',\n                                              {\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'id\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'components\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT3\'\n                                              }\n                                            ],\n                                \'INDEXES\' => [\n                                               \'flagexclusions_type_id_idx\',\n                                               {\n                                                 \'FIELDS\' => [\n                                                               \'type_id\',\n                                                               \'product_id\',\n                                                               \'component_id\'\n                                                             ],\n                                                 \'TYPE\' => \'UNIQUE\'\n                                               }\n                                             ]\n                              },\n          \'flaginclusions\' => {\n                                \'FIELDS\' => [\n                                              \'type_id\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'id\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'flagtypes\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT2\'\n                                              },\n                                              \'product_id\',\n                                              {\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'id\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'products\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT2\'\n                                              },\n                                              \'component_id\',\n                                              {\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'id\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'components\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT3\'\n                                              }\n                                            ],\n                                \'INDEXES\' => [\n                                               \'flaginclusions_type_id_idx\',\n                                               {\n                                                 \'FIELDS\' => [\n                                                               \'type_id\',\n                                                               \'product_id\',\n                                                               \'component_id\'\n                                                             ],\n                                                 \'TYPE\' => \'UNIQUE\'\n                                               }\n                                             ]\n                              },\n          \'flags\' => {\n                       \'FIELDS\' => [\n                                     \'id\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'PRIMARYKEY\' => 1,\n                                       \'TYPE\' => \'MEDIUMSERIAL\'\n                                     },\n                                     \'type_id\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'REFERENCES\' => {\n                                                         \'COLUMN\' => \'id\',\n                                                         \'DELETE\' => \'CASCADE\',\n                                                         \'TABLE\' => \'flagtypes\',\n                                                         \'created\' => 1\n                                                       },\n                                       \'TYPE\' => \'INT2\'\n                                     },\n                                     \'status\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'TYPE\' => \'char(1)\'\n                                     },\n                                     \'bug_id\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'REFERENCES\' => {\n                                                         \'COLUMN\' => \'bug_id\',\n                                                         \'DELETE\' => \'CASCADE\',\n                                                         \'TABLE\' => \'bugs\',\n                                                         \'created\' => 1\n                                                       },\n                                       \'TYPE\' => \'INT3\'\n                                     },\n                                     \'attach_id\',\n                                     {\n                                       \'REFERENCES\' => {\n                                                         \'COLUMN\' => \'attach_id\',\n                                                         \'DELETE\' => \'CASCADE\',\n                                                         \'TABLE\' => \'attachments\',\n                                                         \'created\' => 1\n                                                       },\n                                       \'TYPE\' => \'INT3\'\n                                     },\n                                     \'creation_date\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'TYPE\' => \'DATETIME\'\n                                     },\n                                     \'modification_date\',\n                                     {\n                                       \'TYPE\' => \'DATETIME\'\n                                     },\n                                     \'setter_id\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'REFERENCES\' => {\n                                                         \'COLUMN\' => \'userid\',\n                                                         \'TABLE\' => \'profiles\',\n                                                         \'created\' => 1\n                                                       },\n                                       \'TYPE\' => \'INT3\'\n                                     },\n                                     \'requestee_id\',\n                                     {\n                                       \'REFERENCES\' => {\n                                                         \'COLUMN\' => \'userid\',\n                                                         \'TABLE\' => \'profiles\',\n                                                         \'created\' => 1\n                                                       },\n                                       \'TYPE\' => \'INT3\'\n                                     }\n                                   ],\n                       \'INDEXES\' => [\n                                      \'flags_bug_id_idx\',\n                                      [\n                                        \'bug_id\',\n                                        \'attach_id\'\n                                      ],\n                                      \'flags_setter_id_idx\',\n                                      [\n                                        \'setter_id\'\n                                      ],\n                                      \'flags_requestee_id_idx\',\n                                      [\n                                        \'requestee_id\'\n                                      ],\n                                      \'flags_type_id_idx\',\n                                      [\n                                        \'type_id\'\n                                      ]\n                                    ]\n                     },\n          \'flagtypes\' => {\n                           \'FIELDS\' => [\n                                         \'id\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'PRIMARYKEY\' => 1,\n                                           \'TYPE\' => \'SMALLSERIAL\'\n                                         },\n                                         \'name\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'varchar(50)\'\n                                         },\n                                         \'description\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'MEDIUMTEXT\'\n                                         },\n                                         \'cc_list\',\n                                         {\n                                           \'TYPE\' => \'varchar(200)\'\n                                         },\n                                         \'target_type\',\n                                         {\n                                           \'DEFAULT\' => \'\\\'b\\\'\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'char(1)\'\n                                         },\n                                         \'is_active\',\n                                         {\n                                           \'DEFAULT\' => \'TRUE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'is_requestable\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'is_requesteeble\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'is_multiplicable\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'sortkey\',\n                                         {\n                                           \'DEFAULT\' => \'0\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'INT2\'\n                                         },\n                                         \'grant_group_id\',\n                                         {\n                                           \'REFERENCES\' => {\n                                                             \'COLUMN\' => \'id\',\n                                                             \'DELETE\' => \'SET NULL\',\n                                                             \'TABLE\' => \'groups\',\n                                                             \'created\' => 1\n                                                           },\n                                           \'TYPE\' => \'INT3\'\n                                         },\n                                         \'request_group_id\',\n                                         {\n                                           \'REFERENCES\' => {\n                                                             \'COLUMN\' => \'id\',\n                                                             \'DELETE\' => \'SET NULL\',\n                                                             \'TABLE\' => \'groups\',\n                                                             \'created\' => 1\n                                                           },\n                                           \'TYPE\' => \'INT3\'\n                                         }\n                                       ]\n                         },\n          \'group_control_map\' => {\n                                   \'FIELDS\' => [\n                                                 \'group_id\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'REFERENCES\' => {\n                                                                     \'COLUMN\' => \'id\',\n                                                                     \'DELETE\' => \'CASCADE\',\n                                                                     \'TABLE\' => \'groups\',\n                                                                     \'created\' => 1\n                                                                   },\n                                                   \'TYPE\' => \'INT3\'\n                                                 },\n                                                 \'product_id\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'REFERENCES\' => {\n                                                                     \'COLUMN\' => \'id\',\n                                                                     \'DELETE\' => \'CASCADE\',\n                                                                     \'TABLE\' => \'products\',\n                                                                     \'created\' => 1\n                                                                   },\n                                                   \'TYPE\' => \'INT2\'\n                                                 },\n                                                 \'entry\',\n                                                 {\n                                                   \'DEFAULT\' => \'FALSE\',\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'BOOLEAN\'\n                                                 },\n                                                 \'membercontrol\',\n                                                 {\n                                                   \'DEFAULT\' => \'0\',\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'INT1\'\n                                                 },\n                                                 \'othercontrol\',\n                                                 {\n                                                   \'DEFAULT\' => \'0\',\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'INT1\'\n                                                 },\n                                                 \'canedit\',\n                                                 {\n                                                   \'DEFAULT\' => \'FALSE\',\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'BOOLEAN\'\n                                                 },\n                                                 \'editcomponents\',\n                                                 {\n                                                   \'DEFAULT\' => \'FALSE\',\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'BOOLEAN\'\n                                                 },\n                                                 \'editbugs\',\n                                                 {\n                                                   \'DEFAULT\' => \'FALSE\',\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'BOOLEAN\'\n                                                 },\n                                                 \'canconfirm\',\n                                                 {\n                                                   \'DEFAULT\' => \'FALSE\',\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'BOOLEAN\'\n                                                 }\n                                               ],\n                                   \'INDEXES\' => [\n                                                  \'group_control_map_product_id_idx\',\n                                                  {\n                                                    \'FIELDS\' => [\n                                                                  \'product_id\',\n                                                                  \'group_id\'\n                                                                ],\n                                                    \'TYPE\' => \'UNIQUE\'\n                                                  },\n                                                  \'group_control_map_group_id_idx\',\n                                                  [\n                                                    \'group_id\'\n                                                  ]\n                                                ]\n                                 },\n          \'group_group_map\' => {\n                                 \'FIELDS\' => [\n                                               \'member_id\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'REFERENCES\' => {\n                                                                   \'COLUMN\' => \'id\',\n                                                                   \'DELETE\' => \'CASCADE\',\n                                                                   \'TABLE\' => \'groups\',\n                                                                   \'created\' => 1\n                                                                 },\n                                                 \'TYPE\' => \'INT3\'\n                                               },\n                                               \'grantor_id\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'REFERENCES\' => {\n                                                                   \'COLUMN\' => \'id\',\n                                                                   \'DELETE\' => \'CASCADE\',\n                                                                   \'TABLE\' => \'groups\',\n                                                                   \'created\' => 1\n                                                                 },\n                                                 \'TYPE\' => \'INT3\'\n                                               },\n                                               \'grant_type\',\n                                               {\n                                                 \'DEFAULT\' => \'0\',\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'INT1\'\n                                               }\n                                             ],\n                                 \'INDEXES\' => [\n                                                \'group_group_map_member_id_idx\',\n                                                {\n                                                  \'FIELDS\' => [\n                                                                \'member_id\',\n                                                                \'grantor_id\',\n                                                                \'grant_type\'\n                                                              ],\n                                                  \'TYPE\' => \'UNIQUE\'\n                                                }\n                                              ]\n                               },\n          \'groups\' => {\n                        \'FIELDS\' => [\n                                      \'id\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'PRIMARYKEY\' => 1,\n                                        \'TYPE\' => \'MEDIUMSERIAL\'\n                                      },\n                                      \'name\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'varchar(255)\'\n                                      },\n                                      \'description\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'MEDIUMTEXT\'\n                                      },\n                                      \'isbuggroup\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'BOOLEAN\'\n                                      },\n                                      \'userregexp\',\n                                      {\n                                        \'DEFAULT\' => \'\\\'\\\'\',\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'TINYTEXT\'\n                                      },\n                                      \'isactive\',\n                                      {\n                                        \'DEFAULT\' => \'TRUE\',\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'BOOLEAN\'\n                                      },\n                                      \'icon_url\',\n                                      {\n                                        \'TYPE\' => \'TINYTEXT\'\n                                      }\n                                    ],\n                        \'INDEXES\' => [\n                                       \'groups_name_idx\',\n                                       {\n                                         \'FIELDS\' => [\n                                                       \'name\'\n                                                     ],\n                                         \'TYPE\' => \'UNIQUE\'\n                                       }\n                                     ]\n                      },\n          \'keyworddefs\' => {\n                             \'FIELDS\' => [\n                                           \'id\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'PRIMARYKEY\' => 1,\n                                             \'TYPE\' => \'SMALLSERIAL\'\n                                           },\n                                           \'name\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'varchar(64)\'\n                                           },\n                                           \'description\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'MEDIUMTEXT\'\n                                           }\n                                         ],\n                             \'INDEXES\' => [\n                                            \'keyworddefs_name_idx\',\n                                            {\n                                              \'FIELDS\' => [\n                                                            \'name\'\n                                                          ],\n                                              \'TYPE\' => \'UNIQUE\'\n                                            }\n                                          ]\n                           },\n          \'keywords\' => {\n                          \'FIELDS\' => [\n                                        \'bug_id\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'REFERENCES\' => {\n                                                            \'COLUMN\' => \'bug_id\',\n                                                            \'DELETE\' => \'CASCADE\',\n                                                            \'TABLE\' => \'bugs\',\n                                                            \'created\' => 1\n                                                          },\n                                          \'TYPE\' => \'INT3\'\n                                        },\n                                        \'keywordid\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'REFERENCES\' => {\n                                                            \'COLUMN\' => \'id\',\n                                                            \'DELETE\' => \'CASCADE\',\n                                                            \'TABLE\' => \'keyworddefs\',\n                                                            \'created\' => 1\n                                                          },\n                                          \'TYPE\' => \'INT2\'\n                                        }\n                                      ],\n                          \'INDEXES\' => [\n                                         \'keywords_bug_id_idx\',\n                                         {\n                                           \'FIELDS\' => [\n                                                         \'bug_id\',\n                                                         \'keywordid\'\n                                                       ],\n                                           \'TYPE\' => \'UNIQUE\'\n                                         },\n                                         \'keywords_keywordid_idx\',\n                                         [\n                                           \'keywordid\'\n                                         ]\n                                       ]\n                        },\n          \'login_failure\' => {\n                               \'FIELDS\' => [\n                                             \'user_id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'userid\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'profiles\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'login_time\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'DATETIME\'\n                                             },\n                                             \'ip_addr\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'varchar(40)\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'login_failure_user_id_idx\',\n                                              [\n                                                \'user_id\'\n                                              ]\n                                            ]\n                             },\n          \'logincookies\' => {\n                              \'FIELDS\' => [\n                                            \'cookie\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'PRIMARYKEY\' => 1,\n                                              \'TYPE\' => \'varchar(16)\'\n                                            },\n                                            \'userid\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'userid\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'profiles\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            },\n                                            \'ipaddr\',\n                                            {\n                                              \'TYPE\' => \'varchar(40)\'\n                                            },\n                                            \'lastused\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'DATETIME\'\n                                            }\n                                          ],\n                              \'INDEXES\' => [\n                                             \'logincookies_lastused_idx\',\n                                             [\n                                               \'lastused\'\n                                             ]\n                                           ]\n                            },\n          \'longdescs\' => {\n                           \'FIELDS\' => [\n                                         \'comment_id\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'PRIMARYKEY\' => 1,\n                                           \'TYPE\' => \'INTSERIAL\'\n                                         },\n                                         \'bug_id\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'REFERENCES\' => {\n                                                             \'COLUMN\' => \'bug_id\',\n                                                             \'DELETE\' => \'CASCADE\',\n                                                             \'TABLE\' => \'bugs\',\n                                                             \'created\' => 1\n                                                           },\n                                           \'TYPE\' => \'INT3\'\n                                         },\n                                         \'who\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'REFERENCES\' => {\n                                                             \'COLUMN\' => \'userid\',\n                                                             \'TABLE\' => \'profiles\',\n                                                             \'created\' => 1\n                                                           },\n                                           \'TYPE\' => \'INT3\'\n                                         },\n                                         \'bug_when\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'DATETIME\'\n                                         },\n                                         \'work_time\',\n                                         {\n                                           \'DEFAULT\' => \'0\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'decimal(7,2)\'\n                                         },\n                                         \'thetext\',\n                                         {\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'LONGTEXT\'\n                                         },\n                                         \'isprivate\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'already_wrapped\',\n                                         {\n                                           \'DEFAULT\' => \'FALSE\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'BOOLEAN\'\n                                         },\n                                         \'type\',\n                                         {\n                                           \'DEFAULT\' => \'0\',\n                                           \'NOTNULL\' => 1,\n                                           \'TYPE\' => \'INT2\'\n                                         },\n                                         \'extra_data\',\n                                         {\n                                           \'TYPE\' => \'varchar(255)\'\n                                         }\n                                       ],\n                           \'INDEXES\' => [\n                                          \'longdescs_bug_id_idx\',\n                                          [\n                                            \'bug_id\',\n                                            \'work_time\'\n                                          ],\n                                          \'longdescs_who_idx\',\n                                          [\n                                            \'who\',\n                                            \'bug_id\'\n                                          ],\n                                          \'longdescs_bug_when_idx\',\n                                          [\n                                            \'bug_when\'\n                                          ]\n                                        ]\n                         },\n          \'longdescs_tags\' => {\n                                \'FIELDS\' => [\n                                              \'id\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'PRIMARYKEY\' => 1,\n                                                \'TYPE\' => \'MEDIUMSERIAL\'\n                                              },\n                                              \'comment_id\',\n                                              {\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'comment_id\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'longdescs\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT4\'\n                                              },\n                                              \'tag\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'TYPE\' => \'varchar(24)\'\n                                              }\n                                            ],\n                                \'INDEXES\' => [\n                                               \'longdescs_tags_idx\',\n                                               {\n                                                 \'FIELDS\' => [\n                                                               \'comment_id\',\n                                                               \'tag\'\n                                                             ],\n                                                 \'TYPE\' => \'UNIQUE\'\n                                               }\n                                             ]\n                              },\n          \'longdescs_tags_activity\' => {\n                                         \'FIELDS\' => [\n                                                       \'id\',\n                                                       {\n                                                         \'NOTNULL\' => 1,\n                                                         \'PRIMARYKEY\' => 1,\n                                                         \'TYPE\' => \'MEDIUMSERIAL\'\n                                                       },\n                                                       \'bug_id\',\n                                                       {\n                                                         \'NOTNULL\' => 1,\n                                                         \'REFERENCES\' => {\n                                                                           \'COLUMN\' => \'bug_id\',\n                                                                           \'DELETE\' => \'CASCADE\',\n                                                                           \'TABLE\' => \'bugs\',\n                                                                           \'created\' => 1\n                                                                         },\n                                                         \'TYPE\' => \'INT3\'\n                                                       },\n                                                       \'comment_id\',\n                                                       {\n                                                         \'REFERENCES\' => {\n                                                                           \'COLUMN\' => \'comment_id\',\n                                                                           \'DELETE\' => \'CASCADE\',\n                                                                           \'TABLE\' => \'longdescs\',\n                                                                           \'created\' => 1\n                                                                         },\n                                                         \'TYPE\' => \'INT4\'\n                                                       },\n                                                       \'who\',\n                                                       {\n                                                         \'NOTNULL\' => 1,\n                                                         \'REFERENCES\' => {\n                                                                           \'COLUMN\' => \'userid\',\n                                                                           \'TABLE\' => \'profiles\',\n                                                                           \'created\' => 1\n                                                                         },\n                                                         \'TYPE\' => \'INT3\'\n                                                       },\n                                                       \'bug_when\',\n                                                       {\n                                                         \'NOTNULL\' => 1,\n                                                         \'TYPE\' => \'DATETIME\'\n                                                       },\n                                                       \'added\',\n                                                       {\n                                                         \'TYPE\' => \'varchar(24)\'\n                                                       },\n                                                       \'removed\',\n                                                       {\n                                                         \'TYPE\' => \'varchar(24)\'\n                                                       }\n                                                     ],\n                                         \'INDEXES\' => [\n                                                        \'longdescs_tags_activity_bug_id_idx\',\n                                                        [\n                                                          \'bug_id\'\n                                                        ]\n                                                      ]\n                                       },\n          \'longdescs_tags_weights\' => {\n                                        \'FIELDS\' => [\n                                                      \'id\',\n                                                      {\n                                                        \'NOTNULL\' => 1,\n                                                        \'PRIMARYKEY\' => 1,\n                                                        \'TYPE\' => \'MEDIUMSERIAL\'\n                                                      },\n                                                      \'tag\',\n                                                      {\n                                                        \'NOTNULL\' => 1,\n                                                        \'TYPE\' => \'varchar(24)\'\n                                                      },\n                                                      \'weight\',\n                                                      {\n                                                        \'NOTNULL\' => 1,\n                                                        \'TYPE\' => \'INT3\'\n                                                      }\n                                                    ],\n                                        \'INDEXES\' => [\n                                                       \'longdescs_tags_weights_tag_idx\',\n                                                       {\n                                                         \'FIELDS\' => [\n                                                                       \'tag\'\n                                                                     ],\n                                                         \'TYPE\' => \'UNIQUE\'\n                                                       }\n                                                     ]\n                                      },\n          \'mail_staging\' => {\n                              \'FIELDS\' => [\n                                            \'id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'PRIMARYKEY\' => 1,\n                                              \'TYPE\' => \'INTSERIAL\'\n                                            },\n                                            \'message\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'LONGBLOB\'\n                                            }\n                                          ]\n                            },\n          \'milestones\' => {\n                            \'FIELDS\' => [\n                                          \'id\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'PRIMARYKEY\' => 1,\n                                            \'TYPE\' => \'MEDIUMSERIAL\'\n                                          },\n                                          \'product_id\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'REFERENCES\' => {\n                                                              \'COLUMN\' => \'id\',\n                                                              \'DELETE\' => \'CASCADE\',\n                                                              \'TABLE\' => \'products\',\n                                                              \'created\' => 1\n                                                            },\n                                            \'TYPE\' => \'INT2\'\n                                          },\n                                          \'value\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'varchar(64)\'\n                                          },\n                                          \'sortkey\',\n                                          {\n                                            \'DEFAULT\' => 0,\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'INT2\'\n                                          },\n                                          \'isactive\',\n                                          {\n                                            \'DEFAULT\' => \'TRUE\',\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'BOOLEAN\'\n                                          }\n                                        ],\n                            \'INDEXES\' => [\n                                           \'milestones_product_id_idx\',\n                                           {\n                                             \'FIELDS\' => [\n                                                           \'product_id\',\n                                                           \'value\'\n                                                         ],\n                                             \'TYPE\' => \'UNIQUE\'\n                                           }\n                                         ]\n                          },\n          \'namedqueries\' => {\n                              \'FIELDS\' => [\n                                            \'id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'PRIMARYKEY\' => 1,\n                                              \'TYPE\' => \'MEDIUMSERIAL\'\n                                            },\n                                            \'userid\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'userid\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'profiles\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            },\n                                            \'name\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'varchar(64)\'\n                                            },\n                                            \'query\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'LONGTEXT\'\n                                            }\n                                          ],\n                              \'INDEXES\' => [\n                                             \'namedqueries_userid_idx\',\n                                             {\n                                               \'FIELDS\' => [\n                                                             \'userid\',\n                                                             \'name\'\n                                                           ],\n                                               \'TYPE\' => \'UNIQUE\'\n                                             }\n                                           ]\n                            },\n          \'namedqueries_link_in_footer\' => {\n                                             \'FIELDS\' => [\n                                                           \'namedquery_id\',\n                                                           {\n                                                             \'NOTNULL\' => 1,\n                                                             \'REFERENCES\' => {\n                                                                               \'COLUMN\' => \'id\',\n                                                                               \'DELETE\' => \'CASCADE\',\n                                                                               \'TABLE\' => \'namedqueries\',\n                                                                               \'created\' => 1\n                                                                             },\n                                                             \'TYPE\' => \'INT3\'\n                                                           },\n                                                           \'user_id\',\n                                                           {\n                                                             \'NOTNULL\' => 1,\n                                                             \'REFERENCES\' => {\n                                                                               \'COLUMN\' => \'userid\',\n                                                                               \'DELETE\' => \'CASCADE\',\n                                                                               \'TABLE\' => \'profiles\',\n                                                                               \'created\' => 1\n                                                                             },\n                                                             \'TYPE\' => \'INT3\'\n                                                           }\n                                                         ],\n                                             \'INDEXES\' => [\n                                                            \'namedqueries_link_in_footer_id_idx\',\n                                                            {\n                                                              \'FIELDS\' => [\n                                                                            \'namedquery_id\',\n                                                                            \'user_id\'\n                                                                          ],\n                                                              \'TYPE\' => \'UNIQUE\'\n                                                            },\n                                                            \'namedqueries_link_in_footer_userid_idx\',\n                                                            [\n                                                              \'user_id\'\n                                                            ]\n                                                          ]\n                                           },\n          \'namedquery_group_map\' => {\n                                      \'FIELDS\' => [\n                                                    \'namedquery_id\',\n                                                    {\n                                                      \'NOTNULL\' => 1,\n                                                      \'REFERENCES\' => {\n                                                                        \'COLUMN\' => \'id\',\n                                                                        \'DELETE\' => \'CASCADE\',\n                                                                        \'TABLE\' => \'namedqueries\',\n                                                                        \'created\' => 1\n                                                                      },\n                                                      \'TYPE\' => \'INT3\'\n                                                    },\n                                                    \'group_id\',\n                                                    {\n                                                      \'NOTNULL\' => 1,\n                                                      \'REFERENCES\' => {\n                                                                        \'COLUMN\' => \'id\',\n                                                                        \'DELETE\' => \'CASCADE\',\n                                                                        \'TABLE\' => \'groups\',\n                                                                        \'created\' => 1\n                                                                      },\n                                                      \'TYPE\' => \'INT3\'\n                                                    }\n                                                  ],\n                                      \'INDEXES\' => [\n                                                     \'namedquery_group_map_namedquery_id_idx\',\n                                                     {\n                                                       \'FIELDS\' => [\n                                                                     \'namedquery_id\'\n                                                                   ],\n                                                       \'TYPE\' => \'UNIQUE\'\n                                                     },\n                                                     \'namedquery_group_map_group_id_idx\',\n                                                     [\n                                                       \'group_id\'\n                                                     ]\n                                                   ]\n                                    },\n          \'op_sys\' => {\n                        \'FIELDS\' => [\n                                      \'id\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'PRIMARYKEY\' => 1,\n                                        \'TYPE\' => \'SMALLSERIAL\'\n                                      },\n                                      \'value\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'varchar(64)\'\n                                      },\n                                      \'sortkey\',\n                                      {\n                                        \'DEFAULT\' => 0,\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'INT2\'\n                                      },\n                                      \'isactive\',\n                                      {\n                                        \'DEFAULT\' => \'TRUE\',\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'BOOLEAN\'\n                                      },\n                                      \'visibility_value_id\',\n                                      {\n                                        \'TYPE\' => \'INT2\'\n                                      }\n                                    ],\n                        \'INDEXES\' => [\n                                       \'op_sys_value_idx\',\n                                       {\n                                         \'FIELDS\' => [\n                                                       \'value\'\n                                                     ],\n                                         \'TYPE\' => \'UNIQUE\'\n                                       },\n                                       \'op_sys_sortkey_idx\',\n                                       [\n                                         \'sortkey\',\n                                         \'value\'\n                                       ],\n                                       \'op_sys_visibility_value_id_idx\',\n                                       [\n                                         \'visibility_value_id\'\n                                       ]\n                                     ]\n                      },\n          \'priority\' => {\n                          \'FIELDS\' => [\n                                        \'id\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'PRIMARYKEY\' => 1,\n                                          \'TYPE\' => \'SMALLSERIAL\'\n                                        },\n                                        \'value\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'varchar(64)\'\n                                        },\n                                        \'sortkey\',\n                                        {\n                                          \'DEFAULT\' => 0,\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'INT2\'\n                                        },\n                                        \'isactive\',\n                                        {\n                                          \'DEFAULT\' => \'TRUE\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'BOOLEAN\'\n                                        },\n                                        \'visibility_value_id\',\n                                        {\n                                          \'TYPE\' => \'INT2\'\n                                        }\n                                      ],\n                          \'INDEXES\' => [\n                                         \'priority_value_idx\',\n                                         {\n                                           \'FIELDS\' => [\n                                                         \'value\'\n                                                       ],\n                                           \'TYPE\' => \'UNIQUE\'\n                                         },\n                                         \'priority_sortkey_idx\',\n                                         [\n                                           \'sortkey\',\n                                           \'value\'\n                                         ],\n                                         \'priority_visibility_value_id_idx\',\n                                         [\n                                           \'visibility_value_id\'\n                                         ]\n                                       ]\n                        },\n          \'products\' => {\n                          \'FIELDS\' => [\n                                        \'id\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'PRIMARYKEY\' => 1,\n                                          \'TYPE\' => \'SMALLSERIAL\'\n                                        },\n                                        \'name\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'varchar(64)\'\n                                        },\n                                        \'classification_id\',\n                                        {\n                                          \'DEFAULT\' => \'1\',\n                                          \'NOTNULL\' => 1,\n                                          \'REFERENCES\' => {\n                                                            \'COLUMN\' => \'id\',\n                                                            \'DELETE\' => \'CASCADE\',\n                                                            \'TABLE\' => \'classifications\',\n                                                            \'created\' => 1\n                                                          },\n                                          \'TYPE\' => \'INT2\'\n                                        },\n                                        \'description\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'MEDIUMTEXT\'\n                                        },\n                                        \'isactive\',\n                                        {\n                                          \'DEFAULT\' => 1,\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'BOOLEAN\'\n                                        },\n                                        \'defaultmilestone\',\n                                        {\n                                          \'DEFAULT\' => \'\\\'---\\\'\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'varchar(64)\'\n                                        },\n                                        \'allows_unconfirmed\',\n                                        {\n                                          \'DEFAULT\' => \'TRUE\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'BOOLEAN\'\n                                        }\n                                      ],\n                          \'INDEXES\' => [\n                                         \'products_name_idx\',\n                                         {\n                                           \'FIELDS\' => [\n                                                         \'name\'\n                                                       ],\n                                           \'TYPE\' => \'UNIQUE\'\n                                         }\n                                       ]\n                        },\n          \'profile_search\' => {\n                                \'FIELDS\' => [\n                                              \'id\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'PRIMARYKEY\' => 1,\n                                                \'TYPE\' => \'INTSERIAL\'\n                                              },\n                                              \'user_id\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'userid\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'profiles\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT3\'\n                                              },\n                                              \'bug_list\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'TYPE\' => \'MEDIUMTEXT\'\n                                              },\n                                              \'list_order\',\n                                              {\n                                                \'TYPE\' => \'MEDIUMTEXT\'\n                                              }\n                                            ],\n                                \'INDEXES\' => [\n                                               \'profile_search_user_id_idx\',\n                                               [\n                                                 \'user_id\'\n                                               ]\n                                             ]\n                              },\n          \'profile_setting\' => {\n                                 \'FIELDS\' => [\n                                               \'user_id\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'REFERENCES\' => {\n                                                                   \'COLUMN\' => \'userid\',\n                                                                   \'DELETE\' => \'CASCADE\',\n                                                                   \'TABLE\' => \'profiles\',\n                                                                   \'created\' => 1\n                                                                 },\n                                                 \'TYPE\' => \'INT3\'\n                                               },\n                                               \'setting_name\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'REFERENCES\' => {\n                                                                   \'COLUMN\' => \'name\',\n                                                                   \'DELETE\' => \'CASCADE\',\n                                                                   \'TABLE\' => \'setting\',\n                                                                   \'created\' => 1\n                                                                 },\n                                                 \'TYPE\' => \'varchar(32)\'\n                                               },\n                                               \'setting_value\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'varchar(32)\'\n                                               }\n                                             ],\n                                 \'INDEXES\' => [\n                                                \'profile_setting_value_unique_idx\',\n                                                {\n                                                  \'FIELDS\' => [\n                                                                \'user_id\',\n                                                                \'setting_name\'\n                                                              ],\n                                                  \'TYPE\' => \'UNIQUE\'\n                                                }\n                                              ]\n                               },\n          \'profiles\' => {\n                          \'FIELDS\' => [\n                                        \'userid\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'PRIMARYKEY\' => 1,\n                                          \'TYPE\' => \'MEDIUMSERIAL\'\n                                        },\n                                        \'login_name\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'varchar(255)\'\n                                        },\n                                        \'cryptpassword\',\n                                        {\n                                          \'TYPE\' => \'varchar(128)\'\n                                        },\n                                        \'realname\',\n                                        {\n                                          \'DEFAULT\' => \'\\\'\\\'\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'varchar(255)\'\n                                        },\n                                        \'disabledtext\',\n                                        {\n                                          \'DEFAULT\' => \'\\\'\\\'\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'MEDIUMTEXT\'\n                                        },\n                                        \'disable_mail\',\n                                        {\n                                          \'DEFAULT\' => \'FALSE\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'BOOLEAN\'\n                                        },\n                                        \'mybugslink\',\n                                        {\n                                          \'DEFAULT\' => \'TRUE\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'BOOLEAN\'\n                                        },\n                                        \'extern_id\',\n                                        {\n                                          \'TYPE\' => \'varchar(64)\'\n                                        },\n                                        \'is_enabled\',\n                                        {\n                                          \'DEFAULT\' => \'TRUE\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'BOOLEAN\'\n                                        },\n                                        \'last_seen_date\',\n                                        {\n                                          \'TYPE\' => \'DATETIME\'\n                                        }\n                                      ],\n                          \'INDEXES\' => [\n                                         \'profiles_login_name_idx\',\n                                         {\n                                           \'FIELDS\' => [\n                                                         \'login_name\'\n                                                       ],\n                                           \'TYPE\' => \'UNIQUE\'\n                                         },\n                                         \'profiles_extern_id_idx\',\n                                         {\n                                           \'FIELDS\' => [\n                                                         \'extern_id\'\n                                                       ],\n                                           \'TYPE\' => \'UNIQUE\'\n                                         }\n                                       ]\n                        },\n          \'profiles_activity\' => {\n                                   \'FIELDS\' => [\n                                                 \'id\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'PRIMARYKEY\' => 1,\n                                                   \'TYPE\' => \'MEDIUMSERIAL\'\n                                                 },\n                                                 \'userid\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'REFERENCES\' => {\n                                                                     \'COLUMN\' => \'userid\',\n                                                                     \'DELETE\' => \'CASCADE\',\n                                                                     \'TABLE\' => \'profiles\',\n                                                                     \'created\' => 1\n                                                                   },\n                                                   \'TYPE\' => \'INT3\'\n                                                 },\n                                                 \'who\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'REFERENCES\' => {\n                                                                     \'COLUMN\' => \'userid\',\n                                                                     \'TABLE\' => \'profiles\',\n                                                                     \'created\' => 1\n                                                                   },\n                                                   \'TYPE\' => \'INT3\'\n                                                 },\n                                                 \'profiles_when\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'DATETIME\'\n                                                 },\n                                                 \'fieldid\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'REFERENCES\' => {\n                                                                     \'COLUMN\' => \'id\',\n                                                                     \'TABLE\' => \'fielddefs\',\n                                                                     \'created\' => 1\n                                                                   },\n                                                   \'TYPE\' => \'INT3\'\n                                                 },\n                                                 \'oldvalue\',\n                                                 {\n                                                   \'TYPE\' => \'TINYTEXT\'\n                                                 },\n                                                 \'newvalue\',\n                                                 {\n                                                   \'TYPE\' => \'TINYTEXT\'\n                                                 }\n                                               ],\n                                   \'INDEXES\' => [\n                                                  \'profiles_activity_userid_idx\',\n                                                  [\n                                                    \'userid\'\n                                                  ],\n                                                  \'profiles_activity_profiles_when_idx\',\n                                                  [\n                                                    \'profiles_when\'\n                                                  ],\n                                                  \'profiles_activity_fieldid_idx\',\n                                                  [\n                                                    \'fieldid\'\n                                                  ]\n                                                ]\n                                 },\n          \'quips\' => {\n                       \'FIELDS\' => [\n                                     \'quipid\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'PRIMARYKEY\' => 1,\n                                       \'TYPE\' => \'MEDIUMSERIAL\'\n                                     },\n                                     \'userid\',\n                                     {\n                                       \'REFERENCES\' => {\n                                                         \'COLUMN\' => \'userid\',\n                                                         \'DELETE\' => \'SET NULL\',\n                                                         \'TABLE\' => \'profiles\',\n                                                         \'created\' => 1\n                                                       },\n                                       \'TYPE\' => \'INT3\'\n                                     },\n                                     \'quip\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'TYPE\' => \'varchar(512)\'\n                                     },\n                                     \'approved\',\n                                     {\n                                       \'DEFAULT\' => \'TRUE\',\n                                       \'NOTNULL\' => 1,\n                                       \'TYPE\' => \'BOOLEAN\'\n                                     }\n                                   ]\n                     },\n          \'rep_platform\' => {\n                              \'FIELDS\' => [\n                                            \'id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'PRIMARYKEY\' => 1,\n                                              \'TYPE\' => \'SMALLSERIAL\'\n                                            },\n                                            \'value\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'varchar(64)\'\n                                            },\n                                            \'sortkey\',\n                                            {\n                                              \'DEFAULT\' => 0,\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'INT2\'\n                                            },\n                                            \'isactive\',\n                                            {\n                                              \'DEFAULT\' => \'TRUE\',\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'BOOLEAN\'\n                                            },\n                                            \'visibility_value_id\',\n                                            {\n                                              \'TYPE\' => \'INT2\'\n                                            }\n                                          ],\n                              \'INDEXES\' => [\n                                             \'rep_platform_value_idx\',\n                                             {\n                                               \'FIELDS\' => [\n                                                             \'value\'\n                                                           ],\n                                               \'TYPE\' => \'UNIQUE\'\n                                             },\n                                             \'rep_platform_sortkey_idx\',\n                                             [\n                                               \'sortkey\',\n                                               \'value\'\n                                             ],\n                                             \'rep_platform_visibility_value_id_idx\',\n                                             [\n                                               \'visibility_value_id\'\n                                             ]\n                                           ]\n                            },\n          \'reports\' => {\n                         \'FIELDS\' => [\n                                       \'id\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'PRIMARYKEY\' => 1,\n                                         \'TYPE\' => \'MEDIUMSERIAL\'\n                                       },\n                                       \'user_id\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'REFERENCES\' => {\n                                                           \'COLUMN\' => \'userid\',\n                                                           \'DELETE\' => \'CASCADE\',\n                                                           \'TABLE\' => \'profiles\',\n                                                           \'created\' => 1\n                                                         },\n                                         \'TYPE\' => \'INT3\'\n                                       },\n                                       \'name\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'TYPE\' => \'varchar(64)\'\n                                       },\n                                       \'query\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'TYPE\' => \'LONGTEXT\'\n                                       }\n                                     ],\n                         \'INDEXES\' => [\n                                        \'reports_user_id_idx\',\n                                        {\n                                          \'FIELDS\' => [\n                                                        \'user_id\',\n                                                        \'name\'\n                                                      ],\n                                          \'TYPE\' => \'UNIQUE\'\n                                        }\n                                      ]\n                       },\n          \'resolution\' => {\n                            \'FIELDS\' => [\n                                          \'id\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'PRIMARYKEY\' => 1,\n                                            \'TYPE\' => \'SMALLSERIAL\'\n                                          },\n                                          \'value\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'varchar(64)\'\n                                          },\n                                          \'sortkey\',\n                                          {\n                                            \'DEFAULT\' => 0,\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'INT2\'\n                                          },\n                                          \'isactive\',\n                                          {\n                                            \'DEFAULT\' => \'TRUE\',\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'BOOLEAN\'\n                                          },\n                                          \'visibility_value_id\',\n                                          {\n                                            \'TYPE\' => \'INT2\'\n                                          }\n                                        ],\n                            \'INDEXES\' => [\n                                           \'resolution_value_idx\',\n                                           {\n                                             \'FIELDS\' => [\n                                                           \'value\'\n                                                         ],\n                                             \'TYPE\' => \'UNIQUE\'\n                                           },\n                                           \'resolution_sortkey_idx\',\n                                           [\n                                             \'sortkey\',\n                                             \'value\'\n                                           ],\n                                           \'resolution_visibility_value_id_idx\',\n                                           [\n                                             \'visibility_value_id\'\n                                           ]\n                                         ]\n                          },\n          \'series\' => {\n                        \'FIELDS\' => [\n                                      \'series_id\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'PRIMARYKEY\' => 1,\n                                        \'TYPE\' => \'MEDIUMSERIAL\'\n                                      },\n                                      \'creator\',\n                                      {\n                                        \'REFERENCES\' => {\n                                                          \'COLUMN\' => \'userid\',\n                                                          \'DELETE\' => \'CASCADE\',\n                                                          \'TABLE\' => \'profiles\',\n                                                          \'created\' => 1\n                                                        },\n                                        \'TYPE\' => \'INT3\'\n                                      },\n                                      \'category\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'REFERENCES\' => {\n                                                          \'COLUMN\' => \'id\',\n                                                          \'DELETE\' => \'CASCADE\',\n                                                          \'TABLE\' => \'series_categories\',\n                                                          \'created\' => 1\n                                                        },\n                                        \'TYPE\' => \'INT2\'\n                                      },\n                                      \'subcategory\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'REFERENCES\' => {\n                                                          \'COLUMN\' => \'id\',\n                                                          \'DELETE\' => \'CASCADE\',\n                                                          \'TABLE\' => \'series_categories\',\n                                                          \'created\' => 1\n                                                        },\n                                        \'TYPE\' => \'INT2\'\n                                      },\n                                      \'name\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'varchar(64)\'\n                                      },\n                                      \'frequency\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'INT2\'\n                                      },\n                                      \'query\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'MEDIUMTEXT\'\n                                      },\n                                      \'is_public\',\n                                      {\n                                        \'DEFAULT\' => \'FALSE\',\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'BOOLEAN\'\n                                      }\n                                    ],\n                        \'INDEXES\' => [\n                                       \'series_creator_idx\',\n                                       [\n                                         \'creator\'\n                                       ],\n                                       \'series_category_idx\',\n                                       {\n                                         \'FIELDS\' => [\n                                                       \'category\',\n                                                       \'subcategory\',\n                                                       \'name\'\n                                                     ],\n                                         \'TYPE\' => \'UNIQUE\'\n                                       }\n                                     ]\n                      },\n          \'series_categories\' => {\n                                   \'FIELDS\' => [\n                                                 \'id\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'PRIMARYKEY\' => 1,\n                                                   \'TYPE\' => \'SMALLSERIAL\'\n                                                 },\n                                                 \'name\',\n                                                 {\n                                                   \'NOTNULL\' => 1,\n                                                   \'TYPE\' => \'varchar(64)\'\n                                                 }\n                                               ],\n                                   \'INDEXES\' => [\n                                                  \'series_categories_name_idx\',\n                                                  {\n                                                    \'FIELDS\' => [\n                                                                  \'name\'\n                                                                ],\n                                                    \'TYPE\' => \'UNIQUE\'\n                                                  }\n                                                ]\n                                 },\n          \'series_data\' => {\n                             \'FIELDS\' => [\n                                           \'series_id\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'REFERENCES\' => {\n                                                               \'COLUMN\' => \'series_id\',\n                                                               \'DELETE\' => \'CASCADE\',\n                                                               \'TABLE\' => \'series\',\n                                                               \'created\' => 1\n                                                             },\n                                             \'TYPE\' => \'INT3\'\n                                           },\n                                           \'series_date\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'DATETIME\'\n                                           },\n                                           \'series_value\',\n                                           {\n                                             \'NOTNULL\' => 1,\n                                             \'TYPE\' => \'INT3\'\n                                           }\n                                         ],\n                             \'INDEXES\' => [\n                                            \'series_data_series_id_idx\',\n                                            {\n                                              \'FIELDS\' => [\n                                                            \'series_id\',\n                                                            \'series_date\'\n                                                          ],\n                                              \'TYPE\' => \'UNIQUE\'\n                                            }\n                                          ]\n                           },\n          \'setting\' => {\n                         \'FIELDS\' => [\n                                       \'name\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'PRIMARYKEY\' => 1,\n                                         \'TYPE\' => \'varchar(32)\'\n                                       },\n                                       \'default_value\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'TYPE\' => \'varchar(32)\'\n                                       },\n                                       \'is_enabled\',\n                                       {\n                                         \'DEFAULT\' => \'TRUE\',\n                                         \'NOTNULL\' => 1,\n                                         \'TYPE\' => \'BOOLEAN\'\n                                       },\n                                       \'subclass\',\n                                       {\n                                         \'TYPE\' => \'varchar(32)\'\n                                       }\n                                     ]\n                       },\n          \'setting_value\' => {\n                               \'FIELDS\' => [\n                                             \'name\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'name\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'setting\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'varchar(32)\'\n                                             },\n                                             \'value\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'varchar(32)\'\n                                             },\n                                             \'sortindex\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'INT2\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'setting_value_nv_unique_idx\',\n                                              {\n                                                \'FIELDS\' => [\n                                                              \'name\',\n                                                              \'value\'\n                                                            ],\n                                                \'TYPE\' => \'UNIQUE\'\n                                              },\n                                              \'setting_value_ns_unique_idx\',\n                                              {\n                                                \'FIELDS\' => [\n                                                              \'name\',\n                                                              \'sortindex\'\n                                                            ],\n                                                \'TYPE\' => \'UNIQUE\'\n                                              }\n                                            ]\n                             },\n          \'status_workflow\' => {\n                                 \'FIELDS\' => [\n                                               \'old_status\',\n                                               {\n                                                 \'REFERENCES\' => {\n                                                                   \'COLUMN\' => \'id\',\n                                                                   \'DELETE\' => \'CASCADE\',\n                                                                   \'TABLE\' => \'bug_status\',\n                                                                   \'created\' => 1\n                                                                 },\n                                                 \'TYPE\' => \'INT2\'\n                                               },\n                                               \'new_status\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'REFERENCES\' => {\n                                                                   \'COLUMN\' => \'id\',\n                                                                   \'DELETE\' => \'CASCADE\',\n                                                                   \'TABLE\' => \'bug_status\',\n                                                                   \'created\' => 1\n                                                                 },\n                                                 \'TYPE\' => \'INT2\'\n                                               },\n                                               \'require_comment\',\n                                               {\n                                                 \'DEFAULT\' => 0,\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'INT1\'\n                                               }\n                                             ],\n                                 \'INDEXES\' => [\n                                                \'status_workflow_idx\',\n                                                {\n                                                  \'FIELDS\' => [\n                                                                \'old_status\',\n                                                                \'new_status\'\n                                                              ],\n                                                  \'TYPE\' => \'UNIQUE\'\n                                                }\n                                              ]\n                               },\n          \'tag\' => {\n                     \'FIELDS\' => [\n                                   \'id\',\n                                   {\n                                     \'NOTNULL\' => 1,\n                                     \'PRIMARYKEY\' => 1,\n                                     \'TYPE\' => \'MEDIUMSERIAL\'\n                                   },\n                                   \'name\',\n                                   {\n                                     \'NOTNULL\' => 1,\n                                     \'TYPE\' => \'varchar(64)\'\n                                   },\n                                   \'user_id\',\n                                   {\n                                     \'NOTNULL\' => 1,\n                                     \'REFERENCES\' => {\n                                                       \'COLUMN\' => \'userid\',\n                                                       \'DELETE\' => \'CASCADE\',\n                                                       \'TABLE\' => \'profiles\',\n                                                       \'created\' => 1\n                                                     },\n                                     \'TYPE\' => \'INT3\'\n                                   }\n                                 ],\n                     \'INDEXES\' => [\n                                    \'tag_user_id_idx\',\n                                    {\n                                      \'FIELDS\' => [\n                                                    \'user_id\',\n                                                    \'name\'\n                                                  ],\n                                      \'TYPE\' => \'UNIQUE\'\n                                    }\n                                  ]\n                   },\n          \'tokens\' => {\n                        \'FIELDS\' => [\n                                      \'userid\',\n                                      {\n                                        \'REFERENCES\' => {\n                                                          \'COLUMN\' => \'userid\',\n                                                          \'DELETE\' => \'CASCADE\',\n                                                          \'TABLE\' => \'profiles\',\n                                                          \'created\' => 1\n                                                        },\n                                        \'TYPE\' => \'INT3\'\n                                      },\n                                      \'issuedate\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'DATETIME\'\n                                      },\n                                      \'token\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'PRIMARYKEY\' => 1,\n                                        \'TYPE\' => \'varchar(16)\'\n                                      },\n                                      \'tokentype\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'varchar(16)\'\n                                      },\n                                      \'eventdata\',\n                                      {\n                                        \'TYPE\' => \'TINYTEXT\'\n                                      }\n                                    ],\n                        \'INDEXES\' => [\n                                       \'tokens_userid_idx\',\n                                       [\n                                         \'userid\'\n                                       ]\n                                     ]\n                      },\n          \'ts_error\' => {\n                          \'FIELDS\' => [\n                                        \'error_time\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'INT4\'\n                                        },\n                                        \'jobid\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'INT4\'\n                                        },\n                                        \'message\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'varchar(255)\'\n                                        },\n                                        \'funcid\',\n                                        {\n                                          \'DEFAULT\' => 0,\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'INT4\'\n                                        }\n                                      ],\n                          \'INDEXES\' => [\n                                         \'ts_error_funcid_idx\',\n                                         [\n                                           \'funcid\',\n                                           \'error_time\'\n                                         ],\n                                         \'ts_error_error_time_idx\',\n                                         [\n                                           \'error_time\'\n                                         ],\n                                         \'ts_error_jobid_idx\',\n                                         [\n                                           \'jobid\'\n                                         ]\n                                       ]\n                        },\n          \'ts_exitstatus\' => {\n                               \'FIELDS\' => [\n                                             \'jobid\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'PRIMARYKEY\' => 1,\n                                               \'TYPE\' => \'INTSERIAL\'\n                                             },\n                                             \'funcid\',\n                                             {\n                                               \'DEFAULT\' => 0,\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'INT4\'\n                                             },\n                                             \'status\',\n                                             {\n                                               \'TYPE\' => \'INT2\'\n                                             },\n                                             \'completion_time\',\n                                             {\n                                               \'TYPE\' => \'INT4\'\n                                             },\n                                             \'delete_after\',\n                                             {\n                                               \'TYPE\' => \'INT4\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'ts_exitstatus_funcid_idx\',\n                                              [\n                                                \'funcid\'\n                                              ],\n                                              \'ts_exitstatus_delete_after_idx\',\n                                              [\n                                                \'delete_after\'\n                                              ]\n                                            ]\n                             },\n          \'ts_funcmap\' => {\n                            \'FIELDS\' => [\n                                          \'funcid\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'PRIMARYKEY\' => 1,\n                                            \'TYPE\' => \'INTSERIAL\'\n                                          },\n                                          \'funcname\',\n                                          {\n                                            \'NOTNULL\' => 1,\n                                            \'TYPE\' => \'varchar(255)\'\n                                          }\n                                        ],\n                            \'INDEXES\' => [\n                                           \'ts_funcmap_funcname_idx\',\n                                           {\n                                             \'FIELDS\' => [\n                                                           \'funcname\'\n                                                         ],\n                                             \'TYPE\' => \'UNIQUE\'\n                                           }\n                                         ]\n                          },\n          \'ts_job\' => {\n                        \'FIELDS\' => [\n                                      \'jobid\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'PRIMARYKEY\' => 1,\n                                        \'TYPE\' => \'INTSERIAL\'\n                                      },\n                                      \'funcid\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'INT4\'\n                                      },\n                                      \'arg\',\n                                      {\n                                        \'TYPE\' => \'LONGBLOB\'\n                                      },\n                                      \'uniqkey\',\n                                      {\n                                        \'TYPE\' => \'varchar(255)\'\n                                      },\n                                      \'insert_time\',\n                                      {\n                                        \'TYPE\' => \'INT4\'\n                                      },\n                                      \'run_after\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'INT4\'\n                                      },\n                                      \'grabbed_until\',\n                                      {\n                                        \'NOTNULL\' => 1,\n                                        \'TYPE\' => \'INT4\'\n                                      },\n                                      \'priority\',\n                                      {\n                                        \'TYPE\' => \'INT2\'\n                                      },\n                                      \'coalesce\',\n                                      {\n                                        \'TYPE\' => \'varchar(255)\'\n                                      }\n                                    ],\n                        \'INDEXES\' => [\n                                       \'ts_job_funcid_idx\',\n                                       {\n                                         \'FIELDS\' => [\n                                                       \'funcid\',\n                                                       \'uniqkey\'\n                                                     ],\n                                         \'TYPE\' => \'UNIQUE\'\n                                       },\n                                       \'ts_job_run_after_idx\',\n                                       [\n                                         \'run_after\',\n                                         \'funcid\'\n                                       ],\n                                       \'ts_job_coalesce_idx\',\n                                       [\n                                         \'coalesce\',\n                                         \'funcid\'\n                                       ]\n                                     ]\n                      },\n          \'ts_note\' => {\n                         \'FIELDS\' => [\n                                       \'jobid\',\n                                       {\n                                         \'NOTNULL\' => 1,\n                                         \'TYPE\' => \'INT4\'\n                                       },\n                                       \'notekey\',\n                                       {\n                                         \'TYPE\' => \'varchar(255)\'\n                                       },\n                                       \'value\',\n                                       {\n                                         \'TYPE\' => \'LONGBLOB\'\n                                       }\n                                     ],\n                         \'INDEXES\' => [\n                                        \'ts_note_jobid_idx\',\n                                        {\n                                          \'FIELDS\' => [\n                                                        \'jobid\',\n                                                        \'notekey\'\n                                                      ],\n                                          \'TYPE\' => \'UNIQUE\'\n                                        }\n                                      ]\n                       },\n          \'user_api_keys\' => {\n                               \'FIELDS\' => [\n                                             \'id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'PRIMARYKEY\' => 1,\n                                               \'TYPE\' => \'INTSERIAL\'\n                                             },\n                                             \'user_id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'userid\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'profiles\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'api_key\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'VARCHAR(40)\'\n                                             },\n                                             \'description\',\n                                             {\n                                               \'TYPE\' => \'VARCHAR(255)\'\n                                             },\n                                             \'revoked\',\n                                             {\n                                               \'DEFAULT\' => \'FALSE\',\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'BOOLEAN\'\n                                             },\n                                             \'last_used\',\n                                             {\n                                               \'TYPE\' => \'DATETIME\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'user_api_keys_api_key_idx\',\n                                              {\n                                                \'FIELDS\' => [\n                                                              \'api_key\'\n                                                            ],\n                                                \'TYPE\' => \'UNIQUE\'\n                                              },\n                                              \'user_api_keys_user_id_idx\',\n                                              [\n                                                \'user_id\'\n                                              ]\n                                            ]\n                             },\n          \'user_group_map\' => {\n                                \'FIELDS\' => [\n                                              \'user_id\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'userid\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'profiles\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT3\'\n                                              },\n                                              \'group_id\',\n                                              {\n                                                \'NOTNULL\' => 1,\n                                                \'REFERENCES\' => {\n                                                                  \'COLUMN\' => \'id\',\n                                                                  \'DELETE\' => \'CASCADE\',\n                                                                  \'TABLE\' => \'groups\',\n                                                                  \'created\' => 1\n                                                                },\n                                                \'TYPE\' => \'INT3\'\n                                              },\n                                              \'isbless\',\n                                              {\n                                                \'DEFAULT\' => \'FALSE\',\n                                                \'NOTNULL\' => 1,\n                                                \'TYPE\' => \'BOOLEAN\'\n                                              },\n                                              \'grant_type\',\n                                              {\n                                                \'DEFAULT\' => 0,\n                                                \'NOTNULL\' => 1,\n                                                \'TYPE\' => \'INT1\'\n                                              }\n                                            ],\n                                \'INDEXES\' => [\n                                               \'user_group_map_user_id_idx\',\n                                               {\n                                                 \'FIELDS\' => [\n                                                               \'user_id\',\n                                                               \'group_id\',\n                                                               \'grant_type\',\n                                                               \'isbless\'\n                                                             ],\n                                                 \'TYPE\' => \'UNIQUE\'\n                                               }\n                                             ]\n                              },\n          \'versions\' => {\n                          \'FIELDS\' => [\n                                        \'id\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'PRIMARYKEY\' => 1,\n                                          \'TYPE\' => \'MEDIUMSERIAL\'\n                                        },\n                                        \'value\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'varchar(64)\'\n                                        },\n                                        \'product_id\',\n                                        {\n                                          \'NOTNULL\' => 1,\n                                          \'REFERENCES\' => {\n                                                            \'COLUMN\' => \'id\',\n                                                            \'DELETE\' => \'CASCADE\',\n                                                            \'TABLE\' => \'products\',\n                                                            \'created\' => 1\n                                                          },\n                                          \'TYPE\' => \'INT2\'\n                                        },\n                                        \'isactive\',\n                                        {\n                                          \'DEFAULT\' => \'TRUE\',\n                                          \'NOTNULL\' => 1,\n                                          \'TYPE\' => \'BOOLEAN\'\n                                        }\n                                      ],\n                          \'INDEXES\' => [\n                                         \'versions_product_id_idx\',\n                                         {\n                                           \'FIELDS\' => [\n                                                         \'product_id\',\n                                                         \'value\'\n                                                       ],\n                                           \'TYPE\' => \'UNIQUE\'\n                                         }\n                                       ]\n                        },\n          \'watch\' => {\n                       \'FIELDS\' => [\n                                     \'watcher\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'REFERENCES\' => {\n                                                         \'COLUMN\' => \'userid\',\n                                                         \'DELETE\' => \'CASCADE\',\n                                                         \'TABLE\' => \'profiles\',\n                                                         \'created\' => 1\n                                                       },\n                                       \'TYPE\' => \'INT3\'\n                                     },\n                                     \'watched\',\n                                     {\n                                       \'NOTNULL\' => 1,\n                                       \'REFERENCES\' => {\n                                                         \'COLUMN\' => \'userid\',\n                                                         \'DELETE\' => \'CASCADE\',\n                                                         \'TABLE\' => \'profiles\',\n                                                         \'created\' => 1\n                                                       },\n                                       \'TYPE\' => \'INT3\'\n                                     }\n                                   ],\n                       \'INDEXES\' => [\n                                      \'watch_watcher_idx\',\n                                      {\n                                        \'FIELDS\' => [\n                                                      \'watcher\',\n                                                      \'watched\'\n                                                    ],\n                                        \'TYPE\' => \'UNIQUE\'\n                                      },\n                                      \'watch_watched_idx\',\n                                      [\n                                        \'watched\'\n                                      ]\n                                    ]\n                     },\n          \'whine_events\' => {\n                              \'FIELDS\' => [\n                                            \'id\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'PRIMARYKEY\' => 1,\n                                              \'TYPE\' => \'MEDIUMSERIAL\'\n                                            },\n                                            \'owner_userid\',\n                                            {\n                                              \'NOTNULL\' => 1,\n                                              \'REFERENCES\' => {\n                                                                \'COLUMN\' => \'userid\',\n                                                                \'DELETE\' => \'CASCADE\',\n                                                                \'TABLE\' => \'profiles\',\n                                                                \'created\' => 1\n                                                              },\n                                              \'TYPE\' => \'INT3\'\n                                            },\n                                            \'subject\',\n                                            {\n                                              \'TYPE\' => \'varchar(128)\'\n                                            },\n                                            \'body\',\n                                            {\n                                              \'TYPE\' => \'MEDIUMTEXT\'\n                                            },\n                                            \'mailifnobugs\',\n                                            {\n                                              \'DEFAULT\' => \'FALSE\',\n                                              \'NOTNULL\' => 1,\n                                              \'TYPE\' => \'BOOLEAN\'\n                                            }\n                                          ]\n                            },\n          \'whine_queries\' => {\n                               \'FIELDS\' => [\n                                             \'id\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'PRIMARYKEY\' => 1,\n                                               \'TYPE\' => \'MEDIUMSERIAL\'\n                                             },\n                                             \'eventid\',\n                                             {\n                                               \'NOTNULL\' => 1,\n                                               \'REFERENCES\' => {\n                                                                 \'COLUMN\' => \'id\',\n                                                                 \'DELETE\' => \'CASCADE\',\n                                                                 \'TABLE\' => \'whine_events\',\n                                                                 \'created\' => 1\n                                                               },\n                                               \'TYPE\' => \'INT3\'\n                                             },\n                                             \'query_name\',\n                                             {\n                                               \'DEFAULT\' => \'\\\'\\\'\',\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'varchar(64)\'\n                                             },\n                                             \'sortkey\',\n                                             {\n                                               \'DEFAULT\' => \'0\',\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'INT2\'\n                                             },\n                                             \'onemailperbug\',\n                                             {\n                                               \'DEFAULT\' => \'FALSE\',\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'BOOLEAN\'\n                                             },\n                                             \'title\',\n                                             {\n                                               \'DEFAULT\' => \'\\\'\\\'\',\n                                               \'NOTNULL\' => 1,\n                                               \'TYPE\' => \'varchar(128)\'\n                                             }\n                                           ],\n                               \'INDEXES\' => [\n                                              \'whine_queries_eventid_idx\',\n                                              [\n                                                \'eventid\'\n                                              ]\n                                            ]\n                             },\n          \'whine_schedules\' => {\n                                 \'FIELDS\' => [\n                                               \'id\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'PRIMARYKEY\' => 1,\n                                                 \'TYPE\' => \'MEDIUMSERIAL\'\n                                               },\n                                               \'eventid\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'REFERENCES\' => {\n                                                                   \'COLUMN\' => \'id\',\n                                                                   \'DELETE\' => \'CASCADE\',\n                                                                   \'TABLE\' => \'whine_events\',\n                                                                   \'created\' => 1\n                                                                 },\n                                                 \'TYPE\' => \'INT3\'\n                                               },\n                                               \'run_day\',\n                                               {\n                                                 \'TYPE\' => \'varchar(32)\'\n                                               },\n                                               \'run_time\',\n                                               {\n                                                 \'TYPE\' => \'varchar(32)\'\n                                               },\n                                               \'run_next\',\n                                               {\n                                                 \'TYPE\' => \'DATETIME\'\n                                               },\n                                               \'mailto\',\n                                               {\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'INT3\'\n                                               },\n                                               \'mailto_type\',\n                                               {\n                                                 \'DEFAULT\' => \'0\',\n                                                 \'NOTNULL\' => 1,\n                                                 \'TYPE\' => \'INT2\'\n                                               }\n                                             ],\n                                 \'INDEXES\' => [\n                                                \'whine_schedules_run_next_idx\',\n                                                [\n                                                  \'run_next\'\n                                                ],\n                                                \'whine_schedules_eventid_idx\',\n                                                [\n                                                  \'eventid\'\n                                                ]\n                                              ]\n                               }\n        };\n',3.00);
 
 /*Table structure for table `category_group_map` */
 
@@ -552,8 +342,6 @@ CREATE TABLE `category_group_map` (
   CONSTRAINT `fk_category_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `category_group_map` */
-
 /*Table structure for table `cc` */
 
 DROP TABLE IF EXISTS `cc`;
@@ -566,8 +354,6 @@ CREATE TABLE `cc` (
   CONSTRAINT `fk_cc_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_cc_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `cc` */
 
 /*Table structure for table `cf_claim_type` */
 
@@ -585,40 +371,6 @@ CREATE TABLE `cf_claim_type` (
   KEY `cf_claim_type_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
-/*Data for the table `cf_claim_type` */
-
-insert  into `cf_claim_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'Electrical (Rep)',1005,1,2),
-(3,'Plumbing (Rep)',1010,1,2),
-(4,'Aircon/Heating (Rep)',1015,1,2),
-(5,'Inventory (Rep)',1020,1,2),
-(6,'Internet (Rep)',1025,1,2),
-(7,'Cable TV (Rep)',1030,1,2),
-(8,'Other (Rep)',1035,1,2),
-(9,'Aircon/Heating (Mtce)',1505,1,3),
-(10,'Equipment (Mtce)',1510,1,3),
-(11,'Plumbing (Mtce)',1515,1,3),
-(12,'Other (Mtce)',1525,1,3),
-(13,'Key',2505,1,6),
-(14,'Resident Card',2510,1,6),
-(15,'Carpark',2515,1,6),
-(16,'Kitchen Equip.',2520,1,6),
-(17,'Furnitures',2525,1,6),
-(18,'Other Equip.',2530,1,6),
-(19,'Structure',3005,1,7),
-(20,'Carpentry',3010,1,7),
-(21,'Parquet/Flooring',3015,1,7),
-(22,'Painting',3020,1,7),
-(23,'Other Renov.',3025,1,7),
-(24,'Setup',3505,1,8),
-(25,'Light Renovation',3510,1,8),
-(26,'Refurbishing',3515,1,8),
-(27,'Handover',3520,1,8),
-(28,'Other Projects',3530,1,8),
-(29,'Viewing/Visit',4505,1,4),
-(30,'Other',4510,1,4);
-
 /*Table structure for table `cf_ipi_clust_3_action_type` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_3_action_type`;
@@ -634,21 +386,6 @@ CREATE TABLE `cf_ipi_clust_3_action_type` (
   KEY `cf_ipi_clust_3_action_type_sortkey_idx` (`sortkey`,`value`),
   KEY `cf_ipi_clust_3_action_type_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
-/*Data for the table `cf_ipi_clust_3_action_type` */
-
-insert  into `cf_ipi_clust_3_action_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'Diagnose',10,1,NULL),
-(3,'Fix',15,1,NULL),
-(4,'Diagnose and Fix',20,1,NULL),
-(5,'Supervise',25,1,NULL),
-(6,'Deliver',30,1,NULL),
-(7,'Collect',35,1,NULL),
-(8,'Purchase',40,1,NULL),
-(9,'Install',45,1,NULL),
-(10,'Check',50,1,NULL),
-(11,'Other',55,1,NULL);
 
 /*Table structure for table `cf_ipi_clust_3_roadbook_for` */
 
@@ -666,70 +403,6 @@ CREATE TABLE `cf_ipi_clust_3_roadbook_for` (
   KEY `cf_ipi_clust_3_roadbook_for_sortkey_idx` (`sortkey`,`value`)
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
 
-/*Data for the table `cf_ipi_clust_3_roadbook_for` */
-
-insert  into `cf_ipi_clust_3_roadbook_for`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'Firdauz (Left 04 Sep 2014)',10000,0,NULL),
-(2,'Zayar (left 06/08/10)',10000,0,NULL),
-(3,'Joel (left 13/06/11)',10000,0,NULL),
-(4,'Hussin',5,1,NULL),
-(5,'Nath',15,1,NULL),
-(6,'Abigael (left 15/04/11)',10000,0,NULL),
-(7,'Hasfa (left 28/02/11)',10000,0,NULL),
-(8,'Marivick (Left)',10000,0,NULL),
-(9,'Suzana (Left 31/01/2013)',10000,0,NULL),
-(10,'Anne',1000,0,NULL),
-(11,'Ellen (Left 06/09/11)',10000,0,NULL),
-(12,'Mohamed (left 31/05/11)',10000,0,NULL),
-(13,'Housekeepers',20,1,NULL),
-(14,'Mahendran (left 29/07/11)',10000,0,NULL),
-(15,'Vijay (left 19/10/11)',10000,0,NULL),
-(16,'Stephane (left 09/09/11)',10000,0,NULL),
-(17,'Ahmad (Left 19/09/11)',10000,0,NULL),
-(18,'Helene (left 22/04/2013)',10000,0,NULL),
-(19,'Gayatri',10,1,NULL),
-(20,'Huzir (Left 25/10/11)',10000,0,NULL),
-(21,'Sahrin (left 09/11/11)',10000,0,NULL),
-(22,'Accounting',20,1,NULL),
-(23,'Admin Assistant',20,1,NULL),
-(24,'Sales',20,1,NULL),
-(25,'Management',25,1,NULL),
-(26,'Franck',1000,0,NULL),
-(27,'Fauzi (left 02/10/12)',10000,0,NULL),
-(28,'Lawrence (left 04/01/12)',10000,0,NULL),
-(29,'Alan (left 30/03/2012)',10000,0,NULL),
-(30,'Anand (left 31/12/11)',10000,0,NULL),
-(31,'Shahbudi (Left 27/12/13)',10000,0,NULL),
-(32,'Yazed (left 30/10/12)',10000,0,NULL),
-(33,'William (left 04/05/12)',10000,0,NULL),
-(34,'Nast',15,1,NULL),
-(35,'Uzali (left 13/08/12)',10000,0,NULL),
-(36,'Kwok (left 30/06/12)',10000,0,NULL),
-(37,'Zad (left 30/06/12)',10000,0,NULL),
-(38,'Marc (Left 10/07/2015)',10000,0,NULL),
-(39,'Choo (left 22/02/2013)',10000,0,NULL),
-(40,'Krishnan (Left 06/11/2016)',10000,0,NULL),
-(41,'Julianto (left 30/08/12',10000,0,NULL),
-(42,'Peter TAY (left 30/11/12)',10000,0,NULL),
-(43,'Tan (Left 31/01/2013)',10000,0,NULL),
-(44,'Jhonson',5,1,NULL),
-(45,'Lau (Left 30/11/2013)',10000,0,NULL),
-(46,'Richard (Left 04/03/2014)',10000,0,NULL),
-(47,'Jimmy (Left 26/11/13)',10000,0,NULL),
-(64,'Jerry (Left 30/04/15)',10000,0,NULL),
-(65,'Leng (Left 24/04/2014)',10000,0,NULL),
-(66,'Salim',5,1,NULL),
-(67,'Derrick',5,1,NULL),
-(68,'Charlene (Left 09/09/2014)',10000,0,NULL),
-(69,'Suhaily (LEFT)',10000,0,NULL),
-(70,'Nonie (Left 08/07/2016)',10000,0,NULL),
-(71,'Ken (Left 04/12/2014)',10000,0,NULL),
-(72,'Jasline (Left 12/06/2015)',10000,0,NULL),
-(73,'Khairul',5,1,NULL),
-(74,'Kamal (Left 30/01/2016)',10000,0,NULL),
-(75,'Nurul (Left)',10000,0,NULL),
-(76,'Alisa',10,1,NULL);
-
 /*Table structure for table `cf_ipi_clust_4_status_in_progress` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_4_status_in_progress`;
@@ -745,15 +418,6 @@ CREATE TABLE `cf_ipi_clust_4_status_in_progress` (
   KEY `cf_ipi_clust_4_status_in_progress_visibility_value_id_idx` (`visibility_value_id`),
   KEY `cf_ipi_clust_4_status_in_progress_sortkey_idx` (`sortkey`,`value`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
-/*Data for the table `cf_ipi_clust_4_status_in_progress` */
-
-insert  into `cf_ipi_clust_4_status_in_progress`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'SCHEDULED',10,1,NULL),
-(3,'AP NEEDED',20,1,NULL),
-(4,'AP GRANTED',30,1,NULL),
-(5,'FIELD ACTION',40,1,NULL);
 
 /*Table structure for table `cf_ipi_clust_4_status_standby` */
 
@@ -771,13 +435,6 @@ CREATE TABLE `cf_ipi_clust_4_status_standby` (
   KEY `cf_ipi_clust_4_status_standby_sortkey_idx` (`sortkey`,`value`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-/*Data for the table `cf_ipi_clust_4_status_standby` */
-
-insert  into `cf_ipi_clust_4_status_standby`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'PENDING PMT',10,1,NULL),
-(3,'OTHER',20,1,NULL);
-
 /*Table structure for table `cf_ipi_clust_5_budget_approver` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_5_budget_approver`;
@@ -793,15 +450,6 @@ CREATE TABLE `cf_ipi_clust_5_budget_approver` (
   KEY `cf_ipi_budget_approver_sortkey_idx` (`sortkey`,`value`),
   KEY `cf_ipi_budget_approver_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
-/*Data for the table `cf_ipi_clust_5_budget_approver` */
-
-insert  into `cf_ipi_clust_5_budget_approver`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(3,'Demo Person 1 (landlord)',0,1,2),
-(4,'Demo Person 4 (Agent)',20,1,2),
-(5,'Demo Person 5 (Tenant)',40,1,2),
-(6,'Demo Person 1 (Tenant)',0,1,3);
 
 /*Table structure for table `cf_ipi_clust_6_claim_type` */
 
@@ -819,73 +467,6 @@ CREATE TABLE `cf_ipi_clust_6_claim_type` (
   KEY `cf_ipi_clust_6_claim_type_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
-/*Data for the table `cf_ipi_clust_6_claim_type` */
-
-insert  into `cf_ipi_clust_6_claim_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',500,1,NULL),
-(2,'Electrical',1005,1,2),
-(3,'Plumbing Rep',1010,1,2),
-(4,'Aircon Rep',1015,1,2),
-(5,'Furniture Rep',1020,1,2),
-(6,'Carpentry Rep',1025,1,2),
-(7,'Internet Rep',1030,1,2),
-(8,'Cable TV Rep',1035,1,2),
-(9,'Other Rep',1090,1,2),
-(10,'Aircon M',1505,1,3),
-(11,'Equipment M',1510,1,3),
-(12,'Plumbing M',1515,1,3),
-(13,'Battery repl.',1520,1,3),
-(14,'Other M',1525,1,3),
-(15,'Linens',2005,1,4),
-(16,'Textile',2010,1,4),
-(17,'Curtains',2015,1,4),
-(18,'Cleaning',2020,1,4),
-(19,'Other H',2025,1,4),
-(20,'Key',2505,1,5),
-(21,'Resident Card',2510,1,5),
-(22,'Car Transponder',2515,1,5),
-(23,'Kitchen Utensils',2520,1,5),
-(24,'Furniture D',2525,1,5),
-(25,'Safe box',2530,1,5),
-(26,'Equipment D',2535,1,5),
-(27,'Other D',2540,1,5),
-(28,'Structural Defect',3005,1,6),
-(29,'Carpentry Ren',3010,1,6),
-(30,'Parquet Polishing',3015,1,6),
-(31,'Painting',3020,1,6),
-(32,'Other Ren',3025,1,6),
-(33,'Flat Set Up',3505,1,7),
-(34,'Light Renovation',3510,1,7),
-(35,'Flat Refurbishing',3515,1,7),
-(36,'Hand Over',3520,1,7),
-(37,'Basic Check',3525,1,7),
-(38,'Store room Clearance',3530,1,7),
-(39,'Other CP',3535,1,7),
-(40,'Laundry',4005,1,8),
-(41,'Ironing',4010,1,8),
-(42,'Housekeeping',4015,1,8),
-(43,'Cable Channel',4020,1,8),
-(44,'Internet Upgrade',4025,1,8),
-(45,'Beds',4030,1,8),
-(46,'Baby Cot',4035,1,8),
-(47,'Airport Transportation',4040,1,8),
-(48,'Welcome Basket',4045,1,8),
-(49,'Dish Washing',4050,1,8),
-(50,'Other ES',4090,1,8),
-(51,'NOT SPECIFIED',4095,1,8),
-(52,'SP Services',4505,1,9),
-(53,'Gas',4510,1,9),
-(54,'Meter Reading',4515,1,9),
-(55,'Other U',4520,1,9),
-(56,'Internet O',5005,1,10),
-(57,'Cable TV O',5010,1,10),
-(58,'Viewing',5015,1,10),
-(59,'Other',5020,1,10),
-(60,'Late Check IN/OUT',4055,1,8),
-(61,'Early Check IN/OUT',4060,1,8),
-(62,'High Chair',4065,1,8),
-(63,'Equipment',1040,1,2);
-
 /*Table structure for table `cf_ipi_clust_7_payment_type` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_7_payment_type`;
@@ -901,11 +482,6 @@ CREATE TABLE `cf_ipi_clust_7_payment_type` (
   KEY `cf_ipi_payment_type_visibility_value_id_idx` (`visibility_value_id`),
   KEY `cf_ipi_payment_type_sortkey_idx` (`sortkey`,`value`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-/*Data for the table `cf_ipi_clust_7_payment_type` */
-
-insert  into `cf_ipi_clust_7_payment_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL);
 
 /*Table structure for table `cf_ipi_clust_7_spe_payment_type` */
 
@@ -923,16 +499,6 @@ CREATE TABLE `cf_ipi_clust_7_spe_payment_type` (
   KEY `cf_ipi_clust_7_spe_payment_type_sortkey_idx` (`sortkey`,`value`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
-/*Data for the table `cf_ipi_clust_7_spe_payment_type` */
-
-insert  into `cf_ipi_clust_7_spe_payment_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'Invoice (Wire)',50,1,NULL),
-(3,'Cheque on delivery',20,1,NULL),
-(4,'Cash',30,1,NULL),
-(5,'Invoice (cheque)',40,1,NULL),
-(6,'Invoice (unspecif.)',35,1,NULL);
-
 /*Table structure for table `cf_ipi_clust_9_acct_action` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_9_acct_action`;
@@ -948,14 +514,6 @@ CREATE TABLE `cf_ipi_clust_9_acct_action` (
   KEY `cf_ipi_clust_9_acct_action_visibility_value_id_idx` (`visibility_value_id`),
   KEY `cf_ipi_clust_9_acct_action_sortkey_idx` (`sortkey`,`value`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
-/*Data for the table `cf_ipi_clust_9_acct_action` */
-
-insert  into `cf_ipi_clust_9_acct_action`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'INVOICE LANDLORD',100,1,NULL),
-(2,'INVOICE CUSTOMER',200,1,NULL),
-(3,'PAY CONTRACTOR',300,1,NULL),
-(4,'---',50,1,NULL);
 
 /*Table structure for table `cf_specific_for` */
 
@@ -973,12 +531,6 @@ CREATE TABLE `cf_specific_for` (
   KEY `cf_specific_for_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
-/*Data for the table `cf_specific_for` */
-
-insert  into `cf_specific_for`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'LMB - #1',1,1,NULL);
-
 /*Table structure for table `classifications` */
 
 DROP TABLE IF EXISTS `classifications`;
@@ -992,12 +544,6 @@ CREATE TABLE `classifications` (
   UNIQUE KEY `classifications_name_idx` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-/*Data for the table `classifications` */
-
-insert  into `classifications`(`id`,`name`,`description`,`sortkey`) values 
-(1,'Test Units','These are TEST units that you have created or where I have been invited',0),
-(2,'My Units','These are the units that you have created or where I have been invited',0);
-
 /*Table structure for table `component_cc` */
 
 DROP TABLE IF EXISTS `component_cc`;
@@ -1010,8 +556,6 @@ CREATE TABLE `component_cc` (
   CONSTRAINT `fk_component_cc_component_id_components_id` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_component_cc_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `component_cc` */
 
 /*Table structure for table `components` */
 
@@ -1035,11 +579,6 @@ CREATE TABLE `components` (
   CONSTRAINT `fk_components_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-/*Data for the table `components` */
-
-insert  into `components`(`id`,`name`,`product_id`,`initialowner`,`initialqacontact`,`description`,`isactive`) values 
-(1,'Test stakeholder 1',1,1,NULL,'Stakholder 1 (ex: landlord), contact details, comments about how to contact the person for that unit.',1);
-
 /*Table structure for table `dependencies` */
 
 DROP TABLE IF EXISTS `dependencies`;
@@ -1052,8 +591,6 @@ CREATE TABLE `dependencies` (
   CONSTRAINT `fk_dependencies_blocked_bugs_bug_id` FOREIGN KEY (`blocked`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_dependencies_dependson_bugs_bug_id` FOREIGN KEY (`dependson`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `dependencies` */
 
 /*Table structure for table `duplicates` */
 
@@ -1068,8 +605,6 @@ CREATE TABLE `duplicates` (
   CONSTRAINT `fk_duplicates_dupe_of_bugs_bug_id` FOREIGN KEY (`dupe_of`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `duplicates` */
-
 /*Table structure for table `email_bug_ignore` */
 
 DROP TABLE IF EXISTS `email_bug_ignore`;
@@ -1083,8 +618,6 @@ CREATE TABLE `email_bug_ignore` (
   CONSTRAINT `fk_email_bug_ignore_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `email_bug_ignore` */
-
 /*Table structure for table `email_setting` */
 
 DROP TABLE IF EXISTS `email_setting`;
@@ -1097,388 +630,6 @@ CREATE TABLE `email_setting` (
   CONSTRAINT `fk_email_setting_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `email_setting` */
-
-insert  into `email_setting`(`user_id`,`relationship`,`event`) values 
-(1,0,0),
-(1,0,1),
-(1,0,2),
-(1,0,3),
-(1,0,4),
-(1,0,5),
-(1,0,6),
-(1,0,7),
-(1,0,9),
-(1,0,10),
-(1,0,11),
-(1,0,50),
-(1,1,0),
-(1,1,1),
-(1,1,2),
-(1,1,3),
-(1,1,4),
-(1,1,5),
-(1,1,6),
-(1,1,7),
-(1,1,9),
-(1,1,10),
-(1,1,11),
-(1,1,50),
-(1,2,0),
-(1,2,1),
-(1,2,2),
-(1,2,3),
-(1,2,4),
-(1,2,5),
-(1,2,6),
-(1,2,7),
-(1,2,8),
-(1,2,9),
-(1,2,10),
-(1,2,11),
-(1,2,50),
-(1,3,0),
-(1,3,1),
-(1,3,2),
-(1,3,3),
-(1,3,4),
-(1,3,5),
-(1,3,6),
-(1,3,7),
-(1,3,9),
-(1,3,10),
-(1,3,11),
-(1,3,50),
-(1,5,0),
-(1,5,1),
-(1,5,2),
-(1,5,3),
-(1,5,4),
-(1,5,5),
-(1,5,6),
-(1,5,7),
-(1,5,9),
-(1,5,10),
-(1,5,11),
-(1,5,50),
-(1,100,100),
-(1,100,101),
-(2,0,0),
-(2,0,1),
-(2,0,2),
-(2,0,3),
-(2,0,4),
-(2,0,5),
-(2,0,6),
-(2,0,7),
-(2,0,9),
-(2,0,10),
-(2,0,11),
-(2,0,50),
-(2,1,0),
-(2,1,1),
-(2,1,2),
-(2,1,3),
-(2,1,4),
-(2,1,5),
-(2,1,6),
-(2,1,7),
-(2,1,9),
-(2,1,10),
-(2,1,11),
-(2,1,50),
-(2,2,0),
-(2,2,1),
-(2,2,2),
-(2,2,3),
-(2,2,4),
-(2,2,5),
-(2,2,6),
-(2,2,7),
-(2,2,8),
-(2,2,9),
-(2,2,10),
-(2,2,11),
-(2,2,50),
-(2,3,0),
-(2,3,1),
-(2,3,2),
-(2,3,3),
-(2,3,4),
-(2,3,5),
-(2,3,6),
-(2,3,7),
-(2,3,9),
-(2,3,10),
-(2,3,11),
-(2,3,50),
-(2,5,0),
-(2,5,1),
-(2,5,2),
-(2,5,3),
-(2,5,4),
-(2,5,5),
-(2,5,6),
-(2,5,7),
-(2,5,9),
-(2,5,10),
-(2,5,11),
-(2,5,50),
-(2,100,100),
-(2,100,101),
-(3,0,0),
-(3,0,1),
-(3,0,2),
-(3,0,3),
-(3,0,4),
-(3,0,5),
-(3,0,6),
-(3,0,7),
-(3,0,9),
-(3,0,10),
-(3,0,11),
-(3,0,50),
-(3,1,0),
-(3,1,1),
-(3,1,2),
-(3,1,3),
-(3,1,4),
-(3,1,5),
-(3,1,6),
-(3,1,7),
-(3,1,9),
-(3,1,10),
-(3,1,11),
-(3,1,50),
-(3,2,0),
-(3,2,1),
-(3,2,2),
-(3,2,3),
-(3,2,4),
-(3,2,5),
-(3,2,6),
-(3,2,7),
-(3,2,8),
-(3,2,9),
-(3,2,10),
-(3,2,11),
-(3,2,50),
-(3,3,0),
-(3,3,1),
-(3,3,2),
-(3,3,3),
-(3,3,4),
-(3,3,5),
-(3,3,6),
-(3,3,7),
-(3,3,9),
-(3,3,10),
-(3,3,11),
-(3,3,50),
-(3,5,0),
-(3,5,1),
-(3,5,2),
-(3,5,3),
-(3,5,4),
-(3,5,5),
-(3,5,6),
-(3,5,7),
-(3,5,9),
-(3,5,10),
-(3,5,11),
-(3,5,50),
-(3,100,100),
-(3,100,101),
-(4,0,0),
-(4,0,1),
-(4,0,2),
-(4,0,3),
-(4,0,4),
-(4,0,5),
-(4,0,6),
-(4,0,7),
-(4,0,9),
-(4,0,10),
-(4,0,11),
-(4,0,50),
-(4,1,0),
-(4,1,1),
-(4,1,2),
-(4,1,3),
-(4,1,4),
-(4,1,5),
-(4,1,6),
-(4,1,7),
-(4,1,9),
-(4,1,10),
-(4,1,11),
-(4,1,50),
-(4,2,0),
-(4,2,1),
-(4,2,2),
-(4,2,3),
-(4,2,4),
-(4,2,5),
-(4,2,6),
-(4,2,7),
-(4,2,8),
-(4,2,9),
-(4,2,10),
-(4,2,11),
-(4,2,50),
-(4,3,0),
-(4,3,1),
-(4,3,2),
-(4,3,3),
-(4,3,4),
-(4,3,5),
-(4,3,6),
-(4,3,7),
-(4,3,9),
-(4,3,10),
-(4,3,11),
-(4,3,50),
-(4,5,0),
-(4,5,1),
-(4,5,2),
-(4,5,3),
-(4,5,4),
-(4,5,5),
-(4,5,6),
-(4,5,7),
-(4,5,9),
-(4,5,10),
-(4,5,11),
-(4,5,50),
-(4,100,100),
-(4,100,101),
-(5,0,0),
-(5,0,1),
-(5,0,2),
-(5,0,3),
-(5,0,4),
-(5,0,5),
-(5,0,6),
-(5,0,7),
-(5,0,9),
-(5,0,10),
-(5,0,11),
-(5,0,50),
-(5,1,0),
-(5,1,1),
-(5,1,2),
-(5,1,3),
-(5,1,4),
-(5,1,5),
-(5,1,6),
-(5,1,7),
-(5,1,9),
-(5,1,10),
-(5,1,11),
-(5,1,50),
-(5,2,0),
-(5,2,1),
-(5,2,2),
-(5,2,3),
-(5,2,4),
-(5,2,5),
-(5,2,6),
-(5,2,7),
-(5,2,8),
-(5,2,9),
-(5,2,10),
-(5,2,11),
-(5,2,50),
-(5,3,0),
-(5,3,1),
-(5,3,2),
-(5,3,3),
-(5,3,4),
-(5,3,5),
-(5,3,6),
-(5,3,7),
-(5,3,9),
-(5,3,10),
-(5,3,11),
-(5,3,50),
-(5,5,0),
-(5,5,1),
-(5,5,2),
-(5,5,3),
-(5,5,4),
-(5,5,5),
-(5,5,6),
-(5,5,7),
-(5,5,9),
-(5,5,10),
-(5,5,11),
-(5,5,50),
-(5,100,100),
-(5,100,101),
-(6,0,0),
-(6,0,1),
-(6,0,2),
-(6,0,3),
-(6,0,4),
-(6,0,5),
-(6,0,6),
-(6,0,7),
-(6,0,9),
-(6,0,10),
-(6,0,11),
-(6,0,50),
-(6,1,0),
-(6,1,1),
-(6,1,2),
-(6,1,3),
-(6,1,4),
-(6,1,5),
-(6,1,6),
-(6,1,7),
-(6,1,9),
-(6,1,10),
-(6,1,11),
-(6,1,50),
-(6,2,0),
-(6,2,1),
-(6,2,2),
-(6,2,3),
-(6,2,4),
-(6,2,5),
-(6,2,6),
-(6,2,7),
-(6,2,8),
-(6,2,9),
-(6,2,10),
-(6,2,11),
-(6,2,50),
-(6,3,0),
-(6,3,1),
-(6,3,2),
-(6,3,3),
-(6,3,4),
-(6,3,5),
-(6,3,6),
-(6,3,7),
-(6,3,9),
-(6,3,10),
-(6,3,11),
-(6,3,50),
-(6,5,0),
-(6,5,1),
-(6,5,2),
-(6,5,3),
-(6,5,4),
-(6,5,5),
-(6,5,6),
-(6,5,7),
-(6,5,9),
-(6,5,10),
-(6,5,11),
-(6,5,50),
-(6,100,100),
-(6,100,101);
-
 /*Table structure for table `field_visibility` */
 
 DROP TABLE IF EXISTS `field_visibility`;
@@ -1489,26 +640,6 @@ CREATE TABLE `field_visibility` (
   UNIQUE KEY `field_visibility_field_id_idx` (`field_id`,`value_id`),
   CONSTRAINT `fk_field_visibility_field_id_fielddefs_id` FOREIGN KEY (`field_id`) REFERENCES `fielddefs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `field_visibility` */
-
-insert  into `field_visibility`(`field_id`,`value_id`) values 
-(60,3),
-(61,7),
-(76,2),
-(77,2),
-(78,2),
-(79,2),
-(80,2),
-(81,2),
-(83,2),
-(84,2),
-(85,2),
-(87,2),
-(88,2),
-(89,2),
-(90,2),
-(91,2);
 
 /*Table structure for table `fielddefs` */
 
@@ -1541,100 +672,6 @@ CREATE TABLE `fielddefs` (
   CONSTRAINT `fk_fielddefs_visibility_field_id_fielddefs_id` FOREIGN KEY (`visibility_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 
-/*Data for the table `fielddefs` */
-
-insert  into `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`mailhead`,`sortkey`,`obsolete`,`enter_bug`,`buglist`,`visibility_field_id`,`value_field_id`,`reverse_desc`,`is_mandatory`,`is_numeric`) values 
-(1,'bug_id',0,0,'Bug #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
-(2,'short_desc',0,0,'Summary','',1,200,0,0,1,NULL,NULL,NULL,1,0),
-(3,'classification',2,0,'Classification','',1,300,0,0,1,NULL,NULL,NULL,0,0),
-(4,'product',2,0,'Product','',1,400,0,0,1,NULL,NULL,NULL,1,0),
-(5,'version',0,0,'Version','',1,500,0,0,1,NULL,NULL,NULL,1,0),
-(6,'rep_platform',2,0,'Platform','',1,600,0,0,1,NULL,NULL,NULL,0,0),
-(7,'bug_file_loc',0,0,'URL','',1,700,0,0,1,NULL,NULL,NULL,0,0),
-(8,'op_sys',2,0,'OS/Version','',1,800,0,0,1,NULL,NULL,NULL,0,0),
-(9,'bug_status',2,0,'Status','',1,900,0,0,1,NULL,NULL,NULL,0,0),
-(10,'status_whiteboard',0,0,'Status Whiteboard','',1,1000,0,0,1,NULL,NULL,NULL,0,0),
-(11,'keywords',8,0,'Keywords','',1,1100,0,0,1,NULL,NULL,NULL,0,0),
-(12,'resolution',2,0,'Resolution','',0,1200,0,0,1,NULL,NULL,NULL,0,0),
-(13,'bug_severity',2,0,'Severity','',1,1300,0,0,1,NULL,NULL,NULL,0,0),
-(14,'priority',2,0,'Priority','',1,1400,0,0,1,NULL,NULL,NULL,0,0),
-(15,'component',2,0,'Component','',1,1500,0,0,1,NULL,NULL,NULL,1,0),
-(16,'assigned_to',0,0,'AssignedTo','',1,1600,0,0,1,NULL,NULL,NULL,0,0),
-(17,'reporter',0,0,'ReportedBy','',1,1700,0,0,1,NULL,NULL,NULL,0,0),
-(18,'qa_contact',0,0,'QAContact','',1,1800,0,0,1,NULL,NULL,NULL,0,0),
-(19,'assigned_to_realname',0,0,'AssignedToName','',0,1900,0,0,1,NULL,NULL,NULL,0,0),
-(20,'reporter_realname',0,0,'ReportedByName','',0,2000,0,0,1,NULL,NULL,NULL,0,0),
-(21,'qa_contact_realname',0,0,'QAContactName','',0,2100,0,0,1,NULL,NULL,NULL,0,0),
-(22,'cc',0,0,'CC','',1,2200,0,0,0,NULL,NULL,NULL,0,0),
-(23,'dependson',0,0,'Depends on','',1,2300,0,0,1,NULL,NULL,NULL,0,1),
-(24,'blocked',0,0,'Blocks','',1,2400,0,0,1,NULL,NULL,NULL,0,1),
-(25,'attachments.description',0,0,'Attachment description','',0,2500,0,0,0,NULL,NULL,NULL,0,0),
-(26,'attachments.filename',0,0,'Attachment filename','',0,2600,0,0,0,NULL,NULL,NULL,0,0),
-(27,'attachments.mimetype',0,0,'Attachment mime type','',0,2700,0,0,0,NULL,NULL,NULL,0,0),
-(28,'attachments.ispatch',0,0,'Attachment is patch','',0,2800,0,0,0,NULL,NULL,NULL,0,1),
-(29,'attachments.isobsolete',0,0,'Attachment is obsolete','',0,2900,0,0,0,NULL,NULL,NULL,0,1),
-(30,'attachments.isprivate',0,0,'Attachment is private','',0,3000,0,0,0,NULL,NULL,NULL,0,1),
-(31,'attachments.submitter',0,0,'Attachment creator','',0,3100,0,0,0,NULL,NULL,NULL,0,0),
-(32,'target_milestone',0,0,'Target Milestone','',1,3200,0,0,1,NULL,NULL,NULL,0,0),
-(33,'creation_ts',0,0,'Creation date','',0,3300,0,0,1,NULL,NULL,NULL,0,0),
-(34,'delta_ts',0,0,'Last changed date','',0,3400,0,0,1,NULL,NULL,NULL,0,0),
-(35,'longdesc',0,0,'Comment','',0,3500,0,0,0,NULL,NULL,NULL,0,0),
-(36,'longdescs.isprivate',0,0,'Comment is private','',0,3600,0,0,0,NULL,NULL,NULL,0,1),
-(37,'longdescs.count',0,0,'Number of Comments','',0,3700,0,0,1,NULL,NULL,NULL,0,1),
-(38,'alias',0,0,'Alias','',0,3800,0,0,1,NULL,NULL,NULL,0,0),
-(39,'everconfirmed',0,0,'Ever Confirmed','',0,3900,0,0,0,NULL,NULL,NULL,0,1),
-(40,'reporter_accessible',0,0,'Reporter Accessible','',0,4000,0,0,0,NULL,NULL,NULL,0,1),
-(41,'cclist_accessible',0,0,'CC Accessible','',0,4100,0,0,0,NULL,NULL,NULL,0,1),
-(42,'bug_group',0,0,'Group','',1,4200,0,0,0,NULL,NULL,NULL,0,0),
-(43,'estimated_time',0,0,'Estimated Hours','',1,4300,0,0,1,NULL,NULL,NULL,0,1),
-(44,'remaining_time',0,0,'Remaining Hours','',0,4400,0,0,1,NULL,NULL,NULL,0,1),
-(45,'deadline',5,0,'Deadline','',1,4500,0,0,1,NULL,NULL,NULL,0,0),
-(46,'commenter',0,0,'Commenter','',0,4600,0,0,0,NULL,NULL,NULL,0,0),
-(47,'flagtypes.name',0,0,'Flags','',0,4700,0,0,1,NULL,NULL,NULL,0,0),
-(48,'requestees.login_name',0,0,'Flag Requestee','',0,4800,0,0,0,NULL,NULL,NULL,0,0),
-(49,'setters.login_name',0,0,'Flag Setter','',0,4900,0,0,0,NULL,NULL,NULL,0,0),
-(50,'work_time',0,0,'Hours Worked','',0,5000,0,0,1,NULL,NULL,NULL,0,1),
-(51,'percentage_complete',0,0,'Percentage Complete','',0,5100,0,0,1,NULL,NULL,NULL,0,1),
-(52,'content',0,0,'Content','',0,5200,0,0,0,NULL,NULL,NULL,0,0),
-(53,'attach_data.thedata',0,0,'Attachment data','',0,5300,0,0,0,NULL,NULL,NULL,0,0),
-(54,'owner_idle_time',0,0,'Time Since Assignee Touched','',0,5400,0,0,0,NULL,NULL,NULL,0,0),
-(55,'see_also',7,0,'See Also','',0,5500,0,0,0,NULL,NULL,NULL,0,0),
-(56,'tag',8,0,'Personal Tags','',0,5600,0,0,1,NULL,NULL,NULL,0,0),
-(57,'last_visit_ts',5,0,'Last Visit','',0,5700,0,0,1,NULL,NULL,NULL,0,0),
-(58,'comment_tag',0,0,'Comment Tag','',0,5800,0,0,0,NULL,NULL,NULL,0,0),
-(59,'days_elapsed',0,0,'Days since bug changed','',0,5900,0,0,0,NULL,NULL,NULL,0,0),
-(60,'cf_ipi_clust_4_status_in_progress',2,1,'Progression','More information about the case when the status is \"IN PROGRESS\".',0,10,0,1,1,9,NULL,NULL,0,0),
-(61,'cf_ipi_clust_4_status_standby',2,1,'Stand By Cause','More information about the case when the status is \"STAND BY\"',0,20,0,0,1,9,NULL,NULL,0,0),
-(62,'cf_ipi_clust_2_room',1,1,'Room(s)','Information about the room(s) where the case is located',0,600,0,1,1,NULL,NULL,NULL,0,0),
-(63,'cf_ipi_clust_6_claim_type',2,1,'Case Type','The Case Type allows us to better organize Cases. It depends on the Case Category.',0,600,0,1,1,NULL,6,NULL,0,0),
-(64,'cf_ipi_clust_1_solution',4,1,'Solution','The CURRENT solution that we have to solve this. This could (and in many occasion WILL) change over time. It can also be empty if we don\'t know what the solution is yet. It is different from the NEXT STEP field.',0,3215,0,1,1,NULL,NULL,NULL,0,0),
-(65,'cf_ipi_clust_1_next_step',4,1,'Next Step','Detailed description of the next step for the Case ASSIGNEE. This is different from the solution and from the field action.',0,3220,0,0,1,NULL,NULL,NULL,0,0),
-(66,'cf_ipi_clust_1_next_step_date',9,1,'Next Step Date','The date when the Next Step needs to happen.',0,3225,0,0,1,NULL,NULL,NULL,0,0),
-(67,'cf_ipi_clust_3_field_action',4,1,'Action Details','Describe in details what needs to be done. This text will appear in the roadbook.',0,3245,0,0,1,NULL,NULL,NULL,0,0),
-(68,'cf_ipi_clust_3_field_action_from',5,1,'Scheduled From','The Start date for the action on the field. It is also possible to add a start time.',0,3250,0,0,1,NULL,NULL,NULL,0,0),
-(69,'cf_ipi_clust_3_field_action_until',5,1,'Scheduled Until','The End date for the action on the field. It is also possible to add an end time.',0,3255,0,0,1,NULL,NULL,NULL,0,0),
-(70,'cf_ipi_clust_3_action_type',2,1,'Action Type','What type of action do we need to do on the field?',0,3260,0,0,1,NULL,NULL,NULL,0,0),
-(71,'cf_ipi_clust_3_nber_field_visits',10,1,'Field Visits','Number of visits or trips done to diagnose and solve this case. DO NOT include the visits by the supervisors/managers for Quality Control purposes. Increases Each time there is a new visit SCHEDULED. Decrease during debrief if cancelled.',0,3205,0,0,1,NULL,NULL,NULL,0,0),
-(72,'cf_ipi_clust_3_roadbook_for',3,1,'Action For','In whose roadbook shall Field Action appear? This can change over time. It is possible to choose more than 1 person if needed.',0,3235,0,0,1,NULL,NULL,NULL,0,0),
-(73,'cf_ipi_clust_5_approved_budget',1,1,'Approved Budget','What is the budget that has been APPROVED to solve this. This can be different from the actual cost of the purchase or total cost for solving the case. This allows us to monitor how good we are when we have to estimate a budget.',0,3275,0,0,1,NULL,NULL,NULL,0,0),
-(74,'cf_ipi_clust_5_budget',1,1,'Estimated Budget','The LATEST estimate for the budget we need to fix the problem. This can change with time and might be different than the approved budget as we gather more information.',0,3265,0,0,1,NULL,NULL,NULL,0,0),
-(75,'cf_ipi_clust_8_contract_id',1,1,'Customer ID','The internal ID for the contract with the customer.',0,3270,0,0,1,NULL,NULL,NULL,0,0),
-(76,'cf_ipi_clust_9_acct_action',3,1,'Accounting Action','Detailed description of the expected action from ACCOUNTING. This is different from the solution, from the field action or the next step.',0,3300,0,0,1,92,NULL,NULL,0,0),
-(77,'cf_ipi_clust_9_inv_ll',1,1,'Invoice Amount (LL)','What is the amount of the invoice that we need to generate to the LANDLORD for this claim?',0,3305,0,0,1,92,NULL,NULL,0,0),
-(78,'cf_ipi_clust_9_inv_det_ll',1,1,'Invoice Details (LL)','Use this if there are has specific requirement on our invoice to the Landlord. Accounting will use this to prepare the invoice and explain to the Lanldord why we have invoiced/paid him that way...',0,3310,0,0,1,92,NULL,NULL,0,0),
-(79,'cf_ipi_clust_9_inv_cust',4,1,'Invoice Amount (Cust)','What is the amount of the invoice that we need to generate to the CUSTOMER for this claim?',0,3315,0,0,1,92,NULL,NULL,0,0),
-(80,'cf_ipi_clust_9_inv_det_cust',4,1,'Invoice Details (Cust)','Details about the invoice: what do we need to know about this invoice? What is the information/message that we need to send to the customer together with this invoice?',0,3320,0,0,1,92,NULL,NULL,0,0),
-(81,'cf_ipi_clust_5_spe_action_purchase_list',1,1,'Purchase List','Enter the list of things that we need to purchase. If the list is too long, attach a file to the claim with the detailed list and only summarize what we need to purchase here. IN Unee-T IT\'S EASIER TO USE APPROVED ATTACHMENTS TO DO THIS',0,9905,0,0,1,92,NULL,NULL,0,0),
-(83,'cf_ipi_clust_5_spe_approval_for',4,1,'Approval For','Explain why you require an approval. The approver will use this information to better understand the whole situtation. IN Unee-T IT\'S BETTER TO DO THIS WHEN YOU APPROVE AN ATTACHMENT',0,9910,0,0,1,92,NULL,NULL,0,0),
-(84,'cf_ipi_clust_5_spe_approval_comment',4,1,'Approval Comment','This is to explain/comment about the approval/rejection of what was requested. IN Unee-T IT\'S BETTER TO DO THIS WHEN WE APPROVE AN ATTACHMENT.',0,9915,0,0,1,92,NULL,NULL,0,0),
-(85,'cf_ipi_clust_5_spe_contractor',4,1,'Contractor ID','The name of the contractor that has been assigned to work on this case. IN Unee-T THIS HAS BEEN MOVED. THE CONTRACTOR IS A STAKEHOLDER.',0,9920,0,0,1,92,NULL,NULL,0,0),
-(87,'cf_ipi_clust_5_spe_purchase_cost',1,1,'Purchase Cost','What was the ACTUAL purchase cost for the purchase we did. This can be (and usually is) slightly different from the approved budget (but NOT higher than the approved budget).',0,9925,0,0,1,92,NULL,NULL,0,0),
-(88,'cf_ipi_clust_7_spe_bill_number',1,1,'Bill Nber','The Supplier\'s invoice number. This is so that accounting can easily find explanations about a supplier invoice if this is needed. IN Unee-T THIS HAS BEEN MOVED TO ATTACHMENTS',0,9930,0,0,1,92,NULL,NULL,0,0),
-(89,'cf_ipi_clust_7_spe_payment_type',2,1,'Payment Type','How will we pay the contractor? This is important information so that accounting can prepare the payment accordingly. This will ensure we pay our supplier as fast as possible and minimize the risk of misunderstandings.',0,9935,0,0,1,92,NULL,NULL,0,0),
-(90,'cf_ipi_clust_7_spe_contractor_payment',4,1,'Contractor Payment','Use this if the supplier has specific requirement about the payment. Accounting will use this to explain to the supplier why we have invoiced/paid him that way...',0,9940,0,0,1,92,NULL,NULL,0,0),
-(91,'cf_ipi_clust_8_spe_customer',1,1,'Customer','The name of the customer. IN Unee-T WE USE THE CUSTOMER ID INSTEAD',0,9945,0,0,1,92,NULL,NULL,0,0),
-(92,'cf_specific_for',2,1,'Field For','The name and id of the Unee-T customer that can see these fields',0,9900,0,0,1,NULL,NULL,NULL,0,0);
-
 /*Table structure for table `flagexclusions` */
 
 DROP TABLE IF EXISTS `flagexclusions`;
@@ -1651,8 +688,6 @@ CREATE TABLE `flagexclusions` (
   CONSTRAINT `fk_flagexclusions_type_id_flagtypes_id` FOREIGN KEY (`type_id`) REFERENCES `flagtypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `flagexclusions` */
-
 /*Table structure for table `flaginclusions` */
 
 DROP TABLE IF EXISTS `flaginclusions`;
@@ -1668,16 +703,6 @@ CREATE TABLE `flaginclusions` (
   CONSTRAINT `fk_flaginclusions_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_flaginclusions_type_id_flagtypes_id` FOREIGN KEY (`type_id`) REFERENCES `flagtypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `flaginclusions` */
-
-insert  into `flaginclusions`(`type_id`,`product_id`,`component_id`) values 
-(1,1,NULL),
-(2,1,NULL),
-(3,1,NULL),
-(4,1,NULL),
-(5,1,NULL),
-(6,1,NULL);
 
 /*Table structure for table `flags` */
 
@@ -1706,8 +731,6 @@ CREATE TABLE `flags` (
   CONSTRAINT `fk_flags_type_id_flagtypes_id` FOREIGN KEY (`type_id`) REFERENCES `flagtypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `flags` */
-
 /*Table structure for table `flagtypes` */
 
 DROP TABLE IF EXISTS `flagtypes`;
@@ -1732,16 +755,6 @@ CREATE TABLE `flagtypes` (
   CONSTRAINT `fk_flagtypes_request_group_id_groups_id` FOREIGN KEY (`request_group_id`) REFERENCES `groups` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
-/*Data for the table `flagtypes` */
-
-insert  into `flagtypes`(`id`,`name`,`description`,`cc_list`,`target_type`,`is_active`,`is_requestable`,`is_requesteeble`,`is_multiplicable`,`sortkey`,`grant_group_id`,`request_group_id`) values 
-(1,'Test_Unit_1_A_P1_Next_Step','Approval for the Next Step of the case.','','b',1,1,1,1,10,20,19),
-(2,'Test_Unit_1_A_P1_Solution','Approval for the Solution of this case.','','b',1,1,1,1,20,22,21),
-(3,'Test_Unit_1_A_P1_Budget','Approval for the Budget for this case.','','b',1,1,1,1,30,23,24),
-(4,'Test_Unit_1_A_P1_Attachment','Approval for this Attachment.','','a',1,1,1,1,10,26,25),
-(5,'Test_Unit_1_A_P1_OK_to_pay','Approval to pay this bill.','','a',1,1,1,1,20,27,28),
-(6,'Test_Unit_1_A_P1_is_paid','Confirm if this bill has been paid.','','a',1,1,1,1,30,29,30);
-
 /*Table structure for table `group_control_map` */
 
 DROP TABLE IF EXISTS `group_control_map`;
@@ -1762,8 +775,6 @@ CREATE TABLE `group_control_map` (
   CONSTRAINT `fk_group_control_map_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `group_control_map` */
-
 /*Table structure for table `group_group_map` */
 
 DROP TABLE IF EXISTS `group_group_map`;
@@ -1778,110 +789,6 @@ CREATE TABLE `group_group_map` (
   CONSTRAINT `fk_group_group_map_grantor_id_groups_id` FOREIGN KEY (`grantor_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_group_group_map_member_id_groups_id` FOREIGN KEY (`member_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `group_group_map` */
-
-insert  into `group_group_map`(`member_id`,`grantor_id`,`grant_type`) values 
-(1,1,0),
-(1,1,1),
-(1,1,2),
-(1,2,0),
-(1,2,1),
-(1,2,2),
-(1,3,0),
-(1,3,1),
-(1,3,2),
-(1,4,0),
-(1,4,1),
-(1,4,2),
-(1,5,0),
-(1,5,1),
-(1,5,2),
-(1,6,0),
-(1,6,1),
-(1,6,2),
-(1,7,0),
-(1,7,1),
-(1,7,2),
-(1,8,0),
-(1,8,1),
-(1,8,2),
-(1,9,0),
-(1,9,1),
-(1,9,2),
-(1,10,0),
-(1,10,1),
-(1,10,2),
-(1,11,0),
-(1,11,1),
-(1,11,2),
-(1,12,0),
-(1,12,1),
-(1,12,2),
-(1,13,0),
-(1,13,1),
-(1,13,2),
-(1,14,0),
-(1,14,1),
-(1,14,2),
-(1,15,0),
-(1,15,1),
-(1,15,2),
-(1,16,0),
-(1,16,1),
-(1,16,2),
-(1,17,0),
-(1,17,1),
-(1,17,2),
-(1,18,0),
-(1,18,1),
-(1,18,2),
-(1,19,0),
-(1,19,1),
-(1,19,2),
-(1,20,1),
-(1,20,2),
-(1,21,0),
-(1,21,1),
-(1,21,2),
-(1,22,1),
-(1,22,2),
-(1,23,1),
-(1,23,2),
-(1,24,1),
-(1,24,2),
-(1,25,1),
-(1,25,2),
-(1,26,0),
-(1,26,1),
-(1,26,2),
-(1,27,1),
-(1,27,2),
-(1,28,1),
-(1,28,2),
-(1,29,0),
-(1,29,1),
-(1,29,2),
-(1,30,0),
-(1,30,1),
-(1,30,2),
-(1,31,1),
-(1,31,2),
-(31,16,0),
-(31,17,0),
-(31,18,0),
-(31,19,0),
-(31,20,0),
-(31,21,0),
-(31,22,0),
-(31,23,0),
-(31,24,0),
-(31,25,0),
-(31,26,0),
-(31,27,0),
-(31,28,0),
-(31,29,0),
-(31,30,0);
 
 /*Table structure for table `groups` */
 
@@ -1899,41 +806,6 @@ CREATE TABLE `groups` (
   UNIQUE KEY `groups_name_idx` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
-/*Data for the table `groups` */
-
-insert  into `groups`(`id`,`name`,`description`,`isbuggroup`,`userregexp`,`isactive`,`icon_url`) values 
-(1,'admin','Administrators',0,'',1,NULL),
-(2,'tweakparams','Can change Parameters',0,'',1,NULL),
-(3,'editusers','Can edit or disable users',0,'',1,NULL),
-(4,'creategroups','Can create and destroy groups',0,'',1,NULL),
-(5,'editclassifications','Can create, destroy, and edit classifications',0,'',1,NULL),
-(6,'editcomponents','Can create, destroy, and edit components',0,'',1,NULL),
-(7,'editkeywords','Can create, destroy, and edit keywords',0,'',1,NULL),
-(8,'editbugs','Can edit all bug fields',0,'',1,NULL),
-(9,'canconfirm','Can confirm a bug or mark it a duplicate',0,'',1,NULL),
-(10,'bz_canusewhineatothers','Can configure whine reports for other users',0,'',1,NULL),
-(11,'bz_canusewhines','User can configure whine reports for self',0,'',1,NULL),
-(12,'bz_sudoers','Can perform actions as other users',0,'',1,NULL),
-(13,'bz_sudo_protect','Can not be impersonated by other users',0,'',1,NULL),
-(14,'bz_quip_moderators','Can moderate quips',0,'',1,NULL),
-(15,'syst_private_comment','A group to allow user to see the private comments in ALL the activities they are allowed to see. This is for Employees vs external users.',1,'',0,NULL),
-(16,'syst_see_timetracking','A group to allow users to see the time tracking information in ALL the activities they are allowed to see.',1,'',0,NULL),
-(17,'syst_create_shared_queries','A group for users who can create, save and share search queries.',1,'',0,NULL),
-(18,'syst_tag_comments','A group to allow users to tag comments in ALL the activities they are allowed to see.',1,'',0,NULL),
-(19,'Test Unit 1 A #1 - RA Next Step','Request approval for the Next step in a case',1,'',0,NULL),
-(20,'Test Unit 1 A #1 - GA Next Step','Grant approval for the Next step in a case',1,'',0,NULL),
-(21,'Test Unit 1 A #1 - RA Solution','Request approval for the Solution in a case',1,'',0,NULL),
-(22,'Test Unit 1 A #1 - GA Solution','Grant approval for the Solution in a case',1,'',0,NULL),
-(23,'Test Unit 1 A #1 - GA Budget','Request approval for the Budget in a case',1,'',0,NULL),
-(24,'Test Unit 1 A #1 - RA Budget','Request approval for the Budget in a case',1,'',0,NULL),
-(25,'Test Unit 1 A #1 - RA Attachment','Request approval for an Attachment in a case',1,'',0,NULL),
-(26,'Test Unit 1 A #1 - GA Attachment','Grant approval for an Attachment in a case',1,'',0,NULL),
-(27,'Test Unit 1 A #1 - GA OK to Pay','Grant approval to pay (for a bill/attachment)',1,'',0,NULL),
-(28,'Test Unit 1 A #1 - RA OK to Pay','Request approval to pay (for a bill/attachment)',1,'',0,NULL),
-(29,'Test Unit 1 A #1 - GA is Paid','Confirm that it\'s paid (for a bill/attachment)',1,'',0,NULL),
-(30,'Test Unit 1 A #1 - RA is Paid','Ask if it\'s paid (for a bill/attachment)',1,'',0,NULL),
-(31,'Test Unit 1 A #1 - All permissions','Access to All the groups a stakeholder needs for this unit',1,'',0,NULL);
-
 /*Table structure for table `keyworddefs` */
 
 DROP TABLE IF EXISTS `keyworddefs`;
@@ -1945,8 +817,6 @@ CREATE TABLE `keyworddefs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `keyworddefs_name_idx` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `keyworddefs` */
 
 /*Table structure for table `keywords` */
 
@@ -1961,8 +831,6 @@ CREATE TABLE `keywords` (
   CONSTRAINT `fk_keywords_keywordid_keyworddefs_id` FOREIGN KEY (`keywordid`) REFERENCES `keyworddefs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `keywords` */
-
 /*Table structure for table `login_failure` */
 
 DROP TABLE IF EXISTS `login_failure`;
@@ -1974,8 +842,6 @@ CREATE TABLE `login_failure` (
   KEY `login_failure_user_id_idx` (`user_id`),
   CONSTRAINT `fk_login_failure_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `login_failure` */
 
 /*Table structure for table `logincookies` */
 
@@ -1991,14 +857,6 @@ CREATE TABLE `logincookies` (
   KEY `fk_logincookies_userid_profiles_userid` (`userid`),
   CONSTRAINT `fk_logincookies_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `logincookies` */
-
-insert  into `logincookies`(`cookie`,`userid`,`ipaddr`,`lastused`) values 
-('db9hO4H56s',1,'172.56.16.54','2018-02-02 01:15:27'),
-('lopEuu60bW',1,'67.169.76.147','2018-02-02 01:12:38'),
-('RqGl4m3Qf8',1,NULL,'2018-01-14 10:01:00'),
-('TT91x5XMAg',1,'172.56.16.54','2018-02-02 01:15:20');
 
 /*Table structure for table `longdescs` */
 
@@ -2023,8 +881,6 @@ CREATE TABLE `longdescs` (
   CONSTRAINT `fk_longdescs_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `longdescs` */
-
 /*Table structure for table `longdescs_tags` */
 
 DROP TABLE IF EXISTS `longdescs_tags`;
@@ -2037,8 +893,6 @@ CREATE TABLE `longdescs_tags` (
   UNIQUE KEY `longdescs_tags_idx` (`comment_id`,`tag`),
   CONSTRAINT `fk_longdescs_tags_comment_id_longdescs_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `longdescs` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `longdescs_tags` */
 
 /*Table structure for table `longdescs_tags_activity` */
 
@@ -2061,8 +915,6 @@ CREATE TABLE `longdescs_tags_activity` (
   CONSTRAINT `fk_longdescs_tags_activity_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `longdescs_tags_activity` */
-
 /*Table structure for table `longdescs_tags_weights` */
 
 DROP TABLE IF EXISTS `longdescs_tags_weights`;
@@ -2075,8 +927,6 @@ CREATE TABLE `longdescs_tags_weights` (
   UNIQUE KEY `longdescs_tags_weights_tag_idx` (`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `longdescs_tags_weights` */
-
 /*Table structure for table `mail_staging` */
 
 DROP TABLE IF EXISTS `mail_staging`;
@@ -2086,8 +936,6 @@ CREATE TABLE `mail_staging` (
   `message` longblob NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `mail_staging` */
 
 /*Table structure for table `milestones` */
 
@@ -2104,11 +952,6 @@ CREATE TABLE `milestones` (
   CONSTRAINT `fk_milestones_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-/*Data for the table `milestones` */
-
-insert  into `milestones`(`id`,`product_id`,`value`,`sortkey`,`isactive`) values 
-(1,1,'---',0,1);
-
 /*Table structure for table `namedqueries` */
 
 DROP TABLE IF EXISTS `namedqueries`;
@@ -2123,8 +966,6 @@ CREATE TABLE `namedqueries` (
   CONSTRAINT `fk_namedqueries_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `namedqueries` */
-
 /*Table structure for table `namedqueries_link_in_footer` */
 
 DROP TABLE IF EXISTS `namedqueries_link_in_footer`;
@@ -2138,8 +979,6 @@ CREATE TABLE `namedqueries_link_in_footer` (
   CONSTRAINT `fk_namedqueries_link_in_footer_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `namedqueries_link_in_footer` */
-
 /*Table structure for table `namedquery_group_map` */
 
 DROP TABLE IF EXISTS `namedquery_group_map`;
@@ -2152,8 +991,6 @@ CREATE TABLE `namedquery_group_map` (
   CONSTRAINT `fk_namedquery_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_namedquery_group_map_namedquery_id_namedqueries_id` FOREIGN KEY (`namedquery_id`) REFERENCES `namedqueries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `namedquery_group_map` */
 
 /*Table structure for table `op_sys` */
 
@@ -2171,23 +1008,6 @@ CREATE TABLE `op_sys` (
   KEY `op_sys_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
-/*Data for the table `op_sys` */
-
-insert  into `op_sys`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'Customer/Occupant',100,1,NULL),
-(2,'Sales Team',200,1,NULL),
-(3,'Field Technician',300,1,NULL),
-(4,'Sourcing',400,1,NULL),
-(5,'Other',10000,1,NULL),
-(6,'House Keeper',500,1,NULL),
-(7,'Accounting',5000,1,NULL),
-(8,'Unspecified',50,1,NULL),
-(9,'Management',5000,1,NULL),
-(10,'Landlord',600,1,NULL),
-(11,'LL Agent',700,1,NULL),
-(12,'Mgt Office',550,1,NULL),
-(13,'Customer Service',250,1,NULL);
-
 /*Table structure for table `priority` */
 
 DROP TABLE IF EXISTS `priority`;
@@ -2203,13 +1023,6 @@ CREATE TABLE `priority` (
   KEY `priority_sortkey_idx` (`sortkey`,`value`),
   KEY `priority_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
-/*Data for the table `priority` */
-
-insert  into `priority`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'P1',100,1,NULL),
-(2,'P2',200,1,NULL),
-(3,'P3',300,1,NULL);
 
 /*Table structure for table `products` */
 
@@ -2229,11 +1042,6 @@ CREATE TABLE `products` (
   CONSTRAINT `fk_products_classification_id_classifications_id` FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-/*Data for the table `products` */
-
-insert  into `products`(`id`,`name`,`classification_id`,`description`,`isactive`,`defaultmilestone`,`allows_unconfirmed`) values 
-(1,'Test Unit 1 A',1,'Demo unit 1.\r\nThis unit is located at:\r\nProperty A address. \r\nWe can add a few comment about the unit if needed.',1,'---',1);
-
 /*Table structure for table `profile_search` */
 
 DROP TABLE IF EXISTS `profile_search`;
@@ -2248,8 +1056,6 @@ CREATE TABLE `profile_search` (
   CONSTRAINT `fk_profile_search_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `profile_search` */
-
 /*Table structure for table `profile_setting` */
 
 DROP TABLE IF EXISTS `profile_setting`;
@@ -2263,8 +1069,6 @@ CREATE TABLE `profile_setting` (
   CONSTRAINT `fk_profile_setting_setting_name_setting_name` FOREIGN KEY (`setting_name`) REFERENCES `setting` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_profile_setting_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `profile_setting` */
 
 /*Table structure for table `profiles` */
 
@@ -2285,16 +1089,6 @@ CREATE TABLE `profiles` (
   UNIQUE KEY `profiles_login_name_idx` (`login_name`),
   UNIQUE KEY `profiles_extern_id_idx` (`extern_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
-/*Data for the table `profiles` */
-
-insert  into `profiles`(`userid`,`login_name`,`cryptpassword`,`realname`,`disabledtext`,`disable_mail`,`mybugslink`,`extern_id`,`is_enabled`,`last_seen_date`) values 
-(1,'administrator@example.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,'2018-02-02 00:00:00'),
-(2,'temporary.agent@example.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
-(3,'temporary.landlord@example.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
-(4,'temporary.tenant@example.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
-(5,'temporary.contractor@example.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
-(6,'temporary.mgt.cny@example.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL);
 
 /*Table structure for table `profiles_activity` */
 
@@ -2318,16 +1112,6 @@ CREATE TABLE `profiles_activity` (
   CONSTRAINT `fk_profiles_activity_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
-/*Data for the table `profiles_activity` */
-
-insert  into `profiles_activity`(`id`,`userid`,`who`,`profiles_when`,`fieldid`,`oldvalue`,`newvalue`) values 
-(1,1,1,'2017-11-25 00:28:50',33,NULL,'2017-11-25 00:28:50'),
-(2,2,1,'2018-02-02 01:08:41',33,NULL,'2018-02-02 01:08:41'),
-(3,3,1,'2018-02-02 01:14:19',33,NULL,'2018-02-02 01:14:19'),
-(4,4,1,'2018-02-02 01:14:40',33,NULL,'2018-02-02 01:14:40'),
-(5,5,1,'2018-02-02 01:14:55',33,NULL,'2018-02-02 01:14:55'),
-(6,6,1,'2018-02-02 01:15:20',33,NULL,'2018-02-02 01:15:20');
-
 /*Table structure for table `quips` */
 
 DROP TABLE IF EXISTS `quips`;
@@ -2341,8 +1125,6 @@ CREATE TABLE `quips` (
   KEY `fk_quips_userid_profiles_userid` (`userid`),
   CONSTRAINT `fk_quips_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `quips` */
 
 /*Table structure for table `rep_platform` */
 
@@ -2360,20 +1142,6 @@ CREATE TABLE `rep_platform` (
   KEY `rep_platform_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
-/*Data for the table `rep_platform` */
-
-insert  into `rep_platform`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',5,1,NULL),
-(2,'Repair',10,1,NULL),
-(3,'Maintenance',15,1,NULL),
-(4,'Housekeeping',20,1,NULL),
-(5,'Devices',25,1,NULL),
-(6,'Renovation',30,1,NULL),
-(7,'Complex Project',35,1,NULL),
-(8,'Extra Service',40,1,NULL),
-(9,'Utilities',45,1,NULL),
-(10,'Other',50,1,NULL);
-
 /*Table structure for table `reports` */
 
 DROP TABLE IF EXISTS `reports`;
@@ -2387,8 +1155,6 @@ CREATE TABLE `reports` (
   UNIQUE KEY `reports_user_id_idx` (`user_id`,`name`),
   CONSTRAINT `fk_reports_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `reports` */
 
 /*Table structure for table `resolution` */
 
@@ -2405,16 +1171,6 @@ CREATE TABLE `resolution` (
   KEY `resolution_sortkey_idx` (`sortkey`,`value`),
   KEY `resolution_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
-/*Data for the table `resolution` */
-
-insert  into `resolution`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'',100,1,NULL),
-(2,'FIXED',200,1,NULL),
-(3,'INVALID',300,1,NULL),
-(4,'WONTFIX',400,1,NULL),
-(5,'DUPLICATE',500,1,NULL),
-(6,'WORKSFORME',600,1,NULL);
 
 /*Table structure for table `series` */
 
@@ -2438,8 +1194,6 @@ CREATE TABLE `series` (
   CONSTRAINT `fk_series_subcategory_series_categories_id` FOREIGN KEY (`subcategory`) REFERENCES `series_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `series` */
-
 /*Table structure for table `series_categories` */
 
 DROP TABLE IF EXISTS `series_categories`;
@@ -2450,13 +1204,6 @@ CREATE TABLE `series_categories` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `series_categories_name_idx` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
-/*Data for the table `series_categories` */
-
-insert  into `series_categories`(`id`,`name`) values 
-(2,'-All-'),
-(3,'Test_stakeholder_1'),
-(1,'Test_Unit_1_A');
 
 /*Table structure for table `series_data` */
 
@@ -2470,8 +1217,6 @@ CREATE TABLE `series_data` (
   CONSTRAINT `fk_series_data_series_id_series_series_id` FOREIGN KEY (`series_id`) REFERENCES `series` (`series_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `series_data` */
-
 /*Table structure for table `setting` */
 
 DROP TABLE IF EXISTS `setting`;
@@ -2483,26 +1228,6 @@ CREATE TABLE `setting` (
   `subclass` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `setting` */
-
-insert  into `setting`(`name`,`default_value`,`is_enabled`,`subclass`) values 
-('bugmail_new_prefix','on',1,NULL),
-('comment_box_position','after_comments',1,NULL),
-('comment_sort_order','oldest_to_newest',1,NULL),
-('csv_colsepchar',',',1,NULL),
-('display_quips','off',0,NULL),
-('email_format','html',1,NULL),
-('lang','en',1,'Lang'),
-('possible_duplicates','on',1,NULL),
-('post_bug_submit_action','same_bug',1,NULL),
-('quicksearch_fulltext','on',1,NULL),
-('quote_replies','quoted_reply',1,NULL),
-('requestee_cc','on',1,NULL),
-('skin','skin',0,'Skin'),
-('state_addselfcc','cc_unless_role',1,NULL),
-('timezone','local',1,'Timezone'),
-('zoom_textareas','on',1,NULL);
 
 /*Table structure for table `setting_value` */
 
@@ -2516,40 +1241,6 @@ CREATE TABLE `setting_value` (
   UNIQUE KEY `setting_value_ns_unique_idx` (`name`,`sortindex`),
   CONSTRAINT `fk_setting_value_name_setting_name` FOREIGN KEY (`name`) REFERENCES `setting` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `setting_value` */
-
-insert  into `setting_value`(`name`,`value`,`sortindex`) values 
-('bugmail_new_prefix','on',5),
-('bugmail_new_prefix','off',10),
-('comment_box_position','before_comments',5),
-('comment_box_position','after_comments',10),
-('comment_sort_order','oldest_to_newest',5),
-('comment_sort_order','newest_to_oldest',10),
-('comment_sort_order','newest_to_oldest_desc_first',15),
-('csv_colsepchar',',',5),
-('csv_colsepchar',';',10),
-('display_quips','on',5),
-('display_quips','off',10),
-('email_format','html',5),
-('email_format','text_only',10),
-('possible_duplicates','on',5),
-('possible_duplicates','off',10),
-('post_bug_submit_action','next_bug',5),
-('post_bug_submit_action','same_bug',10),
-('post_bug_submit_action','nothing',15),
-('quicksearch_fulltext','on',5),
-('quicksearch_fulltext','off',10),
-('quote_replies','quoted_reply',5),
-('quote_replies','simple_reply',10),
-('quote_replies','off',15),
-('requestee_cc','on',5),
-('requestee_cc','off',10),
-('state_addselfcc','always',5),
-('state_addselfcc','never',10),
-('state_addselfcc','cc_unless_role',15),
-('zoom_textareas','on',5),
-('zoom_textareas','off',10);
 
 /*Table structure for table `status_workflow` */
 
@@ -2565,37 +1256,6 @@ CREATE TABLE `status_workflow` (
   CONSTRAINT `fk_status_workflow_old_status_bug_status_id` FOREIGN KEY (`old_status`) REFERENCES `bug_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `status_workflow` */
-
-insert  into `status_workflow`(`old_status`,`new_status`,`require_comment`) values 
-(NULL,1,0),
-(NULL,2,0),
-(NULL,3,0),
-(1,2,0),
-(1,3,0),
-(1,4,0),
-(2,3,0),
-(2,4,0),
-(3,2,0),
-(3,4,0),
-(4,5,0),
-(5,4,0),
-(6,4,0),
-(7,4,0),
-(8,4,0),
-(1,7,0),
-(2,7,0),
-(3,7,0),
-(6,3,0),
-(6,7,0),
-(7,3,0),
-(4,6,0),
-(4,7,0),
-(5,6,0),
-(5,8,0),
-(8,6,0),
-(NULL,7,0);
-
 /*Table structure for table `tag` */
 
 DROP TABLE IF EXISTS `tag`;
@@ -2608,8 +1268,6 @@ CREATE TABLE `tag` (
   UNIQUE KEY `tag_user_id_idx` (`user_id`,`name`),
   CONSTRAINT `fk_tag_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `tag` */
 
 /*Table structure for table `tokens` */
 
@@ -2626,22 +1284,6 @@ CREATE TABLE `tokens` (
   CONSTRAINT `fk_tokens_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `tokens` */
-
-insert  into `tokens`(`userid`,`issuedate`,`token`,`tokentype`,`eventdata`) values 
-(1,'2017-12-02 10:44:58','1Er7WpupQ0','session','edit_parameters'),
-(1,'2018-01-14 10:00:57','b4tOLgprs3','session','edit_parameters'),
-(1,'2018-01-14 10:00:46','BR8dyLAKFa','session','edit_parameters'),
-(1,'2018-02-02 01:14:40','F6szm0OqT0','session','edit_user'),
-(1,'2017-12-02 10:44:51','FjkvDQ9nBM','session','edit_parameters'),
-(1,'2018-02-02 01:14:19','HvG0QLg7GS','session','edit_user'),
-(1,'2018-02-02 01:14:55','Ky2Q7zgTFY','session','edit_user'),
-(1,'2017-12-02 10:45:01','NHwnvVjUAZ','session','edit_parameters'),
-(1,'2017-12-02 10:45:06','qugmzUEqDX','session','edit_parameters'),
-(1,'2017-12-02 10:45:11','RzQ0UBTUQZ','session','edit_parameters'),
-(1,'2018-02-02 01:15:20','TGjj7QzQNu','session','edit_user'),
-(1,'2018-02-02 01:08:41','WbrvQ9AO9U','session','edit_user');
-
 /*Table structure for table `ts_error` */
 
 DROP TABLE IF EXISTS `ts_error`;
@@ -2655,8 +1297,6 @@ CREATE TABLE `ts_error` (
   KEY `ts_error_error_time_idx` (`error_time`),
   KEY `ts_error_jobid_idx` (`jobid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ts_error` */
 
 /*Table structure for table `ts_exitstatus` */
 
@@ -2673,8 +1313,6 @@ CREATE TABLE `ts_exitstatus` (
   KEY `ts_exitstatus_delete_after_idx` (`delete_after`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `ts_exitstatus` */
-
 /*Table structure for table `ts_funcmap` */
 
 DROP TABLE IF EXISTS `ts_funcmap`;
@@ -2685,8 +1323,6 @@ CREATE TABLE `ts_funcmap` (
   PRIMARY KEY (`funcid`),
   UNIQUE KEY `ts_funcmap_funcname_idx` (`funcname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ts_funcmap` */
 
 /*Table structure for table `ts_job` */
 
@@ -2708,8 +1344,6 @@ CREATE TABLE `ts_job` (
   KEY `ts_job_coalesce_idx` (`coalesce`,`funcid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `ts_job` */
-
 /*Table structure for table `ts_note` */
 
 DROP TABLE IF EXISTS `ts_note`;
@@ -2720,8 +1354,6 @@ CREATE TABLE `ts_note` (
   `value` longblob DEFAULT NULL,
   UNIQUE KEY `ts_note_jobid_idx` (`jobid`,`notekey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ts_note` */
 
 /*Table structure for table `user_api_keys` */
 
@@ -2740,8 +1372,6 @@ CREATE TABLE `user_api_keys` (
   CONSTRAINT `fk_user_api_keys_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `user_api_keys` */
-
 /*Table structure for table `user_group_map` */
 
 DROP TABLE IF EXISTS `user_group_map`;
@@ -2756,11 +1386,6 @@ CREATE TABLE `user_group_map` (
   CONSTRAINT `fk_user_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_user_group_map_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `user_group_map` */
-
-insert  into `user_group_map`(`user_id`,`group_id`,`isbless`,`grant_type`) values 
-(1,1,0,0);
 
 /*Table structure for table `ut_audit_log` */
 
@@ -2777,8 +1402,6 @@ CREATE TABLE `ut_audit_log` (
   `comment` text DEFAULT NULL COMMENT 'More information about what we intended to do',
   PRIMARY KEY (`id_ut_log`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_audit_log` */
 
 /*Table structure for table `ut_bug_status` */
 
@@ -2797,18 +1420,6 @@ CREATE TABLE `ut_bug_status` (
   KEY `ut_bug_status_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_bug_status` */
-
-insert  into `ut_bug_status`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`,`is_open`) values 
-(1,'UNCONFIRMED',10,1,NULL,1),
-(2,'CONFIRMED',20,1,NULL,1),
-(3,'IN_PROGRESS',30,1,NULL,1),
-(4,'RESOLVED',60,1,NULL,0),
-(5,'VERIFIED',70,1,NULL,0),
-(6,'REOPENED',40,1,NULL,1),
-(7,'STAND BY',50,1,NULL,1),
-(8,'CLOSED',80,1,NULL,0);
-
 /*Table structure for table `ut_cf_ipi_clust_3_action_type` */
 
 DROP TABLE IF EXISTS `ut_cf_ipi_clust_3_action_type`;
@@ -2825,21 +1436,6 @@ CREATE TABLE `ut_cf_ipi_clust_3_action_type` (
   KEY `cf_ipi_clust_3_action_type_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_cf_ipi_clust_3_action_type` */
-
-insert  into `ut_cf_ipi_clust_3_action_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'Diagnose',10,1,NULL),
-(3,'Fix',15,1,NULL),
-(4,'Diagnose and Fix',20,1,NULL),
-(5,'Supervise',25,1,NULL),
-(6,'Deliver',30,1,NULL),
-(7,'Collect',35,1,NULL),
-(8,'Purchase',40,1,NULL),
-(9,'Install',45,1,NULL),
-(10,'Check',50,1,NULL),
-(11,'Other',55,1,NULL);
-
 /*Table structure for table `ut_contractor_types` */
 
 DROP TABLE IF EXISTS `ut_contractor_types`;
@@ -2852,17 +1448,6 @@ CREATE TABLE `ut_contractor_types` (
   `description` text DEFAULT NULL COMMENT 'Detailed description of this contractor type',
   PRIMARY KEY (`id_contractor_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_contractor_types` */
-
-insert  into `ut_contractor_types`(`id_contractor_type`,`created`,`contractor_type`,`bz_description`,`description`) values 
-(1,'2017-10-26 22:35:58','---','Not Applicable','This is not a contractor.'),
-(2,'2017-10-26 22:35:58','Unknown','Unknown','We have no information about the contractor type.'),
-(3,'2017-10-26 22:35:58','Other','Other','A type of contractor which is not in the list.'),
-(4,'2017-10-26 22:35:58','Electricty','Electrician','Can do electrical work.'),
-(5,'2017-10-26 22:35:58','Plumbing','Plumber','Can do plumbin.'),
-(6,'2017-10-26 22:35:58','General','General Repair','General Contractor.'),
-(7,'2017-10-26 22:35:58','Aircon','Aircon','Aircon repair and maintenance.');
 
 /*Table structure for table `ut_contractors` */
 
@@ -2877,7 +1462,32 @@ CREATE TABLE `ut_contractors` (
   PRIMARY KEY (`id_contractor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_contractors` */
+/*Table structure for table `ut_data_to_add_user_to_a_role` */
+
+DROP TABLE IF EXISTS `ut_data_to_add_user_to_a_role`;
+
+CREATE TABLE `ut_data_to_add_user_to_a_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `mefe_invitation_id` int(11) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitor_user_id` int(11) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
+  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
+  `is_occupant` tinyint(1) DEFAULT 0 COMMENT '1 if TRUE, 0 if FALSE',
+  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
+  `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
+  `comment` text DEFAULT NULL COMMENT 'Any comment',
+  PRIMARY KEY (`id`),
+  KEY `add_user_to_a_role_bz_user_id` (`bz_user_id`),
+  KEY `add_user_to_a_role_invitor_bz_id` (`bzfe_invitor_user_id`),
+  KEY `add_user_to_a_role_role_type_id` (`user_role_type_id`),
+  KEY `add_user_to_a_role_product_id` (`bz_unit_id`),
+  CONSTRAINT `add_user_to_a_role_bz_user_id` FOREIGN KEY (`bz_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `add_user_to_a_role_invitor_bz_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `add_user_to_a_role_product_id` FOREIGN KEY (`bz_unit_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `add_user_to_a_role_role_type_id` FOREIGN KEY (`user_role_type_id`) REFERENCES `ut_role_types` (`id_role_type`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `ut_data_to_create_units` */
 
@@ -2905,9 +1515,7 @@ CREATE TABLE `ut_data_to_create_units` (
   KEY `id_unit_classification_id` (`classification_id`),
   CONSTRAINT `id_unit_classification_id` FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `id_unit_creator_id` FOREIGN KEY (`bzfe_creator_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_data_to_create_units` */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `ut_data_to_replace_dummy_roles` */
 
@@ -2934,9 +1542,7 @@ CREATE TABLE `ut_data_to_replace_dummy_roles` (
   CONSTRAINT `replace_dummy_role_bz_user_id` FOREIGN KEY (`bz_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `replace_dummy_role_invitor_bz_user_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `replace_dummy_role_role_type` FOREIGN KEY (`user_role_type_id`) REFERENCES `ut_role_types` (`id_role_type`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_data_to_replace_dummy_roles` */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `ut_fielddefs` */
 
@@ -2969,100 +1575,6 @@ CREATE TABLE `ut_fielddefs` (
   CONSTRAINT `fk_ut_fielddefs_visibility_field_id_fielddefs_id` FOREIGN KEY (`visibility_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_fielddefs` */
-
-insert  into `ut_fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`mailhead`,`sortkey`,`obsolete`,`enter_bug`,`buglist`,`visibility_field_id`,`value_field_id`,`reverse_desc`,`is_mandatory`,`is_numeric`) values 
-(1,'bug_id',0,0,'Bug #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
-(2,'short_desc',0,0,'Summary','',1,200,0,0,1,NULL,NULL,NULL,1,0),
-(3,'classification',2,0,'Classification','',1,300,0,0,1,NULL,NULL,NULL,0,0),
-(4,'product',2,0,'Product','',1,400,0,0,1,NULL,NULL,NULL,1,0),
-(5,'version',0,0,'Version','',1,500,0,0,1,NULL,NULL,NULL,1,0),
-(6,'rep_platform',2,0,'Platform','',1,600,0,0,1,NULL,NULL,NULL,0,0),
-(7,'bug_file_loc',0,0,'URL','',1,700,0,0,1,NULL,NULL,NULL,0,0),
-(8,'op_sys',2,0,'OS/Version','',1,800,0,0,1,NULL,NULL,NULL,0,0),
-(9,'bug_status',2,0,'Status','',1,900,0,0,1,NULL,NULL,NULL,0,0),
-(10,'status_whiteboard',0,0,'Status Whiteboard','',1,1000,0,0,1,NULL,NULL,NULL,0,0),
-(11,'keywords',8,0,'Keywords','',1,1100,0,0,1,NULL,NULL,NULL,0,0),
-(12,'resolution',2,0,'Resolution','',0,1200,0,0,1,NULL,NULL,NULL,0,0),
-(13,'bug_severity',2,0,'Severity','',1,1300,0,0,1,NULL,NULL,NULL,0,0),
-(14,'priority',2,0,'Priority','',1,1400,0,0,1,NULL,NULL,NULL,0,0),
-(15,'component',2,0,'Component','',1,1500,0,0,1,NULL,NULL,NULL,1,0),
-(16,'assigned_to',0,0,'AssignedTo','',1,1600,0,0,1,NULL,NULL,NULL,0,0),
-(17,'reporter',0,0,'ReportedBy','',1,1700,0,0,1,NULL,NULL,NULL,0,0),
-(18,'qa_contact',0,0,'QAContact','',1,1800,0,0,1,NULL,NULL,NULL,0,0),
-(19,'assigned_to_realname',0,0,'AssignedToName','',0,1900,0,0,1,NULL,NULL,NULL,0,0),
-(20,'reporter_realname',0,0,'ReportedByName','',0,2000,0,0,1,NULL,NULL,NULL,0,0),
-(21,'qa_contact_realname',0,0,'QAContactName','',0,2100,0,0,1,NULL,NULL,NULL,0,0),
-(22,'cc',0,0,'CC','',1,2200,0,0,0,NULL,NULL,NULL,0,0),
-(23,'dependson',0,0,'Depends on','',1,2300,0,0,1,NULL,NULL,NULL,0,1),
-(24,'blocked',0,0,'Blocks','',1,2400,0,0,1,NULL,NULL,NULL,0,1),
-(25,'attachments.description',0,0,'Attachment description','',0,2500,0,0,0,NULL,NULL,NULL,0,0),
-(26,'attachments.filename',0,0,'Attachment filename','',0,2600,0,0,0,NULL,NULL,NULL,0,0),
-(27,'attachments.mimetype',0,0,'Attachment mime type','',0,2700,0,0,0,NULL,NULL,NULL,0,0),
-(28,'attachments.ispatch',0,0,'Attachment is patch','',0,2800,0,0,0,NULL,NULL,NULL,0,1),
-(29,'attachments.isobsolete',0,0,'Attachment is obsolete','',0,2900,0,0,0,NULL,NULL,NULL,0,1),
-(30,'attachments.isprivate',0,0,'Attachment is private','',0,3000,0,0,0,NULL,NULL,NULL,0,1),
-(31,'attachments.submitter',0,0,'Attachment creator','',0,3100,0,0,0,NULL,NULL,NULL,0,0),
-(32,'target_milestone',0,0,'Target Milestone','',1,3200,0,0,1,NULL,NULL,NULL,0,0),
-(33,'creation_ts',0,0,'Creation date','',0,3300,0,0,1,NULL,NULL,NULL,0,0),
-(34,'delta_ts',0,0,'Last changed date','',0,3400,0,0,1,NULL,NULL,NULL,0,0),
-(35,'longdesc',0,0,'Comment','',0,3500,0,0,0,NULL,NULL,NULL,0,0),
-(36,'longdescs.isprivate',0,0,'Comment is private','',0,3600,0,0,0,NULL,NULL,NULL,0,1),
-(37,'longdescs.count',0,0,'Number of Comments','',0,3700,0,0,1,NULL,NULL,NULL,0,1),
-(38,'alias',0,0,'Alias','',0,3800,0,0,1,NULL,NULL,NULL,0,0),
-(39,'everconfirmed',0,0,'Ever Confirmed','',0,3900,0,0,0,NULL,NULL,NULL,0,1),
-(40,'reporter_accessible',0,0,'Reporter Accessible','',0,4000,0,0,0,NULL,NULL,NULL,0,1),
-(41,'cclist_accessible',0,0,'CC Accessible','',0,4100,0,0,0,NULL,NULL,NULL,0,1),
-(42,'bug_group',0,0,'Group','',1,4200,0,0,0,NULL,NULL,NULL,0,0),
-(43,'estimated_time',0,0,'Estimated Hours','',1,4300,0,0,1,NULL,NULL,NULL,0,1),
-(44,'remaining_time',0,0,'Remaining Hours','',0,4400,0,0,1,NULL,NULL,NULL,0,1),
-(45,'deadline',5,0,'Deadline','',1,4500,0,0,1,NULL,NULL,NULL,0,0),
-(46,'commenter',0,0,'Commenter','',0,4600,0,0,0,NULL,NULL,NULL,0,0),
-(47,'flagtypes.name',0,0,'Flags','',0,4700,0,0,1,NULL,NULL,NULL,0,0),
-(48,'requestees.login_name',0,0,'Flag Requestee','',0,4800,0,0,0,NULL,NULL,NULL,0,0),
-(49,'setters.login_name',0,0,'Flag Setter','',0,4900,0,0,0,NULL,NULL,NULL,0,0),
-(50,'work_time',0,0,'Hours Worked','',0,5000,0,0,1,NULL,NULL,NULL,0,1),
-(51,'percentage_complete',0,0,'Percentage Complete','',0,5100,0,0,1,NULL,NULL,NULL,0,1),
-(52,'content',0,0,'Content','',0,5200,0,0,0,NULL,NULL,NULL,0,0),
-(53,'attach_data.thedata',0,0,'Attachment data','',0,5300,0,0,0,NULL,NULL,NULL,0,0),
-(54,'owner_idle_time',0,0,'Time Since Assignee Touched','',0,5400,0,0,0,NULL,NULL,NULL,0,0),
-(55,'see_also',7,0,'See Also','',0,5500,0,0,0,NULL,NULL,NULL,0,0),
-(56,'tag',8,0,'Personal Tags','',0,5600,0,0,1,NULL,NULL,NULL,0,0),
-(57,'last_visit_ts',5,0,'Last Visit','',0,5700,0,0,1,NULL,NULL,NULL,0,0),
-(58,'comment_tag',0,0,'Comment Tag','',0,5800,0,0,0,NULL,NULL,NULL,0,0),
-(59,'days_elapsed',0,0,'Days since bug changed','',0,5900,0,0,0,NULL,NULL,NULL,0,0),
-(60,'cf_ipi_clust_4_status_in_progress',2,1,'Progression','More information about the case when the status is \"IN PROGRESS\".',0,10,0,1,1,9,NULL,NULL,0,0),
-(61,'cf_ipi_clust_4_status_standby',2,1,'Stand By Cause','More information about the case when the status is \"STAND BY\"',0,20,0,0,1,9,NULL,NULL,0,0),
-(62,'cf_ipi_clust_2_room',1,1,'Room(s)','Information about the room(s) where the case is located',0,600,0,1,1,NULL,NULL,NULL,0,0),
-(63,'cf_ipi_clust_6_claim_type',2,1,'Case Type','The Case Type allows us to better organize Cases. It depends on the Case Category.',0,600,0,1,1,NULL,6,NULL,0,0),
-(64,'cf_ipi_clust_1_solution',4,1,'Solution','The CURRENT solution that we have to solve this. This could (and in many occasion WILL) change over time. It can also be empty if we don\'t know what the solution is yet. It is different from the NEXT STEP field.',0,3215,0,1,1,NULL,NULL,NULL,0,0),
-(65,'cf_ipi_clust_1_next_step',4,1,'Next Step','Detailed description of the next step for the Case ASSIGNEE. This is different from the solution and from the field action.',0,3220,0,0,1,NULL,NULL,NULL,0,0),
-(66,'cf_ipi_clust_1_next_step_date',9,1,'Next Step Date','The date when the Next Step needs to happen.',0,3225,0,0,1,NULL,NULL,NULL,0,0),
-(67,'cf_ipi_clust_3_field_action',4,1,'Action Details','Describe in details what needs to be done. This text will appear in the roadbook.',0,3245,0,0,1,NULL,NULL,NULL,0,0),
-(68,'cf_ipi_clust_3_field_action_from',5,1,'Scheduled From','The Start date for the action on the field. It is also possible to add a start time.',0,3250,0,0,1,NULL,NULL,NULL,0,0),
-(69,'cf_ipi_clust_3_field_action_until',5,1,'Scheduled Until','The End date for the action on the field. It is also possible to add an end time.',0,3255,0,0,1,NULL,NULL,NULL,0,0),
-(70,'cf_ipi_clust_3_action_type',2,1,'Action Type','What type of action do we need to do on the field?',0,3260,0,0,1,NULL,NULL,NULL,0,0),
-(71,'cf_ipi_clust_3_nber_field_visits',10,1,'Field Visits','Number of visits or trips done to diagnose and solve this case. DO NOT include the visits by the supervisors/managers for Quality Control purposes. Increases Each time there is a new visit SCHEDULED. Decrease during debrief if cancelled.',0,3205,0,0,1,NULL,NULL,NULL,0,0),
-(72,'cf_ipi_clust_3_roadbook_for',3,1,'Action For','In whose roadbook shall Field Action appear? This can change over time. It is possible to choose more than 1 person if needed.',0,3235,0,0,1,NULL,NULL,NULL,0,0),
-(73,'cf_ipi_clust_5_approved_budget',1,1,'Approved Budget','What is the budget that has been APPROVED to solve this. This can be different from the actual cost of the purchase or total cost for solving the case. This allows us to monitor how good we are when we have to estimate a budget.',0,3275,0,0,1,NULL,NULL,NULL,0,0),
-(74,'cf_ipi_clust_5_budget',1,1,'Estimated Budget','The LATEST estimate for the budget we need to fix the problem. This can change with time and might be different than the approved budget as we gather more information.',0,3265,0,0,1,NULL,NULL,NULL,0,0),
-(75,'cf_ipi_clust_8_contract_id',1,1,'Customer ID','The internal ID for the contract with the customer.',0,3270,0,0,1,NULL,NULL,NULL,0,0),
-(76,'cf_ipi_clust_9_acct_action',3,1,'Accounting Action','Detailed description of the expected action from ACCOUNTING. This is different from the solution, from the field action or the next step.',0,3300,0,0,1,92,NULL,NULL,0,0),
-(77,'cf_ipi_clust_9_inv_ll',1,1,'Invoice Amount (LL)','What is the amount of the invoice that we need to generate to the LANDLORD for this claim?',0,3305,0,0,1,92,NULL,NULL,0,0),
-(78,'cf_ipi_clust_9_inv_det_ll',1,1,'Invoice Details (LL)','Use this if there are has specific requirement on our invoice to the Landlord. Accounting will use this to prepare the invoice and explain to the Lanldord why we have invoiced/paid him that way...',0,3310,0,0,1,92,NULL,NULL,0,0),
-(79,'cf_ipi_clust_9_inv_cust',4,1,'Invoice Amount (Cust)','What is the amount of the invoice that we need to generate to the CUSTOMER for this claim?',0,3315,0,0,1,92,NULL,NULL,0,0),
-(80,'cf_ipi_clust_9_inv_det_cust',4,1,'Invoice Details (Cust)','Details about the invoice: what do we need to know about this invoice? What is the information/message that we need to send to the customer together with this invoice?',0,3320,0,0,1,92,NULL,NULL,0,0),
-(81,'cf_ipi_clust_5_spe_action_purchase_list',1,1,'Purchase List','Enter the list of things that we need to purchase. If the list is too long, attach a file to the claim with the detailed list and only summarize what we need to purchase here. IN Unee-T IT\'S EASIER TO USE APPROVED ATTACHMENTS TO DO THIS',0,9905,0,0,1,92,NULL,NULL,0,0),
-(83,'cf_ipi_clust_5_spe_approval_for',4,1,'Approval For','Explain why you require an approval. The approver will use this information to better understand the whole situtation. IN Unee-T IT\'S BETTER TO DO THIS WHEN YOU APPROVE AN ATTACHMENT',0,9910,0,0,1,92,NULL,NULL,0,0),
-(84,'cf_ipi_clust_5_spe_approval_comment',4,1,'Approval Comment','This is to explain/comment about the approval/rejection of what was requested. IN Unee-T IT\'S BETTER TO DO THIS WHEN WE APPROVE AN ATTACHMENT.',0,9915,0,0,1,92,NULL,NULL,0,0),
-(85,'cf_ipi_clust_5_spe_contractor',4,1,'Contractor ID','The name of the contractor that has been assigned to work on this case. IN Unee-T THIS HAS BEEN MOVED. THE CONTRACTOR IS A STAKEHOLDER.',0,9920,0,0,1,92,NULL,NULL,0,0),
-(87,'cf_ipi_clust_5_spe_purchase_cost',1,1,'Purchase Cost','What was the ACTUAL purchase cost for the purchase we did. This can be (and usually is) slightly different from the approved budget (but NOT higher than the approved budget).',0,9925,0,0,1,92,NULL,NULL,0,0),
-(88,'cf_ipi_clust_7_spe_bill_number',1,1,'Bill Nber','The Supplier\'s invoice number. This is so that accounting can easily find explanations about a supplier invoice if this is needed. IN Unee-T THIS HAS BEEN MOVED TO ATTACHMENTS',0,9930,0,0,1,92,NULL,NULL,0,0),
-(89,'cf_ipi_clust_7_spe_payment_type',2,1,'Payment Type','How will we pay the contractor? This is important information so that accounting can prepare the payment accordingly. This will ensure we pay our supplier as fast as possible and minimize the risk of misunderstandings.',0,9935,0,0,1,92,NULL,NULL,0,0),
-(90,'cf_ipi_clust_7_spe_contractor_payment',4,1,'Contractor Payment','Use this if the supplier has specific requirement about the payment. Accounting will use this to explain to the supplier why we have invoiced/paid him that way...',0,9940,0,0,1,92,NULL,NULL,0,0),
-(91,'cf_ipi_clust_8_spe_customer',1,1,'Customer','The name of the customer. IN Unee-T WE USE THE CUSTOMER ID INSTEAD',0,9945,0,0,1,92,NULL,NULL,0,0),
-(92,'cf_specific_for',2,1,'Field For','The name and id of the Unee-T customer that can see these fields',0,9900,0,0,1,NULL,NULL,NULL,0,0);
-
 /*Table structure for table `ut_group_types` */
 
 DROP TABLE IF EXISTS `ut_group_types`;
@@ -3078,46 +1590,6 @@ CREATE TABLE `ut_group_types` (
   PRIMARY KEY (`id_group_type`,`groupe_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_group_types` */
-
-insert  into `ut_group_types`(`id_group_type`,`created`,`order`,`is_obsolete`,`groupe_type`,`bz_description`,`description`) values 
-(1,'2018-01-14 10:02:37',50,0,'creator','User has created the unit or has full delegation','The group for the user who has created the unit first and/or his representatives (agent or employee).'),
-(2,'2018-01-14 10:02:37',210,0,'hide_show_case_from_role','Visible only to','These are product/unit and bug/case visibility groups. \r\nThese groups are in the table bug_group_map.'),
-(3,'2018-01-14 10:02:37',320,0,'list_occupants','User is an occupant of the unit','These are also bug visibility groups but based on a different information: is the user an occupant of the unit or not?\r\nA Tenant can also be an occupant (or not)\r\nAn Owner/Landlord can also be an occupant (or not).'),
-(4,'2018-01-14 10:02:37',400,0,'list_visible_stakeholder','List all the users who have a role in this unit','This is a user visibility group (step 1).\r\nAll the users in this group have a role in this unit.'),
-(5,'2018-01-14 10:02:37',410,0,'see_visible_stakeholder','See all the stakeholders','This is a user visibility group (step 2).\r\nIf you are member of this group, you can see all the user in the list_stakeholder group for this unit.'),
-(6,'2018-01-14 10:02:37',500,0,'r_a_case_next_step','Requestee to approve the Next Step of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Next Step for a case in this unit.'),
-(7,'2018-01-14 10:02:37',600,0,'g_a_case_next_step','Grant approval for the Next Step of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Next Step for a case in this unit.'),
-(8,'2018-01-14 10:02:37',510,0,'r_a_case_solution','Requestee to approve the Solution of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Solution for a case in this unit.'),
-(9,'2018-01-14 10:02:37',610,0,'g_a_case_solution','Grant approval for the Solution of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Solution for a case in this unit.'),
-(10,'2018-01-14 10:02:37',520,0,'r_a_case_budget','Requestee to approve the Budget for a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Budget for a case in this unit.'),
-(11,'2018-01-14 10:02:37',620,0,'g_a_case_budget','Grant approval for the Budget for a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Budget for a case in this unit.'),
-(12,'2018-01-14 10:02:37',700,0,'r_a_attachment_approve','Requestee to approve the Attachment','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for an Attachment in this unit.'),
-(13,'2018-01-14 10:02:37',800,0,'g_a_attachment_approve','Grant approval for the Attachment','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for an Attachment in this unit.'),
-(14,'2018-01-14 10:02:37',710,0,'r_a_attachment_ok_to_pay','Requestee to approve pay a bill','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval to pay a specific bill in this unit.'),
-(15,'2018-01-14 10:02:37',810,0,'g_a_attachment_ok_to_pay','Grant approval to pay a bill','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval to pay a specific bill in this unit.'),
-(16,'2018-01-14 10:02:37',720,0,'r_a_attachment_is_paid','Requestee to confirm if a bill has been paid','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to confirm if a specific bill has been paid in this unit.'),
-(17,'2018-01-14 10:02:37',820,0,'g_a_attachment_is_paid','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(18,'2018-01-14 10:02:37',999,0,'all_r_flags','Grant approval for all flags','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(19,'2018-01-14 10:02:37',999,0,'all_g_all_flags','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(20,'2018-01-14 10:02:37',100,0,'create_a_case','Group to be able to create cases in a unit','This is a group that helps us grant all shared accessed and permission in bulk to a user.\r\nIf you are member of this group, you can access, grant, request and be requested to approve all the Flags for a specific unit.'),
-(21,'2018-01-14 10:02:37',10000,0,'user_aggregation','Facilitate user management','This is to group user together (users working in the same company for example) so we can give them all the same permissions.'),
-(22,'2018-01-14 10:02:37',300,0,'list_users_in_role','List all user in a role','All the users in the same role/component for a given unit'),
-(24,'2018-01-14 10:02:37',220,0,'hide_show_case_from_occupant','Untick to hide a case from the occupants of the unit',NULL),
-(25,'2018-01-14 10:02:37',110,0,'can_edit_a_case','User can edit a case','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(26,'2018-01-14 10:02:37',120,0,'can_edit_all_fields_in_a_case','Untick to hide a case from the occupants of the unit','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(27,'2018-01-14 10:02:37',130,0,'can_edit_components_roles','Needed so that a user can create new users','This is for the group that grant permission to create new users. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(28,'2018-01-14 10:02:37',200,0,'case_is_visible_to_all','Untick to limit this case only to certain roles','This is for the group that limit visibility of a case by default. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are Default, N/A'),
-(29,'2018-01-14 10:02:37',420,0,'active_stakeholder','Active Stakeholder',''),
-(30,'2018-01-14 10:02:37',10,0,'single_user_roup','A group for a Single user','We use this to simplify the user_group_mapping. \r\nThis allows us to use group_group_map instead since it is easier to grant and revoke privileges with groups'),
-(31,'2018-01-14 10:02:37',60,0,'invited_by','List of users who were invited by the same user','List of users who were invited by the same user'),
-(32,'2018-01-14 10:02:37',430,0,'see_all_invited_by','User Visibility group - for users who need to see all the users invited by a certain user','User Visibility group - for users who need to see all the users invited by a certain user'),
-(33,'2018-01-14 10:02:37',20,0,'timetracking','Can see timetracking information','Grants persmission to see timetracking information for a case.'),
-(34,'2018-01-14 10:02:37',30,0,'create_shared_queries','User is allowed to share some of the queries he/she has created','User is allowed to share some of the queries he/she has created'),
-(35,'2018-01-14 10:02:37',40,0,'tag_comment','User is allowed to tag comments','User in this group are allowed to tag comment.\r\nALL users should be members of this group: tags are the mechanisms to mark a comment as received, read etc.... Tags are also a way to add reactions to a comment (emoji for instance).'),
-(36,'2018-01-14 10:02:37',330,0,'see_occupant','Can see the list of occupants','User in this group can see the list of occupants for a unit.'),
-(37,'2018-01-14 10:02:37',310,0,'see_user_in_role','Can see the list of users for a given role','User in this group can see the list of users for a given role.');
-
 /*Table structure for table `ut_map_contractor_to_type` */
 
 DROP TABLE IF EXISTS `ut_map_contractor_to_type`;
@@ -3128,8 +1600,6 @@ CREATE TABLE `ut_map_contractor_to_type` (
   `created` datetime DEFAULT NULL COMMENT 'creation ts'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_map_contractor_to_type` */
-
 /*Table structure for table `ut_map_contractor_to_user` */
 
 DROP TABLE IF EXISTS `ut_map_contractor_to_user`;
@@ -3139,8 +1609,6 @@ CREATE TABLE `ut_map_contractor_to_user` (
   `bz_user_id` mediumint(9) NOT NULL COMMENT 'id in the table `profiles`',
   `created` datetime DEFAULT NULL COMMENT 'creation ts'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_map_contractor_to_user` */
 
 /*Table structure for table `ut_map_user_mefe_bzfe` */
 
@@ -3155,8 +1623,6 @@ CREATE TABLE `ut_map_user_mefe_bzfe` (
   `bz_profile_id` mediumint(6) DEFAULT NULL COMMENT 'id of the user in the BZFE',
   `comment` text DEFAULT NULL COMMENT 'Any comment'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_map_user_mefe_bzfe` */
 
 /*Table structure for table `ut_map_user_unit_details` */
 
@@ -3194,8 +1660,6 @@ CREATE TABLE `ut_map_user_unit_details` (
   UNIQUE KEY `bz_profile_id_bz_product_id` (`bz_profile_id`,`bz_unit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_map_user_unit_details` */
-
 /*Table structure for table `ut_permission_types` */
 
 DROP TABLE IF EXISTS `ut_permission_types`;
@@ -3218,70 +1682,6 @@ CREATE TABLE `ut_permission_types` (
   CONSTRAINT `permission_groupe_type` FOREIGN KEY (`group_type_id`) REFERENCES `ut_group_types` (`id_group_type`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_permission_types` */
-
-insert  into `ut_permission_types`(`id_permission_type`,`created`,`order`,`is_obsolete`,`group_type_id`,`permission_type`,`permission_scope`,`permission_category`,`is_bless`,`bless_id`,`description`,`detailed_description`) values 
-(1,'2018-01-14 10:02:37',10,0,33,'can_see_time_tracking','GLOBAL','FUNCTIONALITY',0,NULL,'The user can see the time tracking information',NULL),
-(2,'2018-01-14 10:02:37',20,0,33,'can_grant_see_time_tracking','GLOBAL','FUNCTIONALITY',1,1,'The user can allow another user to see time tracking information',NULL),
-(3,'2018-01-14 10:02:37',30,0,34,'can_create_shared_query','GLOBAL','FUNCTIONALITY',0,NULL,NULL,NULL),
-(4,'2018-01-14 10:02:37',40,0,34,'can_grant_create_shared_query','GLOBAL','FUNCTIONALITY',1,3,NULL,NULL),
-(5,'2018-01-14 10:02:37',50,0,35,'can_tag_comment','GLOBAL','FUNCTIONALITY',0,NULL,'This should be mandatory for all users: flags are allowing us to mark a comment as sent, received, read, and allow us to add emoticons for instance',NULL),
-(6,'2018-01-14 10:02:37',60,0,35,'can_grant_tag_comment','GLOBAL','FUNCTIONALITY',1,5,NULL,NULL),
-(7,'2018-01-14 10:02:37',70,0,3,'is_occupant','UNIT','VISIBLE USER',0,NULL,NULL,NULL),
-(8,'2018-01-14 10:02:37',80,0,3,'can_grant_is_occupant','UNIT','VISIBLE USER',1,7,NULL,NULL),
-(9,'2018-01-14 10:02:37',90,0,36,'can_see_occupant','UNIT','VIEW USER',0,NULL,NULL,NULL),
-(10,'2018-01-14 10:02:37',100,0,36,'can_grant_see_occupant','UNIT','VIEW USER',1,9,NULL,NULL),
-(11,'2018-01-14 10:02:37',110,0,20,'can_create_new_case','UNIT','ACCESS',0,NULL,NULL,NULL),
-(12,'2018-01-14 10:02:37',120,0,20,'can_grant_create_new_case','UNIT','ACCESS',1,11,NULL,NULL),
-(13,'2018-01-14 10:02:37',130,0,25,'can_edit_a_case','UNIT','ACCESS',0,NULL,NULL,NULL),
-(14,'2018-01-14 10:02:37',140,0,25,'can_grant_edit_a_case','UNIT','ACCESS',1,13,NULL,NULL),
-(15,'2018-01-14 10:02:37',150,0,28,'can_see_public_cases','UNIT','ACCESS',0,NULL,NULL,NULL),
-(16,'2018-01-14 10:02:37',160,0,28,'can_grant_see_public_cases','UNIT','ACCESS',1,15,NULL,NULL),
-(17,'2018-01-14 10:02:37',170,0,26,'can_edit_all_field_in_a_case_regardless_of_role','UNIT','FUNCTIONALITY',0,NULL,NULL,NULL),
-(18,'2018-01-14 10:02:37',180,0,26,'can_grant_edit_all_field_in_a_case_regardless_of_role','UNIT','FUNCTIONALITY',1,17,NULL,NULL),
-(19,'2018-01-14 10:02:37',190,0,4,'user_is_publicly_visible','UNIT','VISIBLE USER',0,NULL,NULL,NULL),
-(20,'2018-01-14 10:02:37',200,0,4,'can_grant_user_is_publicly_visible','UNIT','VISIBLE USER',1,19,NULL,NULL),
-(21,'2018-01-14 10:02:37',210,0,5,'user_can_see_publicly_visible_user','UNIT','VIEW USER',0,NULL,NULL,NULL),
-(22,'2018-01-14 10:02:37',220,0,5,'can_grant_user_can_see_publicly_visible_user','UNIT','VIEW USER',1,21,NULL,NULL),
-(23,'2018-01-14 10:02:37',230,0,18,'can_ask_to_approve_flag','UNIT','FLAG',0,NULL,NULL,NULL),
-(24,'2018-01-14 10:02:37',240,0,18,'can_grant_can_ask_to_approve_flag','UNIT','FLAG',1,23,NULL,NULL),
-(25,'2018-01-14 10:02:37',250,0,19,'can_approve_flag','UNIT','FLAG',0,NULL,NULL,NULL),
-(26,'2018-01-14 10:02:37',260,0,19,'can_grant_can_approve_flag','UNIT','FLAG',1,25,NULL,NULL),
-(27,'2018-01-14 10:02:37',270,0,2,'show_case_to_tenant','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
-(28,'2018-01-14 10:02:37',280,0,2,'can_grant_show_case_to_tenant','UNIT-ROLE','ACCESS',1,27,NULL,NULL),
-(29,'2018-01-14 10:02:37',290,0,22,'user_is_tenant','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
-(30,'2018-01-14 10:02:37',300,0,22,'can_grant_user_is_tenant','UNIT-ROLE','VISIBLE USER',1,29,NULL,NULL),
-(31,'2018-01-14 10:02:37',310,0,37,'can_see_tenant','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
-(32,'2018-01-14 10:02:37',320,0,37,'can_grant_can_see_tenant','UNIT-ROLE','VIEW USER',1,31,NULL,NULL),
-(33,'2018-01-14 10:02:37',330,0,2,'show_case_to_landlord','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
-(34,'2018-01-14 10:02:37',340,0,2,'can_grant_show_case_to_landlord','UNIT-ROLE','ACCESS',1,33,NULL,NULL),
-(35,'2018-01-14 10:02:37',350,0,22,'user_is_lanldord','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
-(36,'2018-01-14 10:02:37',360,0,22,'can_grant_user_is_lanldord','UNIT-ROLE','VISIBLE USER',1,35,NULL,NULL),
-(37,'2018-01-14 10:02:37',370,0,37,'can_see_landlord','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
-(38,'2018-01-14 10:02:37',380,0,37,'can_grant_can_see_landlord','UNIT-ROLE','VIEW USER',1,37,NULL,NULL),
-(39,'2018-01-14 10:02:37',390,0,2,'show_case_to_agent','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
-(40,'2018-01-14 10:02:37',400,0,2,'can_grant_show_case_to_agent','UNIT-ROLE','ACCESS',1,39,NULL,NULL),
-(41,'2018-01-14 10:02:37',410,0,22,'user_is_agent','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
-(42,'2018-01-14 10:02:37',420,0,22,'can_grant_user_is_agent','UNIT-ROLE','VISIBLE USER',1,41,NULL,NULL),
-(43,'2018-01-14 10:02:37',430,0,37,'can_see_agent','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
-(44,'2018-01-14 10:02:37',440,0,37,'can_grant_can_see_agent','UNIT-ROLE','VIEW USER',1,43,NULL,NULL),
-(45,'2018-01-14 10:02:37',450,0,2,'show_case_to_contractor','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
-(46,'2018-01-14 10:02:37',460,0,2,'can_grant_show_case_to_contractor','UNIT-ROLE','ACCESS',1,45,NULL,NULL),
-(47,'2018-01-14 10:02:37',470,0,22,'user_is_contractor','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
-(48,'2018-01-14 10:02:37',480,0,22,'can_grant_user_is_contractor','UNIT-ROLE','VISIBLE USER',1,47,NULL,NULL),
-(49,'2018-01-14 10:02:37',490,0,37,'can_see_contractor','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
-(50,'2018-01-14 10:02:37',500,0,37,'can_grant_can_see_contractor','UNIT-ROLE','VIEW USER',1,49,NULL,NULL),
-(51,'2018-01-14 10:02:37',510,0,2,'show_case_to_mgt_cny','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
-(52,'2018-01-14 10:02:37',520,0,2,'can_grant_show_case_to_mgt_cny','UNIT-ROLE','ACCESS',1,51,NULL,NULL),
-(53,'2018-01-14 10:02:37',530,0,22,'user_is_mgt_cny','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
-(54,'2018-01-14 10:02:37',540,0,22,'can_grant_user_is_mgt_cny','UNIT-ROLE','VISIBLE USER',1,53,NULL,NULL),
-(55,'2018-01-14 10:02:37',550,0,37,'can_see_mgt_cny','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
-(56,'2018-01-14 10:02:37',560,0,37,'can_grant_can_see_mgt_cny','UNIT-ROLE','VIEW USER',1,55,NULL,NULL),
-(57,'2018-01-14 10:02:37',64,0,24,'show_case_to_occupant','UNIT','ACCESS',0,NULL,NULL,NULL),
-(58,'2018-01-14 10:02:37',66,0,24,'can_grant_show_case_to_occupant','UNIT','ACCESS',1,57,NULL,NULL),
-(59,'2018-01-14 10:02:37',590,0,31,'user_is_invited_by','GLOBAL','VISIBLE USER',0,NULL,NULL,NULL),
-(60,'2018-01-14 10:02:37',600,0,31,'can_grant_user_is_invited_by','GLOBAL','VIEW USER',1,59,NULL,NULL);
-
 /*Table structure for table `ut_product_group` */
 
 DROP TABLE IF EXISTS `ut_product_group`;
@@ -3295,8 +1695,6 @@ CREATE TABLE `ut_product_group` (
   `created_by_id` mediumint(9) DEFAULT NULL COMMENT 'id in the table ut_profiles',
   `created` datetime DEFAULT NULL COMMENT 'creation ts'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_product_group` */
 
 /*Table structure for table `ut_rep_platform` */
 
@@ -3314,20 +1712,6 @@ CREATE TABLE `ut_rep_platform` (
   KEY `rep_platform_visibility_value_id_idx` (`visibility_value_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_rep_platform` */
-
-insert  into `ut_rep_platform`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',5,1,NULL),
-(2,'Repair',10,1,NULL),
-(3,'Maintenance',15,1,NULL),
-(4,'Housekeeping',20,1,NULL),
-(5,'Devices',25,1,NULL),
-(6,'Renovation',30,1,NULL),
-(7,'Complex Project',35,1,NULL),
-(8,'Extra Service',40,1,NULL),
-(9,'Utilities',45,1,NULL),
-(10,'Other',50,1,NULL);
-
 /*Table structure for table `ut_role_types` */
 
 DROP TABLE IF EXISTS `ut_role_types`;
@@ -3341,15 +1725,6 @@ CREATE TABLE `ut_role_types` (
   PRIMARY KEY (`id_role_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_role_types` */
-
-insert  into `ut_role_types`(`id_role_type`,`created`,`role_type`,`bz_description`,`description`) values 
-(1,'2017-10-26 22:35:58','Tenant','The Tenant','The person or entity who signed the tenancy agreement.'),
-(2,'2017-10-26 22:35:58','Owner/Landlord','The Landlord','The person(s) or entity that are the registered owner of the property.'),
-(3,'2017-10-26 22:35:58','Contractor','A contractor','A company or a person that can or will do work in the unit (electricity, plumbing, Aircon Maintenance, Housekeeping, etc...).'),
-(4,'2017-10-26 22:35:58','Management Company','The management Company','Is in charge of day to day operations and responsible to fix things if something happens in a unit.'),
-(5,'2017-10-26 22:35:58','Agent','An agent','The user who act as either the representative for the Tenant or for the Landlord. It is possible to have 2 agents attached to the same unit.');
-
 /*Table structure for table `ut_script_log` */
 
 DROP TABLE IF EXISTS `ut_script_log`;
@@ -3361,8 +1736,6 @@ CREATE TABLE `ut_script_log` (
   `log` text DEFAULT NULL COMMENT 'More information about what we intended to do',
   PRIMARY KEY (`id_ut_script_log`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_script_log` */
 
 /*Table structure for table `versions` */
 
@@ -3378,11 +1751,6 @@ CREATE TABLE `versions` (
   CONSTRAINT `fk_versions_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-/*Data for the table `versions` */
-
-insert  into `versions`(`id`,`value`,`product_id`,`isactive`) values 
-(1,'---',1,1);
-
 /*Table structure for table `watch` */
 
 DROP TABLE IF EXISTS `watch`;
@@ -3395,8 +1763,6 @@ CREATE TABLE `watch` (
   CONSTRAINT `fk_watch_watched_profiles_userid` FOREIGN KEY (`watched`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_watch_watcher_profiles_userid` FOREIGN KEY (`watcher`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `watch` */
 
 /*Table structure for table `whine_events` */
 
@@ -3413,8 +1779,6 @@ CREATE TABLE `whine_events` (
   CONSTRAINT `fk_whine_events_owner_userid_profiles_userid` FOREIGN KEY (`owner_userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `whine_events` */
-
 /*Table structure for table `whine_queries` */
 
 DROP TABLE IF EXISTS `whine_queries`;
@@ -3430,8 +1794,6 @@ CREATE TABLE `whine_queries` (
   KEY `whine_queries_eventid_idx` (`eventid`),
   CONSTRAINT `fk_whine_queries_eventid_whine_events_id` FOREIGN KEY (`eventid`) REFERENCES `whine_events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `whine_queries` */
 
 /*Table structure for table `whine_schedules` */
 
@@ -3450,8 +1812,6 @@ CREATE TABLE `whine_schedules` (
   KEY `whine_schedules_eventid_idx` (`eventid`),
   CONSTRAINT `fk_whine_schedules_eventid_whine_events_id` FOREIGN KEY (`eventid`) REFERENCES `whine_events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `whine_schedules` */
 
 /* Procedure structure for procedure `default_occupant_can_see_occupant` */
 
