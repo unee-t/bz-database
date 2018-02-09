@@ -35,7 +35,7 @@
 #																#
 #################################################################
 
-# The unit: What is the id of the record that you want to use in the table 'ut_data_to_replace_dummy_roles'
+# The unit: What is the id of the record that you want to use in the table 'ut_data_to_add_user_to_a_role'
 	SET @reference_for_update = 1;
 	
 ########################################################################
@@ -47,15 +47,15 @@
 # The unit:
 	
 	# The name and description
-		SET @product_id = (SELECT `bz_unit_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+		SET @product_id = (SELECT `bz_unit_id` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
 
 # The user associated to the first role in this unit.	
 
 	# BZ user id of the user that is creating the unit (default is 1 - Administrator).
-		SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+		SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
 
 	# BZ user id of the user that you want to associate to the unit.
-		SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+		SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
 	
 	# Role of the user associated to this new unit:
 	#	- Tenant 1
@@ -63,11 +63,11 @@
 	#	- Agent 5
 	#	- Contractor 3
 	#	- Management company 4
-		SET @id_role_type = (SELECT `user_role_type_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
-		SET @role_user_more = (SELECT `user_more` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+		SET @id_role_type = (SELECT `user_role_type_id` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
+		SET @role_user_more = (SELECT `user_more` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
 
 	# Is the BZ user an occupant of the unit?
-		SET @is_occupant = (SELECT `is_occupant` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+		SET @is_occupant = (SELECT `is_occupant` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
 		
 ########################################################################
 #
