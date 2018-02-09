@@ -28,7 +28,7 @@ SET @number_of_units_per_user = 1;
 # This script Creates demo users in the Unee-T BZFE database
 #
 # Pre requisite:
-#	- BZFE database v2.13 for Unee-T has been created
+#	- BZFE database v2.13 or v2.14 for Unee-T has been created
 #
 
 #	IMPORTANT NOTE: users are created in batch of 12 users so we can have various profiles.
