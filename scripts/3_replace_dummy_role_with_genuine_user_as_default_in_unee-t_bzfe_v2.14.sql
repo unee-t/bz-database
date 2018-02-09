@@ -89,7 +89,7 @@
 		SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
 
 	# BZ user id of the user that you want to associate to the unit.
-		SET @bz_user_id = (SELECT `bzfe_invitor_user_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+		SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
 	
 	# Role of the user associated to this new unit:
 	#	- Tenant 1
