@@ -6,24 +6,27 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.13
+# Built for BZFE database v2.14
 #
-# This script adds an existing BZ user to an existing unit in a role which has already been created.
-# It can also grant additional permission to a unit to a given BZ user for a given unit.
+# This script adds an BZ user to an existing unit in a role which has already been created.
+# It also 
+#	- grants default permission to the a unit to that BZ user.
+#	- makes the new user a CC for all the new cases created for that unit and this role.
 #
 # Use this script only if 
 #	- the Unit/Product ALREADY EXISTS in the BZFE
 #	- the Role/component ALREADY EXISTS in the BZFE
-#	- Make sure that you use the script '2_Insert_new_unit_and_role_in_unee-t_bzfe_v2.13.sql' to create the product/unit.
-#	  This will guarantee that all the permissions groups that we need for that user already exist in the BZFE
 #
-# This script also works if you need to reset the permission for a given user for a certain product,
+# This script assumes that
+#	- the unit has been created with the script '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.13'
+#	- the 'real' default user for this role for that unit has been created with the script '4_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.13.sql'
+# 	OR with a method that creates a unit with all the necessary BZ objects and all the roles assigned to dummy users.
+#	- The table 'ut_data_to_add_user_to_a_role' has been updated and we know the record that we need to use to do the update.
 #
 # Limits of this script:
-#	- DO NOT USE if the unit DOES NOT exists in the BZ database
-#	  We will have a different script for that
-#	- DO NOT USE if the role DOES NOT exists in the BZ database
-#	  We will have a different script for that
+#	- DO NOT USE if the unit DOES NOT exists in the BZ database.
+#	- DO NOT USE if the role DOES NOT exists in the BZ database for that unit.
+#	- DO NOT USE if the role created is assigned to a 'dummy' BZ user.
 #
 #
 #################################################################
@@ -32,96 +35,39 @@
 #																#
 #################################################################
 
+# The unit: What is the id of the record that you want to use in the table 'ut_data_to_replace_dummy_roles'
+	SET @reference_for_update = 1;
+	
+########################################################################
+#
+#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
+#
+########################################################################
+
 # The unit:
-
-	# enter the BZ product id for the unit
-	SET @product_id = 14;
-
-# The creator (BZ user id that is inviting this person in this role (default is 1 - Administrator).
-	# For LMB migration, we use 2 (support.nobody)
-	SET @creator_bz_id = 2;
 	
-	
-# The user associated to the unit.	
+	# The name and description
+		SET @product_id = (SELECT `bz_unit_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+
+# The user associated to the first role in this unit.	
+
+	# BZ user id of the user that is creating the unit (default is 1 - Administrator).
+		SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+
 	# BZ user id of the user that you want to associate to the unit.
-	SET @bz_user_id = 3;
-
-	# Is the BZ user an occupant of the unit?
-	SET @is_occupant = 0;
-
+		SET @bz_user_id = (SELECT `bzfe_invitor_user_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+	
 	# Role of the user associated to this new unit:
 	#	- Tenant 1
 	# 	- Landlord 2
 	#	- Agent 5
 	#	- Contractor 3
 	#	- Management company 4
-	SET @id_role_type = 4;
+		SET @id_role_type = (SELECT `user_role_type_id` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
+		SET @role_user_more = (SELECT `user_more` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
 
-#########
-# WARNING - NOT IN THE PERMISSION TABLE YET			
-	# Can the BZ user see the list of the occupants for the unit?
-	SET @can_see_occupant = 0;		
-	SET @can_see_tenant = 0;
-	SET @can_see_landlord = 0;
-	SET @can_see_agent = 0;
-	SET @can_see_contractor = 0;
-	SET @can_see_mgt_cny = 1;
-
-#
-#########
-
-
-	# More information about the user associated to the unit:
-	SET @role_user_more = 'LMB - we use Unee-T for faster replies';
-
-# Global permission for the user:
-	SET @can_see_time_tracking = 1;
-	SET @can_create_shared_queries = 1;
-	# The below permission is mandatory as this will allow us to add reactions (smileys)
-	# or notifications to the comments by a user.
-	SET @can_tag_comment = 1;
-		
-# Permissions for the user for this unit and this role
-	# User permissions (for THIS PRODUCT ONLY):
-
-		SET @can_create_new_cases = 1;
-		SET @can_edit_a_case = 1;
-		SET @can_see_all_public_cases = 1;
-		SET @can_edit_all_field_in_a_case_regardless_of_role = 0;
-		SET @user_is_publicly_visible = 0;
-		SET @user_can_see_publicly_visible = 1;
-
-		SET @user_in_cc_for_cases = 0;
-
-		# WARNING: The below permission makes the show/hide user functionality less efficient...
-		# A user who can directly ask to approve will automatically see all the approvers for the flags...
-		SET @can_ask_to_approve = 1;
-		SET @can_approve = 1;
-	
-	# Permission to create or alter other users:
-	# (This is done by granting the user permission to grant membership to other users to certain groups)
-	#
-	# WARNING: The below permission is VERY powerful and the main reason why it is 
-	# NOT a good idea to give users accesses to the BZFE as they could break a lot of things there...
-	# This is absolutely necessary though if we want the user to be able to invite other users.	
-
-################
-#
-# This is NOT implemented at this point: this script does
-# NOT grant a user permission to grant membership to any group
-# This is OK for now as user creation will be manual initially...
-#
-		SET @can_create_same_stakeholder = 0;
-		SET @can_create_any_stakeholder = 0;
-		SET @can_approve_user_for_flag = 0;
-		SET @can_decide_if_user_is_occupant = 0;
-		SET @can_decide_if_user_can_see_visible_occupant = 0;
-		SET @can_decide_if_user_is_visible = 0;
-		SET @can_decide_if_user_can_see_visible = 0;
-#
-#
-#################
-
+	# Is the BZ user an occupant of the unit?
+		SET @is_occupant = (SELECT `is_occupant` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
 		
 ########################################################################
 #
@@ -129,6 +75,55 @@
 #
 ########################################################################
 
+# Info about this script
+	SET @script = '4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.14.sql';
+
+# Timestamp	
+	SET @timestamp = NOW();
+
+# The Groups to grant the global permissions for the user
+
+	# This should not change, it was hard coded when we created Unee-T
+		# See time tracking
+		SET @can_see_time_tracking_group_id = 16;
+		# Can create shared queries
+		SET @can_create_shared_queries_group_id = 17;
+		# Can tag comments
+		SET @can_tag_comment_group_id = 18;	
+		
+# We populate the additional variables that we will need for this script to work
+	
+	# For the user
+		SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
+		SET @user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id);
+		SET @role_user_pub_info = CONCAT(@user_pub_name
+								, IF (@role_user_more = '', '', ' - ')
+								, IF (@role_user_more = '', '', @role_user_more)
+								)
+								;
+		SET @user_role_desc = (CONCAT(@role_user_g_description, ' - ',@role_user_pub_info));
+
+	# For the creator
+		SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
+
+# Variable needed to avoid script error - NEED TO REVISIT THAT
+	SET @can_see_time_tracking = 1;
+	SET @can_create_shared_queries = 1;
+	SET @can_tag_comment = 1;
+	SET @user_is_publicly_visible = 1;
+	SET @user_can_see_publicly_visible = 1;
+	SET @user_in_cc_for_cases = 0;
+	SET @can_create_new_cases = 1;
+	SET @can_edit_a_case = 1;
+	SET @can_see_all_public_cases = 1;
+	SET @can_edit_all_field_in_a_case_regardless_of_role = 0;
+	SET @can_ask_to_approve = 1;
+	SET @can_approve = 1;
+	SET @can_create_any_stakeholder = 0;
+	SET @can_create_same_stakeholder = 0;
+	SET @can_approve_user_for_flag = 0;
+	SET @can_decide_if_user_is_visible = 0;
+	SET @can_decide_if_user_can_see_visible = 0;
 		
 /*!40101 SET NAMES utf8 */;
 
@@ -139,9 +134,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-# Info about this script
-	SET @script = '4_Insert_existing_bz_user_in_an_existing_unit_and_role_bzfe_v2.13.sql';
-
 # The user
 	# We get the information that we need about the user:
 		SET @user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id);
@@ -149,7 +141,17 @@
 	# We record the information about the users that we have just updated
 	# If this is the first time we record something for this user for this unit, we create a new record.
 	# If there is already a record for that user for this unit, then we are updating the information
-		
+
+#########
+# WARNING - NOT IN THE PERMISSION TABLE YET			
+# @can_see_occupant
+# @can_see_tenant
+# @can_see_landlord
+# @can_see_agent
+# @can_see_contractor
+# @can_see_mgt_cny
+#########
+	
 		INSERT INTO `ut_map_user_unit_details`
 			(`created`
 			, `record_created_by`
@@ -241,53 +243,17 @@
 			, `comment` = CONCAT('On ', NOW(), '.\r\Updated with the script - ', @script, '.\r\ ', `comment`)
 		;
 
-# The component/role that the user will have for this unit.
-	# We get that information based on the information we have about the product and the role for the user.
-		SET @component_id = (SELECT `component_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `role_type_id` = @id_role_type AND `group_type_id` = 2));
-		
-		
-# The Groups to grant the various permissions for the user
-	
-	# The global permission for the application
-	# This should not change, it was hard coded when we created Unee-T
-		# See time tracking
-		SET @can_see_time_tracking_group_id = 16;
-		# Can create shared queries
-		SET @can_create_shared_queries_group_id = 17;
-		# Can tag comments
-		SET @can_tag_comment_group_id = 18;
-
-	# Groups created when we created the product
-	#	- create_case_group_id
-	#	- can_edit_case_group_id
-	#	- can_edit_all_field_case_group_id
-	#	- can_edit_component_group_id
-	#	- can_see_cases_group_id
-	#	- all_g_flags_group_id
-	#	- all_r_flags_group_id
-	#	- list_visible_assignees_group_id
-	#	- see_visible_assignees_group_id
-###########
-#
-# Obsolete
-#
-	#	- active_stakeholder_group_id
-#
-###########
-	#	- unit_creator_group_id
+# We get the information about the goups we need
 	# We need to ge these from the ut_product_table_based on the product_id!
 		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
 		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
-		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
-		SET @can_edit_component_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 27));
 		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
+		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
+		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
+
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
-		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));
-#		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
-		SET @unit_creator_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 1));
-
+		
 	# Groups created when we created the Role for this product.
 	#	- show_to_tenant
 	#	- are_users_tenant
@@ -332,7 +298,110 @@
 		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
 		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
 
-	# We use a temporary table `ut_user_group_map_temp` to make sure we do not have duplicates.
+# We get the information about the component/roles that were created:
+	
+	# We get that from the ut_product_group table.
+		SET @component_id_this_role = (SELECT `component_id` 
+									FROM `ut_product_group` 
+									WHERE `product_id` = @product_id 
+										AND `role_type_id` = @id_role_type
+										AND `group_type_id` = 2)
+										;
+
+# We add the user to the list of user that will be in CC when there in a new case for this unit and role type:
+ 	# We use a temporary table to make sure we do not have duplicates.
+		
+		# DELETE the temp table if it exists
+		DROP TABLE IF EXISTS `component_cc_temp`;
+		
+		# Re-create the temp table
+		CREATE TABLE `component_cc_temp` (
+		  `user_id` MEDIUMINT(9) NOT NULL
+		  ,`component_id` MEDIUMINT(9) NOT NULL
+		) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+		# Add the records that exist in the table component_cc
+		INSERT INTO `component_cc_temp`
+			SELECT *
+			FROM `component_cc`;
+
+		# Add the new user rights for the product
+			INSERT INTO `component_cc_temp`
+				(user_id
+				, component_id
+				)
+				VALUES
+				(@bz_user_id, @component_id_this_role)
+				;
+		
+		# Empty the table `component_cc`
+			TRUNCATE TABLE `component_cc`;
+		
+		# Add all the records for `component_cc`
+			INSERT INTO `component_cc`
+			SELECT `user_id`
+				, `component_id`
+			FROM
+				`component_cc_temp`
+			GROUP BY `user_id`
+				, `component_id`
+			;
+		
+		# We Delete the temp table as we do not need it anymore
+			DROP TABLE IF EXISTS `component_cc_temp`;
+				
+		# Log the actions of the script.
+			SET @script_log_message = CONCAT('the bz user #'
+									, @bz_user_id
+									, ' is one of the copied assignee for the unit #'
+									, @product_id
+									, ' when the role '
+									, @role_user_g_description
+									, ' (the component #'
+									, @component_id_this_role
+									, ')'
+									, ' is chosen'
+									);
+			
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(NOW(), @script, @script_log_message)
+				;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'component_cc';
+				SET @permission_granted = ' is in CC when role is chosen.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'component_id', 'UNKNOWN', @component_id_this_role, @script, CONCAT('Make sure the user ', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;	
+
+# We update the BZ logs 
+# NOT NEEDED - BZ DOES NOT LOG THESE EVENTS		
+		
+# We now assign the default permissions to the user we just associated to this role:		
+	
+	# We use a temporary table to make sure we do not have duplicates.
 		
 		# DELETE the temp table if it exists
 		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
@@ -345,11 +414,47 @@
 		  `grant_type` TINYINT(4) NOT NULL DEFAULT '0'
 		) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
-		# Add the records that exist in the table user_group_map
+		# Add all the records that exists in the table user_group_map
 		INSERT INTO `ut_user_group_map_temp`
 			SELECT *
 			FROM `user_group_map`;
 
+	# We need to get the id of these groups from the 'ut_product_group' table_based on the product_id
+		# For the user - based on the user role:
+			# Visibility group
+			SET @group_id_show_to_user_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = @id_role_type));
+		
+			# Is in user Group for the role we just created
+			SET @group_id_are_users_same_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = @id_role_type));
+			
+			# Can See other users in the same Group
+			SET @group_id_see_users_same_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = @id_role_type));
+
+
+# The default permissions for a user assigned as default for a role are:
+#
+#	- time_tracking_permission
+#	- can_create_shared_queries
+#	- can_tag_comment
+#
+#	- can_create_new_cases
+#	- can_edit_a_case
+#	- can_see_all_public_cases
+#	- user_is_publicly_visible
+#	- user_can_see_publicly_visible
+#	- can_ask_to_approve (all_r_flags_group_id)
+#	- can_approve (all_g_flags_group_id)
+#
+# We create the procedures that will grant the permissions based on the variables from this script.	
+#
+#	- show_to_his_role
+#	- is_one_of_his_role
+#	- can_see_other_in_same_role
+#
+# If applicable
+#	- show_to_occupant
+#	- is_occupant
+#	- can_see_occupant
 
 	# We make sure that we remove all the permission that we had previously created for this user and for this product
 	# This is to make sure that we are starting from a fresh start...
@@ -367,8 +472,6 @@
 				OR (`user_id` = @bz_user_id AND `group_id` = @all_g_flags_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @list_visible_assignees_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @see_visible_assignees_group_id)
-				OR (`user_id` = @bz_user_id AND `group_id` = @active_stakeholder_group_id)
-				OR (`user_id` = @bz_user_id AND `group_id` = @unit_creator_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_occupant)
 				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_occupant)
 				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_occupant)
@@ -608,30 +711,6 @@
 						, CONCAT('Remove the record where BZ user id ='
 						, @bz_user_id
 						, ' the group id = '
-						, (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
-						, '.')
-						)
-					 , (NOW() 
-						,@bzfe_table
-						, 'n/a'
-						, 'n/a - we delete the record'
-						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the group id = '
-						, (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
-						, '.')
-						)
-					, (NOW() 
-						,@bzfe_table
-						, 'n/a'
-						, 'n/a - we delete the record'
-						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the group id = '
 						, (SELECT IFNULL(@group_id_show_to_occupant, 'group_id_show_to_occupant is NULL'))
 						, '.')
 						)
@@ -844,134 +923,11 @@
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
-		
-		# Reset the permission for this user to be in CC for a case for this unit.
-			DELETE FROM `component_cc`
-				WHERE (`user_id` = @bz_user_id 
-					AND `component_id` = @component_id)
-				;
-				
-			# Log the actions of the script.
-				SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
-				
-				SET @script_log_message = CONCAT('We have revoked the permissions for the bz user #'
-										, @bz_user_id
-										, ' to be in CC for the product #'
-										, @product_id
-										, ' for the role #'
-										, @id_role_type
-										, ' ('
-										, @role_user_g_description
-										, ')'
-										);
-			
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(NOW(), @script, @script_log_message)
-					;
 
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'component_cc';
-				
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (NOW() 
-						,@bzfe_table
-						, 'n/a'
-						, 'n/a - we delete the record'
-						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the component id = '
-						, @component_id
-						, '.')
-						)
-					;
-				
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;					
-			
-# Add the new user rights for the product
-# We need to create several procedures for each permissions
-#	- time_tracking_permission
-#	- can_create_shared_queries
-#	- can_tag_comment
-#
-#	- show_to_occupant
-#	- is_occupant
-#	- can_see_occupant
-#
-#	- can_create_new_cases
-#	- can_edit_a_case
-#	- can_see_all_public_cases
-#	- can_edit_all_field_in_a_case_regardless_of_role
-#	- user_is_publicly_visible
-#	- user_can_see_publicly_visible
-#	- can_ask_to_approve (all_r_flags_group_id)
-#	- can_approve (all_g_flags_group_id)
-#
-#	- user_in_cc_for_cases
-#
-#	- show_to_tenant
-#	- is_tenant
-#	- can_see_tenant
-#
-#	- show_to_landlord
-#	- are_users_landlord
-#	- see_users_landlord
-#
-#	- show_to_agent
-#	- are_users_agent
-#	- see_users_agent
-#
-#	- show_to_contractor
-#	- are_users_contractor
-#	- see_users_contractor
-#
-#	- show_to_mgt_cny
-#	- are_users_mgt_cny
-#	- see_users_mgt_cny
-#
-
-#########
-#
-#	Below is WIP
-#
-#	- can_edit_component_group_id
-#
-#	- can_create_same_stakeholder
-#	- can_create_any_stakeholder
-#	- can_approve_user_for_flag
-#	- can_decide_if_user_is_occupant
-#	- can_decide_if_user_can_see_visible_occupant
-#	- can_decide_if_user_is_visible
-#	- can_decide_if_user_can_see_visible
-#
-#########
-
+	# Now we assign all the default permissions for that user and for that unit
 	# First the global permissions:
 		# Can see timetracking
-DROP PROCEDURE IF EXISTS time_tracking_permission;
-DELIMITER $$
-CREATE PROCEDURE time_tracking_permission()
-BEGIN
-	IF (@can_see_time_tracking = 1)
-	THEN INSERT  INTO `ut_user_group_map_temp`
+			INSERT  INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1019,17 +975,9 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
-END IF ;
-END $$
-DELIMITER ;
 	
 		# Can create shared queries
-DROP PROCEDURE IF EXISTS can_create_shared_queries;
-DELIMITER $$
-CREATE PROCEDURE can_create_shared_queries()
-BEGIN
-	IF (@can_create_shared_queries = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1077,17 +1025,9 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
-END IF ;
-END $$
-DELIMITER ;
 
 		# Can tag comments
-DROP PROCEDURE IF EXISTS can_tag_comment;
-DELIMITER $$
-CREATE PROCEDURE can_tag_comment()
-BEGIN
-	IF (@can_tag_comment = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1135,207 +1075,11 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
-END IF ;
-END $$
-DELIMITER ;
-				
-	# Then the permissions at the unit/product level:
-
-		# User is an occupant in the unit:
-DROP PROCEDURE IF EXISTS show_to_occupant;
-DELIMITER $$
-CREATE PROCEDURE show_to_occupant()
-BEGIN
-	IF (@is_occupant = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_show_to_occupant, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' CAN see case that are limited to occupants'
-										, ' for the unit #'
-										, @product_id
-										, '.'
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(NOW(), @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'CAN see case that are limited to occupants.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;	
 	
-	
-		# User is an occupant in the unit:
-DROP PROCEDURE IF EXISTS is_occupant;
-DELIMITER $$
-CREATE PROCEDURE is_occupant()
-BEGIN
-	IF (@is_occupant = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_are_users_occupant, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' is an occupant in the unit #'
-										, @product_id
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(NOW(), @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'is an occupant.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
-
-		# User can see all the occupants in the unit:
-DROP PROCEDURE IF EXISTS can_see_occupant;
-DELIMITER $$
-CREATE PROCEDURE can_see_occupant()
-BEGIN
-	IF (@can_see_occupant = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_see_users_occupant, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' can see occupant in the unit #'
-										, @product_id
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(NOW(), @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'can see occupant in the unit.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
-				
+	# Then the permissions at the unit/product level:	
+					
 		# User can create a case:
-			# There can be cases when a user is only allowed to see existing cases but NOT create a new one.
-			# This is an unlikely scenario, but this is technically possible (ex for technician for a contractor)...
-DROP PROCEDURE IF EXISTS can_create_new_cases;
-DELIMITER $$
-CREATE PROCEDURE can_create_new_cases()
-BEGIN
-	IF (@can_create_new_cases = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1350,7 +1094,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' CAN create new cases for unit #'
+										, ' CAN create new cases for unit '
 										, @product_id
 										);
 				
@@ -1388,18 +1132,9 @@ BEGIN
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
 				
-		# User is just allowed to edit cases (not create new ones)
-			# This is an unlikely scenario, but this is technically possible (ex for technician for a contractor)...
-DROP PROCEDURE IF EXISTS can_edit_a_case;
-DELIMITER $$
-CREATE PROCEDURE can_edit_a_case()
-BEGIN
-	IF (@can_edit_a_case = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+		# User is allowed to edit cases
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1412,7 +1147,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' CAN edit a cases for unit #'
+										, ' CAN edit a cases for unit '
 										, @product_id
 										);
 				
@@ -1450,9 +1185,6 @@ BEGIN
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
 				
 		# User can see the case in the unit even if they are not for his role
 			# This allows a user to see the 'public' cases for a given unit.
@@ -1460,12 +1192,7 @@ DELIMITER ;
 			# We might NOT want this for employees of a contractor that only need to see the cases IF the case is restricted to
 			# the contractor role but NOT if the case is for anyone
 			# This is an unlikely scenario, but this is technically possible (ex for technician for a contractor)...
-DROP PROCEDURE IF EXISTS can_see_all_public_cases;
-DELIMITER $$
-CREATE PROCEDURE can_see_all_public_cases()
-BEGIN
-	IF (@can_see_all_public_cases = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1478,7 +1205,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' CAN see all public cases for unit #'
+										, ' CAN see all public cases for unit '
 										, @product_id
 										);
 				
@@ -1516,79 +1243,9 @@ BEGIN
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
-				
-		# User can modify all fields in a case, regardless of his role in the cases
-			# This is needed for users that will do triage for instance.
-DROP PROCEDURE IF EXISTS can_edit_all_field_in_a_case_regardless_of_role;
-DELIMITER $$
-CREATE PROCEDURE can_edit_all_field_in_a_case_regardless_of_role()
-BEGIN
-	IF (@can_edit_all_field_in_a_case_regardless_of_role = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @can_edit_all_field_case_group_id, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' CAN edit a cases for unit regardless of the user role in the case for the unit #'
-										, @product_id
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(NOW(), @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'edit a case in this unit regardless of the user role in the case.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_all_field_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;				
-END IF ;
-END $$
-DELIMITER ;
 				
 		# User can be visible to other users regardless of the other users roles
-DROP PROCEDURE IF EXISTS user_is_publicly_visible;
-DELIMITER $$
-CREATE PROCEDURE user_is_publicly_visible()
-BEGIN
-	IF (@user_is_publicly_visible = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1601,7 +1258,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' is one of the visible assignee for cases for this unit #'
+										, ' is one of the visible assignee for cases for this unit.'
 										, @product_id
 										);
 				
@@ -1638,21 +1295,13 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;				
-END IF ;
-END $$
-DELIMITER ;
+				SET @permission_granted = NULL;
 
 		# User can be visible to other users regardless of the other users roles
 			# The below membership is needed so the user can see all the other users regardless of the other users roles
 			# We might hide the visible users to some other user (ex: housekeepers or field person do not need to see lanlord or agent
 			# They just need to see their manager)
-DROP PROCEDURE IF EXISTS user_can_see_publicly_visible;
-DELIMITER $$
-CREATE PROCEDURE user_can_see_publicly_visible()
-BEGIN
-	IF (@user_can_see_publicly_visible = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1665,7 +1314,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' CAN see the publicly visible users for the case for this unit #'
+										, ' CAN see the publicly visible users for the case for this unit.'
 										, @product_id
 										);
 				
@@ -1703,18 +1352,9 @@ BEGIN
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;				
-END IF ;
-END $$
-DELIMITER ;				
 
-			#user can create flags (approval requests)				
-				
-DROP PROCEDURE IF EXISTS can_ask_to_approve;
-DELIMITER $$
-CREATE PROCEDURE can_ask_to_approve()
-BEGIN
-	IF (@can_ask_to_approve = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+		#user can create flags (approval requests)				
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1727,7 +1367,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' CAN ask for approval for all flags for the unit #'
+										, ' CAN ask for approval for all flags.'
 										, @product_id
 										);
 				
@@ -1766,18 +1406,8 @@ BEGIN
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;	
 				
-END IF ;
-END $$
-DELIMITER ;			
-				
-			# user can approve all the flags
-	
-DROP PROCEDURE IF EXISTS can_approve;
-DELIMITER $$
-CREATE PROCEDURE can_approve()
-BEGIN
-	IF (@can_approve = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
+		# user can approve all the flags
+			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
 				,`isbless`
@@ -1790,7 +1420,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' CAN approve for all flags for the unit #'
+										, ' CAN approve for all flags.'
 										, @product_id
 										);
 				
@@ -1827,13 +1457,10 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;	
-				
-END IF ;
-END $$
-DELIMITER ;
+				SET @permission_granted = NULL;
 				
 	# Then the permissions that are relevant to the component/role
+	# These are conditional as this depends on the role attributed to that user
 					
 		# User can see the cases for Tenants in the unit:
 DROP PROCEDURE IF EXISTS show_to_tenant;
@@ -1961,11 +1588,11 @@ END $$
 DELIMITER ;
 
 		# User can see all the tenant in the unit:
-DROP PROCEDURE IF EXISTS can_see_tenant;
+DROP PROCEDURE IF EXISTS default_tenant_can_see_tenant;
 DELIMITER $$
-CREATE PROCEDURE can_see_tenant()
+CREATE PROCEDURE default_tenant_can_see_tenant()
 BEGIN
-	IF (@can_see_tenant = 1)
+	IF (@id_role_type = 1)
 	THEN INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
@@ -1979,7 +1606,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' can see tenant in the unit #'
+										, ' can see tenant in the unit '
 										, @product_id
 										);
 				
@@ -2146,11 +1773,11 @@ END $$
 DELIMITER ;
 
 		# User can see all the tenant in the unit:
-DROP PROCEDURE IF EXISTS see_users_landlord;
+DROP PROCEDURE IF EXISTS default_landlord_see_users_landlord;
 DELIMITER $$
-CREATE PROCEDURE see_users_landlord()
+CREATE PROCEDURE default_landlord_see_users_landlord()
 BEGIN
-	IF (@can_see_landlord = 1)
+	IF (@id_role_type = 2)
 	THEN INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
@@ -2164,7 +1791,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' can see tenant in the unit #'
+										, ' can see tenant in the unit '
 										, @product_id
 										);
 				
@@ -2331,11 +1958,11 @@ END $$
 DELIMITER ;
 
 		# User can see all the agents in the unit:
-DROP PROCEDURE IF EXISTS see_users_agent;
+DROP PROCEDURE IF EXISTS default_agent_see_users_agent;
 DELIMITER $$
-CREATE PROCEDURE see_users_agent()
+CREATE PROCEDURE default_agent_see_users_agent()
 BEGIN
-	IF (@can_see_agent = 1)
+	IF (@id_role_type = 5)
 	THEN INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
@@ -2349,7 +1976,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' can see agents for the unit #'
+										, ' can see agents for the unit '
 										, @product_id
 										);
 				
@@ -2516,11 +2143,11 @@ END $$
 DELIMITER ;
 
 		# User can see all the agents in the unit:
-DROP PROCEDURE IF EXISTS see_users_contractor;
+DROP PROCEDURE IF EXISTS default_contractor_see_users_contractor;
 DELIMITER $$
-CREATE PROCEDURE see_users_contractor()
+CREATE PROCEDURE default_contractor_see_users_contractor()
 BEGIN
-	IF (@can_see_contractor = 1)
+	IF (@id_role_type = 3)
 	THEN INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
@@ -2534,7 +2161,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' can see employee of Contractor for the unit #'
+										, ' can see employee of Contractor for the unit '
 										, @product_id
 										);
 				
@@ -2576,10 +2203,6 @@ END IF ;
 END $$
 DELIMITER ;
 		
-		
-		
-		
-		
 			# User can see the cases for Management Cny for the unit:
 DROP PROCEDURE IF EXISTS show_to_mgt_cny;
 DELIMITER $$
@@ -2599,7 +2222,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' CAN see case that are limited to Mgt Cny '
+										, ' CAN see case that are limited to Mgt Cny'
 										, ' for the unit #'
 										, @product_id
 										, '.'
@@ -2705,11 +2328,11 @@ END $$
 DELIMITER ;
 
 		# User can see all the employee of the Mgt Cny for the unit:
-DROP PROCEDURE IF EXISTS see_users_mgt_cny;
+DROP PROCEDURE IF EXISTS default_mgt_cny_see_users_mgt_cny;
 DELIMITER $$
-CREATE PROCEDURE see_users_mgt_cny()
+CREATE PROCEDURE default_mgt_cny_see_users_mgt_cny()
 BEGIN
-	IF (@can_see_mgt_cny = 1)
+	IF (@id_role_type = 4)
 	THEN INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
 				,`group_id`
@@ -2723,7 +2346,7 @@ BEGIN
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('the bz user #'
 										, @bz_user_id
-										, ' can see Mgt Cny for the unit #'
+										, ' can see Mgt Cny for the unit '
 										, @product_id
 										);
 				
@@ -2765,81 +2388,44 @@ END IF ;
 END $$
 DELIMITER ;
 
-		# We add the user to the list of user that will be in CC when there in a new case for this unit and role type:
-
-DROP PROCEDURE IF EXISTS user_in_cc_for_cases;
+		# User is an occupant in the unit:
+DROP PROCEDURE IF EXISTS show_to_occupant;
 DELIMITER $$
-CREATE PROCEDURE user_in_cc_for_cases()
+CREATE PROCEDURE show_to_occupant()
 BEGIN
-	IF (@user_in_cc_for_cases = 1)
-	THEN 
-		# We use a temporary table to make sure we do not have duplicates.
-		
-		# DELETE the temp table if it exists
-		DROP TABLE IF EXISTS `component_cc_temp`;
-		
-		# Re-create the temp table
-		CREATE TABLE `component_cc_temp` (
-		  `user_id` MEDIUMINT(9) NOT NULL
-		  ,`component_id` MEDIUMINT(9) NOT NULL
-		) ENGINE=INNODB DEFAULT CHARSET=utf8;
-
-		# Add the records that exist in the table component_cc
-		INSERT INTO `component_cc_temp`
-			SELECT *
-			FROM `component_cc`;
-
-		# Add the new user rights for the product
-			INSERT INTO `component_cc_temp`
-				(user_id
-				, component_id
-				)
-				VALUES
-				(@bz_user_id, @component_id)
+	IF (@is_occupant = 1)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_show_to_occupant, 0, 0)
 				;
-		
-		# Empty the table `component_cc`
-			TRUNCATE TABLE `component_cc`;
-		
-		# Add all the records for `component_cc`
-			INSERT INTO `component_cc`
-			SELECT `user_id`
-				, `component_id`
-			FROM
-				`component_cc_temp`
-			GROUP BY `user_id`
-				, `component_id`
-			;
-		
-		# We Delete the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `component_cc_temp`;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' CAN see case that are limited to occupants'
+										, ' for the unit #'
+										, @product_id
+										, '.'
+										);
 				
-		# Log the actions of the script.
-			SET @script_log_message = CONCAT('the bz user #'
-									, @bz_user_id
-									, ' is one of the copied assignee for the unit #'
-									, @product_id
-									, ' when the role '
-									, @role_user_g_description
-									, ' (the component #'
-									, @component_id
-									, ')'
-									, ' is chosen'
-									);
-			
-			INSERT INTO `ut_script_log`
-				(`datetime`
-				, `script`
-				, `log`
-				)
-				VALUES
-				(NOW(), @script, @script_log_message)
-				;
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
 
 			# We log what we have just done into the `ut_audit_log` table
 				
-				SET @bzfe_table = 'component_cc';
-				SET @permission_granted = ' is in CC when role is chosen.';
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'CAN see case that are limited to occupants.';
 
 				INSERT INTO `ut_audit_log`
 					 (`datetime`
@@ -2852,244 +2438,232 @@ BEGIN
 					 )
 					 VALUES
 					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'component_id', 'UNKNOWN', @component_id, @script, CONCAT('Make sure the user ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;	
-
+				SET @permission_granted = NULL;
 END IF ;
 END $$
-DELIMITER ;			
-
-
-
-
-
-
-
-
-
-			
-			
-			
-#########
-#
-#	NOT READY YET THIS IS WIP
-#
-#
-/*			
-
-
-#################
-#
-# WIP
-#
-#		
-#	INSERT  INTO `ut_series_categories`
-#		(`id`
-#		,`name`
-#		) 
-#		VALUES 
-#		(NULL,CONCAT(@stakeholder,'_#',@product_id)),
-#		(NULL,CONCAT(@unit,'_#',@product_id));
-#
-#	SET @series_2 = (SELECT `id` FROM `ut_series_categories` WHERE `name` = '-All-');
-#	SET @series_1 = (SELECT `id` FROM `ut_series_categories` WHERE `name` = CONCAT(@stakeholder,'_#',@product_id));
-#	SET @series_3 = (SELECT `id` FROM `ut_series_categories` WHERE `name` = CONCAT(@unit,'_#',@product_id));
-#
-#	INSERT  INTO `ut_series`
-#		(`series_id`
-#		,`creator`
-#		,`category`
-#		,`subcategory`
-#		,`name`
-#		,`frequency`
-#		,`query`
-#		,`is_public`
-#		) 
-#		VALUES 
-#		(NULL,@bz_user_id,@series_1,@series_2,'UNCONFIRMED',1,CONCAT('bug_status=UNCONFIRMED&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'CONFIRMED',1,CONCAT('bug_status=CONFIRMED&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'IN_PROGRESS',1,CONCAT('bug_status=IN_PROGRESS&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'REOPENED',1,CONCAT('bug_status=REOPENED&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'STAND BY',1,CONCAT('bug_status=STAND%20BY&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'RESOLVED',1,CONCAT('bug_status=RESOLVED&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'VERIFIED',1,CONCAT('bug_status=VERIFIED&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'CLOSED',1,CONCAT('bug_status=CLOSED&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'FIXED',1,CONCAT('resolution=FIXED&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'INVAL`status_workflow`ID',1,CONCAT('resolution=INVAL%60status_workflow%60ID&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'WONTFIX',1,CONCAT('resolution=WONTFIX&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'DUPLICATE',1,CONCAT('resolution=DUPLICATE&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'WORKSFORME',1,CONCAT('resolution=WORKSFORME&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_2,'All Open',1,CONCAT('bug_status=UNCONFIRMED&bug_status=CONFIRMED&bug_status=IN_PROGRESS&bug_status=REOPENED&bug_status=STAND%20BY&product=',@unit_for_query),1),
-#		(NULL,@bz_user_id,@series_1,@series_3,'All Open',1,CONCAT('field0-0-0=resolution&type0-0-0=notregexp&value0-0-0=.&product=',@unit_for_query,'&component=',@stakeholder),1),
-#		(NULL,@bz_user_id,@series_1,@series_3,'All Closed',1,CONCAT('field0-0-0=resolution&type0-0-0=regexp&value0-0-0=.&product=',@unit_for_query,'&component=',@stakeholder),1);
-#
-#	INSERT  INTO `ut_audit_log`
-#		(`user_id`
-#		,`class`
-#		,`object_id`
-#		,`field`
-#		,`removed`
-#		,`added`
-#		,`at_time`
-#		) 
-#		VALUES 
-#		(@bz_user_id,'Bugzilla::Component',@component_id,'__create__',NULL,@stakeholder,@timestamp),
-#		(@bz_user_id,'Bugzilla::Group',@show_to_stakeholder_4_group_id,'__create__',NULL,CONCAT(@unit,' #',@product_id,'-',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4)),@timestamp),
-#		(@bz_user_id,'Bugzilla::Group',@are_users_stakeholder_4_group_id,'__create__',NULL,CONCAT(@unit,' #',@product_id,'-List users-',(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4)),@timestamp),
-#		(@bz_user_id,'Bugzilla::Group',@see_users_stakeholder_4_group_id,'__create__',NULL,CONCAT(@unit,' #',@product_id,'-Can see who are stakeholder for comp #',@component_id),@timestamp),
-#		(@bz_user_id,'Bugzilla::Group',@invited_by_group_id,'__create__',NULL,CONCAT(@unit,' #',@product_id,'-invited by user ',@creator_pub_name),@timestamp),
-#		(@bz_user_id,'Bugzilla::Group',@see_invited_by_group_id,'__create__',NULL,CONCAT(@unit,' #',@product_id,'-Can see user invited by ',@creator_pub_name),@timestamp);
-#
-#
-#####################
-
-*/
-#
-#
-#######
-
-# We give the user the permission they need.
-# We need to do that via an intermediary table to make sure that we dedup the permissions
-
-# We CALL ALL the procedures that we have created TO CREATE the permissions we need:
-CALL time_tracking_permission;
-CALL can_create_shared_queries;
-CALL can_tag_comment;
-CALL show_to_occupant;
-CALL is_occupant;
-CALL can_see_occupant;
-CALL can_create_new_cases;
-CALL can_edit_a_case;
-CALL can_see_all_public_cases;
-CALL can_edit_all_field_in_a_case_regardless_of_role;
-CALL user_is_publicly_visible;
-CALL user_can_see_publicly_visible;
-CALL can_ask_to_approve;
-CALL can_approve;
-
-CALL show_to_tenant;
-CALL is_tenant;
-CALL can_see_tenant;
-
-CALL show_to_landlord;
-CALL are_users_landlord;
-CALL see_users_landlord;
-
-CALL show_to_agent;
-CALL are_users_agent;
-CALL see_users_agent;
-
-CALL show_to_contractor;
-CALL are_users_contractor;
-CALL see_users_contractor;
-
-CALL show_to_mgt_cny;
-CALL are_users_mgt_cny;
-CALL see_users_mgt_cny;
-
-CALL user_in_cc_for_cases;
-
-#########
-#
-#	Below is WIP
-#
-#CALL can_edit_component;
-#
-#CALL can_create_same_stakeholder;
-#CALL can_create_any_stakeholder;
-#CALL can_approve_user_for_flag;
-#CALL can_decide_if_user_is_occupant;
-#CALL can_decide_if_user_can_see_visible_occupant;
-#CALL can_decide_if_user_is_visible;
-#CALL can_decide_if_user_can_see_visible;
-#
-#########
+DELIMITER ;	
 	
-	# Then we update the `user_group_map` table
-	
-		# We truncate the table first (to avoid duplicates)
-		TRUNCATE TABLE `user_group_map`;
+		# User is an occupant in the unit:
+DROP PROCEDURE IF EXISTS is_occupant;
+DELIMITER $$
+CREATE PROCEDURE is_occupant()
+BEGIN
+	IF (@is_occupant = 1)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_are_users_occupant, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' is an occupant in the unit #'
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'is an occupant.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;
+
+		# User can see all the occupants in the unit:
+DROP PROCEDURE IF EXISTS default_occupant_can_see_occupant;
+DELIMITER $$
+CREATE PROCEDURE default_occupant_can_see_occupant()
+BEGIN
+	IF (@is_occupant = 1)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_see_users_occupant, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can see occupant in the unit '
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'can see occupant in the unit.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;
 		
-		# We insert the data we need
-		INSERT INTO `user_group_map`
-		SELECT `user_id`
-			, `group_id`
-			, `isbless`
-			, `grant_type`
-		FROM
-			`ut_user_group_map_temp`
-		GROUP BY `user_id`
-			, `group_id`
-			, `isbless`
-			, `grant_type`
-		;
+# We CALL ALL the procedures that we have created TO CREATE the permissions we need:
+	CALL show_to_tenant;
+	CALL is_tenant;
+	CALL default_tenant_can_see_tenant;
 
+	CALL show_to_landlord;
+	CALL are_users_landlord;
+	CALL default_landlord_see_users_landlord;
+
+	CALL show_to_agent;
+	CALL are_users_agent;
+	CALL default_agent_see_users_agent;
+
+	CALL show_to_contractor;
+	CALL are_users_contractor;
+	CALL default_contractor_see_users_contractor;
+
+	CALL show_to_mgt_cny;
+	CALL are_users_mgt_cny;
+	CALL default_mgt_cny_see_users_mgt_cny;
+	
+	CALL show_to_occupant;
+	CALL is_occupant;
+	CALL default_occupant_can_see_occupant;
+		
+# We give the user the permission they need.
+
+	# We update the `user_group_map` table
+		
+		# We truncate the table first (to avoid duplicates)
+			TRUNCATE TABLE `user_group_map`;
+			
+		# We insert the data we need
+			INSERT INTO `user_group_map`
+			SELECT `user_id`
+				, `group_id`
+				, `isbless`
+				, `grant_type`
+			FROM
+				`ut_user_group_map_temp`
+			GROUP BY `user_id`
+				, `group_id`
+				, `isbless`
+				, `grant_type`
+			;
+
+# Update the table 'ut_data_to_add_user_to_a_role' so that we record what we have done
+	UPDATE `ut_data_to_add_user_to_a_role`
+	SET 
+		`bz_created_date` = @timestamp
+		, `comment` = CONCAT ('inserted in BZ with the script \''
+				, @script
+				, '\'\r\ '
+				, IFNULL(`comment`, '')
+				)
+	WHERE `id` = @reference_for_update;
+			
 #Clean up
 		
 	# We Delete the temp table as we do not need it anymore
 		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
 	
 	# Delete the procedures that we do not need anymore:
-		DROP PROCEDURE IF EXISTS insert_products;
-		DROP PROCEDURE time_tracking_permission;
-		DROP PROCEDURE can_create_shared_queries;
-		DROP PROCEDURE can_tag_comment;
-		DROP PROCEDURE show_to_occupant;
-		DROP PROCEDURE is_occupant;
-		DROP PROCEDURE can_see_occupant;
-		DROP PROCEDURE can_create_new_cases;
-		DROP PROCEDURE can_edit_a_case;
-		DROP PROCEDURE can_see_all_public_cases;
-		DROP PROCEDURE can_edit_all_field_in_a_case_regardless_of_role;
-		DROP PROCEDURE user_is_publicly_visible;
-		DROP PROCEDURE user_can_see_publicly_visible;
-		DROP PROCEDURE can_ask_to_approve;
-		DROP PROCEDURE can_approve;
 		
-		DROP PROCEDURE show_to_tenant;
-		DROP PROCEDURE is_tenant;
-		DROP PROCEDURE can_see_tenant;
+		DROP PROCEDURE IF EXISTS show_to_tenant;
+		DROP PROCEDURE IF EXISTS is_tenant;
+		DROP PROCEDURE IF EXISTS default_tenant_can_see_tenant;
 
-		DROP PROCEDURE show_to_landlord;
-		DROP PROCEDURE are_users_landlord;
-		DROP PROCEDURE see_users_landlord;
+		DROP PROCEDURE IF EXISTS show_to_landlord;
+		DROP PROCEDURE IF EXISTS are_users_landlord;
+		DROP PROCEDURE IF EXISTS default_landlord_see_users_landlord;
 		
-		DROP PROCEDURE show_to_agent;
-		DROP PROCEDURE are_users_agent;
-		DROP PROCEDURE see_users_agent;
+		DROP PROCEDURE IF EXISTS show_to_agent;
+		DROP PROCEDURE IF EXISTS are_users_agent;
+		DROP PROCEDURE IF EXISTS default_agent_see_users_agent;
 		
-		DROP PROCEDURE show_to_contractor;
-		DROP PROCEDURE are_users_contractor;
-		DROP PROCEDURE see_users_contractor;
+		DROP PROCEDURE IF EXISTS show_to_contractor;
+		DROP PROCEDURE IF EXISTS are_users_contractor;
+		DROP PROCEDURE IF EXISTS default_contractor_see_users_contractor;
 		
-		DROP PROCEDURE show_to_mgt_cny;
-		DROP PROCEDURE are_users_mgt_cny;
-		DROP PROCEDURE see_users_mgt_cny;
-				
-		DROP PROCEDURE user_in_cc_for_cases;
+		DROP PROCEDURE IF EXISTS show_to_mgt_cny;
+		DROP PROCEDURE IF EXISTS are_users_mgt_cny;
+		DROP PROCEDURE IF EXISTS default_mgt_cny_see_users_mgt_cny;
 		
-		#########
-		#
-		#	Below is WIP
-		#
-		#DROP PROCEDURE can_edit_component;
-		#
-		#DROP PROCEDURE can_create_same_stakeholder;
-		#DROP PROCEDURE can_create_any_stakeholder;
-		#DROP PROCEDURE can_approve_user_for_flag;
-		#DROP PROCEDURE can_decide_if_user_is_occupant;
-		#DROP PROCEDURE can_decide_if_user_can_see_visible_occupant;
-		#DROP PROCEDURE can_decide_if_user_is_visible;
-		#DROP PROCEDURE can_decide_if_user_can_see_visible;
-		#
-		#########
+		DROP PROCEDURE IF EXISTS show_to_occupant;
+		DROP PROCEDURE IF EXISTS is_occupant;
+		DROP PROCEDURE IF EXISTS default_occupant_see_users_occupant;
 
+# We implement the FK checks again
+		
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;		

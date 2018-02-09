@@ -2879,6 +2879,65 @@ CREATE TABLE `ut_contractors` (
 
 /*Data for the table `ut_contractors` */
 
+/*Table structure for table `ut_data_to_create_units` */
+
+DROP TABLE IF EXISTS `ut_data_to_create_units`;
+
+CREATE TABLE `ut_data_to_create_units` (
+  `id_unit_to_create` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `mefe_id` int(11) DEFAULT NULL COMMENT 'The id of the object in the MEFE interface where these information are coming from',
+  `mefe_creator_user_id` int(11) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `mefe_unit_id` int(11) DEFAULT NULL COMMENT 'The id of this unit in the MEFE database',
+  `bzfe_creator_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `classification_id` smallint(6) NOT NULL COMMENT 'The ID of the classification for this unit - a FK to the BZ table ''classifications''',
+  `unit_name` varchar(54) NOT NULL DEFAULT '' COMMENT 'A name for the unit. We will append the product id and this will be inserted in the product name field of the BZ tabele product which has a max lenght of 64',
+  `unit_id` varchar(54) DEFAULT '' COMMENT 'The id of the unit',
+  `unit_condo` varchar(50) DEFAULT '' COMMENT 'The name of the condo or buildig for the unit',
+  `unit_surface` varchar(10) DEFAULT '' COMMENT 'The surface of the unit - this is a number - it can be sqm or sqf',
+  `unit_surface_measure` tinyint(1) DEFAULT NULL COMMENT '1 is for square feet (sqf) - 2 is for square meters (sqm)',
+  `unit_description_details` varchar(500) DEFAULT '' COMMENT 'More information about the unit - this is a free text space',
+  `unit_address` varchar(500) DEFAULT '' COMMENT 'The address of the unit',
+  `matterport_url` varchar(256) DEFAULT '' COMMENT 'LMB specific - a the URL for the matterport visit for this unit',
+  `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
+  `comment` text DEFAULT NULL COMMENT 'Any comment',
+  PRIMARY KEY (`id_unit_to_create`),
+  KEY `id_unit_creator_id` (`bzfe_creator_user_id`),
+  KEY `id_unit_classification_id` (`classification_id`),
+  CONSTRAINT `id_unit_classification_id` FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `id_unit_creator_id` FOREIGN KEY (`bzfe_creator_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_data_to_create_units` */
+
+/*Table structure for table `ut_data_to_replace_dummy_roles` */
+
+DROP TABLE IF EXISTS `ut_data_to_replace_dummy_roles`;
+
+CREATE TABLE `ut_data_to_replace_dummy_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `mefe_invitation_id` int(11) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitor_user_id` int(11) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
+  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
+  `is_occupant` tinyint(1) DEFAULT 0 COMMENT '1 if TRUE, 0 if FALSE',
+  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
+  `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
+  `comment` text DEFAULT NULL COMMENT 'Any comment',
+  PRIMARY KEY (`id`),
+  KEY `replace_dummy_role_role_type` (`user_role_type_id`),
+  KEY `replace_dummy_role_bz_user_id` (`bz_user_id`),
+  KEY `replace_dummy_role_invitor_bz_user_id` (`bzfe_invitor_user_id`),
+  KEY `replace_dummy_product_id` (`bz_unit_id`),
+  CONSTRAINT `replace_dummy_product_id` FOREIGN KEY (`bz_unit_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `replace_dummy_role_bz_user_id` FOREIGN KEY (`bz_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `replace_dummy_role_invitor_bz_user_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `replace_dummy_role_role_type` FOREIGN KEY (`user_role_type_id`) REFERENCES `ut_role_types` (`id_role_type`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_data_to_replace_dummy_roles` */
+
 /*Table structure for table `ut_fielddefs` */
 
 DROP TABLE IF EXISTS `ut_fielddefs`;
@@ -3083,6 +3142,22 @@ CREATE TABLE `ut_map_contractor_to_user` (
 
 /*Data for the table `ut_map_contractor_to_user` */
 
+/*Table structure for table `ut_map_user_mefe_bzfe` */
+
+DROP TABLE IF EXISTS `ut_map_user_mefe_bzfe`;
+
+CREATE TABLE `ut_map_user_mefe_bzfe` (
+  `created` datetime DEFAULT NULL COMMENT 'creation ts',
+  `record_created_by` smallint(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
+  `is_obsolete` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'This is an obsolete record',
+  `bzfe_update_needed` tinyint(1) DEFAULT 0 COMMENT 'Do we need to update this record in the BZFE - This is to keep track of the user that have been modified in the MEFE but NOT yet in the BZFE',
+  `user_id` int(11) DEFAULT NULL COMMENT 'id of the user in the MEFE',
+  `bz_profile_id` mediumint(6) DEFAULT NULL COMMENT 'id of the user in the BZFE',
+  `comment` text DEFAULT NULL COMMENT 'Any comment'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_map_user_mefe_bzfe` */
+
 /*Table structure for table `ut_map_user_unit_details` */
 
 DROP TABLE IF EXISTS `ut_map_user_unit_details`;
@@ -3126,7 +3201,7 @@ CREATE TABLE `ut_map_user_unit_details` (
 DROP TABLE IF EXISTS `ut_permission_types`;
 
 CREATE TABLE `ut_permission_types` (
-  `id_permissin_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_permission_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
   `is_obsolete` tinyint(1) DEFAULT 0 COMMENT '1 if this is an obsolete value',
@@ -3138,14 +3213,14 @@ CREATE TABLE `ut_permission_types` (
   `bless_id` smallint(6) DEFAULT NULL COMMENT 'IF this is a ''blessing'' permission - which permission can this grant',
   `description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
   `detailed_description` text DEFAULT NULL COMMENT 'Detailed description of this group type',
-  PRIMARY KEY (`id_permissin_type`,`permission_type`),
-  KEY `premission_groupe_type` (`group_type_id`),
-  CONSTRAINT `premission_groupe_type` FOREIGN KEY (`group_type_id`) REFERENCES `ut_group_types` (`id_group_type`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`id_permission_type`,`permission_type`),
+  KEY `permission_groupe_type` (`group_type_id`),
+  CONSTRAINT `permission_groupe_type` FOREIGN KEY (`group_type_id`) REFERENCES `ut_group_types` (`id_group_type`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_permission_types` */
 
-insert  into `ut_permission_types`(`id_permissin_type`,`created`,`order`,`is_obsolete`,`group_type_id`,`permission_type`,`permission_scope`,`permission_category`,`is_bless`,`bless_id`,`description`,`detailed_description`) values 
+insert  into `ut_permission_types`(`id_permission_type`,`created`,`order`,`is_obsolete`,`group_type_id`,`permission_type`,`permission_scope`,`permission_category`,`is_bless`,`bless_id`,`description`,`detailed_description`) values 
 (1,'2018-01-14 10:02:37',10,0,33,'can_see_time_tracking','GLOBAL','FUNCTIONALITY',0,NULL,'The user can see the time tracking information',NULL),
 (2,'2018-01-14 10:02:37',20,0,33,'can_grant_see_time_tracking','GLOBAL','FUNCTIONALITY',1,1,'The user can allow another user to see time tracking information',NULL),
 (3,'2018-01-14 10:02:37',30,0,34,'can_create_shared_query','GLOBAL','FUNCTIONALITY',0,NULL,NULL,NULL),
@@ -3377,6 +3452,70 @@ CREATE TABLE `whine_schedules` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `whine_schedules` */
+
+/* Procedure structure for procedure `default_occupant_can_see_occupant` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `default_occupant_can_see_occupant` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`mysql`@`%` PROCEDURE `default_occupant_can_see_occupant`()
+BEGIN
+	IF (@is_occupant = 1)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_see_users_occupant, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can see occupant in the unit '
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'can see occupant in the unit.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END */$$
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

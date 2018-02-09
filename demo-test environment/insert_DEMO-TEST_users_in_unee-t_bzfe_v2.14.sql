@@ -28,7 +28,7 @@ SET @number_of_units_per_user = 1;
 # This script Creates demo users in the Unee-T BZFE database
 #
 # Pre requisite:
-#	- BZFE database v2.13 for Unee-T has been created
+#	- BZFE database v2.13 or v2.14 for Unee-T has been created
 #
 
 #	IMPORTANT NOTE: users are created in batch of 12 users so we can have various profiles.
@@ -66,7 +66,7 @@ SET @number_of_units_per_classification = 25;
 	/*We Remove all the existing users in the installation */
 		TRUNCATE `profiles`;
 		
-	/*Data for the table `profiles` */
+	/*Initial Data for the table `profiles` */
 		INSERT  INTO `profiles`
 			(`userid`
 			,`login_name`
@@ -81,23 +81,28 @@ SET @number_of_units_per_classification = 25;
 			) 
 			VALUES 
 			(1,'administrator@example.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,NULL),
-			(2,'leonel@example.com','uVkp9Jte,ts7kZpZuOcTkMAh1c4iX4IcEZTxpq0Sfr7XraiZoL+g{SHA-256}','Leonel','',0,1,NULL,1,NULL),
-			(3,'marley@example.com','AMOb0L00,NlJF4wyZVyT+xWuUr3RYgDIYxMhfBJCZxvkSh5cRSVs{SHA-256}','Marley','',0,1,NULL,1,NULL),
-			(4,'michael@example.com','Tp0jDQnd,kD+mf67/v/ck68nOyRTR4j7JNVpo1XzzDFSIR6U7Lps{SHA-256}','Michael','',0,1,NULL,1,NULL),
-			(5,'sabrina@example.com','fjeiOOVC,vUkDbdxcfk9snn9J5Vh4r/cujX2FfOKEcBZBAOcMw3k{SHA-256}','Sabrina','',0,1,NULL,1,NULL),
-			(6,'celeste@example.com','ZAU7m97y,kw6J1Bf2Hw21qELelxM3BbK+4avsmJytG/WzssHMbXE{SHA-256}','Celeste','',0,1,NULL,1,NULL),
-			(7,'jocelyn@example.com','0ZprH6RJ,zXa/xkkETvkPZ988xpyQQocYYfLAIWdCLCk1wE4QXNA{SHA-256}','Jocelyn','',0,1,NULL,1,NULL),
-			(8,'marina@example.com','8c2ofNwd,VpZbBAByL89ZKCI3xT7zFjZBb/X7JHW6KjtA9yY8KYo{SHA-256}','Marina','',0,1,NULL,1,NULL),
-			(9,'regina@example.com','HuM6hVYF,Ev6TBPrrOm4pSu5chsr1Q6Hi6q2Tmm98IbLh7ONqtYs{SHA-256}','Regina','',0,1,NULL,1,NULL),
-			(10,'marvin@example.com','6kTmgSt9,FI+tK4vrJQa8lInrRGKxmQ0JW2WpVImRk+ylhcMYGKM{SHA-256}','Marvin','',0,1,NULL,1,NULL),
-			(11,'lawrence@example.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
-			(12,'anabelle@example.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
-			(13,'management.co@example.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
+			(2,'temporary.agent@example.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
+			(3,'temporary.landlord@example.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
+			(4,'temporary.tenant@example.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
+			(5,'temporary.contractor@example.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
+			(6,'temporary.mgt.cny@example.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL),
+			(7,'leonel@example.com','uVkp9Jte,ts7kZpZuOcTkMAh1c4iX4IcEZTxpq0Sfr7XraiZoL+g{SHA-256}','Leonel','',0,1,NULL,1,NULL),
+			(8,'marley@example.com','AMOb0L00,NlJF4wyZVyT+xWuUr3RYgDIYxMhfBJCZxvkSh5cRSVs{SHA-256}','Marley','',0,1,NULL,1,NULL),
+			(9,'michael@example.com','Tp0jDQnd,kD+mf67/v/ck68nOyRTR4j7JNVpo1XzzDFSIR6U7Lps{SHA-256}','Michael','',0,1,NULL,1,NULL),
+			(10,'sabrina@example.com','fjeiOOVC,vUkDbdxcfk9snn9J5Vh4r/cujX2FfOKEcBZBAOcMw3k{SHA-256}','Sabrina','',0,1,NULL,1,NULL),
+			(11,'celeste@example.com','ZAU7m97y,kw6J1Bf2Hw21qELelxM3BbK+4avsmJytG/WzssHMbXE{SHA-256}','Celeste','',0,1,NULL,1,NULL),
+			(12,'jocelyn@example.com','0ZprH6RJ,zXa/xkkETvkPZ988xpyQQocYYfLAIWdCLCk1wE4QXNA{SHA-256}','Jocelyn','',0,1,NULL,1,NULL),
+			(13,'marina@example.com','8c2ofNwd,VpZbBAByL89ZKCI3xT7zFjZBb/X7JHW6KjtA9yY8KYo{SHA-256}','Marina','',0,1,NULL,1,NULL),
+			(14,'regina@example.com','HuM6hVYF,Ev6TBPrrOm4pSu5chsr1Q6Hi6q2Tmm98IbLh7ONqtYs{SHA-256}','Regina','',0,1,NULL,1,NULL),
+			(15,'marvin@example.com','6kTmgSt9,FI+tK4vrJQa8lInrRGKxmQ0JW2WpVImRk+ylhcMYGKM{SHA-256}','Marvin','',0,1,NULL,1,NULL),
+			(16,'lawrence@example.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
+			(17,'anabelle@example.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
+			(18,'management.co@example.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
 
 		# Log the actions of the script.
 
 			SET @script_log_message = CONCAT('A new batch of #'
-									, (@iteration_number_of_users * 12)
+									, '18'
 									, ' users has been created.'
 									);
 			
@@ -124,18 +129,23 @@ SET @number_of_units_per_classification = 25;
 			)
 			VALUES
 			(NOW(), 1, 1, 1, 'Administrator', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 2, 2, 'Leonel', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 3, 3, 'Marley', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 4, 4, 'Michael', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 5, 5, 'Sabrina', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 6, 6, 'Celeste', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 7, 7, 'Jocelyn', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 8, 8, 'Marina', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 9, 9, 'Regina', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 10, 10, 'Marvin', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 11, 11, 'Lawrence', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 12, 12, 'Anabelle', 'Created as a demo user with demo user creation script')
-			,(NOW(), 1, 13, 13, 'Management Co', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 2, 2, 'Generic Agent', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 3, 3, 'Generic Landlord', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 4, 4, 'Generic Tenant', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 5, 5, 'Generic Contractor', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 6, 6, 'Generic Management Company', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 7, 7, 'Leonel', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 8, 8, 'Marley', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 9, 9, 'Michael', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 10, 10, 'Sabrina', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 11, 11, 'Celeste', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 12, 12, 'Jocelyn', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 13, 13, 'Marina', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 14, 14, 'Regina', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 15, 15, 'Marvin', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 16, 16, 'Lawrence', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 17, 17, 'Anabelle', 'Created as a demo user with demo user creation script')
+			,(NOW(), 1, 18, 18, 'Management Co', 'Created as a demo user with demo user creation script')
 			;
 			
 		# Log the actions of the script.
@@ -157,7 +167,7 @@ SET @number_of_units_per_classification = 25;
 			SET @script_log_message = NULL;
 
 			
-	# For the demo we make sure that all the additional users (administrator already exist) can:
+	# For the demo we make sure that all the additional users (administrator already exists) can:
 	#	- See all the time tracking information (group id 16)
 	#	- Create Shared queries (group id 17)
 	#	- tag comments (group id 18)
@@ -218,8 +228,22 @@ SET @number_of_units_per_classification = 25;
 		(12,18,0,0),
 		(13,16,0,0),
 		(13,17,0,0),
-		(13,18,0,0);
-
+		(13,18,0,0),
+		(14,16,0,0),
+		(14,17,0,0),
+		(14,18,0,0),
+		(15,16,0,0),
+		(15,17,0,0),
+		(15,18,0,0),
+		(16,16,0,0),
+		(16,17,0,0),
+		(16,18,0,0),
+		(17,16,0,0),
+		(17,17,0,0),
+		(17,18,0,0),
+		(18,16,0,0),
+		(18,17,0,0),
+		(18,18,0,0);
 
 	# Log the actions of the script.
 
@@ -528,7 +552,6 @@ DROP PROCEDURE IF EXISTS insert_users;
 CALL insert_classification;
 DROP PROCEDURE IF EXISTS insert_classification;
 */
-
 
 # We now create the units we need.
 
