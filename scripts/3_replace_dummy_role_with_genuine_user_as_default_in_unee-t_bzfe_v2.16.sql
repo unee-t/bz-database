@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.14
+# Built for BZFE database v2.14 to 2.16
 #
 # Use this script only if the Unit EXIST in the BZFE 
 # It assumes that the unit has been created with the script '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.13'
@@ -77,6 +77,9 @@
 #
 ########################################################################
 
+# Info about this script
+	SET @script = '3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.16.sql';
+	
 # The unit:
 	
 	# The name and description
@@ -103,9 +106,6 @@
 	# Is the BZ user an occupant of the unit?
 		SET @is_occupant = (SELECT `is_occupant` FROM `ut_data_to_replace_dummy_roles` WHERE `id` = @reference_for_update);
 
-# Info about this script
-	SET @script = '3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.14.sql';
-
 # Timestamp	
 	SET @timestamp = NOW();
 
@@ -130,7 +130,7 @@
 	
 	# For the user
 		SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
-		SET @user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id);
+		SET @user_pub_name = (SELECT (LEFT(`login_name`,INSTR(`login_name`,"@")-1)) FROM `profiles` WHERE `userid` = @bz_user_id);
 		SET @role_user_pub_info = CONCAT(@user_pub_name
 								, IF (@role_user_more = '', '', ' - ')
 								, IF (@role_user_more = '', '', @role_user_more)

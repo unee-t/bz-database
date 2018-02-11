@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.14
+# Built for BZFE database v2.14 to v2.16
 #
 # This script adds an BZ user to an existing unit in a role which has already been created.
 # It also 
@@ -76,7 +76,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.14.sql';
+	SET @script = '4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.16.sql';
 
 # Timestamp	
 	SET @timestamp = NOW();
@@ -95,7 +95,7 @@
 	
 	# For the user
 		SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
-		SET @user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id);
+		SET @user_pub_name = (SELECT (LEFT(`login_name`,INSTR(`login_name`,"@")-1)) FROM `profiles` WHERE `userid` = @bz_user_id);
 		SET @role_user_pub_info = CONCAT(@user_pub_name
 								, IF (@role_user_more = '', '', ' - ')
 								, IF (@role_user_more = '', '', @role_user_more)
@@ -134,13 +134,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-# The user
-	# We get the information that we need about the user:
-		SET @user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id);
-	
-	# We record the information about the users that we have just updated
-	# If this is the first time we record something for this user for this unit, we create a new record.
-	# If there is already a record for that user for this unit, then we are updating the information
 
 #########
 # WARNING - NOT IN THE PERMISSION TABLE YET			
