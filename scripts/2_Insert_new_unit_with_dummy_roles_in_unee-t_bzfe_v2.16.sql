@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.14
+# Built for BZFE database v2.14, 2.15 and 2.16
 #
 # Use this script only if the Unit DOES NOT EXIST YET in the BZFE
 #
@@ -82,6 +82,9 @@
 #
 ########################################################################
 
+# Info about this script
+	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.16.sql';
+	
 # The unit:
 
 	# BZ Classification id for the unit that you want to create (default is 2)
@@ -138,9 +141,6 @@
 	# BZ user id of the user that is creating the unit (default is 1 - Administrator).
 	# For LMB migration, we use 2 (support.nobody)
 	SET @creator_bz_id = (SELECT `bzfe_creator_user_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-
-# Info about this script
-	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.14.sql';
 	
 # Other important information that should not change:
 
