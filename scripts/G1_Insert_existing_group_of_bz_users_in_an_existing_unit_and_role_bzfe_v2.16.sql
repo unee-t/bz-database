@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.13
+# Built for BZFE database v2.13 to v2.16
 #
 # This script adds permissions for an existing BZ group of user to do certain things for a unit in a role which has already been created.
 #
@@ -14,7 +14,7 @@
 #	- the Unit/Product ALREADY EXISTS in the BZFE
 #	- the Role/component ALREADY EXISTS in the BZFE
 #	- The Group of user already EXISTS in the BZFE
-#	- Make sure that you use the script '2_Insert_new_unit_and_role_in_unee-t_bzfe_v2.13.sql' to create the product/unit.
+#	- Make sure that you use the script '2_Insert_new_unit_and_role_in_unee-t_bzfe_v2.13.sql' or later to create the product/unit.
 #	  This will guarantee that all the permissions groups that we need for that user already exist in the BZFE
 #
 # This script also works if you need to reset the permission for a given group of users for a certain product,
@@ -34,10 +34,13 @@
 # The unit:
 
 	# enter the BZ product id for the unit
-	SET @product_id = 276;
+	SET @product_id = ???;
 	
 # The BZ group that you want to associat to the unit.
 	# BZ user groupid of the user that you want to associate to the unit.
+	# 47: access all LMB units
+	# 4302: Can approve all flags for LMB units
+	# 4303: Can do triage for LMB units
 	SET @bz_user_group_id = 47;
 
 	# Is the BZ user group a group for the occupants of the unit?
@@ -50,18 +53,6 @@
 	#	- Contractor 3
 	#	- Management company 4
 	SET @id_role_type = 4;
-
-#########
-# WARNING - NOT IN THE PERMISSION TABLE YET			
-	# Can the BZ user see the list of the occupants for the unit?
-	SET @group_can_see_occupant = 0;		
-	SET @group_can_see_tenant = 0;
-	SET @group_can_see_landlord = 0;
-	SET @group_can_see_agent = 0;
-	SET @group_can_see_contractor = 0;
-	SET @group_can_see_mgt_cny = 1;
-#
-#########
 
 # Global permission for the user group:
 	SET @group_can_see_time_tracking = 1;
@@ -92,36 +83,13 @@
 		SET @group_can_approve = 0;
 	
 	# Permission to create or alter other users:
-	# (This is done by granting the user permission to grant membership to other users to certain groups)
-	#
-	# WARNING: The below permission is VERY powerful and the main reason why it is 
-	# NOT a good idea to give users accesses to the BZFE as they could break a lot of things there...
-	# This is absolutely necessary though if we want the user to be able to invite other users.	
-
-################
-#
-# This is NOT implemented at this point: this script does
-# NOT grant a user permission to grant membership to any group
-# This is OK for now as user creation will be manual initially...
-#
-		SET @can_create_same_stakeholder = 0;
-		SET @can_create_any_stakeholder = 0;
-		SET @can_approve_user_for_flag = 0;
-		SET @can_decide_if_user_is_occupant = 0;
-		SET @can_decide_if_user_can_see_visible_occupant = 0;
-		SET @can_decide_if_user_is_visible = 0;
-		SET @can_decide_if_user_can_see_visible = 0;
-#
-#
-#################
-
+	# WIP
 		
 ########################################################################
 #
 #	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
 #
 ########################################################################
-
 		
 /*!40101 SET NAMES utf8 */;
 
@@ -133,117 +101,9 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 # Info about this script
-	SET @script = '5_Insert_existing_group_of_bz_users_in_an_existing_unit_and_role_bzfe_v2.13.sql';
+	SET @script = 'G1_Insert_existing_group_of_bz_users_in_an_existing_unit_and_role_bzfe_v2.16.sql';
 
-###############
-#
-# AT THIS POINT WE ARE NOT UPDATING THIS TABLE
-#
-/*
-# The user
-	# We get the information that we need about the user:
-		SET @user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id);
-	
-	# We record the information about the users that we have just updated
-	# If this is the first time we record something for this user for this unit, we create a new record.
-	# If there is already a record for that user for this unit, then we are updating the information
-		
-		INSERT INTO `ut_map_user_unit_details`
-			(`created`
-			, `record_created_by`
-			, `user_id`
-			, `bz_profile_id`
-			, `bz_unit_id`
-			, `role_type_id`
-			, `can_see_time_tracking`
-			, `can_create_shared_queries`
-			, `can_tag_comment`
-			, `is_occupant`
-			, `is_public_assignee`
-			, `is_see_visible_assignee`
-			, `is_in_cc_for_role`
-			, `can_create_case`
-			, `can_edit_case`
-			, `can_see_case`
-			, `can_edit_all_field_regardless_of_role`
-			, `is_flag_requestee`
-			, `is_flag_approver`
-			, `can_create_any_sh`
-			, `can_create_same_sh`
-			, `can_approve_user_for_flags`
-			, `can_decide_if_user_visible`
-			, `can_decide_if_user_can_see_visible`
-			, `public_name`
-			, `more_info`
-			, `comment`
-			)
-			VALUES
-			(NOW()
-			, @creator_bz_id
-			, @bz_user_id
-			, @bz_user_id
-			, @product_id
-			, @id_role_type
-			# Global permission for the whole installation
-			, @can_see_time_tracking
-			, @can_create_shared_queries
-			, @can_tag_comment
-			# Attributes of the user
-			, @is_occupant
-			# User visibility
-			, @user_is_publicly_visible
-			, @user_can_see_publicly_visible
-			# Permissions for cases for this unit.
-			, @user_in_cc_for_cases
-			, @can_create_new_cases
-			, @can_edit_a_case
-			, @can_see_all_public_cases
-			, @can_edit_all_field_in_a_case_regardless_of_role
-			# For the flags
-			, @can_ask_to_approve
-			, @can_approve
-			# Permissions to create or modify other users
-			, @can_create_any_stakeholder
-			, @can_create_same_stakeholder
-			, @can_approve_user_for_flag
-			, @can_decide_if_user_is_visible
-			, @can_decide_if_user_can_see_visible
-			, @user_pub_name
-			, @role_user_more
-			, CONCAT('On ', NOW(), ': Created with the script - ', @script, '.\r\ ', `comment`)
-			)
-			ON DUPLICATE KEY UPDATE
-			`created` = NOW()
-			, `record_created_by` = @creator_bz_id
-			, `role_type_id` = @id_role_type
-			, `can_see_time_tracking` = @can_see_time_tracking
-			, `can_create_shared_queries` = @can_create_shared_queries
-			, `can_tag_comment` = @can_tag_comment
-			, `is_occupant` = @is_occupant
-			, `is_public_assignee` = @user_is_publicly_visible
-			, `is_see_visible_assignee` = @user_can_see_publicly_visible
-			, `is_in_cc_for_role` = @user_in_cc_for_cases
-			, `can_create_case` = @can_create_new_cases
-			, `can_edit_case` = @can_edit_a_case
-			, `can_see_case` = @can_see_all_public_cases
-			, `can_edit_all_field_regardless_of_role` = @can_edit_all_field_in_a_case_regardless_of_role
-			, `is_flag_requestee` = @can_ask_to_approve
-			, `is_flag_approver` = @can_approve
-			, `can_create_any_sh` = @can_create_any_stakeholder
-			, `can_create_same_sh` = @can_create_same_stakeholder
-			, `can_approve_user_for_flags` = @can_approve_user_for_flag
-			, `can_decide_if_user_visible` = @can_decide_if_user_is_visible
-			, `can_decide_if_user_can_see_visible` = @can_decide_if_user_can_see_visible
-			, `public_name` = @user_pub_name
-			, `more_info` = CONCAT('On: ', NOW(), '.\r\Updated to ', @role_user_more, '. \r\ ', `more_info`)
-			, `comment` = CONCAT('On ', NOW(), '.\r\Updated with the script - ', @script, '.\r\ ', `comment`)
-		;
-*/
-#
-#
-##################
-
-# The component/role that the user will have for this unit.
+# The component/role for the group for this unit.
 	# We get that information based on the information we have about the product and the role for the user.
 		SET @component_id = (SELECT `component_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `role_type_id` = @id_role_type AND `group_type_id` = 2));
 		
@@ -885,22 +745,6 @@
 #	- are_users_mgt_cny
 #	- see_users_mgt_cny
 #
-
-#########
-#
-#	Below is WIP
-#
-#	- can_edit_component_group_id
-#
-#	- can_create_same_stakeholder
-#	- can_create_any_stakeholder
-#	- can_approve_user_for_flag
-#	- can_decide_if_user_is_occupant
-#	- can_decide_if_user_can_see_visible_occupant
-#	- can_decide_if_user_is_visible
-#	- can_decide_if_user_can_see_visible
-#
-#########
 
 	# First the global permissions:
 		# Can see timetracking
@@ -2761,22 +2605,6 @@ CALL group_can_see_users_contractor;
 CALL group_show_to_mgt_cny;
 CALL group_are_users_mgt_cny;
 CALL group_can_see_users_mgt_cny;
-
-#########
-#
-#	Below is WIP
-#
-#CALL can_edit_component;
-#
-#CALL can_create_same_stakeholder;
-#CALL can_create_any_stakeholder;
-#CALL can_approve_user_for_flag;
-#CALL can_decide_if_user_is_occupant;
-#CALL can_decide_if_user_can_see_visible_occupant;
-#CALL can_decide_if_user_is_visible;
-#CALL can_decide_if_user_can_see_visible;
-#
-#########
 	
 	# Then we update the `group_group_map` table
 	
@@ -2836,22 +2664,6 @@ CALL group_can_see_users_mgt_cny;
 		DROP PROCEDURE group_show_to_mgt_cny;
 		DROP PROCEDURE group_are_users_mgt_cny;
 		DROP PROCEDURE group_can_see_users_mgt_cny;
-		
-		#########
-		#
-		#	Below is WIP
-		#
-		#DROP PROCEDURE can_edit_component;
-		#
-		#DROP PROCEDURE can_create_same_stakeholder;
-		#DROP PROCEDURE can_create_any_stakeholder;
-		#DROP PROCEDURE can_approve_user_for_flag;
-		#DROP PROCEDURE can_decide_if_user_is_occupant;
-		#DROP PROCEDURE can_decide_if_user_can_see_visible_occupant;
-		#DROP PROCEDURE can_decide_if_user_is_visible;
-		#DROP PROCEDURE can_decide_if_user_can_see_visible;
-		#
-		#########
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
