@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.13 to v2.16
+# Built for BZFE database v2.13 to v2.17
 #
 # Use this script only if the Classification/Group of units DOES NOT EXIST YET in the BZFE
 #
@@ -35,7 +35,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '1_Insert_new_classification_in_unee-t_bzfe_v2.16.sql';
+	SET @script = '1_Insert_new_classification_in_unee-t_bzfe_v2.17.sql';
 
 # Get the classification id for the new group of units.
 	SET @classification_id = ((SELECT MAX(`id`) FROM `classifications`) + 1);
