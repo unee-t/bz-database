@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.14, 2.15 and 2.16
+# Built for BZFE database v2.17
 #
 # Use this script only if the Unit DOES NOT EXIST YET in the BZFE
 #
@@ -83,7 +83,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.16.sql';
+	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.17.sql';
 	
 # The unit:
 
@@ -366,10 +366,15 @@
 			SET @can_edit_component_group_id = (@can_edit_all_field_case_group_id + 1);
 			SET @group_name_can_edit_component_group = (CONCAT(@unit_for_group,'-04-Can-Edit-Components'));
 			SET @group_description_can_edit_component_group = 'User can edit components/roles for the unit';
-	
+			
+		# Allow user to see the unit in the search
+			SET @can_see_unit_in_search_group_id = (@can_edit_component_group_id + 1);
+			SET @group_name_can_see_unit_in_search_group = (CONCAT(@unit_for_group,'-00-Can-See-Components-Unit-In-Search'));
+			SET @group_description_can_see_unit_in_search_group = 'User can see the unit in the search panel';
+			
 	# The groups related to Flags
 		# Allow user to  for this unit
-			SET @all_g_flags_group_id = (@can_edit_component_group_id + 1);
+			SET @all_g_flags_group_id = (@can_see_unit_in_search_group_id + 1);
 			SET @group_name_all_g_flags_group = (CONCAT(@unit_for_group,'-05-Can-Approve-All-Flags'));
 			SET @group_description_all_g_flags_group = 'User can approve all flags';
 			
