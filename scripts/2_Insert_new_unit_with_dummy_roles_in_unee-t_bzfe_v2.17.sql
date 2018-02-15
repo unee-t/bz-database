@@ -357,7 +357,7 @@
 			SET @group_name_can_see_cases_group = (CONCAT(@unit_for_group,'-02-Case-Is-Visible-To-All'));
 			SET @group_description_can_see_cases_group = 'User can see the public cases for the unit';
 			
-		# Allow user to edit the case for this unit
+		# Allow user to edit all fields in the case for this unit regardless of his/her role
 			SET @can_edit_all_field_case_group_id = (@can_see_cases_group_id + 1);
 			SET @group_name_can_edit_all_field_case_group = (CONCAT(@unit_for_group,'-03-Can-Always-Edit-all-Fields'));
 			SET @group_description_can_edit_all_field_case_group = 'Triage - User can edit all fields in a case they have access to, regardless of role';
