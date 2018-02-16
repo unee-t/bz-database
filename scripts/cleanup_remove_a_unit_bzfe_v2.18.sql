@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.17
+# Built for BZFE database v2.18
 #
 # Use this script only if the Unit EXISTS in the BZFE
 #
@@ -32,7 +32,7 @@
 ########################################################################
 #
 # Info about this script
-	SET @script = 'cleanup_remove_a_unit_bzfe_v2.17.sql';
+	SET @script = 'cleanup_remove_a_unit_bzfe_v2.18.sql';
 # 
 # This script will alter the following tables (but NOT in that order):
 #
@@ -402,3 +402,12 @@
 	#Delete the records in the table `ut_product_group`
 		DELETE FROM `ut_product_group`
 			WHERE `product_id` = @product_id;
+
+# Log 
+
+	# Update the table 'ut_data_to_create_units' so that we record that the unit has been deleted
+		UPDATE `ut_data_to_create_units`
+		SET 
+			`deleted_datetime` = @timestamp
+			, `deletion_script` = @script
+		WHERE `product_id` = @product_id;
