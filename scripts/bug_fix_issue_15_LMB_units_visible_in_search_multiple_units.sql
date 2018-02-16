@@ -106,7 +106,7 @@ DELIMITER $$
 	CREATE PROCEDURE insert_missing_group_see_unit()
 		BEGIN
 		DECLARE number_of_loops INT DEFAULT 1;
-		WHILE number_of_loops < @max_loops DO
+		WHILE number_of_loops < (@max_loops +1) DO
 
 	# BZ product_id for the unit
 		SET @product_id = (SELECT `product_id` FROM `ut_fix_15_product_to_update` WHERE `id_record` = number_of_loops);
