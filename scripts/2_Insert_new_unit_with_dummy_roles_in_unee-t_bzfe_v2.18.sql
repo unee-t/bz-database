@@ -578,11 +578,11 @@
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
 								, '\r\ - To grant '
-								, 'See cases'
+								, 'See unit in the Search panel'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@can_see_unit_in_search_group_id, 'can_see_unit_in_search_group_id is NULL'))
 								, '\r\ - To grant '
-								, 'See unit in the Search panel'
+								, 'See cases'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
 								, '\r\ - To grant '
@@ -900,6 +900,10 @@
 		,(1,@group_id_see_users_occupant,1)
 		,(1,@group_id_are_users_invited_by,1)
 		,(1,@group_id_see_users_invited_by,1)
+		
+		# Admin MUST be a member of the mandatory group for this unit
+		# If not it is impossible to see this product in the BZFE backend.
+		,(1,@can_see_unit_in_search_group_id,0)
 
 		# Visibility groups:
 		,(@all_r_flags_group_id,@all_g_flags_group_id,2)
@@ -991,7 +995,8 @@
 			(NOW(), @script, @script_log_message)
 			;
 		
-		SET @script_log_message = NULL;		
+		SET @script_log_message = NULL;
+
 	# We have eveything, we can create the components we need:
 		INSERT INTO `components`
 		(`id`
