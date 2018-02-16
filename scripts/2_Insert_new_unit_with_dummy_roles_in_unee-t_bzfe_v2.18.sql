@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.17
+# Built for BZFE database v2.18
 #
 # Use this script only if the Unit DOES NOT EXIST YET in the BZFE
 #
@@ -83,7 +83,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.17.sql';
+	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.18.sql';
 	
 # The unit:
 
@@ -1506,6 +1506,7 @@
 				, '\'\r\ '
 				, IFNULL(`comment`, '')
 				)
+		, `product_id` = @product_id
 	WHERE `id_unit_to_create` = @unit_reference_for_import;
 
 
