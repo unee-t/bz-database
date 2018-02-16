@@ -70,7 +70,10 @@
 #OK	- `products` (product/unit related)
 #IGNORED (tricky as a tag can be associated to several product !!!)	- `tag`
 #OK	- `user_group_map`
-#	- `ut_product_group`
+#OK	- `ut_data_to_add_user_to_a_case`
+#OK	- `ut_data_to_add_user_to_a_role`
+#OK	- `ut_data_to_replace_dummy_roles`
+#OK	- `ut_product_group`
 #OK	- `versions` (product/unit related)
 #WIP	- Log what has been done
 #
@@ -161,7 +164,7 @@
 		WHERE (`bugs`.`product_id` = @product_id);
 
 # Keywords
-# Needs bug info		
+# Needs bug info
 	# The link between keyworddefs and bugs for bugs associated to this product
 		DELETE `keywords`
 		FROM
@@ -169,6 +172,25 @@
 			INNER JOIN `bugs` 
 				ON (`keywords`.`bug_id` = `bugs`.`bug_id`)
 		WHERE (`bugs`.`product_id` = @product_id);
+
+# The tables we use to process invitations and stuff
+# Needs bug info
+	
+	# Add a user to a case 'ut_data_to_add_user_to_a_case'
+		DELETE `ut_data_to_add_user_to_a_case`
+		FROM
+			`ut_data_to_add_user_to_a_case`
+			INNER JOIN `bugs` 
+				ON (`ut_data_to_add_user_to_a_case`.`bz_case_id` = `bugs`.`bug_id`)
+		WHERE (`bugs`.`product_id` = @product_id);
+		
+	# Add a user to a role in the unit 'ut_data_to_add_user_to_a_role'
+		DELETE FROM `ut_data_to_add_user_to_a_role`
+		WHERE `bz_unit_id` = @product_id;
+	
+	# Replace a dummy user with a 'real' user in a role in the unit 'ut_data_to_replace_dummy_roles'
+		DELETE FROM `ut_data_to_replace_dummy_roles`
+		WHERE `bz_unit_id` = @product_id;
 		
 # Bug/case related info 
 
@@ -302,11 +324,6 @@
 			INNER JOIN `bugs` 
 				ON (`longdescs`.`bug_id` = `bugs`.`bug_id`)
 		WHERE (`bugs`.`product_id` = @product_id);	
-
-
-		
-
-		
 	
 	# Delete all the bugs/cases associated to that product/unit
 	# We need to do this LAST when we have no need for a link bug/product
@@ -365,7 +382,6 @@
 	# Delete the components associated to this product
 		DELETE FROM `components`
 		WHERE `product_id` = @product_id;
-	
 
 # Products:
 	
@@ -381,6 +397,8 @@
 		DELETE FROM `products`
 		WHERE `id` = @product_id;
 	
-# Delete the records in the table `ut_product_group`
-	DELETE FROM `ut_product_group`
-		WHERE `product_id` = @product_id;
+# Cleanup 
+
+	#Delete the records in the table `ut_product_group`
+		DELETE FROM `ut_product_group`
+			WHERE `product_id` = @product_id;
