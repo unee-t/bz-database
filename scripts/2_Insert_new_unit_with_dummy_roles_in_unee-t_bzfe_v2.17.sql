@@ -100,8 +100,7 @@
 	SET @unit_address = (SELECT `unit_address` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 	SET @matterport_url = (SELECT `matterport_url` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 	SET @unit_description = CONCAT(
-				'Description: '
-				, IF (@unit_condo = '', '', '<br>Condo: ')
+				IF (@unit_condo = '', '', '<br>Condo: ')
 				, IF (@unit_condo = '', '', @unit_condo)
 				, IF (@unit_condo = '', '', '</br>')
 				
