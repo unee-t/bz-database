@@ -1,4 +1,4 @@
-# Fora ny question about this script - Ask Franck
+# For any question about this script - Ask Franck
 #
 #############################################
 #											#
