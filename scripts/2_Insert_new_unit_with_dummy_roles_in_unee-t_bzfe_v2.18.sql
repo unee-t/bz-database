@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.14, 2.15 and 2.16
+# Built for BZFE database v2.18
 #
 # Use this script only if the Unit DOES NOT EXIST YET in the BZFE
 #
@@ -83,7 +83,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.16.sql';
+	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.18.sql';
 	
 # The unit:
 
@@ -100,8 +100,7 @@
 	SET @unit_address = (SELECT `unit_address` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 	SET @matterport_url = (SELECT `matterport_url` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 	SET @unit_description = CONCAT(
-				'Description: '
-				, IF (@unit_condo = '', '', '<br>Condo: ')
+				IF (@unit_condo = '', '', '<br>Condo: ')
 				, IF (@unit_condo = '', '', @unit_condo)
 				, IF (@unit_condo = '', '', '</br>')
 				
@@ -357,7 +356,7 @@
 			SET @group_name_can_see_cases_group = (CONCAT(@unit_for_group,'-02-Case-Is-Visible-To-All'));
 			SET @group_description_can_see_cases_group = 'User can see the public cases for the unit';
 			
-		# Allow user to edit the case for this unit
+		# Allow user to edit all fields in the case for this unit regardless of his/her role
 			SET @can_edit_all_field_case_group_id = (@can_see_cases_group_id + 1);
 			SET @group_name_can_edit_all_field_case_group = (CONCAT(@unit_for_group,'-03-Can-Always-Edit-all-Fields'));
 			SET @group_description_can_edit_all_field_case_group = 'Triage - User can edit all fields in a case they have access to, regardless of role';
@@ -366,10 +365,15 @@
 			SET @can_edit_component_group_id = (@can_edit_all_field_case_group_id + 1);
 			SET @group_name_can_edit_component_group = (CONCAT(@unit_for_group,'-04-Can-Edit-Components'));
 			SET @group_description_can_edit_component_group = 'User can edit components/roles for the unit';
-	
+			
+		# Allow user to see the unit in the search
+			SET @can_see_unit_in_search_group_id = (@can_edit_component_group_id + 1);
+			SET @group_name_can_see_unit_in_search_group = (CONCAT(@unit_for_group,'-00-Can-See-Unit-In-Search'));
+			SET @group_description_can_see_unit_in_search_group = 'User can see the unit in the search panel';
+			
 	# The groups related to Flags
 		# Allow user to  for this unit
-			SET @all_g_flags_group_id = (@can_edit_component_group_id + 1);
+			SET @all_g_flags_group_id = (@can_see_unit_in_search_group_id + 1);
 			SET @group_name_all_g_flags_group = (CONCAT(@unit_for_group,'-05-Can-Approve-All-Flags'));
 			SET @group_description_all_g_flags_group = 'User can approve all flags';
 			
@@ -510,7 +514,7 @@
 			SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
 
 	# We can populate the 'groups' table now.
-		INSERT  INTO `groups`
+		INSERT INTO `groups`
 			(`id`
 			,`name`
 			,`description`
@@ -525,6 +529,7 @@
 			,(@can_see_cases_group_id,@group_name_can_see_cases_group,@group_description_can_see_cases_group,1,'',1,NULL)
 			,(@can_edit_all_field_case_group_id,@group_name_can_edit_all_field_case_group,@group_description_can_edit_all_field_case_group,1,'',1,NULL)
 			,(@can_edit_component_group_id,@group_name_can_edit_component_group,@group_description_can_edit_component_group,1,'',1,NULL)
+			,(@can_see_unit_in_search_group_id,@group_name_can_see_unit_in_search_group,@group_description_can_see_unit_in_search_group,1,'',1,NULL)
 			,(@all_g_flags_group_id,@group_name_all_g_flags_group,@group_description_all_g_flags_group,1,'',0,NULL)
 			,(@all_r_flags_group_id,@group_name_all_r_flags_group,@group_description_all_r_flags_group,1,'',0,NULL)
 			,(@list_visible_assignees_group_id,@group_name_list_visible_assignees_group,@group_description_list_visible_assignees_group,1,'',0,NULL)
@@ -556,47 +561,51 @@
 	# Log the actions of the script.
 		SET @script_log_message = CONCAT('We have created the groups that we will need for that unit #'
 								, @product_id
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'case creation'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'Edit case'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'Edit all field regardless of role'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'Edit Component/roles'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
+								, 'See unit in the Search panel'
+								, ' privileges. Group_id: '
+								, (SELECT IFNULL(@can_see_unit_in_search_group_id, 'can_see_unit_in_search_group_id is NULL'))
+								, '\r\ - To grant '
 								, 'See cases'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'Request all flags'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'Approve all flags'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'User is publicly visible'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'User can see publicly visible'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'User is active Stakeholder'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
-								, '\r\ -  To grant '
+								, '\r\ - To grant '
 								, 'User is the unit creator'
 								, ' privileges. Group_id: '
 								, (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
@@ -709,6 +718,7 @@
 		,(@product_id,NULL,@can_edit_all_field_case_group_id,26,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,NULL,@can_edit_component_group_id,27,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,NULL,@can_see_cases_group_id,28,NULL,@creator_bz_id,@timestamp)
+		,(@product_id,NULL,@can_see_unit_in_search_group_id,38,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,NULL,@all_r_flags_group_id,18,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,NULL,@all_g_flags_group_id,19,NULL,@creator_bz_id,@timestamp)
 		,(@product_id,NULL,@list_visible_assignees_group_id,4,NULL,@creator_bz_id,@timestamp)
@@ -843,7 +853,7 @@
 	
 	
 	# Add the new records
-	INSERT  INTO `ut_group_group_map_temp`
+	INSERT INTO `ut_group_group_map_temp`
 		(`member_id`
 		,`grantor_id`
 		,`grant_type`
@@ -860,9 +870,10 @@
 		# Admin group can grant membership to all
 		(1,@create_case_group_id,1)
 		,(1,@can_edit_case_group_id,1)
+		,(1,@can_see_cases_group_id,1)
 		,(1,@can_edit_all_field_case_group_id,1)
 		,(1,@can_edit_component_group_id,1)
-		,(1,@can_see_cases_group_id,1)
+		,(1,@can_see_unit_in_search_group_id,1)
 		,(1,@all_g_flags_group_id,1)
 		,(1,@all_r_flags_group_id,1)
 		,(1,@list_visible_assignees_group_id,1)
@@ -889,6 +900,10 @@
 		,(1,@group_id_see_users_occupant,1)
 		,(1,@group_id_are_users_invited_by,1)
 		,(1,@group_id_see_users_invited_by,1)
+		
+		# Admin MUST be a member of the mandatory group for this unit
+		# If not it is impossible to see this product in the BZFE backend.
+		,(1,@can_see_unit_in_search_group_id,0)
 
 		# Visibility groups:
 		,(@all_r_flags_group_id,@all_g_flags_group_id,2)
@@ -903,7 +918,7 @@
 		;
 
 # We make sure that only user in certain groups can create, edit or see cases.
-	INSERT  INTO `group_control_map`
+	INSERT INTO `group_control_map`
 		(`group_id`
 		,`product_id`
 		,`entry`
@@ -920,6 +935,7 @@
 		,(@can_edit_all_field_case_group_id,@product_id,1,0,0,1,0,1,1)
 		,(@can_edit_component_group_id,@product_id,0,0,0,0,1,0,0)
 		,(@can_see_cases_group_id,@product_id,0,2,0,0,0,0,0)
+		,(@can_see_unit_in_search_group_id,@product_id,0,3,3,0,0,0,0)
 		,(@group_id_show_to_tenant,@product_id,0,2,0,0,0,0,0)
 		,(@group_id_show_to_landlord,@product_id,0,2,0,0,0,0,0)
 		,(@group_id_show_to_agent,@product_id,0,2,0,0,0,0,0)
@@ -927,7 +943,60 @@
 		,(@group_id_show_to_mgt_cny,@product_id,0,2,0,0,0,0,0)
 		,(@group_id_show_to_occupant,@product_id,0,2,0,0,0,0,0)
 		;
-	
+
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('We have updated the group control permissions for the product# '
+								, @product_id
+								, ': '
+								, '\r\ - Create Case (#'
+								, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
+								, ').'
+								, '\r\ - Edit Case (#'
+								, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
+								, ').'
+								, '\r\ - Edit All Field (#'
+								, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
+								, ').'
+								, '\r\ - Edit Component (#'
+								, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
+								, ').'
+								, '\r\ - Can see case (#'
+								, (SELECT IFNULL(@can_see_cases_group_id, 'flag_ok_to_pay is NULL'))
+								, ').'
+								, '\r\ - Can See unit in Search (#'
+								, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
+								, ').'
+								, '\r\ - Show case to Tenant (#'
+								, (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
+								, ').'
+								, '\r\ - Show case to Landlord (#'
+								, (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
+								, ').'
+								, '\r\ - Show case to Agent (#'
+								, (SELECT IFNULL(@group_id_show_to_agent, 'group_id_show_to_agent is NULL'))
+								, ').'
+								, '\r\ - Show case to Contractor (#'
+								, (SELECT IFNULL(@group_id_show_to_contractor, 'group_id_show_to_contractor is NULL'))
+								, ').'
+								, '\r\ - Show case to Management Company (#'
+								, (SELECT IFNULL(@group_id_show_to_mgt_cny, 'group_id_show_to_mgt_cny is NULL'))
+								, ').'
+								, '\r\ - Show case to Occupant(s) (#'
+								, (SELECT IFNULL(@group_id_show_to_occupant, 'group_id_show_to_occupant is NULL'))
+								, ').'
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(NOW(), @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;
+
 	# We have eveything, we can create the components we need:
 		INSERT INTO `components`
 		(`id`
@@ -1018,7 +1087,7 @@
 		SET @script_log_message = NULL;	
 			
 # We update the BZ logs
-	INSERT  INTO `audit_log`
+	INSERT INTO `audit_log`
 		(`user_id`
 		,`class`
 		,`object_id`
@@ -1028,42 +1097,43 @@
 		,`at_time`
 		) 
 		VALUES 
-		(@creator_bz_id,'Bugzilla::Group',@create_case_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can Create Cases'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@can_edit_case_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can edit'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@can_edit_all_field_case_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can edit all fields'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@can_edit_component_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can edit components'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@can_see_cases_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Visible to all'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@all_g_flags_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can approve all flags'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@all_r_flags_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Can be asked to approve'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@list_visible_assignees_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-list stakeholder(s)'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@see_visible_assignees_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-see stakeholder(s)'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@active_stakeholder_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Active stakeholder'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@unit_creator_group_id,'__create__',NULL,CONCAT(@unit_for_group,'-Unit Creators'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_show_to_tenant,'__create__',NULL,CONCAT(@unit_for_group,'-show case to tenant'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_are_users_tenant,'__create__',NULL,CONCAT(@unit_for_group,'-user is a tenant'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_see_users_tenant,'__create__',NULL,CONCAT(@unit_for_group,'-user can see user who are tenant'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_show_to_landlord,'__create__',NULL,CONCAT(@unit_for_group,'-show case to Landlord'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_are_users_landlord,'__create__',NULL,CONCAT(@unit_for_group,'-user is a Landlord'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_see_users_landlord,'__create__',NULL,CONCAT(@unit_for_group,'-user can see user who are Landlord'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_show_to_agent,'__create__',NULL,CONCAT(@unit_for_group,'-show case to agent'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_are_users_agent,'__create__',NULL,CONCAT(@unit_for_group,'-user is an agent'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_see_users_agent,'__create__',NULL,CONCAT(@unit_for_group,'-user can see user who are agent'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_show_to_contractor,'__create__',NULL,CONCAT(@unit_for_group,'-show case to Contractor employee'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_are_users_contractor,'__create__',NULL,CONCAT(@unit_for_group,'-user is a Contractor employee'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_see_users_contractor,'__create__',NULL,CONCAT(@unit_for_group,'-user can see user who are Contractor employee'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_show_to_mgt_cny,'__create__',NULL,CONCAT(@unit_for_group,'-show case to Mgt Company employee'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_are_users_mgt_cny,'__create__',NULL,CONCAT(@unit_for_group,'-user is a Mgt Company employee'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_see_users_mgt_cny,'__create__',NULL,CONCAT(@unit_for_group,'-user can see user who are Mgt Company employee'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_show_to_occupant,'__create__',NULL,CONCAT(@unit_for_group,'-show case to occupant'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_are_users_occupant,'__create__',NULL,CONCAT(@unit_for_group,'-user is an occupant'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_see_users_occupant,'__create__',NULL,CONCAT(@unit_for_group,'-user can see user who are occupant'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_are_users_invited_by,'__create__',NULL,CONCAT(@unit_for_group,'- invited by ', @creator_bz_id, ' (', @creator_pub_name, ')'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Group',@group_id_see_users_invited_by,'__create__',NULL,CONCAT(@unit_for_group,'- see invited by ', @creator_bz_id, ' (', @creator_pub_name, ')'),@timestamp)
-		,(@creator_bz_id,'Bugzilla::Component',@component_id_tenant,'__create__',NULL, @role_user_g_description_tenant, @timestamp)
-		,(@creator_bz_id,'Bugzilla::Component',@component_id_landlord,'__create__',NULL, @role_user_g_description_landlord, @timestamp)
-		,(@creator_bz_id,'Bugzilla::Component',@component_id_agent,'__create__',NULL, @role_user_g_description_agent, @timestamp)
-		,(@creator_bz_id,'Bugzilla::Component',@component_id_contractor,'__create__',NULL, @role_user_g_description_contractor, @timestamp)
-		,(@creator_bz_id,'Bugzilla::Component',@component_id_mgt_cny,'__create__',NULL, @role_user_g_description_mgt_cny, @timestamp)
+		(@creator_bz_id, 'Bugzilla::Group', @create_case_group_id, '__create__', NULL, @group_name_create_case_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @can_edit_case_group_id, '__create__', NULL, @group_name_can_edit_case_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @can_edit_all_field_case_group_id, '__create__', NULL, @group_name_can_edit_all_field_case_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @can_edit_component_group_id, '__create__', NULL, @group_name_can_edit_component_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @can_see_cases_group_id, '__create__', NULL, @group_name_can_see_cases_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @can_see_unit_in_search_group_id, '__create__', NULL, @group_name_can_see_unit_in_search_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @all_g_flags_group_id, '__create__', NULL, @group_name_all_g_flags_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @all_r_flags_group_id, '__create__', NULL, @group_name_all_r_flags_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @list_visible_assignees_group_id, '__create__', NULL, @group_name_list_visible_assignees_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @see_visible_assignees_group_id, '__create__', NULL, @group_name_see_visible_assignees_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @active_stakeholder_group_id, '__create__', NULL, @group_name_active_stakeholder_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @unit_creator_group_id, '__create__', NULL, @group_name_unit_creator_group, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_tenant, '__create__', NULL, @group_name_show_to_tenant, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_tenant, '__create__', NULL, @group_name_are_users_tenant, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_tenant, '__create__', NULL, @group_name_see_users_tenant, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_landlord, '__create__', NULL, @group_name_show_to_landlord, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_landlord, '__create__', NULL, @group_name_are_users_landlord, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_landlord, '__create__', NULL, @group_name_see_users_landlord, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_agent, '__create__', NULL, @group_name_show_to_agent, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_agent, '__create__', NULL, @group_name_are_users_agent, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_agent, '__create__', NULL, @group_name_see_users_agent, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_contractor, '__create__', NULL, @group_name_show_to_contractor, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_contractor, '__create__', NULL, @group_name_are_users_contractor, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_contractor, '__create__', NULL, @group_name_see_users_contractor, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_mgt_cny, '__create__', NULL, @group_name_show_to_mgt_cny, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_mgt_cny, '__create__', NULL, @group_name_are_users_mgt_cny, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_mgt_cny, '__create__', NULL, @group_name_see_users_mgt_cny, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_occupant, '__create__', NULL, @group_name_show_to_occupant, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_occupant, '__create__', NULL, @group_name_are_users_occupant, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_occupant, '__create__', NULL, @group_name_see_users_occupant, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_invited_by, '__create__', NULL, @group_name_are_users_invited_by, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_invited_by, '__create__', NULL, @group_name_see_users_invited_by, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Component', @component_id_tenant, '__create__', NULL, @role_user_g_description_tenant, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Component', @component_id_landlord, '__create__', NULL, @role_user_g_description_landlord, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Component', @component_id_agent, '__create__', NULL, @role_user_g_description_agent, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
+		,(@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
 		;
 
 #############
@@ -1072,7 +1142,7 @@
 #
 # We insert the series categories that BZ needs...
 /*
-	INSERT  INTO `series_categories`
+	INSERT INTO `series_categories`
 		(`id`
 		,`name`
 		) 
@@ -1084,7 +1154,7 @@
 	SET @series_1 = (SELECT `id` FROM `series_categories` WHERE `name` = CONCAT(@role_user_g_description,'_#',@product_id));
 	SET @series_3 = (SELECT `id` FROM `series_categories` WHERE `name` = CONCAT(@unit_for_group,'_#',@product_id));
 
-	INSERT  INTO `series`
+	INSERT INTO `series`
 		(`series_id`
 		,`creator`
 		,`category`
@@ -1441,6 +1511,7 @@
 				, '\'\r\ '
 				, IFNULL(`comment`, '')
 				)
+		, `product_id` = @product_id
 	WHERE `id_unit_to_create` = @unit_reference_for_import;
 
 

@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.14 to v2.16
+# Built for BZFE database v2.17 to v2.18
 #
 # This script adds an BZ user to an existing unit in a role which has already been created.
 # It also 
@@ -44,6 +44,9 @@
 #
 ########################################################################
 
+# Info about this script
+	SET @script = '4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.18.sql';
+	
 # The unit:
 	
 	# The name and description
@@ -68,15 +71,6 @@
 
 	# Is the BZ user an occupant of the unit?
 		SET @is_occupant = (SELECT `is_occupant` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
-		
-########################################################################
-#
-#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
-#
-########################################################################
-
-# Info about this script
-	SET @script = '4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.16.sql';
 
 # Timestamp	
 	SET @timestamp = NOW();
@@ -116,7 +110,7 @@
 	SET @can_create_new_cases = 1;
 	SET @can_edit_a_case = 1;
 	SET @can_see_all_public_cases = 1;
-	SET @can_edit_all_field_in_a_case_regardless_of_role = 0;
+	SET @can_edit_all_field_in_a_case_regardless_of_role = 1;
 	SET @can_ask_to_approve = 1;
 	SET @can_approve = 1;
 	SET @can_create_any_stakeholder = 0;
@@ -133,17 +127,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-
-#########
-# WARNING - NOT IN THE PERMISSION TABLE YET			
-# @can_see_occupant
-# @can_see_tenant
-# @can_see_landlord
-# @can_see_agent
-# @can_see_contractor
-# @can_see_mgt_cny
-#########
 	
 		INSERT INTO `ut_map_user_unit_details`
 			(`created`
@@ -241,6 +224,13 @@
 		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
 		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
 		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
+		
+		# This is needed until MEFE is able to handle more detailed permissions.
+		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
+		
+		# This is needed so that user can see the unit in the Search panel
+		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
+
 		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
 
@@ -432,6 +422,8 @@
 #
 #	- can_create_new_cases
 #	- can_edit_a_case
+#	- can_edit_all_field_case
+#	- can_see_unit_in_search
 #	- can_see_all_public_cases
 #	- user_is_publicly_visible
 #	- user_can_see_publicly_visible
@@ -458,9 +450,10 @@
 				OR (`user_id` = @bz_user_id AND `group_id` = @can_tag_comment_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @create_case_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_case_group_id)
-				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_all_field_case_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_component_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @can_see_cases_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_all_field_case_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_see_unit_in_search_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @all_r_flags_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @all_g_flags_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @list_visible_assignees_group_id)
@@ -492,20 +485,19 @@
 										, '\r\- can_see_time_tracking: 0'
 										, '\r\- can_create_shared_queries: 0'
 										, '\r\- can_tag_comment: 0'
-										, '\r\- can_see_occupant: 0'
-										, '\r\- can_see_tenant: 0'
-										, '\r\- can_see_landlord: 0'
-										, '\r\- can_see_agent: 0'
-										, '\r\- can_see_contractor: 0'
-										, '\r\- can_see_mgt_cny: 0'
-										, '\r\- can_create_new_cases: 0'
+										, '\r\- can_create_case: 0'
 										, '\r\- can_edit_a_case: 0'
-										, '\r\- can_see_all_public_cases: 0'
+										, '\r\- can_edit_component: 0'
+										, '\r\- can_see_cases: 0'
 										, '\r\- can_edit_all_field_in_a_case_regardless_of_role: 0'
-										, '\r\- user_is_publicly_visible: 0'
-										, '\r\- user_can_see_publicly_visible: 0'
+										, '\r\- can_see_unit_in_search: 0'
 										, '\r\- can_ask_to_approve: 0'
-										, '\r\- can_approve: 0'					
+										, '\r\- can_approve: 0'
+										, '\r\- user_can_see_publicly_visible: 0'
+										, '\r\- user_is_publicly_visible: 0'
+										, '\r\- show_to_occupant: 0'
+										, '\r\- are_users_occupant: 0'
+										, '\r\- see_users_occupant: 0'
 										, '\r\- show_to_tenant: 0'
 										, '\r\- are_users_tenant: 0'
 										, '\r\- see_users_tenant: 0'
@@ -521,9 +513,6 @@
 										, '\r\- show_to_mgt_cny: 0'
 										, '\r\- are_users_mgt_cny: 0'
 										, '\r\- see_users_mgt_cny: 0'
-										, '\r\- show_to_occupant: 0'
-										, '\r\- are_users_occupant: 0'
-										, '\r\- see_users_occupant: 0'
 										, '\r\For the product #'
 										, @product_id										
 										);
@@ -620,18 +609,6 @@
 						, CONCAT('Remove the record where BZ user id ='
 						, @bz_user_id
 						, ' the group id = '
-						, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
-						, '.')
-						)
-					 , (NOW() 
-						,@bzfe_table
-						, 'n/a'
-						, 'n/a - we delete the record'
-						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the group id = '
 						, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
 						, '.')
 						)
@@ -645,6 +622,42 @@
 						, @bz_user_id
 						, ' the group id = '
 						, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@can_see_unit_in_search_group_id, 'can_see_unit_in_search_group_id is NULL'))
 						, '.')
 						)
 					 , (NOW() 
@@ -1228,6 +1241,114 @@
 					 VALUES
 					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
 					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_cases_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+				
+		# User can edit all fields in the case regardless of his/her role
+			# This is needed so until the MEFE can handle permissions.
+			INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @can_edit_all_field_case_group_id, 0, 0)	
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can edit all fields in the case regardless of his/her role for the unit#'
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'Can edit all fields in the case regardless of his/her role.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_all_field_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+
+		# User Can see the unit in the Search panel
+			INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @can_see_unit_in_search_group_id, 0, 0)	
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can see the unit#'
+										, @product_id
+										, ' in the search panel.'
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'Can see the unit in the Search panel.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_unit_in_search_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
 					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
 					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;

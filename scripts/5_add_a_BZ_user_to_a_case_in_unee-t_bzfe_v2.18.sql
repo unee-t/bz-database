@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.16
+# Built for BZFE database v2.17 to v2.18
 #
 # This script adds an existing BZ user to an existing case which has already been created.
 # We use this when:
@@ -47,7 +47,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '5_add_a_BZ_user_to_a_case_in_unee-t_bzfe_v2.16.sql';
+	SET @script = '5_add_a_BZ_user_to_a_case_in_unee-t_bzfe_v2.18.sql';
 
 # The case:
 	SET @case_id = (SELECT `bz_case_id` FROM `ut_data_to_add_user_to_a_case` WHERE `id` = @reference_for_case_update);

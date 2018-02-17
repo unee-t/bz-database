@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.14 to 2.16
+# Built for BZFE database v2.17 to v2.18
 #
 # Use this script only if the Unit EXIST in the BZFE 
 # It assumes that the unit has been created with the script '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.13'
@@ -78,7 +78,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.16.sql';
+	SET @script = '3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.18.sql';
 	
 # The unit:
 	
@@ -151,7 +151,7 @@
 	SET @can_create_new_cases = 1;
 	SET @can_edit_a_case = 1;
 	SET @can_see_all_public_cases = 1;
-	SET @can_edit_all_field_in_a_case_regardless_of_role = 0;
+	SET @can_edit_all_field_in_a_case_regardless_of_role = 1;
 	SET @can_ask_to_approve = 1;
 	SET @can_approve = 1;
 	SET @can_create_any_stakeholder = 0;
@@ -276,6 +276,13 @@
 		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
 		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
 		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
+		
+		# This is needed until MEFE is able to handle more detailed permissions.
+		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
+		
+		# This is needed so that user can see the unit in the Search panel
+		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
+		
 		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
 
@@ -469,6 +476,8 @@
 #
 #	- can_create_new_cases
 #	- can_edit_a_case
+#	- can_edit_all_field_case
+#	- can_see_unit_in_search
 #	- can_see_all_public_cases
 #	- user_is_publicly_visible
 #	- user_can_see_publicly_visible
@@ -805,6 +814,114 @@
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;
 				
+		# User can edit all fields in the case regardless of his/her role
+			# This is needed so until the MEFE can handle permissions.
+			INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @can_edit_all_field_case_group_id, 0, 0)	
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can edit all fields in the case regardless of his/her role for the unit#'
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'Can edit all fields in the case regardless of his/her role.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_all_field_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+
+		# User Can see the unit in the Search panel
+			INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @can_see_unit_in_search_group_id, 0, 0)	
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can see the unit#'
+										, @product_id
+										, ' in the search panel.'
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'Can see the unit in the Search panel.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_unit_in_search_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+		
 		# User can be visible to other users regardless of the other users roles
 			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`

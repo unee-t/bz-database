@@ -1,5 +1,5 @@
 /*
-SQLyog Ultimate v12.5.0 (64 bit)
+SQLyog Ultimate v12.5.1 (64 bit)
 MySQL - 10.2.10-MariaDB-10.2.10+maria~jessie : Database - bugzilla
 *********************************************************************
 */
@@ -222,7 +222,12 @@ insert  into `audit_log`(`user_id`,`class`,`object_id`,`field`,`removed`,`added`
 (1,'Bugzilla::Field',4,'description','Unit','Product','2017-10-27 00:34:42'),
 (1,'Bugzilla::Field',6,'description','Case Category','Platform','2017-10-27 00:34:42'),
 (1,'Bugzilla::Field',8,'description','Source','OS/Version','2017-10-27 00:34:42'),
-(1,'Bugzilla::Field',15,'description','Role','Component','2017-10-27 00:34:42');
+(1,'Bugzilla::Field',15,'description','Role','Component','2017-10-27 00:34:42'),
+(1,'Bugzilla::User',2,'__create__',NULL,'temporary.agent@example.com','2018-02-02 01:08:41'),
+(1,'Bugzilla::User',3,'__create__',NULL,'temporary.landlord@example.com','2018-02-02 01:14:19'),
+(1,'Bugzilla::User',4,'__create__',NULL,'temporary.tenant@example.com','2018-02-02 01:14:40'),
+(1,'Bugzilla::User',5,'__create__',NULL,'temporary.contractor@example.com','2018-02-02 01:14:55'),
+(1,'Bugzilla::User',6,'__create__',NULL,'temporary.mgt.cny@example.com','2018-02-02 01:15:20');
 
 /*Table structure for table `bug_cf_ipi_clust_3_roadbook_for` */
 
@@ -1061,7 +1066,322 @@ insert  into `email_setting`(`user_id`,`relationship`,`event`) values
 (1,5,11),
 (1,5,50),
 (1,100,100),
-(1,100,101);
+(1,100,101),
+(2,0,0),
+(2,0,1),
+(2,0,2),
+(2,0,3),
+(2,0,4),
+(2,0,5),
+(2,0,6),
+(2,0,7),
+(2,0,9),
+(2,0,10),
+(2,0,11),
+(2,0,50),
+(2,1,0),
+(2,1,1),
+(2,1,2),
+(2,1,3),
+(2,1,4),
+(2,1,5),
+(2,1,6),
+(2,1,7),
+(2,1,9),
+(2,1,10),
+(2,1,11),
+(2,1,50),
+(2,2,0),
+(2,2,1),
+(2,2,2),
+(2,2,3),
+(2,2,4),
+(2,2,5),
+(2,2,6),
+(2,2,7),
+(2,2,8),
+(2,2,9),
+(2,2,10),
+(2,2,11),
+(2,2,50),
+(2,3,0),
+(2,3,1),
+(2,3,2),
+(2,3,3),
+(2,3,4),
+(2,3,5),
+(2,3,6),
+(2,3,7),
+(2,3,9),
+(2,3,10),
+(2,3,11),
+(2,3,50),
+(2,5,0),
+(2,5,1),
+(2,5,2),
+(2,5,3),
+(2,5,4),
+(2,5,5),
+(2,5,6),
+(2,5,7),
+(2,5,9),
+(2,5,10),
+(2,5,11),
+(2,5,50),
+(2,100,100),
+(2,100,101),
+(3,0,0),
+(3,0,1),
+(3,0,2),
+(3,0,3),
+(3,0,4),
+(3,0,5),
+(3,0,6),
+(3,0,7),
+(3,0,9),
+(3,0,10),
+(3,0,11),
+(3,0,50),
+(3,1,0),
+(3,1,1),
+(3,1,2),
+(3,1,3),
+(3,1,4),
+(3,1,5),
+(3,1,6),
+(3,1,7),
+(3,1,9),
+(3,1,10),
+(3,1,11),
+(3,1,50),
+(3,2,0),
+(3,2,1),
+(3,2,2),
+(3,2,3),
+(3,2,4),
+(3,2,5),
+(3,2,6),
+(3,2,7),
+(3,2,8),
+(3,2,9),
+(3,2,10),
+(3,2,11),
+(3,2,50),
+(3,3,0),
+(3,3,1),
+(3,3,2),
+(3,3,3),
+(3,3,4),
+(3,3,5),
+(3,3,6),
+(3,3,7),
+(3,3,9),
+(3,3,10),
+(3,3,11),
+(3,3,50),
+(3,5,0),
+(3,5,1),
+(3,5,2),
+(3,5,3),
+(3,5,4),
+(3,5,5),
+(3,5,6),
+(3,5,7),
+(3,5,9),
+(3,5,10),
+(3,5,11),
+(3,5,50),
+(3,100,100),
+(3,100,101),
+(4,0,0),
+(4,0,1),
+(4,0,2),
+(4,0,3),
+(4,0,4),
+(4,0,5),
+(4,0,6),
+(4,0,7),
+(4,0,9),
+(4,0,10),
+(4,0,11),
+(4,0,50),
+(4,1,0),
+(4,1,1),
+(4,1,2),
+(4,1,3),
+(4,1,4),
+(4,1,5),
+(4,1,6),
+(4,1,7),
+(4,1,9),
+(4,1,10),
+(4,1,11),
+(4,1,50),
+(4,2,0),
+(4,2,1),
+(4,2,2),
+(4,2,3),
+(4,2,4),
+(4,2,5),
+(4,2,6),
+(4,2,7),
+(4,2,8),
+(4,2,9),
+(4,2,10),
+(4,2,11),
+(4,2,50),
+(4,3,0),
+(4,3,1),
+(4,3,2),
+(4,3,3),
+(4,3,4),
+(4,3,5),
+(4,3,6),
+(4,3,7),
+(4,3,9),
+(4,3,10),
+(4,3,11),
+(4,3,50),
+(4,5,0),
+(4,5,1),
+(4,5,2),
+(4,5,3),
+(4,5,4),
+(4,5,5),
+(4,5,6),
+(4,5,7),
+(4,5,9),
+(4,5,10),
+(4,5,11),
+(4,5,50),
+(4,100,100),
+(4,100,101),
+(5,0,0),
+(5,0,1),
+(5,0,2),
+(5,0,3),
+(5,0,4),
+(5,0,5),
+(5,0,6),
+(5,0,7),
+(5,0,9),
+(5,0,10),
+(5,0,11),
+(5,0,50),
+(5,1,0),
+(5,1,1),
+(5,1,2),
+(5,1,3),
+(5,1,4),
+(5,1,5),
+(5,1,6),
+(5,1,7),
+(5,1,9),
+(5,1,10),
+(5,1,11),
+(5,1,50),
+(5,2,0),
+(5,2,1),
+(5,2,2),
+(5,2,3),
+(5,2,4),
+(5,2,5),
+(5,2,6),
+(5,2,7),
+(5,2,8),
+(5,2,9),
+(5,2,10),
+(5,2,11),
+(5,2,50),
+(5,3,0),
+(5,3,1),
+(5,3,2),
+(5,3,3),
+(5,3,4),
+(5,3,5),
+(5,3,6),
+(5,3,7),
+(5,3,9),
+(5,3,10),
+(5,3,11),
+(5,3,50),
+(5,5,0),
+(5,5,1),
+(5,5,2),
+(5,5,3),
+(5,5,4),
+(5,5,5),
+(5,5,6),
+(5,5,7),
+(5,5,9),
+(5,5,10),
+(5,5,11),
+(5,5,50),
+(5,100,100),
+(5,100,101),
+(6,0,0),
+(6,0,1),
+(6,0,2),
+(6,0,3),
+(6,0,4),
+(6,0,5),
+(6,0,6),
+(6,0,7),
+(6,0,9),
+(6,0,10),
+(6,0,11),
+(6,0,50),
+(6,1,0),
+(6,1,1),
+(6,1,2),
+(6,1,3),
+(6,1,4),
+(6,1,5),
+(6,1,6),
+(6,1,7),
+(6,1,9),
+(6,1,10),
+(6,1,11),
+(6,1,50),
+(6,2,0),
+(6,2,1),
+(6,2,2),
+(6,2,3),
+(6,2,4),
+(6,2,5),
+(6,2,6),
+(6,2,7),
+(6,2,8),
+(6,2,9),
+(6,2,10),
+(6,2,11),
+(6,2,50),
+(6,3,0),
+(6,3,1),
+(6,3,2),
+(6,3,3),
+(6,3,4),
+(6,3,5),
+(6,3,6),
+(6,3,7),
+(6,3,9),
+(6,3,10),
+(6,3,11),
+(6,3,50),
+(6,5,0),
+(6,5,1),
+(6,5,2),
+(6,5,3),
+(6,5,4),
+(6,5,5),
+(6,5,6),
+(6,5,7),
+(6,5,9),
+(6,5,10),
+(6,5,11),
+(6,5,50),
+(6,100,100),
+(6,100,101);
 
 /*Table structure for table `field_visibility` */
 
@@ -1128,21 +1448,21 @@ CREATE TABLE `fielddefs` (
 /*Data for the table `fielddefs` */
 
 insert  into `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`mailhead`,`sortkey`,`obsolete`,`enter_bug`,`buglist`,`visibility_field_id`,`value_field_id`,`reverse_desc`,`is_mandatory`,`is_numeric`) values 
-(1,'bug_id',0,0,'Bug #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
+(1,'bug_id',0,0,'Case #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
 (2,'short_desc',0,0,'Summary','',1,200,0,0,1,NULL,NULL,NULL,1,0),
-(3,'classification',2,0,'Classification','',1,300,0,0,1,NULL,NULL,NULL,0,0),
-(4,'product',2,0,'Product','',1,400,0,0,1,NULL,NULL,NULL,1,0),
+(3,'classification',2,0,'Unit Group','',1,300,0,0,1,NULL,NULL,NULL,0,0),
+(4,'product',2,0,'Unit','',1,400,0,0,1,NULL,NULL,NULL,1,0),
 (5,'version',0,0,'Version','',1,500,0,0,1,NULL,NULL,NULL,1,0),
-(6,'rep_platform',2,0,'Platform','',1,600,0,0,1,NULL,NULL,NULL,0,0),
+(6,'rep_platform',2,0,'Case Category','',1,600,0,0,1,NULL,NULL,NULL,0,0),
 (7,'bug_file_loc',0,0,'URL','',1,700,0,0,1,NULL,NULL,NULL,0,0),
-(8,'op_sys',2,0,'OS/Version','',1,800,0,0,1,NULL,NULL,NULL,0,0),
+(8,'op_sys',2,0,'Source','',1,800,0,0,1,NULL,NULL,NULL,0,0),
 (9,'bug_status',2,0,'Status','',1,900,0,0,1,NULL,NULL,NULL,0,0),
 (10,'status_whiteboard',0,0,'Status Whiteboard','',1,1000,0,0,1,NULL,NULL,NULL,0,0),
 (11,'keywords',8,0,'Keywords','',1,1100,0,0,1,NULL,NULL,NULL,0,0),
 (12,'resolution',2,0,'Resolution','',0,1200,0,0,1,NULL,NULL,NULL,0,0),
 (13,'bug_severity',2,0,'Severity','',1,1300,0,0,1,NULL,NULL,NULL,0,0),
 (14,'priority',2,0,'Priority','',1,1400,0,0,1,NULL,NULL,NULL,0,0),
-(15,'component',2,0,'Component','',1,1500,0,0,1,NULL,NULL,NULL,1,0),
+(15,'component',2,0,'Role','',1,1500,0,0,1,NULL,NULL,NULL,1,0),
 (16,'assigned_to',0,0,'AssignedTo','',1,1600,0,0,1,NULL,NULL,NULL,0,0),
 (17,'reporter',0,0,'ReportedBy','',1,1700,0,0,1,NULL,NULL,NULL,0,0),
 (18,'qa_contact',0,0,'QAContact','',1,1800,0,0,1,NULL,NULL,NULL,0,0),
@@ -1356,9 +1676,9 @@ CREATE TABLE `group_group_map` (
   `member_id` mediumint(9) NOT NULL,
   `grantor_id` mediumint(9) NOT NULL,
   `grant_type` tinyint(4) NOT NULL DEFAULT 0,
+  UNIQUE KEY `group_group_map_member_id_idx` (`member_id`,`grantor_id`,`grant_type`),
   KEY `fk_group_group_map_grantor_id_groups_id` (`grantor_id`),
-  KEY `group_group_map_member_id_grant_type_idx` (`member_id`,`grant_type`),
-  KEY `group_group_map_grantor_id_grant_type_idx` (`grantor_id`,`grant_type`),
+  KEY `group_group_map_grant_type_member_id` (`member_id`,`grant_type`),
   CONSTRAINT `fk_group_group_map_grantor_id_groups_id` FOREIGN KEY (`grantor_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_group_group_map_member_id_groups_id` FOREIGN KEY (`member_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1579,7 +1899,10 @@ CREATE TABLE `logincookies` (
 /*Data for the table `logincookies` */
 
 insert  into `logincookies`(`cookie`,`userid`,`ipaddr`,`lastused`) values 
-('cP6nNokAr9',1,NULL,'2017-12-02 10:45:14');
+('db9hO4H56s',1,'172.56.16.54','2018-02-02 01:15:27'),
+('lopEuu60bW',1,'67.169.76.147','2018-02-02 01:12:38'),
+('RqGl4m3Qf8',1,NULL,'2018-01-14 10:01:00'),
+('TT91x5XMAg',1,'172.56.16.54','2018-02-02 01:15:20');
 
 /*Table structure for table `longdescs` */
 
@@ -1865,12 +2188,17 @@ CREATE TABLE `profiles` (
   PRIMARY KEY (`userid`),
   UNIQUE KEY `profiles_login_name_idx` (`login_name`),
   UNIQUE KEY `profiles_extern_id_idx` (`extern_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `profiles` */
 
 insert  into `profiles`(`userid`,`login_name`,`cryptpassword`,`realname`,`disabledtext`,`disable_mail`,`mybugslink`,`extern_id`,`is_enabled`,`last_seen_date`) values 
-(1,'administrator@example.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,'2017-12-02 00:00:00');
+(1,'administrator@example.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,'2018-02-02 00:00:00'),
+(2,'temporary.agent@example.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
+(3,'temporary.landlord@example.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
+(4,'temporary.tenant@example.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
+(5,'temporary.contractor@example.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
+(6,'temporary.mgt.cny@example.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL);
 
 /*Table structure for table `profiles_activity` */
 
@@ -1892,12 +2220,9 @@ CREATE TABLE `profiles_activity` (
   CONSTRAINT `fk_profiles_activity_fieldid_fielddefs_id` FOREIGN KEY (`fieldid`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_profiles_activity_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_profiles_activity_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 /*Data for the table `profiles_activity` */
-
-insert  into `profiles_activity`(`id`,`userid`,`who`,`profiles_when`,`fieldid`,`oldvalue`,`newvalue`) values 
-(1,1,1,'2017-11-25 00:28:50',33,NULL,'2017-11-25 00:28:50');
 
 /*Table structure for table `quips` */
 
@@ -2199,13 +2524,6 @@ CREATE TABLE `tokens` (
 
 /*Data for the table `tokens` */
 
-insert  into `tokens`(`userid`,`issuedate`,`token`,`tokentype`,`eventdata`) values 
-(1,'2017-12-02 10:44:58','1Er7WpupQ0','session','edit_parameters'),
-(1,'2017-12-02 10:44:51','FjkvDQ9nBM','session','edit_parameters'),
-(1,'2017-12-02 10:45:01','NHwnvVjUAZ','session','edit_parameters'),
-(1,'2017-12-02 10:45:06','qugmzUEqDX','session','edit_parameters'),
-(1,'2017-12-02 10:45:11','RzQ0UBTUQZ','session','edit_parameters');
-
 /*Table structure for table `ts_error` */
 
 DROP TABLE IF EXISTS `ts_error`;
@@ -2326,6 +2644,24 @@ CREATE TABLE `user_group_map` (
 insert  into `user_group_map`(`user_id`,`group_id`,`isbless`,`grant_type`) values 
 (1,1,0,0);
 
+/*Table structure for table `ut_audit_log` */
+
+DROP TABLE IF EXISTS `ut_audit_log`;
+
+CREATE TABLE `ut_audit_log` (
+  `id_ut_log` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
+  `datetime` datetime DEFAULT NULL COMMENT 'When was this record created',
+  `bzfe_table` varchar(256) DEFAULT NULL COMMENT 'The name of the table that was altered',
+  `bzfe_field` varchar(256) DEFAULT NULL COMMENT 'The name of the field that was altered in the bzfe table',
+  `previous_value` mediumtext DEFAULT NULL COMMENT 'The value of the field before the change',
+  `new_value` mediumtext DEFAULT NULL COMMENT 'The value of the field after the change',
+  `script` mediumtext DEFAULT NULL COMMENT 'The script that was used to create the record',
+  `comment` text DEFAULT NULL COMMENT 'More information about what we intended to do',
+  PRIMARY KEY (`id_ut_log`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_audit_log` */
+
 /*Table structure for table `ut_contractor_types` */
 
 DROP TABLE IF EXISTS `ut_contractor_types`;
@@ -2365,6 +2701,121 @@ CREATE TABLE `ut_contractors` (
 
 /*Data for the table `ut_contractors` */
 
+/*Table structure for table `ut_data_to_add_user_to_a_case` */
+
+DROP TABLE IF EXISTS `ut_data_to_add_user_to_a_case`;
+
+CREATE TABLE `ut_data_to_add_user_to_a_case` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `mefe_invitation_id` varchar(256) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `bz_case_id` mediumint(9) NOT NULL COMMENT 'The case id that the user is invited to - This is a FK to the BZ table ''bugs''',
+  `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
+  `comment` text DEFAULT NULL COMMENT 'Any comment',
+  PRIMARY KEY (`id`),
+  KEY `add_user_to_a_case_invitor_bz_id` (`bzfe_invitor_user_id`),
+  KEY `add_user_to_a_case_invitee_bz_id` (`bz_user_id`),
+  KEY `add_user_to_a_case_case_id` (`bz_case_id`),
+  CONSTRAINT `add_user_to_a_case_case_id` FOREIGN KEY (`bz_case_id`) REFERENCES `bugs` (`bug_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `add_user_to_a_case_invitee_bz_id` FOREIGN KEY (`bz_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `add_user_to_a_case_invitor_bz_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_data_to_add_user_to_a_case` */
+
+/*Table structure for table `ut_data_to_add_user_to_a_role` */
+
+DROP TABLE IF EXISTS `ut_data_to_add_user_to_a_role`;
+
+CREATE TABLE `ut_data_to_add_user_to_a_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `mefe_invitation_id` varchar(256) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
+  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
+  `is_occupant` tinyint(1) DEFAULT 0 COMMENT '1 if TRUE, 0 if FALSE',
+  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
+  `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
+  `comment` text DEFAULT NULL COMMENT 'Any comment',
+  PRIMARY KEY (`id`),
+  KEY `add_user_to_a_role_bz_user_id` (`bz_user_id`),
+  KEY `add_user_to_a_role_invitor_bz_id` (`bzfe_invitor_user_id`),
+  KEY `add_user_to_a_role_role_type_id` (`user_role_type_id`),
+  KEY `add_user_to_a_role_product_id` (`bz_unit_id`),
+  CONSTRAINT `add_user_to_a_role_bz_user_id` FOREIGN KEY (`bz_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `add_user_to_a_role_invitor_bz_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `add_user_to_a_role_product_id` FOREIGN KEY (`bz_unit_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `add_user_to_a_role_role_type_id` FOREIGN KEY (`user_role_type_id`) REFERENCES `ut_role_types` (`id_role_type`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_data_to_add_user_to_a_role` */
+
+/*Table structure for table `ut_data_to_create_units` */
+
+DROP TABLE IF EXISTS `ut_data_to_create_units`;
+
+CREATE TABLE `ut_data_to_create_units` (
+  `id_unit_to_create` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `mefe_id` varchar(256) DEFAULT NULL COMMENT 'The id of the object in the MEFE interface where these information are coming from',
+  `mefe_creator_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `mefe_unit_id` varchar(256) DEFAULT NULL COMMENT 'The id of this unit in the MEFE database',
+  `bzfe_creator_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `classification_id` smallint(6) NOT NULL COMMENT 'The ID of the classification for this unit - a FK to the BZ table ''classifications''',
+  `unit_name` varchar(54) NOT NULL DEFAULT '' COMMENT 'A name for the unit. We will append the product id and this will be inserted in the product name field of the BZ tabele product which has a max lenght of 64',
+  `unit_id` varchar(54) DEFAULT '' COMMENT 'The id of the unit',
+  `unit_condo` varchar(50) DEFAULT '' COMMENT 'The name of the condo or buildig for the unit',
+  `unit_surface` varchar(10) DEFAULT '' COMMENT 'The surface of the unit - this is a number - it can be sqm or sqf',
+  `unit_surface_measure` tinyint(1) DEFAULT NULL COMMENT '1 is for square feet (sqf) - 2 is for square meters (sqm)',
+  `unit_description_details` varchar(500) DEFAULT '' COMMENT 'More information about the unit - this is a free text space',
+  `unit_address` varchar(500) DEFAULT '' COMMENT 'The address of the unit',
+  `matterport_url` varchar(256) DEFAULT '' COMMENT 'LMB specific - a the URL for the matterport visit for this unit',
+  `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
+  `comment` text DEFAULT NULL COMMENT 'Any comment',
+  `product_id` smallint(6) DEFAULT NULL COMMENT 'The id of the product in the BZ table ''products''. Because this is a record that we will keep even AFTER we deleted the record in the BZ table, this can NOT be a FK.',
+  `deleted_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was deleted in the BZ db (together with all objects related to this product/unit).',
+  `deletion_script` varchar(500) DEFAULT NULL COMMENT 'The script used to delete this product and all objects related to this product in the BZ database',
+  PRIMARY KEY (`id_unit_to_create`),
+  KEY `id_unit_creator_id` (`bzfe_creator_user_id`),
+  KEY `id_unit_classification_id` (`classification_id`),
+  CONSTRAINT `id_unit_classification_id` FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `id_unit_creator_id` FOREIGN KEY (`bzfe_creator_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_data_to_create_units` */
+
+/*Table structure for table `ut_data_to_replace_dummy_roles` */
+
+DROP TABLE IF EXISTS `ut_data_to_replace_dummy_roles`;
+
+CREATE TABLE `ut_data_to_replace_dummy_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `mefe_invitation_id` varchar(256) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
+  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
+  `is_occupant` tinyint(1) DEFAULT 0 COMMENT '1 if TRUE, 0 if FALSE',
+  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
+  `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
+  `comment` text DEFAULT NULL COMMENT 'Any comment',
+  PRIMARY KEY (`id`),
+  KEY `replace_dummy_role_role_type` (`user_role_type_id`),
+  KEY `replace_dummy_role_bz_user_id` (`bz_user_id`),
+  KEY `replace_dummy_role_invitor_bz_user_id` (`bzfe_invitor_user_id`),
+  KEY `replace_dummy_product_id` (`bz_unit_id`),
+  CONSTRAINT `replace_dummy_product_id` FOREIGN KEY (`bz_unit_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `replace_dummy_role_bz_user_id` FOREIGN KEY (`bz_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `replace_dummy_role_invitor_bz_user_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `replace_dummy_role_role_type` FOREIGN KEY (`user_role_type_id`) REFERENCES `ut_role_types` (`id_role_type`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_data_to_replace_dummy_roles` */
+
 /*Table structure for table `ut_group_types` */
 
 DROP TABLE IF EXISTS `ut_group_types`;
@@ -2378,42 +2829,48 @@ CREATE TABLE `ut_group_types` (
   `bz_description` varchar(255) DEFAULT NULL COMMENT 'A short description for BZ which we use when we create the group',
   `description` text DEFAULT NULL COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_group_type`,`groupe_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_group_types` */
 
 insert  into `ut_group_types`(`id_group_type`,`created`,`order`,`is_obsolete`,`groupe_type`,`bz_description`,`description`) values 
-(1,'2017-10-31 07:32:27',10,0,'creator','User has created the unit or has full delegation','The group for the user who has created the unit first and/or his representatives (agent or employee).'),
-(2,'2017-10-31 07:32:27',210,0,'hide/show_case_from_role','Visible only to','These are product/unit and bug/case visibility groups. \r\nThese groups are in the table bug_group_map.'),
-(3,'2017-10-31 07:32:27',310,0,'list_occupants','User is an occupant of the unit','These are also bug visibility groups but based on a different information: is the user an occupant of the unit or not?\r\nA Tenant can also be an occupant (or not)\r\nAn Owner/Landlord can also be an occupant (or not).'),
-(4,'2017-10-31 07:32:27',400,0,'list_visible_stakeholder','List all the users who have a role in this unit','This is a user visibility group (step 1).\r\nAll the users in this group have a role in this unit.'),
-(5,'2017-10-31 07:32:27',410,0,'see_visible_stakeholder','See all the stakeholders','This is a user visibility group (step 2).\r\nIf you are member of this group, you can see all the user in the list_stakeholder group for this unit.'),
-(6,'2017-10-31 07:32:27',500,0,'r_a_case_next_step','Requestee to approve the Next Step of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Next Step for a case in this unit.'),
-(7,'2017-10-31 07:32:27',600,0,'g_a_case_next_step','Grant approval for the Next Step of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Next Step for a case in this unit.'),
-(8,'2017-10-31 07:32:27',510,0,'r_a_case_solution','Requestee to approve the Solution of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Solution for a case in this unit.'),
-(9,'2017-10-31 07:32:27',610,0,'g_a_case_solution','Grant approval for the Solution of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Solution for a case in this unit.'),
-(10,'2017-10-31 07:32:27',520,0,'r_a_case_budget','Requestee to approve the Budget for a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Budget for a case in this unit.'),
-(11,'2017-10-31 07:32:27',620,0,'g_a_case_budget','Grant approval for the Budget for a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Budget for a case in this unit.'),
-(12,'2017-10-31 07:32:27',700,0,'r_a_attachment_approve','Requestee to approve the Attachment','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for an Attachment in this unit.'),
-(13,'2017-10-31 07:32:27',800,0,'g_a_attachment_approve','Grant approval for the Attachment','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for an Attachment in this unit.'),
-(14,'2017-10-31 07:32:27',710,0,'r_a_attachment_ok_to_pay','Requestee to approve pay a bill','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval to pay a specific bill in this unit.'),
-(15,'2017-10-31 07:32:27',810,0,'g_a_attachment_ok_to_pay','Grant approval to pay a bill','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval to pay a specific bill in this unit.'),
-(16,'2017-10-31 07:32:27',720,0,'r_a_attachment_is_paid','Requestee to confirm if a bill has been paid','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to confirm if a specific bill has been paid in this unit.'),
-(17,'2017-10-31 07:32:27',820,0,'g_a_attachment_is_paid','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(18,'2017-10-31 07:32:27',999,0,'all_r_flags','Grant approval for all flags','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(19,'2017-10-31 07:32:27',999,0,'all_g_all_flags','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(20,'2017-10-31 07:32:27',100,0,'Create a case','Group to be able to create cases in a unit','This is a group that helps us grant all shared accessed and permission in bulk to a user.\r\nIf you are member of this group, you can access, grant, request and be requested to approve all the Flags for a specific unit.'),
-(21,'2017-10-31 07:32:27',10000,0,'user_aggregation','Facilitate user management','This is to group user together (users working in the same company for example) so we can give them all the same permissions.'),
-(22,'2017-10-31 07:32:27',300,0,'list_users_in_role','List all user in a role','All the users in the same role/component for a given unit'),
-(24,'2017-10-31 07:32:27',220,0,'hide/show_case_from_occupant','Untick to hide a case from the occupants of the unit',NULL),
-(25,'2017-10-31 07:32:27',110,0,'Can edit a case','User can edit a case','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(26,'2017-10-31 07:32:27',120,0,'Can edit all fields in a case','Untick to hide a case from the occupants of the unit','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(27,'2017-10-31 07:32:27',130,0,'Can Edit components - roles','Needed so that a user can create new users','This is for the group that grant permission to create new users. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(28,'2017-10-31 07:32:27',200,0,'Case is visible to all','Untick to limit this case only to certain roles','This is for the group that limit visibility of a case by default. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are Default, N/A'),
-(29,'2017-10-31 07:32:27',420,0,'Active Stakeholder','Active Stakeholder',''),
-(30,'2017-10-31 07:32:27',0,0,'Single User Group','A group for a Single user','We use this to simplify the user_group_mapping. \r\nThis allows us to use group_group_map instead since it is easier to grant and revoke privileges with groups'),
-(31,'2017-10-31 07:32:27',20,0,'Invited by','List of users who were invited by the same user','List of users who were invited by the same user'),
-(32,'2017-10-31 07:32:27',430,0,'See all invited by','User Visibility group - for users who need to see all the users invited by a certain user','User Visibility group - for users who need to see all the users invited by a certain user');
+(1,'2018-02-13 11:33:49',50,0,'creator','User has created the unit or has full delegation','The group for the user who has created the unit first and/or his representatives (agent or employee).'),
+(2,'2018-02-13 11:33:49',210,0,'hide_show_case_from_role','Visible only to','These are product/unit and bug/case visibility groups. \r\nThese groups are in the table bug_group_map.'),
+(3,'2018-02-13 11:33:49',320,0,'list_occupants','User is an occupant of the unit','These are also bug visibility groups but based on a different information: is the user an occupant of the unit or not?\r\nA Tenant can also be an occupant (or not)\r\nAn Owner/Landlord can also be an occupant (or not).'),
+(4,'2018-02-13 11:33:49',400,0,'list_visible_stakeholder','List all the users who have a role in this unit','This is a user visibility group (step 1).\r\nAll the users in this group have a role in this unit.'),
+(5,'2018-02-13 11:33:49',410,0,'see_visible_stakeholder','See all the stakeholders','This is a user visibility group (step 2).\r\nIf you are member of this group, you can see all the user in the list_stakeholder group for this unit.'),
+(6,'2018-02-13 11:33:49',500,0,'r_a_case_next_step','Requestee to approve the Next Step of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Next Step for a case in this unit.'),
+(7,'2018-02-13 11:33:49',600,0,'g_a_case_next_step','Grant approval for the Next Step of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Next Step for a case in this unit.'),
+(8,'2018-02-13 11:33:49',510,0,'r_a_case_solution','Requestee to approve the Solution of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Solution for a case in this unit.'),
+(9,'2018-02-13 11:33:49',610,0,'g_a_case_solution','Grant approval for the Solution of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Solution for a case in this unit.'),
+(10,'2018-02-13 11:33:49',520,0,'r_a_case_budget','Requestee to approve the Budget for a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Budget for a case in this unit.'),
+(11,'2018-02-13 11:33:49',620,0,'g_a_case_budget','Grant approval for the Budget for a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Budget for a case in this unit.'),
+(12,'2018-02-13 11:33:49',700,0,'r_a_attachment_approve','Requestee to approve the Attachment','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for an Attachment in this unit.'),
+(13,'2018-02-13 11:33:49',800,0,'g_a_attachment_approve','Grant approval for the Attachment','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for an Attachment in this unit.'),
+(14,'2018-02-13 11:33:49',710,0,'r_a_attachment_ok_to_pay','Requestee to approve pay a bill','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval to pay a specific bill in this unit.'),
+(15,'2018-02-13 11:33:49',810,0,'g_a_attachment_ok_to_pay','Grant approval to pay a bill','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval to pay a specific bill in this unit.'),
+(16,'2018-02-13 11:33:49',720,0,'r_a_attachment_is_paid','Requestee to confirm if a bill has been paid','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to confirm if a specific bill has been paid in this unit.'),
+(17,'2018-02-13 11:33:49',820,0,'g_a_attachment_is_paid','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
+(18,'2018-02-13 11:33:49',999,0,'all_r_flags','Grant approval for all flags','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
+(19,'2018-02-13 11:33:49',999,0,'all_g_all_flags','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
+(20,'2018-02-13 11:33:49',100,0,'create_a_case','Group to be able to create cases in a unit','This is a group that helps us grant all shared accessed and permission in bulk to a user.\r\nIf you are member of this group, you can access, grant, request and be requested to approve all the Flags for a specific unit.'),
+(21,'2018-02-13 11:33:49',10000,0,'user_aggregation','Facilitate user management','This is to group user together (users working in the same company for example) so we can give them all the same permissions.'),
+(22,'2018-02-13 11:33:49',300,0,'list_users_in_role','List all user in a role','All the users in the same role/component for a given unit'),
+(24,'2018-02-13 11:33:49',220,0,'hide_show_case_from_occupant','Untick to hide a case from the occupants of the unit',NULL),
+(25,'2018-02-13 11:33:49',110,0,'can_edit_a_case','User can edit a case','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
+(26,'2018-02-13 11:33:49',120,0,'can_edit_all_fields_in_a_case','Untick to hide a case from the occupants of the unit','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
+(27,'2018-02-13 11:33:49',130,0,'can_edit_components_roles','Needed so that a user can create new users','This is for the group that grant permission to create new users. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
+(28,'2018-02-13 11:33:49',200,0,'case_is_visible_to_all','Untick to limit this case only to certain roles','This is for the group that limit visibility of a case by default. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are Default, N/A'),
+(29,'2018-02-13 11:33:49',420,0,'active_stakeholder','Active Stakeholder',''),
+(30,'2018-02-13 11:33:49',10,0,'single_user_roup','A group for a Single user','We use this to simplify the user_group_mapping. \r\nThis allows us to use group_group_map instead since it is easier to grant and revoke privileges with groups'),
+(31,'2018-02-13 11:33:49',60,0,'invited_by','List of users who were invited by the same user','List of users who were invited by the same user'),
+(32,'2018-02-13 11:33:49',430,0,'see_all_invited_by','User Visibility group - for users who need to see all the users invited by a certain user','User Visibility group - for users who need to see all the users invited by a certain user'),
+(33,'2018-02-13 11:33:49',20,0,'timetracking','Can see timetracking information','Grants persmission to see timetracking information for a case.'),
+(34,'2018-02-13 11:33:49',30,0,'create_shared_queries','User is allowed to share some of the queries he/she has created','User is allowed to share some of the queries he/she has created'),
+(35,'2018-02-13 11:33:49',40,0,'tag_comment','User is allowed to tag comments','User in this group are allowed to tag comment.\r\nALL users should be members of this group: tags are the mechanisms to mark a comment as received, read etc.... Tags are also a way to add reactions to a comment (emoji for instance).'),
+(36,'2018-02-13 11:33:49',330,0,'see_occupant','Can see the list of occupants','User in this group can see the list of occupants for a unit.'),
+(37,'2018-02-13 11:33:49',310,0,'see_user_in_role','Can see the list of users for a given role','User in this group can see the list of users for a given role.'),
+(38,'2018-02-13 11:33:49',140,0,'can_see_unit_in_search','Restrict visibility of a unit in the search panel','You need to be a member of this group so that the unit is listed in the Search.\r\nThis group is referenced in the group_control_map as MANDATORY/MANDATORY for a given unit.');
 
 /*Table structure for table `ut_map_contractor_to_type` */
 
@@ -2439,12 +2896,27 @@ CREATE TABLE `ut_map_contractor_to_user` (
 
 /*Data for the table `ut_map_contractor_to_user` */
 
+/*Table structure for table `ut_map_user_mefe_bzfe` */
+
+DROP TABLE IF EXISTS `ut_map_user_mefe_bzfe`;
+
+CREATE TABLE `ut_map_user_mefe_bzfe` (
+  `created` datetime DEFAULT NULL COMMENT 'creation ts',
+  `record_created_by` smallint(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
+  `is_obsolete` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'This is an obsolete record',
+  `bzfe_update_needed` tinyint(1) DEFAULT 0 COMMENT 'Do we need to update this record in the BZFE - This is to keep track of the user that have been modified in the MEFE but NOT yet in the BZFE',
+  `mefe_user_id` varchar(256) DEFAULT NULL COMMENT 'id of the user in the MEFE',
+  `bz_profile_id` mediumint(6) DEFAULT NULL COMMENT 'id of the user in the BZFE',
+  `comment` text DEFAULT NULL COMMENT 'Any comment'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_map_user_mefe_bzfe` */
+
 /*Table structure for table `ut_map_user_unit_details` */
 
 DROP TABLE IF EXISTS `ut_map_user_unit_details`;
 
 CREATE TABLE `ut_map_user_unit_details` (
-  `id_user_unit` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `record_created_by` smallint(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
   `is_obsolete` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'This is an obsolete record',
@@ -2452,9 +2924,17 @@ CREATE TABLE `ut_map_user_unit_details` (
   `bz_profile_id` mediumint(6) DEFAULT NULL COMMENT 'id of the user in the BZFE',
   `bz_unit_id` smallint(6) DEFAULT NULL COMMENT 'The id of the unit in the BZFE',
   `role_type_id` smallint(6) DEFAULT NULL COMMENT 'An id in the table ut_role_types: the role of the user for this unit',
+  `can_see_time_tracking` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can see the timetracking information for a case',
+  `can_create_shared_queries` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can create shared queries',
+  `can_tag_comment` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can tag comments',
   `is_occupant` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1 (TRUE) if the user is an occupnt for this unit',
   `is_public_assignee` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user is one of the public assignee for this unit',
   `is_see_visible_assignee` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can see the public assignee for this unit',
+  `is_in_cc_for_role` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1 (TRUE if the user should be included in CC each time a new case is created for his/her role for this unit',
+  `can_create_case` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE if the user can create new cases for this unit',
+  `can_edit_case` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can edit a case for this unit',
+  `can_see_case` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can the all the public cases for this unit',
+  `can_edit_all_field_regardless_of_role` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1 (TRUE) if the user can edit all the fields in a case he/she has access to regardless of his or her role',
   `is_flag_requestee` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can be asked to approve all flags',
   `is_flag_approver` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can approve all flags',
   `can_create_any_sh` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 (TRUE) if the user can create any type of stakeholder',
@@ -2465,10 +2945,98 @@ CREATE TABLE `ut_map_user_unit_details` (
   `public_name` varchar(255) DEFAULT NULL COMMENT 'The user Public name',
   `more_info` text DEFAULT NULL COMMENT 'More information about this user. We display this in the component/stakeholder description for the unit',
   `comment` text DEFAULT NULL COMMENT 'Any comment',
-  PRIMARY KEY (`id_user_unit`)
+  UNIQUE KEY `bz_profile_id_bz_product_id` (`bz_profile_id`,`bz_unit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_map_user_unit_details` */
+
+/*Table structure for table `ut_permission_types` */
+
+DROP TABLE IF EXISTS `ut_permission_types`;
+
+CREATE TABLE `ut_permission_types` (
+  `id_permissin_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `created` datetime DEFAULT NULL COMMENT 'creation ts',
+  `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
+  `is_obsolete` tinyint(1) DEFAULT 0 COMMENT '1 if this is an obsolete value',
+  `group_type_id` smallint(6) DEFAULT NULL COMMENT 'The id of the group that grant this permission - a FK to the table ut_group_types',
+  `permission_type` varchar(255) NOT NULL COMMENT 'A name for this role type',
+  `permission_scope` varchar(255) DEFAULT NULL COMMENT '4 possible values: GLOBAL: for all units and roles, UNIT: permission for a specific unit, ROLE: permission for a specific role in a specific unit, SPECIAL: special permission (ex: occupant)',
+  `permission_category` varchar(255) DEFAULT NULL COMMENT 'Possible values: ACCESS: group_control, GRANT FLAG: permissions to grant flags, ASK FOR APPROVAL: can ask a specific user to approve a flag, ROLE: a user is in a given role,',
+  `is_bless` tinyint(1) DEFAULT 0 COMMENT '1 if this is a permission to grant membership to a given group',
+  `bless_id` smallint(6) DEFAULT NULL COMMENT 'IF this is a ''blessing'' permission - which permission can this grant',
+  `description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
+  `detailed_description` text DEFAULT NULL COMMENT 'Detailed description of this group type',
+  PRIMARY KEY (`id_permissin_type`,`permission_type`),
+  KEY `premission_groupe_type` (`group_type_id`),
+  CONSTRAINT `premission_groupe_type` FOREIGN KEY (`group_type_id`) REFERENCES `ut_group_types` (`id_group_type`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_permission_types` */
+
+insert  into `ut_permission_types`(`id_permissin_type`,`created`,`order`,`is_obsolete`,`group_type_id`,`permission_type`,`permission_scope`,`permission_category`,`is_bless`,`bless_id`,`description`,`detailed_description`) values 
+(1,'2018-02-13 11:33:49',10,0,33,'can_see_time_tracking','GLOBAL','FUNCTIONALITY',0,NULL,'The user can see the time tracking information',NULL),
+(2,'2018-02-13 11:33:49',20,0,33,'can_grant_see_time_tracking','GLOBAL','FUNCTIONALITY',1,1,'The user can allow another user to see time tracking information',NULL),
+(3,'2018-02-13 11:33:49',30,0,34,'can_create_shared_query','GLOBAL','FUNCTIONALITY',0,NULL,NULL,NULL),
+(4,'2018-02-13 11:33:49',40,0,34,'can_grant_create_shared_query','GLOBAL','FUNCTIONALITY',1,3,NULL,NULL),
+(5,'2018-02-13 11:33:49',50,0,35,'can_tag_comment','GLOBAL','FUNCTIONALITY',0,NULL,'This should be mandatory for all users: flags are allowing us to mark a comment as sent, received, read, and allow us to add emoticons for instance',NULL),
+(6,'2018-02-13 11:33:49',60,0,35,'can_grant_tag_comment','GLOBAL','FUNCTIONALITY',1,5,NULL,NULL),
+(7,'2018-02-13 11:33:49',70,0,3,'is_occupant','UNIT','VISIBLE USER',0,NULL,NULL,NULL),
+(8,'2018-02-13 11:33:49',80,0,3,'can_grant_is_occupant','UNIT','VISIBLE USER',1,7,NULL,NULL),
+(9,'2018-02-13 11:33:49',90,0,36,'can_see_occupant','UNIT','VIEW USER',0,NULL,NULL,NULL),
+(10,'2018-02-13 11:33:49',100,0,36,'can_grant_see_occupant','UNIT','VIEW USER',1,9,NULL,NULL),
+(11,'2018-02-13 11:33:49',110,0,20,'can_create_new_case','UNIT','ACCESS',0,NULL,NULL,NULL),
+(12,'2018-02-13 11:33:49',120,0,20,'can_grant_create_new_case','UNIT','ACCESS',1,11,NULL,NULL),
+(13,'2018-02-13 11:33:49',130,0,25,'can_edit_a_case','UNIT','ACCESS',0,NULL,NULL,NULL),
+(14,'2018-02-13 11:33:49',140,0,25,'can_grant_edit_a_case','UNIT','ACCESS',1,13,NULL,NULL),
+(15,'2018-02-13 11:33:49',150,0,28,'can_see_public_cases','UNIT','ACCESS',0,NULL,NULL,NULL),
+(16,'2018-02-13 11:33:49',160,0,28,'can_grant_see_public_cases','UNIT','ACCESS',1,15,NULL,NULL),
+(17,'2018-02-13 11:33:49',170,0,26,'can_edit_all_field_in_a_case_regardless_of_role','UNIT','FUNCTIONALITY',0,NULL,NULL,NULL),
+(18,'2018-02-13 11:33:49',180,0,26,'can_grant_edit_all_field_in_a_case_regardless_of_role','UNIT','FUNCTIONALITY',1,17,NULL,NULL),
+(19,'2018-02-13 11:33:49',190,0,4,'user_is_publicly_visible','UNIT','VISIBLE USER',0,NULL,NULL,NULL),
+(20,'2018-02-13 11:33:49',200,0,4,'can_grant_user_is_publicly_visible','UNIT','VISIBLE USER',1,19,NULL,NULL),
+(21,'2018-02-13 11:33:49',210,0,5,'user_can_see_publicly_visible_user','UNIT','VIEW USER',0,NULL,NULL,NULL),
+(22,'2018-02-13 11:33:49',220,0,5,'can_grant_user_can_see_publicly_visible_user','UNIT','VIEW USER',1,21,NULL,NULL),
+(23,'2018-02-13 11:33:49',230,0,18,'can_ask_to_approve_flag','UNIT','FLAG',0,NULL,NULL,NULL),
+(24,'2018-02-13 11:33:49',240,0,18,'can_grant_can_ask_to_approve_flag','UNIT','FLAG',1,23,NULL,NULL),
+(25,'2018-02-13 11:33:49',250,0,19,'can_approve_flag','UNIT','FLAG',0,NULL,NULL,NULL),
+(26,'2018-02-13 11:33:49',260,0,19,'can_grant_can_approve_flag','UNIT','FLAG',1,25,NULL,NULL),
+(27,'2018-02-13 11:33:49',270,0,2,'show_case_to_tenant','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(28,'2018-02-13 11:33:49',280,0,2,'can_grant_show_case_to_tenant','UNIT-ROLE','ACCESS',1,27,NULL,NULL),
+(29,'2018-02-13 11:33:49',290,0,22,'user_is_tenant','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(30,'2018-02-13 11:33:49',300,0,22,'can_grant_user_is_tenant','UNIT-ROLE','VISIBLE USER',1,29,NULL,NULL),
+(31,'2018-02-13 11:33:49',310,0,37,'can_see_tenant','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(32,'2018-02-13 11:33:49',320,0,37,'can_grant_can_see_tenant','UNIT-ROLE','VIEW USER',1,31,NULL,NULL),
+(33,'2018-02-13 11:33:49',330,0,2,'show_case_to_landlord','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(34,'2018-02-13 11:33:49',340,0,2,'can_grant_show_case_to_landlord','UNIT-ROLE','ACCESS',1,33,NULL,NULL),
+(35,'2018-02-13 11:33:49',350,0,22,'user_is_lanldord','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(36,'2018-02-13 11:33:49',360,0,22,'can_grant_user_is_lanldord','UNIT-ROLE','VISIBLE USER',1,35,NULL,NULL),
+(37,'2018-02-13 11:33:49',370,0,37,'can_see_landlord','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(38,'2018-02-13 11:33:49',380,0,37,'can_grant_can_see_landlord','UNIT-ROLE','VIEW USER',1,37,NULL,NULL),
+(39,'2018-02-13 11:33:49',390,0,2,'show_case_to_agent','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(40,'2018-02-13 11:33:49',400,0,2,'can_grant_show_case_to_agent','UNIT-ROLE','ACCESS',1,39,NULL,NULL),
+(41,'2018-02-13 11:33:49',410,0,22,'user_is_agent','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(42,'2018-02-13 11:33:49',420,0,22,'can_grant_user_is_agent','UNIT-ROLE','VISIBLE USER',1,41,NULL,NULL),
+(43,'2018-02-13 11:33:49',430,0,37,'can_see_agent','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(44,'2018-02-13 11:33:49',440,0,37,'can_grant_can_see_agent','UNIT-ROLE','VIEW USER',1,43,NULL,NULL),
+(45,'2018-02-13 11:33:49',450,0,2,'show_case_to_contractor','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(46,'2018-02-13 11:33:49',460,0,2,'can_grant_show_case_to_contractor','UNIT-ROLE','ACCESS',1,45,NULL,NULL),
+(47,'2018-02-13 11:33:49',470,0,22,'user_is_contractor','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(48,'2018-02-13 11:33:49',480,0,22,'can_grant_user_is_contractor','UNIT-ROLE','VISIBLE USER',1,47,NULL,NULL),
+(49,'2018-02-13 11:33:49',490,0,37,'can_see_contractor','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(50,'2018-02-13 11:33:49',500,0,37,'can_grant_can_see_contractor','UNIT-ROLE','VIEW USER',1,49,NULL,NULL),
+(51,'2018-02-13 11:33:49',510,0,2,'show_case_to_mgt_cny','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(52,'2018-02-13 11:33:49',520,0,2,'can_grant_show_case_to_mgt_cny','UNIT-ROLE','ACCESS',1,51,NULL,NULL),
+(53,'2018-02-13 11:33:49',530,0,22,'user_is_mgt_cny','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(54,'2018-02-13 11:33:49',540,0,22,'can_grant_user_is_mgt_cny','UNIT-ROLE','VISIBLE USER',1,53,NULL,NULL),
+(55,'2018-02-13 11:33:49',550,0,37,'can_see_mgt_cny','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(56,'2018-02-13 11:33:49',560,0,37,'can_grant_can_see_mgt_cny','UNIT-ROLE','VIEW USER',1,55,NULL,NULL),
+(57,'2018-02-13 11:33:49',64,0,24,'show_case_to_occupant','UNIT','ACCESS',0,NULL,NULL,NULL),
+(58,'2018-02-13 11:33:49',66,0,24,'can_grant_show_case_to_occupant','UNIT','ACCESS',1,57,NULL,NULL),
+(59,'2018-02-13 11:33:49',590,0,31,'user_is_invited_by','GLOBAL','VISIBLE USER',0,NULL,NULL,NULL),
+(60,'2018-02-13 11:33:49',600,0,31,'can_grant_user_is_invited_by','GLOBAL','VIEW USER',1,59,NULL,NULL),
+(61,'2018-02-13 11:33:49',610,0,38,'user_can_see_that_unit_in_search','UNIT','ACCESS',0,NULL,NULL,NULL),
+(62,'2018-02-13 11:33:49',620,0,38,'can_grant_see_that_unit_in_search','UNIT','ACCESS',1,61,NULL,NULL);
 
 /*Table structure for table `ut_product_group` */
 
@@ -2502,24 +3070,25 @@ CREATE TABLE `ut_role_types` (
 /*Data for the table `ut_role_types` */
 
 insert  into `ut_role_types`(`id_role_type`,`created`,`role_type`,`bz_description`,`description`) values 
-(1,'2017-10-26 22:35:58','Tenant','The Tenant','The person or entity who signed the tenancy agreement.'),
-(2,'2017-10-26 22:35:58','Owner/Landlord','The Landlord','The person(s) or entity that are the registered owner of the property.'),
-(3,'2017-10-26 22:35:58','Contractor','A contractor','A company or a person that can or will do work in the unit (electricity, plumbing, Aircon Maintenance, Housekeeping, etc...).'),
-(4,'2017-10-26 22:35:58','Management Company','The management Company','Is in charge of day to day operations and responsible to fix things if something happens in a unit.'),
-(5,'2017-10-26 22:35:58','Agent','An agent','The user who act as either the representative for the Tenant or for the Landlord. It is possible to have 2 agents attached to the same unit.');
+(1,'2018-02-13 11:33:49','Tenant','The Tenant','The person or entity who signed the tenancy agreement.'),
+(2,'2018-02-13 11:33:49','Owner/Landlord','The Landlord','The person(s) or entity that are the registered owner of the property.'),
+(3,'2018-02-13 11:33:49','Contractor','A contractor','A company or a person that can or will do work in the unit (electricity, plumbing, Aircon Maintenance, Housekeeping, etc...).'),
+(4,'2018-02-13 11:33:49','Management Company','The management Company','Is in charge of day to day operations and responsible to fix things if something happens in a unit.'),
+(5,'2018-02-13 11:33:49','Agent','An agent','The user who act as either the representative for the Tenant or for the Landlord. It is possible to have 2 agents attached to the same unit.');
 
-/*Table structure for table `ut_user_group_map_temp` */
+/*Table structure for table `ut_script_log` */
 
-DROP TABLE IF EXISTS `ut_user_group_map_temp`;
+DROP TABLE IF EXISTS `ut_script_log`;
 
-CREATE TABLE `ut_user_group_map_temp` (
-  `user_id` mediumint(9) NOT NULL,
-  `group_id` mediumint(9) NOT NULL,
-  `isbless` tinyint(4) NOT NULL DEFAULT 0,
-  `grant_type` tinyint(4) NOT NULL DEFAULT 0
+CREATE TABLE `ut_script_log` (
+  `id_ut_script_log` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
+  `datetime` datetime DEFAULT NULL COMMENT 'When was this record created',
+  `script` mediumtext DEFAULT NULL COMMENT 'The script that was used to create the record',
+  `log` text DEFAULT NULL COMMENT 'More information about what we intended to do',
+  PRIMARY KEY (`id_ut_script_log`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `ut_user_group_map_temp` */
+/*Data for the table `ut_script_log` */
 
 /*Table structure for table `versions` */
 
