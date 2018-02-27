@@ -645,18 +645,6 @@
 						, CONCAT('Remove the record where BZ user id ='
 						, @bz_user_id
 						, ' the group id = '
-						, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
-						, '.')
-						)
-					 , (NOW() 
-						,@bzfe_table
-						, 'n/a'
-						, 'n/a - we delete the record'
-						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the group id = '
 						, (SELECT IFNULL(@can_see_unit_in_search_group_id, 'can_see_unit_in_search_group_id is NULL'))
 						, '.')
 						)

@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.13 to v2.16
+# Built for BZFE database v2.18
 #
 # This script adds permissions for an existing BZ group of user to do certain things for a unit in a role which has already been created.
 #
@@ -67,10 +67,12 @@
 		SET @group_can_create_new_cases = 1;
 		SET @group_can_edit_a_case = 1;
 		SET @group_can_see_all_public_cases = 1;
+		SET @user_group_can_see_unit_in_search = 1;
 		# This is mandatory for triage users!
 		SET @group_can_edit_all_field_in_a_case_regardless_of_role = 0;
 		SET @user_group_is_publicly_visible = 0;
 		SET @user_group_can_see_publicly_visible = 1;
+		
 
 		SET @user_in_cc_for_cases = 0;
 
@@ -137,17 +139,31 @@
 ###########
 	#	- unit_creator_group_id
 	# We need to ge these from the ut_product_table_based on the product_id!
+
+######
+# Do we need that??
+		SET @unit_creator_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 1));
+		SET @can_edit_component_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 27));
+#
+######
+		
 		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
 		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
-		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
-		SET @can_edit_component_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 27));
 		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
+		
+		# This is needed until MEFE is able to handle more detailed permissions.
+		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
+		
+		# This is needed so that user can see the unit in the Search panel
+		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
+
+		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
+		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
+
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
-		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));
-#		SET @active_stakeholder_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 29));
-		SET @unit_creator_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 1));
+	
+
 
 	# Groups created when we created the Role for this product.
 	#	- show_to_tenant
@@ -220,6 +236,7 @@
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @create_case_group_id)
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_edit_case_group_id)
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_edit_all_field_case_group_id)
+				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_see_unit_in_search_group_id)
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_edit_component_group_id)
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @can_see_cases_group_id)
 				OR (`member_id` = @bz_user_group_id AND `grantor_id` = @all_r_flags_group_id)
@@ -265,6 +282,7 @@
 										, '\r\- can_edit_a_case: 0'
 										, '\r\- can_see_all_public_cases: 0'
 										, '\r\- can_edit_all_field_in_a_case_regardless_of_role: 0'
+										, '\r\- can_see_unit_in_search: 0'
 										, '\r\- user_is_publicly_visible: 0'
 										, '\r\- user_can_see_publicly_visible: 0'
 										, '\r\- can_ask_to_approve: 0'
@@ -384,6 +402,18 @@
 						, @bz_user_group_id
 						, ' the group id = '
 						, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
+						, '.')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@can_see_unit_in_search_group_id, 'can_see_unit_in_search_group_id is NULL'))
 						, '.')
 						)
 					 , (NOW() 
@@ -714,12 +744,15 @@
 #	- is_occupant
 #	- group_can_see_occupant
 #
+#	- can_edit_all_field_in_a_case_regardless_of_role
+#
 #	- can_create_new_cases
 #	- can_edit_a_case
-#	- group_can_see_all_public_cases
-#	- can_edit_all_field_in_a_case_regardless_of_role
-#	- user_is_publicly_visible
-#	- user_group_can_see_publicly_visible
+#	- can_edit_all_field_case
+#	- can_see_unit_in_search
+#	- can_see_all_public_cases
+#	- user_in_the_group_is_publicly_visible
+#	- user_in_the_group_can_see_publicly_visible
 #	- can_ask_to_approve (all_r_flags_group_id)
 #	- can_approve (all_g_flags_group_id)
 #
@@ -1273,6 +1306,68 @@ BEGIN
 					 VALUES
 					 (NOW() ,@bzfe_table, 'member_id', 'UNKNOWN', @bz_user_group_id, @script, CONCAT('Add the bz user groupid when we grant the permission to ', @permission_granted))
 					 , (NOW() ,@bzfe_table, 'grantor_id', 'UNKNOWN', @can_see_cases_group_id, @script, CONCAT('group does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('group is a member of the group ', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;
+
+				
+		# User can see the unit in the search panel
+
+DROP PROCEDURE IF EXISTS group_can_see_unit_in_search;
+DELIMITER $$
+CREATE PROCEDURE group_can_see_unit_in_search()
+BEGIN
+	IF (@group_can_see_all_public_cases = 1)
+	THEN INSERT INTO `ut_group_group_map_temp`
+				(`member_id`
+				,`grantor_id`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_group_id, @can_see_unit_in_search_group_id, 0)	
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user group #'
+										, @bz_user_group_id
+										, ' can see the unit#'
+										, @product_id
+										, ' in the search panel.'
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_group_group_map_temp';
+				SET @permission_granted = 'Can see the unit in the Search panel.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'member_id', 'UNKNOWN', @bz_user_group_id, @script, CONCAT('Add the bz user groupid when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'grantor_id', 'UNKNOWN', @can_see_unit_in_search_group_id, @script, CONCAT('group does NOT grant ',@permission_granted, ' permission'))
 					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('group is a member of the group ', @permission_granted))
 					;
 			 
@@ -2580,6 +2675,7 @@ CALL group_can_see_occupant;
 CALL group_can_create_new_cases;
 CALL group_can_edit_a_case;
 CALL group_can_see_all_public_cases;
+CALL group_can_see_unit_in_search;
 CALL group_can_edit_all_field_in_a_case_regardless_of_role;
 CALL user_group_is_publicly_visible;
 CALL user_group_can_see_publicly_visible;
@@ -2639,6 +2735,7 @@ CALL group_can_see_users_mgt_cny;
 		DROP PROCEDURE group_can_create_new_cases;
 		DROP PROCEDURE group_can_edit_a_case;
 		DROP PROCEDURE group_can_see_all_public_cases;
+		DROP PROCEDURE group_can_see_unit_in_search;
 		DROP PROCEDURE group_can_edit_all_field_in_a_case_regardless_of_role;
 		DROP PROCEDURE user_group_is_publicly_visible;
 		DROP PROCEDURE user_group_can_see_publicly_visible;
