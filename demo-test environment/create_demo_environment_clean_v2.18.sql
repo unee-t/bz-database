@@ -330,14 +330,6 @@
 	#The unit: What is the id of the unit in the table 'ut_data_to_create_units'
 		SET @product_id = 1;
 
-########################################################################
-	#
-	#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
-	#
-#########################################################################
-	#
-	# Info about this script
-		SET @script = 'cleanup_remove_a_unit_bzfe_v2.18.sql';
 	# 
 	# This script will alter the following tables (but NOT in that order):
 	#
