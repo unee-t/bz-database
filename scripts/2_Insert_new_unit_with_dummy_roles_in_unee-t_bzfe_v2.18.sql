@@ -1378,7 +1378,7 @@
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;
 
-		# User can Edit a case this is needed so the API does not thrown an error:
+		# User can Edit a case and see this unit, this is needed so the API does not thrown an error see issue #60:
 
 			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
@@ -1392,6 +1392,11 @@
 				, (@bz_user_id_dummy_agent,@can_edit_case_group_id,0,0)
 				, (@bz_user_id_dummy_contractor,@can_edit_case_group_id,0,0)
 				, (@bz_user_id_dummy_mgt_cny,@can_edit_case_group_id,0,0)
+				, (@bz_user_id_dummy_tenant,@can_see_unit_in_search_group_id,0,0)
+				, (@bz_user_id_dummy_landlord,@can_see_unit_in_search_group_id,0,0)
+				, (@bz_user_id_dummy_agent,@can_see_unit_in_search_group_id,0,0)
+				, (@bz_user_id_dummy_contractor,@can_see_unit_in_search_group_id,0,0)
+				, (@bz_user_id_dummy_mgt_cny,@can_see_unit_in_search_group_id,0,0)
 				;
 
 			# Log the actions of the script.
@@ -1407,7 +1412,7 @@
 										, ', #'
 										, @bz_user_id_dummy_mgt_cny
 										, ')'
-										, ' CAN edit a cases for unit '
+										, ' CAN edit a cases and see the unit '
 										, @product_id
 										)
 										;
@@ -1424,7 +1429,7 @@
 			# We log what we have just done into the `ut_audit_log` table
 				
 				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'edit a case in this unit.';
+				SET @permission_granted = 'edit a case and see this unit.';
 
 				INSERT INTO `ut_audit_log`
 					 (`datetime`
