@@ -2029,53 +2029,58 @@ We do NOT need this, these user already exist in the DEV/Staging
 						SET @bzfe_table = NULL;
 						SET @permission_granted = NULL;
 
-				#User can Edit a case this is needed so the API does not thrown an error:
+			# User can Edit a case and see this unit, this is needed so the API does not thrown an error see issue #60:
 
-					INSERT INTO `ut_user_group_map_temp`
-						(`user_id`
-						,`group_id`
-						,`isbless`
-						,`grant_type`
-						) 
-						VALUES 
-						(@bz_user_id_dummy_tenant,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_landlord,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_agent,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_contractor,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_mgt_cny,@can_edit_case_group_id,0,0)
+				INSERT INTO `ut_user_group_map_temp`
+					(`user_id`
+					,`group_id`
+					,`isbless`
+					,`grant_type`
+					) 
+					VALUES 
+					(@bz_user_id_dummy_tenant,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_landlord,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_agent,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_contractor,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_mgt_cny,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_tenant,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_landlord,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_agent,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_contractor,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_mgt_cny,@can_see_unit_in_search_group_id,0,0)
+					;
+
+				# Log the actions of the script.
+					SET @script_log_message = CONCAT('the dummy bz users for each component: '
+											, '(#'
+											, @bz_user_id_dummy_tenant
+											, ', #'
+											, @bz_user_id_dummy_landlord
+											, ', #'
+											, @bz_user_id_dummy_agent
+											, ', #'
+											, @bz_user_id_dummy_contractor
+											, ', #'
+											, @bz_user_id_dummy_mgt_cny
+											, ')'
+											, ' CAN edit a cases and see the unit '
+											, @product_id
+											)
+											;
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
 						;
 
-					#Log the actions of the script.
-						SET @script_log_message = CONCAT('the dummy bz users for each component: '
-												, '(#'
-												, @bz_user_id_dummy_tenant
-												, ', #'
-												, @bz_user_id_dummy_landlord
-												, ', #'
-												, @bz_user_id_dummy_agent
-												, ', #'
-												, @bz_user_id_dummy_contractor
-												, ', #'
-												, @bz_user_id_dummy_mgt_cny
-												, ')'
-												, ' CAN edit a cases for unit '
-												, @product_id
-												)
-												;
-						
-						INSERT INTO `ut_script_log`
-							(`datetime`
-							, `script`
-							, `log`
-							)
-							VALUES
-							(NOW(), @script, @script_log_message)
-							;
-
-					#We log what we have just done into the `ut_audit_log` table
-						
-						SET @bzfe_table = 'ut_user_group_map_temp';
-						SET @permission_granted = 'edit a case in this unit.';
+				# We log what we have just done into the `ut_audit_log` table
+					
+					SET @bzfe_table = 'ut_user_group_map_temp';
+					SET @permission_granted = 'edit a case and see this unit.';
 
 						INSERT INTO `ut_audit_log`
 							 (`datetime`
@@ -3411,53 +3416,58 @@ We do NOT need this, these user already exist in the DEV/Staging
 						SET @bzfe_table = NULL;
 						SET @permission_granted = NULL;
 
-				#User can Edit a case this is needed so the API does not thrown an error:
+			# User can Edit a case and see this unit, this is needed so the API does not thrown an error see issue #60:
 
-					INSERT INTO `ut_user_group_map_temp`
-						(`user_id`
-						,`group_id`
-						,`isbless`
-						,`grant_type`
-						) 
-						VALUES 
-						(@bz_user_id_dummy_tenant,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_landlord,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_agent,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_contractor,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_mgt_cny,@can_edit_case_group_id,0,0)
+				INSERT INTO `ut_user_group_map_temp`
+					(`user_id`
+					,`group_id`
+					,`isbless`
+					,`grant_type`
+					) 
+					VALUES 
+					(@bz_user_id_dummy_tenant,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_landlord,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_agent,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_contractor,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_mgt_cny,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_tenant,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_landlord,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_agent,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_contractor,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_mgt_cny,@can_see_unit_in_search_group_id,0,0)
+					;
+
+				# Log the actions of the script.
+					SET @script_log_message = CONCAT('the dummy bz users for each component: '
+											, '(#'
+											, @bz_user_id_dummy_tenant
+											, ', #'
+											, @bz_user_id_dummy_landlord
+											, ', #'
+											, @bz_user_id_dummy_agent
+											, ', #'
+											, @bz_user_id_dummy_contractor
+											, ', #'
+											, @bz_user_id_dummy_mgt_cny
+											, ')'
+											, ' CAN edit a cases and see the unit '
+											, @product_id
+											)
+											;
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
 						;
 
-					#Log the actions of the script.
-						SET @script_log_message = CONCAT('the dummy bz users for each component: '
-												, '(#'
-												, @bz_user_id_dummy_tenant
-												, ', #'
-												, @bz_user_id_dummy_landlord
-												, ', #'
-												, @bz_user_id_dummy_agent
-												, ', #'
-												, @bz_user_id_dummy_contractor
-												, ', #'
-												, @bz_user_id_dummy_mgt_cny
-												, ')'
-												, ' CAN edit a cases for unit '
-												, @product_id
-												)
-												;
-						
-						INSERT INTO `ut_script_log`
-							(`datetime`
-							, `script`
-							, `log`
-							)
-							VALUES
-							(NOW(), @script, @script_log_message)
-							;
-
-					#We log what we have just done into the `ut_audit_log` table
-						
-						SET @bzfe_table = 'ut_user_group_map_temp';
-						SET @permission_granted = 'edit a case in this unit.';
+				# We log what we have just done into the `ut_audit_log` table
+					
+					SET @bzfe_table = 'ut_user_group_map_temp';
+					SET @permission_granted = 'edit a case and see this unit.';	
 
 						INSERT INTO `ut_audit_log`
 							 (`datetime`
@@ -4793,53 +4803,58 @@ We do NOT need this, these user already exist in the DEV/Staging
 						SET @bzfe_table = NULL;
 						SET @permission_granted = NULL;
 
-				#User can Edit a case this is needed so the API does not thrown an error:
+			# User can Edit a case and see this unit, this is needed so the API does not thrown an error see issue #60:
 
-					INSERT INTO `ut_user_group_map_temp`
-						(`user_id`
-						,`group_id`
-						,`isbless`
-						,`grant_type`
-						) 
-						VALUES 
-						(@bz_user_id_dummy_tenant,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_landlord,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_agent,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_contractor,@can_edit_case_group_id,0,0)
-						, (@bz_user_id_dummy_mgt_cny,@can_edit_case_group_id,0,0)
+				INSERT INTO `ut_user_group_map_temp`
+					(`user_id`
+					,`group_id`
+					,`isbless`
+					,`grant_type`
+					) 
+					VALUES 
+					(@bz_user_id_dummy_tenant,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_landlord,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_agent,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_contractor,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_mgt_cny,@can_edit_case_group_id,0,0)
+					, (@bz_user_id_dummy_tenant,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_landlord,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_agent,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_contractor,@can_see_unit_in_search_group_id,0,0)
+					, (@bz_user_id_dummy_mgt_cny,@can_see_unit_in_search_group_id,0,0)
+					;
+
+				# Log the actions of the script.
+					SET @script_log_message = CONCAT('the dummy bz users for each component: '
+											, '(#'
+											, @bz_user_id_dummy_tenant
+											, ', #'
+											, @bz_user_id_dummy_landlord
+											, ', #'
+											, @bz_user_id_dummy_agent
+											, ', #'
+											, @bz_user_id_dummy_contractor
+											, ', #'
+											, @bz_user_id_dummy_mgt_cny
+											, ')'
+											, ' CAN edit a cases and see the unit '
+											, @product_id
+											)
+											;
+					
+					INSERT INTO `ut_script_log`
+						(`datetime`
+						, `script`
+						, `log`
+						)
+						VALUES
+						(NOW(), @script, @script_log_message)
 						;
 
-					#Log the actions of the script.
-						SET @script_log_message = CONCAT('the dummy bz users for each component: '
-												, '(#'
-												, @bz_user_id_dummy_tenant
-												, ', #'
-												, @bz_user_id_dummy_landlord
-												, ', #'
-												, @bz_user_id_dummy_agent
-												, ', #'
-												, @bz_user_id_dummy_contractor
-												, ', #'
-												, @bz_user_id_dummy_mgt_cny
-												, ')'
-												, ' CAN edit a cases for unit '
-												, @product_id
-												)
-												;
-						
-						INSERT INTO `ut_script_log`
-							(`datetime`
-							, `script`
-							, `log`
-							)
-							VALUES
-							(NOW(), @script, @script_log_message)
-							;
-
-					#We log what we have just done into the `ut_audit_log` table
-						
-						SET @bzfe_table = 'ut_user_group_map_temp';
-						SET @permission_granted = 'edit a case in this unit.';
+				# We log what we have just done into the `ut_audit_log` table
+					
+					SET @bzfe_table = 'ut_user_group_map_temp';
+					SET @permission_granted = 'edit a case and see this unit.';
 
 						INSERT INTO `ut_audit_log`
 							 (`datetime`
