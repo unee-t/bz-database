@@ -42,39 +42,8 @@
 # Environment: Which environment are you creatin the unit in?
 #	- 1 is for the DEV/Staging
 #	- 2 is for the prod environment
+#	- 3 is for the Demo environment
 	SET @environment = 1;
-
-# Comment out the appropriately depending on which envo you are running this script in.
-# This is needed so that the invitation mechanism works as intended in the MEFE.
-	#	- Tenant 1
-		# DEV
-			SET @bz_user_id_dummy_tenant = 96;
-		# PROD
-		#	SET @bz_user_id_dummy_tenant = 93;
-
-	# 	- Landlord 2
-		# DEV
-			SET @bz_user_id_dummy_landlord = 94;
-		# PROD
-		#	SET @bz_user_id_dummy_landlord = 91;
-		
-	#	- Contractor 3
-		# DEV
-			SET @bz_user_id_dummy_contractor = 93;
-		# PROD
-		#	SET @bz_user_id_dummy_contractor = 90;
-		
-	#	- Management company 4
-		# DEV
-			SET @bz_user_id_dummy_mgt_cny = 95;
-		# PROD
-		#	SET @bz_user_id_dummy_mgt_cny = 92;
-		
-	#	- Agent 5
-		# DEV
-			SET @bz_user_id_dummy_agent = 92;
-		# PROD
-		#	SET @bz_user_id_dummy_agent = 89;
 	
 ########################################################################
 #
@@ -85,6 +54,46 @@
 # Info about this script
 	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.18.sql';
 	
+# Timestamp	
+	SET @timestamp = NOW();
+
+# We create a temporary table to record the ids of the dummy users in each environments:
+	/*Table structure for table `ut_temp_dummy_users_for_roles` */
+		DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+		CREATE TABLE `ut_temp_dummy_users_for_roles` (
+		  `environment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
+		  `environment_name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+		  `tenant_id` int(11) NOT NULL,
+		  `landlord_id` int(11) NOT NULL,
+		  `contractor_id` int(11) NOT NULL,
+		  `mgt_cny_id` int(11) NOT NULL,
+		  `agent_id` int(11) DEFAULT NULL,
+		  PRIMARY KEY (`environment_id`)
+		) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+	/*Data for the table `ut_temp_dummy_users_for_roles` */
+		INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) values 
+			(1,'DEV/Staging',96,94,93,95,92),
+			(2,'Prod',93,91,90,92,89),
+			(3,'demo/dev',4,3,5,6,2);
+		
+# Get the BZ profile id of the dummy users based on the environment variable
+	# Tenant 1
+		SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
+	# Landlord 2
+		SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Contractor 3
+		SET @bz_user_id_dummy_contractor = (SELECT `contractor_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Management company 4
+		SET @bz_user_id_dummy_mgt_cny = (SELECT `mgt_cny_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Agent 5
+		SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
 # The unit:
 
 	# BZ Classification id for the unit that you want to create (default is 2)
@@ -145,9 +154,6 @@
 
 	SET @visibility_explanation_1 = 'Visible only to ';
 	SET @visibility_explanation_2 = ' for this unit.';
-
-# Timestamp	
-	SET @timestamp = NOW();
 
 # The global permission for the application
 # This should not change, it was hard coded when we created Unee-T
@@ -1524,6 +1530,7 @@
 
 	# We Delete the temp table as we do not need it anymore
 		DROP TABLE IF EXISTS `ut_group_group_map_temp`;
+		DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
 		
 	# We Delete the temp table as we do not need it anymore
 		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
