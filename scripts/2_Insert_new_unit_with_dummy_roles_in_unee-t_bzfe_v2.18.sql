@@ -109,38 +109,38 @@
 	SET @unit_address = (SELECT `unit_address` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 	SET @matterport_url = (SELECT `matterport_url` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 	SET @unit_description = CONCAT(
-				IF (@unit_condo = '', '', '<br>Condo: ')
+				IF (@unit_condo = '', '', 'Condo: ')
 				, IF (@unit_condo = '', '', @unit_condo)
-				, IF (@unit_condo = '', '', '</br>')
+				, IF (@unit_condo = '', '', '. ')
 				
-				, IF (@unit_identification = '', '', '<br>Unit #')
+				, IF (@unit_identification = '', '', 'Unit #')
 				, IF (@unit_identification = '', '', @unit_identification)
-				, IF (@unit_identification = '', '', '</br>')
+				, IF (@unit_identification = '', '', '. ')
 				
-				, IF (@unit_description_details = '', '', '<br>')
+				, IF (@unit_description_details = '', '', '')
 				, IF (@unit_description_details = '', '', @unit_description_details)
-				, IF (@unit_description_details = '', '', '</br>')
+				, IF (@unit_description_details = '', '', '. ')
 				
-				, IF (@unit_surface = '', '', '<br>Size of the unit : ')
+				, IF (@unit_surface = '', '', 'Size of the unit : ')
 				, IF (@unit_surface = '', '', @unit_surface)
 				, IF (@unit_surface = ''
 						, ''
 						,IF(@unit_surface_measure = 1
-							, ' sqft.</br>'
+							, ' sqft. '
 							,IF(@unit_surface_measure = 2
-								, ' sqm.</br>'
-								, ' Unknown measure.</br>'
+								, ' sqm. '
+								, ' Unknown measure. '
 							) 
 						)
 					)
 				
-				, IF (@unit_address = '', '', '<br>')
+				, IF (@unit_address = '', '', '')
 				, IF (@unit_address = '', '', @unit_address)
-				, IF (@unit_address = '', '', '</br>')
+				, IF (@unit_address = '', '', '. ')
 				
-				, IF (@matterport_url = '', '', '<br><a href=\"')
+				, IF (@matterport_url = '', '', '<a href=\"')
 				, IF (@matterport_url = '', '', @matterport_url)
-				, IF (@matterport_url = '', '', '\" target=\"_blank\">Virtual Visit</a></br>')
+				, IF (@matterport_url = '', '', '\" target=\"_blank\">Virtual Visit</a>')
 				)
 				;
 	
