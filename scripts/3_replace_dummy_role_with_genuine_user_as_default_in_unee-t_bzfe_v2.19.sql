@@ -12,6 +12,10 @@
 # It assumes that the unit has been created with the script '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.13'
 # OR with a method that creates a unit with all the necessary BZ objects and all the roles assigned to dummy users.
 #
+# WARNING! THIS SCRIPT IS USED IN THE SCRIPT 'invitation_as_assignee_at_case_creation_v2.19'
+#	MAKE SURE THAT YOU ALSO UPDATE 'invitation_as_assignee_at_case_creation_v2.19' IF YOU UPDATE THIS SCRIPT
+#
+#
 # Pre-requisite:
 #	- We know which is the product/unit
 #	- We know the BZ user id of the user that will be the default assignee for the role for this unit
