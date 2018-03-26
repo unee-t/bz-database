@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.17 to v2.18
+# Built for BZFE database v2.19
 #
 # Use this script only if the Unit EXIST in the BZFE 
 # It assumes that the unit has been created with the script '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.13'
@@ -46,7 +46,7 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.18.sql';
+	SET @script = '3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.19.sql';
 
 # Timestamp	
 	SET @timestamp = NOW();
