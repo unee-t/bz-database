@@ -2398,7 +2398,7 @@ DELIMITER ;
 	SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @user_role_type_id);
 
 # We capture the current assignee for the case so that we can log what we did
-	SET @current_assignee = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
+	SET @current_assignee = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @bz_case_id);
 	
 # We also need the login name for the previous assignee and the new assignee
 	SET @current_assignee_username = (SELECT `login_name` FROM `profiles` WHERE `userid` = @current_assignee);
@@ -2412,14 +2412,14 @@ DELIMITER ;
 		`assigned_to` = @bz_user_id
 		, `delta_ts` = @timestamp
 		, `lastdiffed` = @timestamp
-	WHERE `bug_id` = @case_id
+	WHERE `bug_id` = @bz_case_id
 	;
 
 	# Log the actions of the script.
 		SET @script_log_message = CONCAT('the bz user #'
 									, @bz_user_id
 									, ' is now the assignee for the case #'
-									, @case_id
+									, @bz_case_id
 									)
 									;
 			
