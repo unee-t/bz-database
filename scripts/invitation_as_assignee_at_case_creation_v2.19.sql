@@ -2360,6 +2360,7 @@ DELIMITER ;
 		
 	# We Delete the temp table as we do not need it anymore
 		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
+		DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
 	
 	# Delete the procedures that we do not need anymore:
 		
