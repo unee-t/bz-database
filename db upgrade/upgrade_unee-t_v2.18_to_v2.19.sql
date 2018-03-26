@@ -28,8 +28,6 @@
 	  `invitation_type` varchar(100) DEFAULT NULL COMMENT 'The type of the invitation (assigned or CC)',
 	  `is_mefe_only_user` tinyint(1) DEFAULT 1 COMMENT '1 if the user is a MEFE only user. In this scenario, we will DISABLE the claim mail in the BZFE for that user',
 	  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
-	  `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
-	  `comment` text DEFAULT NULL COMMENT 'Any comment',
 	  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
 	  PRIMARY KEY (`id`)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
