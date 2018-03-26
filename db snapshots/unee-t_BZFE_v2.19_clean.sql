@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.5.1 (64 bit)
-MySQL - 10.2.10-MariaDB-10.2.10+maria~jessie : Database - bugzilla
+MySQL - 10.2.10-MariaDB-10.2.10+maria~jessie : Database - unee_t_v2_19
 *********************************************************************
 */
 
@@ -569,56 +569,6 @@ CREATE TABLE `cc` (
 
 /*Data for the table `cc` */
 
-/*Table structure for table `cf_claim_type` */
-
-DROP TABLE IF EXISTS `cf_claim_type`;
-
-CREATE TABLE `cf_claim_type` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT 0,
-  `isactive` tinyint(4) NOT NULL DEFAULT 1,
-  `visibility_value_id` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cf_claim_type_value_idx` (`value`),
-  KEY `cf_claim_type_sortkey_idx` (`sortkey`,`value`),
-  KEY `cf_claim_type_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
-
-/*Data for the table `cf_claim_type` */
-
-insert  into `cf_claim_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'Electrical (Rep)',1005,1,2),
-(3,'Plumbing (Rep)',1010,1,2),
-(4,'Aircon/Heating (Rep)',1015,1,2),
-(5,'Inventory (Rep)',1020,1,2),
-(6,'Internet (Rep)',1025,1,2),
-(7,'Cable TV (Rep)',1030,1,2),
-(8,'Other (Rep)',1035,1,2),
-(9,'Aircon/Heating (Mtce)',1505,1,3),
-(10,'Equipment (Mtce)',1510,1,3),
-(11,'Plumbing (Mtce)',1515,1,3),
-(12,'Other (Mtce)',1525,1,3),
-(13,'Key',2505,1,6),
-(14,'Resident Card',2510,1,6),
-(15,'Carpark',2515,1,6),
-(16,'Kitchen Equip.',2520,1,6),
-(17,'Furnitures',2525,1,6),
-(18,'Other Equip.',2530,1,6),
-(19,'Structure',3005,1,7),
-(20,'Carpentry',3010,1,7),
-(21,'Parquet/Flooring',3015,1,7),
-(22,'Painting',3020,1,7),
-(23,'Other Renov.',3025,1,7),
-(24,'Setup',3505,1,8),
-(25,'Light Renovation',3510,1,8),
-(26,'Refurbishing',3515,1,8),
-(27,'Handover',3520,1,8),
-(28,'Other Projects',3530,1,8),
-(29,'Viewing/Visit',4505,1,4),
-(30,'Other',4510,1,4);
-
 /*Table structure for table `cf_ipi_clust_3_action_type` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_3_action_type`;
@@ -778,31 +728,6 @@ insert  into `cf_ipi_clust_4_status_standby`(`id`,`value`,`sortkey`,`isactive`,`
 (2,'PENDING PMT',10,1,NULL),
 (3,'OTHER',20,1,NULL);
 
-/*Table structure for table `cf_ipi_clust_5_budget_approver` */
-
-DROP TABLE IF EXISTS `cf_ipi_clust_5_budget_approver`;
-
-CREATE TABLE `cf_ipi_clust_5_budget_approver` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT 0,
-  `isactive` tinyint(4) NOT NULL DEFAULT 1,
-  `visibility_value_id` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cf_ipi_budget_approver_value_idx` (`value`),
-  KEY `cf_ipi_budget_approver_sortkey_idx` (`sortkey`,`value`),
-  KEY `cf_ipi_budget_approver_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
-/*Data for the table `cf_ipi_clust_5_budget_approver` */
-
-insert  into `cf_ipi_clust_5_budget_approver`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(3,'Demo Person 1 (landlord)',0,1,2),
-(4,'Demo Person 4 (Agent)',20,1,2),
-(5,'Demo Person 5 (Tenant)',40,1,2),
-(6,'Demo Person 1 (Tenant)',0,1,3);
-
 /*Table structure for table `cf_ipi_clust_6_claim_type` */
 
 DROP TABLE IF EXISTS `cf_ipi_clust_6_claim_type`;
@@ -885,27 +810,6 @@ insert  into `cf_ipi_clust_6_claim_type`(`id`,`value`,`sortkey`,`isactive`,`visi
 (61,'Early Check IN/OUT',4060,1,8),
 (62,'High Chair',4065,1,8),
 (63,'Equipment',1040,1,2);
-
-/*Table structure for table `cf_ipi_clust_7_payment_type` */
-
-DROP TABLE IF EXISTS `cf_ipi_clust_7_payment_type`;
-
-CREATE TABLE `cf_ipi_clust_7_payment_type` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT 0,
-  `isactive` tinyint(4) NOT NULL DEFAULT 1,
-  `visibility_value_id` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cf_ipi_payment_type_value_idx` (`value`),
-  KEY `cf_ipi_payment_type_visibility_value_id_idx` (`visibility_value_id`),
-  KEY `cf_ipi_payment_type_sortkey_idx` (`sortkey`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-/*Data for the table `cf_ipi_clust_7_payment_type` */
-
-insert  into `cf_ipi_clust_7_payment_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL);
 
 /*Table structure for table `cf_ipi_clust_7_spe_payment_type` */
 
@@ -1544,21 +1448,21 @@ CREATE TABLE `fielddefs` (
 /*Data for the table `fielddefs` */
 
 insert  into `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`mailhead`,`sortkey`,`obsolete`,`enter_bug`,`buglist`,`visibility_field_id`,`value_field_id`,`reverse_desc`,`is_mandatory`,`is_numeric`) values 
-(1,'bug_id',0,0,'Bug #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
+(1,'bug_id',0,0,'Case #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
 (2,'short_desc',0,0,'Summary','',1,200,0,0,1,NULL,NULL,NULL,1,0),
-(3,'classification',2,0,'Classification','',1,300,0,0,1,NULL,NULL,NULL,0,0),
-(4,'product',2,0,'Product','',1,400,0,0,1,NULL,NULL,NULL,1,0),
+(3,'classification',2,0,'Unit Group','',1,300,0,0,1,NULL,NULL,NULL,0,0),
+(4,'product',2,0,'Unit','',1,400,0,0,1,NULL,NULL,NULL,1,0),
 (5,'version',0,0,'Version','',1,500,0,0,1,NULL,NULL,NULL,1,0),
-(6,'rep_platform',2,0,'Platform','',1,600,0,0,1,NULL,NULL,NULL,0,0),
+(6,'rep_platform',2,0,'Case Category','',1,600,0,0,1,NULL,NULL,NULL,0,0),
 (7,'bug_file_loc',0,0,'URL','',1,700,0,0,1,NULL,NULL,NULL,0,0),
-(8,'op_sys',2,0,'OS/Version','',1,800,0,0,1,NULL,NULL,NULL,0,0),
+(8,'op_sys',2,0,'Source','',1,800,0,0,1,NULL,NULL,NULL,0,0),
 (9,'bug_status',2,0,'Status','',1,900,0,0,1,NULL,NULL,NULL,0,0),
 (10,'status_whiteboard',0,0,'Status Whiteboard','',1,1000,0,0,1,NULL,NULL,NULL,0,0),
 (11,'keywords',8,0,'Keywords','',1,1100,0,0,1,NULL,NULL,NULL,0,0),
 (12,'resolution',2,0,'Resolution','',0,1200,0,0,1,NULL,NULL,NULL,0,0),
 (13,'bug_severity',2,0,'Severity','',1,1300,0,0,1,NULL,NULL,NULL,0,0),
 (14,'priority',2,0,'Priority','',1,1400,0,0,1,NULL,NULL,NULL,0,0),
-(15,'component',2,0,'Component','',1,1500,0,0,1,NULL,NULL,NULL,1,0),
+(15,'component',2,0,'Role','',1,1500,0,0,1,NULL,NULL,NULL,1,0),
 (16,'assigned_to',0,0,'AssignedTo','',1,1600,0,0,1,NULL,NULL,NULL,0,0),
 (17,'reporter',0,0,'ReportedBy','',1,1700,0,0,1,NULL,NULL,NULL,0,0),
 (18,'qa_contact',0,0,'QAContact','',1,1800,0,0,1,NULL,NULL,NULL,0,0),
@@ -2740,6 +2644,300 @@ CREATE TABLE `user_group_map` (
 insert  into `user_group_map`(`user_id`,`group_id`,`isbless`,`grant_type`) values 
 (1,1,0,0);
 
+/*Table structure for table `ut_all_units` */
+
+DROP TABLE IF EXISTS `ut_all_units`;
+
+CREATE TABLE `ut_all_units` (
+  `id_record` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` smallint(6) NOT NULL COMMENT 'The id in the `products` table',
+  PRIMARY KEY (`id_record`)
+) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `ut_all_units` */
+
+insert  into `ut_all_units`(`id_record`,`product_id`) values 
+(1,283),
+(2,284),
+(3,285),
+(4,286),
+(5,2),
+(6,3),
+(7,4),
+(8,5),
+(9,6),
+(10,7),
+(11,8),
+(12,9),
+(13,10),
+(14,11),
+(15,12),
+(16,13),
+(17,14),
+(18,15),
+(19,16),
+(20,17),
+(21,18),
+(22,19),
+(23,20),
+(24,21),
+(25,22),
+(26,23),
+(27,24),
+(28,25),
+(29,26),
+(30,27),
+(31,28),
+(32,29),
+(33,81),
+(34,84),
+(35,86),
+(36,87),
+(37,90),
+(38,91),
+(39,97),
+(40,99),
+(41,100),
+(42,103),
+(43,112),
+(44,117),
+(45,123),
+(46,125),
+(47,133),
+(48,30),
+(49,31),
+(50,32),
+(51,33),
+(52,34),
+(53,35),
+(54,36),
+(55,37),
+(56,38),
+(57,39),
+(58,40),
+(59,41),
+(60,42),
+(61,43),
+(62,44),
+(63,45),
+(64,46),
+(65,47),
+(66,48),
+(67,49),
+(68,50),
+(69,51),
+(70,52),
+(71,53),
+(72,54),
+(73,55),
+(74,56),
+(75,57),
+(76,58),
+(77,59),
+(78,60),
+(79,61),
+(80,62),
+(81,63),
+(82,74),
+(83,78),
+(84,79),
+(85,82),
+(86,83),
+(87,85),
+(88,88),
+(89,89),
+(90,102),
+(91,104),
+(92,108),
+(93,110),
+(94,118),
+(95,119),
+(96,120),
+(97,121),
+(98,122),
+(99,124),
+(100,131),
+(101,134),
+(102,138),
+(103,146),
+(104,147),
+(105,156),
+(106,168),
+(107,176),
+(108,181),
+(109,200),
+(110,211),
+(111,212),
+(112,213),
+(113,216),
+(114,217),
+(115,243),
+(116,246),
+(117,254),
+(118,255),
+(119,256),
+(120,64),
+(121,65),
+(122,66),
+(123,67),
+(124,68),
+(125,69),
+(126,70),
+(127,71),
+(128,72),
+(129,105),
+(130,135),
+(131,148),
+(132,149),
+(133,164),
+(134,169),
+(135,182),
+(136,73),
+(137,75),
+(138,76),
+(139,77),
+(140,95),
+(141,96),
+(142,98),
+(143,101),
+(144,106),
+(145,109),
+(146,111),
+(147,113),
+(148,115),
+(149,136),
+(150,140),
+(151,141),
+(152,142),
+(153,145),
+(154,191),
+(155,195),
+(156,204),
+(157,206),
+(158,208),
+(159,209),
+(160,214),
+(161,245),
+(162,247),
+(163,250),
+(164,258),
+(165,80),
+(166,184),
+(167,215),
+(168,218),
+(169,221),
+(170,222),
+(171,223),
+(172,224),
+(173,226),
+(174,92),
+(175,93),
+(176,94),
+(177,107),
+(178,116),
+(179,126),
+(180,127),
+(181,128),
+(182,129),
+(183,130),
+(184,137),
+(185,139),
+(186,143),
+(187,144),
+(188,150),
+(189,151),
+(190,152),
+(191,165),
+(192,166),
+(193,167),
+(194,248),
+(195,114),
+(196,132),
+(197,153),
+(198,154),
+(199,155),
+(200,157),
+(201,158),
+(202,159),
+(203,160),
+(204,161),
+(205,162),
+(206,163),
+(207,172),
+(208,175),
+(209,177),
+(210,178),
+(211,179),
+(212,180),
+(213,183),
+(214,185),
+(215,186),
+(216,188),
+(217,189),
+(218,190),
+(219,192),
+(220,193),
+(221,194),
+(222,201),
+(223,210),
+(224,219),
+(225,220),
+(226,225),
+(227,244),
+(228,252),
+(229,259),
+(230,260),
+(231,261),
+(232,263),
+(233,170),
+(234,171),
+(235,173),
+(236,174),
+(237,187),
+(238,251),
+(239,257),
+(240,196),
+(241,197),
+(242,198),
+(243,199),
+(244,202),
+(245,203),
+(246,205),
+(247,207),
+(248,227),
+(249,228),
+(250,231),
+(251,232),
+(252,233),
+(253,229),
+(254,234),
+(255,230),
+(256,235),
+(257,236),
+(258,237),
+(259,238),
+(260,239),
+(261,253),
+(262,240),
+(263,241),
+(264,242),
+(265,249),
+(266,262),
+(267,264),
+(268,265),
+(269,266),
+(270,267),
+(271,268),
+(272,269),
+(273,270),
+(274,271),
+(275,272),
+(276,273),
+(277,274),
+(278,275),
+(279,276),
+(280,277);
+
 /*Table structure for table `ut_audit_log` */
 
 DROP TABLE IF EXISTS `ut_audit_log`;
@@ -2757,66 +2955,6 @@ CREATE TABLE `ut_audit_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_audit_log` */
-
-/*Table structure for table `ut_bug_status` */
-
-DROP TABLE IF EXISTS `ut_bug_status`;
-
-CREATE TABLE `ut_bug_status` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT 0,
-  `isactive` tinyint(4) NOT NULL DEFAULT 1,
-  `visibility_value_id` smallint(6) DEFAULT NULL,
-  `is_open` tinyint(4) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ut_bug_status_value_idx` (`value`),
-  KEY `ut_bug_status_sortkey_idx` (`sortkey`,`value`),
-  KEY `ut_bug_status_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_bug_status` */
-
-insert  into `ut_bug_status`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`,`is_open`) values 
-(1,'UNCONFIRMED',10,1,NULL,1),
-(2,'CONFIRMED',20,1,NULL,1),
-(3,'IN_PROGRESS',30,1,NULL,1),
-(4,'RESOLVED',60,1,NULL,0),
-(5,'VERIFIED',70,1,NULL,0),
-(6,'REOPENED',40,1,NULL,1),
-(7,'STAND BY',50,1,NULL,1),
-(8,'CLOSED',80,1,NULL,0);
-
-/*Table structure for table `ut_cf_ipi_clust_3_action_type` */
-
-DROP TABLE IF EXISTS `ut_cf_ipi_clust_3_action_type`;
-
-CREATE TABLE `ut_cf_ipi_clust_3_action_type` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT 0,
-  `isactive` tinyint(4) NOT NULL DEFAULT 1,
-  `visibility_value_id` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cf_ipi_clust_3_action_type_value_idx` (`value`),
-  KEY `cf_ipi_clust_3_action_type_sortkey_idx` (`sortkey`,`value`),
-  KEY `cf_ipi_clust_3_action_type_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_cf_ipi_clust_3_action_type` */
-
-insert  into `ut_cf_ipi_clust_3_action_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',0,1,NULL),
-(2,'Diagnose',10,1,NULL),
-(3,'Fix',15,1,NULL),
-(4,'Diagnose and Fix',20,1,NULL),
-(5,'Supervise',25,1,NULL),
-(6,'Deliver',30,1,NULL),
-(7,'Collect',35,1,NULL),
-(8,'Purchase',40,1,NULL),
-(9,'Install',45,1,NULL),
-(10,'Check',50,1,NULL),
-(11,'Other',55,1,NULL);
 
 /*Table structure for table `ut_contractor_types` */
 
@@ -2931,6 +3069,9 @@ CREATE TABLE `ut_data_to_create_units` (
   `matterport_url` varchar(256) DEFAULT '' COMMENT 'LMB specific - a the URL for the matterport visit for this unit',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
   `comment` text DEFAULT NULL COMMENT 'Any comment',
+  `product_id` smallint(6) DEFAULT NULL COMMENT 'The id of the product in the BZ table ''products''. Because this is a record that we will keep even AFTER we deleted the record in the BZ table, this can NOT be a FK.',
+  `deleted_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was deleted in the BZ db (together with all objects related to this product/unit).',
+  `deletion_script` varchar(500) DEFAULT NULL COMMENT 'The script used to delete this product and all objects related to this product in the BZ database',
   PRIMARY KEY (`id_unit_to_create`),
   KEY `id_unit_creator_id` (`bzfe_creator_user_id`),
   KEY `id_unit_classification_id` (`classification_id`),
@@ -2953,6 +3094,7 @@ CREATE TABLE `ut_data_to_replace_dummy_roles` (
   `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
   `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
   `is_occupant` tinyint(1) DEFAULT 0 COMMENT '1 if TRUE, 0 if FALSE',
+  `is_mefe_user_only` tinyint(1) DEFAULT 1 COMMENT '1 (default value) if TRUE - If a user is a MEFE user only we disable the claim mail in the BZFE',
   `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
   `comment` text DEFAULT NULL COMMENT 'Any comment',
@@ -2969,131 +3111,6 @@ CREATE TABLE `ut_data_to_replace_dummy_roles` (
 
 /*Data for the table `ut_data_to_replace_dummy_roles` */
 
-/*Table structure for table `ut_fielddefs` */
-
-DROP TABLE IF EXISTS `ut_fielddefs`;
-
-CREATE TABLE `ut_fielddefs` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
-  `type` smallint(6) NOT NULL DEFAULT 0,
-  `custom` tinyint(4) NOT NULL DEFAULT 0,
-  `description` tinytext NOT NULL,
-  `long_desc` varchar(255) NOT NULL DEFAULT '',
-  `mailhead` tinyint(4) NOT NULL DEFAULT 0,
-  `sortkey` smallint(6) NOT NULL,
-  `obsolete` tinyint(4) NOT NULL DEFAULT 0,
-  `enter_bug` tinyint(4) NOT NULL DEFAULT 0,
-  `buglist` tinyint(4) NOT NULL DEFAULT 0,
-  `visibility_field_id` mediumint(9) DEFAULT NULL,
-  `value_field_id` mediumint(9) DEFAULT NULL,
-  `reverse_desc` tinytext DEFAULT NULL,
-  `is_mandatory` tinyint(4) NOT NULL DEFAULT 0,
-  `is_numeric` tinyint(4) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ut_fielddefs_name_idx` (`name`),
-  KEY `ut_fielddefs_sortkey_idx` (`sortkey`),
-  KEY `ut_fielddefs_value_field_id_idx` (`value_field_id`),
-  KEY `ut_fielddefs_is_mandatory_idx` (`is_mandatory`),
-  KEY `fk_ut_fielddefs_visibility_field_id_fielddefs_id` (`visibility_field_id`),
-  CONSTRAINT `fk_ut_fielddefs_value_field_id_fielddefs_id` FOREIGN KEY (`value_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_ut_fielddefs_visibility_field_id_fielddefs_id` FOREIGN KEY (`visibility_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_fielddefs` */
-
-insert  into `ut_fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`mailhead`,`sortkey`,`obsolete`,`enter_bug`,`buglist`,`visibility_field_id`,`value_field_id`,`reverse_desc`,`is_mandatory`,`is_numeric`) values 
-(1,'bug_id',0,0,'Bug #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
-(2,'short_desc',0,0,'Summary','',1,200,0,0,1,NULL,NULL,NULL,1,0),
-(3,'classification',2,0,'Classification','',1,300,0,0,1,NULL,NULL,NULL,0,0),
-(4,'product',2,0,'Product','',1,400,0,0,1,NULL,NULL,NULL,1,0),
-(5,'version',0,0,'Version','',1,500,0,0,1,NULL,NULL,NULL,1,0),
-(6,'rep_platform',2,0,'Platform','',1,600,0,0,1,NULL,NULL,NULL,0,0),
-(7,'bug_file_loc',0,0,'URL','',1,700,0,0,1,NULL,NULL,NULL,0,0),
-(8,'op_sys',2,0,'OS/Version','',1,800,0,0,1,NULL,NULL,NULL,0,0),
-(9,'bug_status',2,0,'Status','',1,900,0,0,1,NULL,NULL,NULL,0,0),
-(10,'status_whiteboard',0,0,'Status Whiteboard','',1,1000,0,0,1,NULL,NULL,NULL,0,0),
-(11,'keywords',8,0,'Keywords','',1,1100,0,0,1,NULL,NULL,NULL,0,0),
-(12,'resolution',2,0,'Resolution','',0,1200,0,0,1,NULL,NULL,NULL,0,0),
-(13,'bug_severity',2,0,'Severity','',1,1300,0,0,1,NULL,NULL,NULL,0,0),
-(14,'priority',2,0,'Priority','',1,1400,0,0,1,NULL,NULL,NULL,0,0),
-(15,'component',2,0,'Component','',1,1500,0,0,1,NULL,NULL,NULL,1,0),
-(16,'assigned_to',0,0,'AssignedTo','',1,1600,0,0,1,NULL,NULL,NULL,0,0),
-(17,'reporter',0,0,'ReportedBy','',1,1700,0,0,1,NULL,NULL,NULL,0,0),
-(18,'qa_contact',0,0,'QAContact','',1,1800,0,0,1,NULL,NULL,NULL,0,0),
-(19,'assigned_to_realname',0,0,'AssignedToName','',0,1900,0,0,1,NULL,NULL,NULL,0,0),
-(20,'reporter_realname',0,0,'ReportedByName','',0,2000,0,0,1,NULL,NULL,NULL,0,0),
-(21,'qa_contact_realname',0,0,'QAContactName','',0,2100,0,0,1,NULL,NULL,NULL,0,0),
-(22,'cc',0,0,'CC','',1,2200,0,0,0,NULL,NULL,NULL,0,0),
-(23,'dependson',0,0,'Depends on','',1,2300,0,0,1,NULL,NULL,NULL,0,1),
-(24,'blocked',0,0,'Blocks','',1,2400,0,0,1,NULL,NULL,NULL,0,1),
-(25,'attachments.description',0,0,'Attachment description','',0,2500,0,0,0,NULL,NULL,NULL,0,0),
-(26,'attachments.filename',0,0,'Attachment filename','',0,2600,0,0,0,NULL,NULL,NULL,0,0),
-(27,'attachments.mimetype',0,0,'Attachment mime type','',0,2700,0,0,0,NULL,NULL,NULL,0,0),
-(28,'attachments.ispatch',0,0,'Attachment is patch','',0,2800,0,0,0,NULL,NULL,NULL,0,1),
-(29,'attachments.isobsolete',0,0,'Attachment is obsolete','',0,2900,0,0,0,NULL,NULL,NULL,0,1),
-(30,'attachments.isprivate',0,0,'Attachment is private','',0,3000,0,0,0,NULL,NULL,NULL,0,1),
-(31,'attachments.submitter',0,0,'Attachment creator','',0,3100,0,0,0,NULL,NULL,NULL,0,0),
-(32,'target_milestone',0,0,'Target Milestone','',1,3200,0,0,1,NULL,NULL,NULL,0,0),
-(33,'creation_ts',0,0,'Creation date','',0,3300,0,0,1,NULL,NULL,NULL,0,0),
-(34,'delta_ts',0,0,'Last changed date','',0,3400,0,0,1,NULL,NULL,NULL,0,0),
-(35,'longdesc',0,0,'Comment','',0,3500,0,0,0,NULL,NULL,NULL,0,0),
-(36,'longdescs.isprivate',0,0,'Comment is private','',0,3600,0,0,0,NULL,NULL,NULL,0,1),
-(37,'longdescs.count',0,0,'Number of Comments','',0,3700,0,0,1,NULL,NULL,NULL,0,1),
-(38,'alias',0,0,'Alias','',0,3800,0,0,1,NULL,NULL,NULL,0,0),
-(39,'everconfirmed',0,0,'Ever Confirmed','',0,3900,0,0,0,NULL,NULL,NULL,0,1),
-(40,'reporter_accessible',0,0,'Reporter Accessible','',0,4000,0,0,0,NULL,NULL,NULL,0,1),
-(41,'cclist_accessible',0,0,'CC Accessible','',0,4100,0,0,0,NULL,NULL,NULL,0,1),
-(42,'bug_group',0,0,'Group','',1,4200,0,0,0,NULL,NULL,NULL,0,0),
-(43,'estimated_time',0,0,'Estimated Hours','',1,4300,0,0,1,NULL,NULL,NULL,0,1),
-(44,'remaining_time',0,0,'Remaining Hours','',0,4400,0,0,1,NULL,NULL,NULL,0,1),
-(45,'deadline',5,0,'Deadline','',1,4500,0,0,1,NULL,NULL,NULL,0,0),
-(46,'commenter',0,0,'Commenter','',0,4600,0,0,0,NULL,NULL,NULL,0,0),
-(47,'flagtypes.name',0,0,'Flags','',0,4700,0,0,1,NULL,NULL,NULL,0,0),
-(48,'requestees.login_name',0,0,'Flag Requestee','',0,4800,0,0,0,NULL,NULL,NULL,0,0),
-(49,'setters.login_name',0,0,'Flag Setter','',0,4900,0,0,0,NULL,NULL,NULL,0,0),
-(50,'work_time',0,0,'Hours Worked','',0,5000,0,0,1,NULL,NULL,NULL,0,1),
-(51,'percentage_complete',0,0,'Percentage Complete','',0,5100,0,0,1,NULL,NULL,NULL,0,1),
-(52,'content',0,0,'Content','',0,5200,0,0,0,NULL,NULL,NULL,0,0),
-(53,'attach_data.thedata',0,0,'Attachment data','',0,5300,0,0,0,NULL,NULL,NULL,0,0),
-(54,'owner_idle_time',0,0,'Time Since Assignee Touched','',0,5400,0,0,0,NULL,NULL,NULL,0,0),
-(55,'see_also',7,0,'See Also','',0,5500,0,0,0,NULL,NULL,NULL,0,0),
-(56,'tag',8,0,'Personal Tags','',0,5600,0,0,1,NULL,NULL,NULL,0,0),
-(57,'last_visit_ts',5,0,'Last Visit','',0,5700,0,0,1,NULL,NULL,NULL,0,0),
-(58,'comment_tag',0,0,'Comment Tag','',0,5800,0,0,0,NULL,NULL,NULL,0,0),
-(59,'days_elapsed',0,0,'Days since bug changed','',0,5900,0,0,0,NULL,NULL,NULL,0,0),
-(60,'cf_ipi_clust_4_status_in_progress',2,1,'Progression','More information about the case when the status is \"IN PROGRESS\".',0,10,0,1,1,9,NULL,NULL,0,0),
-(61,'cf_ipi_clust_4_status_standby',2,1,'Stand By Cause','More information about the case when the status is \"STAND BY\"',0,20,0,0,1,9,NULL,NULL,0,0),
-(62,'cf_ipi_clust_2_room',1,1,'Room(s)','Information about the room(s) where the case is located',0,600,0,1,1,NULL,NULL,NULL,0,0),
-(63,'cf_ipi_clust_6_claim_type',2,1,'Case Type','The Case Type allows us to better organize Cases. It depends on the Case Category.',0,600,0,1,1,NULL,6,NULL,0,0),
-(64,'cf_ipi_clust_1_solution',4,1,'Solution','The CURRENT solution that we have to solve this. This could (and in many occasion WILL) change over time. It can also be empty if we don\'t know what the solution is yet. It is different from the NEXT STEP field.',0,3215,0,1,1,NULL,NULL,NULL,0,0),
-(65,'cf_ipi_clust_1_next_step',4,1,'Next Step','Detailed description of the next step for the Case ASSIGNEE. This is different from the solution and from the field action.',0,3220,0,0,1,NULL,NULL,NULL,0,0),
-(66,'cf_ipi_clust_1_next_step_date',9,1,'Next Step Date','The date when the Next Step needs to happen.',0,3225,0,0,1,NULL,NULL,NULL,0,0),
-(67,'cf_ipi_clust_3_field_action',4,1,'Action Details','Describe in details what needs to be done. This text will appear in the roadbook.',0,3245,0,0,1,NULL,NULL,NULL,0,0),
-(68,'cf_ipi_clust_3_field_action_from',5,1,'Scheduled From','The Start date for the action on the field. It is also possible to add a start time.',0,3250,0,0,1,NULL,NULL,NULL,0,0),
-(69,'cf_ipi_clust_3_field_action_until',5,1,'Scheduled Until','The End date for the action on the field. It is also possible to add an end time.',0,3255,0,0,1,NULL,NULL,NULL,0,0),
-(70,'cf_ipi_clust_3_action_type',2,1,'Action Type','What type of action do we need to do on the field?',0,3260,0,0,1,NULL,NULL,NULL,0,0),
-(71,'cf_ipi_clust_3_nber_field_visits',10,1,'Field Visits','Number of visits or trips done to diagnose and solve this case. DO NOT include the visits by the supervisors/managers for Quality Control purposes. Increases Each time there is a new visit SCHEDULED. Decrease during debrief if cancelled.',0,3205,0,0,1,NULL,NULL,NULL,0,0),
-(72,'cf_ipi_clust_3_roadbook_for',3,1,'Action For','In whose roadbook shall Field Action appear? This can change over time. It is possible to choose more than 1 person if needed.',0,3235,0,0,1,NULL,NULL,NULL,0,0),
-(73,'cf_ipi_clust_5_approved_budget',1,1,'Approved Budget','What is the budget that has been APPROVED to solve this. This can be different from the actual cost of the purchase or total cost for solving the case. This allows us to monitor how good we are when we have to estimate a budget.',0,3275,0,0,1,NULL,NULL,NULL,0,0),
-(74,'cf_ipi_clust_5_budget',1,1,'Estimated Budget','The LATEST estimate for the budget we need to fix the problem. This can change with time and might be different than the approved budget as we gather more information.',0,3265,0,0,1,NULL,NULL,NULL,0,0),
-(75,'cf_ipi_clust_8_contract_id',1,1,'Customer ID','The internal ID for the contract with the customer.',0,3270,0,0,1,NULL,NULL,NULL,0,0),
-(76,'cf_ipi_clust_9_acct_action',3,1,'Accounting Action','Detailed description of the expected action from ACCOUNTING. This is different from the solution, from the field action or the next step.',0,3300,0,0,1,92,NULL,NULL,0,0),
-(77,'cf_ipi_clust_9_inv_ll',1,1,'Invoice Amount (LL)','What is the amount of the invoice that we need to generate to the LANDLORD for this claim?',0,3305,0,0,1,92,NULL,NULL,0,0),
-(78,'cf_ipi_clust_9_inv_det_ll',1,1,'Invoice Details (LL)','Use this if there are has specific requirement on our invoice to the Landlord. Accounting will use this to prepare the invoice and explain to the Lanldord why we have invoiced/paid him that way...',0,3310,0,0,1,92,NULL,NULL,0,0),
-(79,'cf_ipi_clust_9_inv_cust',4,1,'Invoice Amount (Cust)','What is the amount of the invoice that we need to generate to the CUSTOMER for this claim?',0,3315,0,0,1,92,NULL,NULL,0,0),
-(80,'cf_ipi_clust_9_inv_det_cust',4,1,'Invoice Details (Cust)','Details about the invoice: what do we need to know about this invoice? What is the information/message that we need to send to the customer together with this invoice?',0,3320,0,0,1,92,NULL,NULL,0,0),
-(81,'cf_ipi_clust_5_spe_action_purchase_list',1,1,'Purchase List','Enter the list of things that we need to purchase. If the list is too long, attach a file to the claim with the detailed list and only summarize what we need to purchase here. IN Unee-T IT\'S EASIER TO USE APPROVED ATTACHMENTS TO DO THIS',0,9905,0,0,1,92,NULL,NULL,0,0),
-(83,'cf_ipi_clust_5_spe_approval_for',4,1,'Approval For','Explain why you require an approval. The approver will use this information to better understand the whole situtation. IN Unee-T IT\'S BETTER TO DO THIS WHEN YOU APPROVE AN ATTACHMENT',0,9910,0,0,1,92,NULL,NULL,0,0),
-(84,'cf_ipi_clust_5_spe_approval_comment',4,1,'Approval Comment','This is to explain/comment about the approval/rejection of what was requested. IN Unee-T IT\'S BETTER TO DO THIS WHEN WE APPROVE AN ATTACHMENT.',0,9915,0,0,1,92,NULL,NULL,0,0),
-(85,'cf_ipi_clust_5_spe_contractor',4,1,'Contractor ID','The name of the contractor that has been assigned to work on this case. IN Unee-T THIS HAS BEEN MOVED. THE CONTRACTOR IS A STAKEHOLDER.',0,9920,0,0,1,92,NULL,NULL,0,0),
-(87,'cf_ipi_clust_5_spe_purchase_cost',1,1,'Purchase Cost','What was the ACTUAL purchase cost for the purchase we did. This can be (and usually is) slightly different from the approved budget (but NOT higher than the approved budget).',0,9925,0,0,1,92,NULL,NULL,0,0),
-(88,'cf_ipi_clust_7_spe_bill_number',1,1,'Bill Nber','The Supplier\'s invoice number. This is so that accounting can easily find explanations about a supplier invoice if this is needed. IN Unee-T THIS HAS BEEN MOVED TO ATTACHMENTS',0,9930,0,0,1,92,NULL,NULL,0,0),
-(89,'cf_ipi_clust_7_spe_payment_type',2,1,'Payment Type','How will we pay the contractor? This is important information so that accounting can prepare the payment accordingly. This will ensure we pay our supplier as fast as possible and minimize the risk of misunderstandings.',0,9935,0,0,1,92,NULL,NULL,0,0),
-(90,'cf_ipi_clust_7_spe_contractor_payment',4,1,'Contractor Payment','Use this if the supplier has specific requirement about the payment. Accounting will use this to explain to the supplier why we have invoiced/paid him that way...',0,9940,0,0,1,92,NULL,NULL,0,0),
-(91,'cf_ipi_clust_8_spe_customer',1,1,'Customer','The name of the customer. IN Unee-T WE USE THE CUSTOMER ID INSTEAD',0,9945,0,0,1,92,NULL,NULL,0,0),
-(92,'cf_specific_for',2,1,'Field For','The name and id of the Unee-T customer that can see these fields',0,9900,0,0,1,NULL,NULL,NULL,0,0);
-
 /*Table structure for table `ut_group_types` */
 
 DROP TABLE IF EXISTS `ut_group_types`;
@@ -3107,47 +3124,71 @@ CREATE TABLE `ut_group_types` (
   `bz_description` varchar(255) DEFAULT NULL COMMENT 'A short description for BZ which we use when we create the group',
   `description` text DEFAULT NULL COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_group_type`,`groupe_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_group_types` */
 
 insert  into `ut_group_types`(`id_group_type`,`created`,`order`,`is_obsolete`,`groupe_type`,`bz_description`,`description`) values 
-(1,'2018-01-14 10:02:37',50,0,'creator','User has created the unit or has full delegation','The group for the user who has created the unit first and/or his representatives (agent or employee).'),
-(2,'2018-01-14 10:02:37',210,0,'hide_show_case_from_role','Visible only to','These are product/unit and bug/case visibility groups. \r\nThese groups are in the table bug_group_map.'),
-(3,'2018-01-14 10:02:37',320,0,'list_occupants','User is an occupant of the unit','These are also bug visibility groups but based on a different information: is the user an occupant of the unit or not?\r\nA Tenant can also be an occupant (or not)\r\nAn Owner/Landlord can also be an occupant (or not).'),
-(4,'2018-01-14 10:02:37',400,0,'list_visible_stakeholder','List all the users who have a role in this unit','This is a user visibility group (step 1).\r\nAll the users in this group have a role in this unit.'),
-(5,'2018-01-14 10:02:37',410,0,'see_visible_stakeholder','See all the stakeholders','This is a user visibility group (step 2).\r\nIf you are member of this group, you can see all the user in the list_stakeholder group for this unit.'),
-(6,'2018-01-14 10:02:37',500,0,'r_a_case_next_step','Requestee to approve the Next Step of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Next Step for a case in this unit.'),
-(7,'2018-01-14 10:02:37',600,0,'g_a_case_next_step','Grant approval for the Next Step of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Next Step for a case in this unit.'),
-(8,'2018-01-14 10:02:37',510,0,'r_a_case_solution','Requestee to approve the Solution of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Solution for a case in this unit.'),
-(9,'2018-01-14 10:02:37',610,0,'g_a_case_solution','Grant approval for the Solution of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Solution for a case in this unit.'),
-(10,'2018-01-14 10:02:37',520,0,'r_a_case_budget','Requestee to approve the Budget for a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Budget for a case in this unit.'),
-(11,'2018-01-14 10:02:37',620,0,'g_a_case_budget','Grant approval for the Budget for a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Budget for a case in this unit.'),
-(12,'2018-01-14 10:02:37',700,0,'r_a_attachment_approve','Requestee to approve the Attachment','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for an Attachment in this unit.'),
-(13,'2018-01-14 10:02:37',800,0,'g_a_attachment_approve','Grant approval for the Attachment','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for an Attachment in this unit.'),
-(14,'2018-01-14 10:02:37',710,0,'r_a_attachment_ok_to_pay','Requestee to approve pay a bill','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval to pay a specific bill in this unit.'),
-(15,'2018-01-14 10:02:37',810,0,'g_a_attachment_ok_to_pay','Grant approval to pay a bill','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval to pay a specific bill in this unit.'),
-(16,'2018-01-14 10:02:37',720,0,'r_a_attachment_is_paid','Requestee to confirm if a bill has been paid','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to confirm if a specific bill has been paid in this unit.'),
-(17,'2018-01-14 10:02:37',820,0,'g_a_attachment_is_paid','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(18,'2018-01-14 10:02:37',999,0,'all_r_flags','Grant approval for all flags','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(19,'2018-01-14 10:02:37',999,0,'all_g_all_flags','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
-(20,'2018-01-14 10:02:37',100,0,'create_a_case','Group to be able to create cases in a unit','This is a group that helps us grant all shared accessed and permission in bulk to a user.\r\nIf you are member of this group, you can access, grant, request and be requested to approve all the Flags for a specific unit.'),
-(21,'2018-01-14 10:02:37',10000,0,'user_aggregation','Facilitate user management','This is to group user together (users working in the same company for example) so we can give them all the same permissions.'),
-(22,'2018-01-14 10:02:37',300,0,'list_users_in_role','List all user in a role','All the users in the same role/component for a given unit'),
-(24,'2018-01-14 10:02:37',220,0,'hide_show_case_from_occupant','Untick to hide a case from the occupants of the unit',NULL),
-(25,'2018-01-14 10:02:37',110,0,'can_edit_a_case','User can edit a case','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(26,'2018-01-14 10:02:37',120,0,'can_edit_all_fields_in_a_case','Untick to hide a case from the occupants of the unit','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(27,'2018-01-14 10:02:37',130,0,'can_edit_components_roles','Needed so that a user can create new users','This is for the group that grant permission to create new users. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
-(28,'2018-01-14 10:02:37',200,0,'case_is_visible_to_all','Untick to limit this case only to certain roles','This is for the group that limit visibility of a case by default. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are Default, N/A'),
-(29,'2018-01-14 10:02:37',420,0,'active_stakeholder','Active Stakeholder',''),
-(30,'2018-01-14 10:02:37',10,0,'single_user_roup','A group for a Single user','We use this to simplify the user_group_mapping. \r\nThis allows us to use group_group_map instead since it is easier to grant and revoke privileges with groups'),
-(31,'2018-01-14 10:02:37',60,0,'invited_by','List of users who were invited by the same user','List of users who were invited by the same user'),
-(32,'2018-01-14 10:02:37',430,0,'see_all_invited_by','User Visibility group - for users who need to see all the users invited by a certain user','User Visibility group - for users who need to see all the users invited by a certain user'),
-(33,'2018-01-14 10:02:37',20,0,'timetracking','Can see timetracking information','Grants persmission to see timetracking information for a case.'),
-(34,'2018-01-14 10:02:37',30,0,'create_shared_queries','User is allowed to share some of the queries he/she has created','User is allowed to share some of the queries he/she has created'),
-(35,'2018-01-14 10:02:37',40,0,'tag_comment','User is allowed to tag comments','User in this group are allowed to tag comment.\r\nALL users should be members of this group: tags are the mechanisms to mark a comment as received, read etc.... Tags are also a way to add reactions to a comment (emoji for instance).'),
-(36,'2018-01-14 10:02:37',330,0,'see_occupant','Can see the list of occupants','User in this group can see the list of occupants for a unit.'),
-(37,'2018-01-14 10:02:37',310,0,'see_user_in_role','Can see the list of users for a given role','User in this group can see the list of users for a given role.');
+(1,'2018-02-13 11:33:49',50,0,'creator','User has created the unit or has full delegation','The group for the user who has created the unit first and/or his representatives (agent or employee).'),
+(2,'2018-02-13 11:33:49',210,0,'hide_show_case_from_role','Visible only to','These are product/unit and bug/case visibility groups. \r\nThese groups are in the table bug_group_map.'),
+(3,'2018-02-13 11:33:49',320,0,'list_occupants','User is an occupant of the unit','These are also bug visibility groups but based on a different information: is the user an occupant of the unit or not?\r\nA Tenant can also be an occupant (or not)\r\nAn Owner/Landlord can also be an occupant (or not).'),
+(4,'2018-02-13 11:33:49',400,0,'list_visible_stakeholder','List all the users who have a role in this unit','This is a user visibility group (step 1).\r\nAll the users in this group have a role in this unit.'),
+(5,'2018-02-13 11:33:49',410,0,'see_visible_stakeholder','See all the stakeholders','This is a user visibility group (step 2).\r\nIf you are member of this group, you can see all the user in the list_stakeholder group for this unit.'),
+(6,'2018-02-13 11:33:49',500,0,'r_a_case_next_step','Requestee to approve the Next Step of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Next Step for a case in this unit.'),
+(7,'2018-02-13 11:33:49',600,0,'g_a_case_next_step','Grant approval for the Next Step of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Next Step for a case in this unit.'),
+(8,'2018-02-13 11:33:49',510,0,'r_a_case_solution','Requestee to approve the Solution of a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Solution for a case in this unit.'),
+(9,'2018-02-13 11:33:49',610,0,'g_a_case_solution','Grant approval for the Solution of a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Solution for a case in this unit.'),
+(10,'2018-02-13 11:33:49',520,0,'r_a_case_budget','Requestee to approve the Budget for a case','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for the Budget for a case in this unit.'),
+(11,'2018-02-13 11:33:49',620,0,'g_a_case_budget','Grant approval for the Budget for a case','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on a case they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for the Budget for a case in this unit.'),
+(12,'2018-02-13 11:33:49',700,0,'r_a_attachment_approve','Requestee to approve the Attachment','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval for an Attachment in this unit.'),
+(13,'2018-02-13 11:33:49',800,0,'g_a_attachment_approve','Grant approval for the Attachment','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval for an Attachment in this unit.'),
+(14,'2018-02-13 11:33:49',710,0,'r_a_attachment_ok_to_pay','Requestee to approve pay a bill','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to request approval to pay a specific bill in this unit.'),
+(15,'2018-02-13 11:33:49',810,0,'g_a_attachment_ok_to_pay','Grant approval to pay a bill','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to grant approval to pay a specific bill in this unit.'),
+(16,'2018-02-13 11:33:49',720,0,'r_a_attachment_is_paid','Requestee to confirm if a bill has been paid','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit to confirm if a specific bill has been paid in this unit.'),
+(17,'2018-02-13 11:33:49',820,0,'g_a_attachment_is_paid','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
+(18,'2018-02-13 11:33:49',999,0,'all_r_flags','Grant approval for all flags','This is a group for the list of Requestee. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
+(19,'2018-02-13 11:33:49',999,0,'all_g_all_flags','Confirms if a bill has been paid','This is a group for the list of Grantor. It is specific to each unit so we do not ask user to grant approval on an Attachment they can\'t access.\r\nIf you are member of this group, you can Ask any user who has a role in the unit confirm if a specific bill has been paid in this unit.'),
+(20,'2018-02-13 11:33:49',100,0,'create_a_case','Group to be able to create cases in a unit','This is a group that helps us grant all shared accessed and permission in bulk to a user.\r\nIf you are member of this group, you can access, grant, request and be requested to approve all the Flags for a specific unit.'),
+(21,'2018-02-13 11:33:49',10000,0,'user_aggregation','Facilitate user management','This is to group user together (users working in the same company for example) so we can give them all the same permissions.'),
+(22,'2018-02-13 11:33:49',300,0,'list_users_in_role','List all user in a role','All the users in the same role/component for a given unit'),
+(24,'2018-02-13 11:33:49',220,0,'hide_show_case_from_occupant','Untick to hide a case from the occupants of the unit',NULL),
+(25,'2018-02-13 11:33:49',110,0,'can_edit_a_case','User can edit a case','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
+(26,'2018-02-13 11:33:49',120,0,'can_edit_all_fields_in_a_case','Untick to hide a case from the occupants of the unit','This is for the group that grant permission to edit a case. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
+(27,'2018-02-13 11:33:49',130,0,'can_edit_components_roles','Needed so that a user can create new users','This is for the group that grant permission to create new users. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are N/A, N/A'),
+(28,'2018-02-13 11:33:49',200,0,'case_is_visible_to_all','Untick to limit this case only to certain roles','This is for the group that limit visibility of a case by default. \r\nThis is product group. \r\na The attributes for this group in the group_access_control table are Default, N/A'),
+(29,'2018-02-13 11:33:49',420,0,'active_stakeholder','Active Stakeholder',''),
+(30,'2018-02-13 11:33:49',10,0,'single_user_roup','A group for a Single user','We use this to simplify the user_group_mapping. \r\nThis allows us to use group_group_map instead since it is easier to grant and revoke privileges with groups'),
+(31,'2018-02-13 11:33:49',60,0,'invited_by','List of users who were invited by the same user','List of users who were invited by the same user'),
+(32,'2018-02-13 11:33:49',430,0,'see_all_invited_by','User Visibility group - for users who need to see all the users invited by a certain user','User Visibility group - for users who need to see all the users invited by a certain user'),
+(33,'2018-02-13 11:33:49',20,0,'timetracking','Can see timetracking information','Grants persmission to see timetracking information for a case.'),
+(34,'2018-02-13 11:33:49',30,0,'create_shared_queries','User is allowed to share some of the queries he/she has created','User is allowed to share some of the queries he/she has created'),
+(35,'2018-02-13 11:33:49',40,0,'tag_comment','User is allowed to tag comments','User in this group are allowed to tag comment.\r\nALL users should be members of this group: tags are the mechanisms to mark a comment as received, read etc.... Tags are also a way to add reactions to a comment (emoji for instance).'),
+(36,'2018-02-13 11:33:49',330,0,'see_occupant','Can see the list of occupants','User in this group can see the list of occupants for a unit.'),
+(37,'2018-02-13 11:33:49',310,0,'see_user_in_role','Can see the list of users for a given role','User in this group can see the list of users for a given role.'),
+(38,'2018-02-13 11:33:49',140,0,'can_see_unit_in_search','Restrict visibility of a unit in the search panel','You need to be a member of this group so that the unit is listed in the Search.\r\nThis group is referenced in the group_control_map as MANDATORY/MANDATORY for a given unit.');
+
+/*Table structure for table `ut_invitation_api_data` */
+
+DROP TABLE IF EXISTS `ut_invitation_api_data`;
+
+CREATE TABLE `ut_invitation_api_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `mefe_invitation_id` varchar(256) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
+  `is_occupant` tinyint(1) DEFAULT 0 COMMENT '1 if TRUE, 0 if FALSE',
+  `bz_case_id` mediumint(9) DEFAULT NULL COMMENT 'The id of the bug in th table ''bugs''',
+  `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
+  `invitation_type` varchar(100) DEFAULT NULL COMMENT 'The type of the invitation (assigned or CC)',
+  `is_mefe_only_user` tinyint(1) DEFAULT 1 COMMENT '1 if the user is a MEFE only user. In this scenario, we will DISABLE the claim mail in the BZFE for that user',
+  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
+  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `api_post_datetime` datetime DEFAULT NULL COMMENT 'Date and time when this invitation has been posted as porcessed via the Unee-T inviation API',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_invitation_api_data` */
 
 /*Table structure for table `ut_map_contractor_to_type` */
 
@@ -3232,7 +3273,7 @@ CREATE TABLE `ut_map_user_unit_details` (
 DROP TABLE IF EXISTS `ut_permission_types`;
 
 CREATE TABLE `ut_permission_types` (
-  `id_permission_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_permissin_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
   `is_obsolete` tinyint(1) DEFAULT 0 COMMENT '1 if this is an obsolete value',
@@ -3244,12 +3285,76 @@ CREATE TABLE `ut_permission_types` (
   `bless_id` smallint(6) DEFAULT NULL COMMENT 'IF this is a ''blessing'' permission - which permission can this grant',
   `description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
   `detailed_description` text DEFAULT NULL COMMENT 'Detailed description of this group type',
-  PRIMARY KEY (`id_permission_type`,`permission_type`),
-  KEY `permission_groupe_type` (`group_type_id`),
-  CONSTRAINT `permission_groupe_type` FOREIGN KEY (`group_type_id`) REFERENCES `ut_group_types` (`id_group_type`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id_permissin_type`,`permission_type`),
+  KEY `premission_groupe_type` (`group_type_id`),
+  CONSTRAINT `premission_groupe_type` FOREIGN KEY (`group_type_id`) REFERENCES `ut_group_types` (`id_group_type`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_permission_types` */
+
+insert  into `ut_permission_types`(`id_permissin_type`,`created`,`order`,`is_obsolete`,`group_type_id`,`permission_type`,`permission_scope`,`permission_category`,`is_bless`,`bless_id`,`description`,`detailed_description`) values 
+(1,'2018-02-13 11:33:49',10,0,33,'can_see_time_tracking','GLOBAL','FUNCTIONALITY',0,NULL,'The user can see the time tracking information',NULL),
+(2,'2018-02-13 11:33:49',20,0,33,'can_grant_see_time_tracking','GLOBAL','FUNCTIONALITY',1,1,'The user can allow another user to see time tracking information',NULL),
+(3,'2018-02-13 11:33:49',30,0,34,'can_create_shared_query','GLOBAL','FUNCTIONALITY',0,NULL,NULL,NULL),
+(4,'2018-02-13 11:33:49',40,0,34,'can_grant_create_shared_query','GLOBAL','FUNCTIONALITY',1,3,NULL,NULL),
+(5,'2018-02-13 11:33:49',50,0,35,'can_tag_comment','GLOBAL','FUNCTIONALITY',0,NULL,'This should be mandatory for all users: flags are allowing us to mark a comment as sent, received, read, and allow us to add emoticons for instance',NULL),
+(6,'2018-02-13 11:33:49',60,0,35,'can_grant_tag_comment','GLOBAL','FUNCTIONALITY',1,5,NULL,NULL),
+(7,'2018-02-13 11:33:49',70,0,3,'is_occupant','UNIT','VISIBLE USER',0,NULL,NULL,NULL),
+(8,'2018-02-13 11:33:49',80,0,3,'can_grant_is_occupant','UNIT','VISIBLE USER',1,7,NULL,NULL),
+(9,'2018-02-13 11:33:49',90,0,36,'can_see_occupant','UNIT','VIEW USER',0,NULL,NULL,NULL),
+(10,'2018-02-13 11:33:49',100,0,36,'can_grant_see_occupant','UNIT','VIEW USER',1,9,NULL,NULL),
+(11,'2018-02-13 11:33:49',110,0,20,'can_create_new_case','UNIT','ACCESS',0,NULL,NULL,NULL),
+(12,'2018-02-13 11:33:49',120,0,20,'can_grant_create_new_case','UNIT','ACCESS',1,11,NULL,NULL),
+(13,'2018-02-13 11:33:49',130,0,25,'can_edit_a_case','UNIT','ACCESS',0,NULL,NULL,NULL),
+(14,'2018-02-13 11:33:49',140,0,25,'can_grant_edit_a_case','UNIT','ACCESS',1,13,NULL,NULL),
+(15,'2018-02-13 11:33:49',150,0,28,'can_see_public_cases','UNIT','ACCESS',0,NULL,NULL,NULL),
+(16,'2018-02-13 11:33:49',160,0,28,'can_grant_see_public_cases','UNIT','ACCESS',1,15,NULL,NULL),
+(17,'2018-02-13 11:33:49',170,0,26,'can_edit_all_field_in_a_case_regardless_of_role','UNIT','FUNCTIONALITY',0,NULL,NULL,NULL),
+(18,'2018-02-13 11:33:49',180,0,26,'can_grant_edit_all_field_in_a_case_regardless_of_role','UNIT','FUNCTIONALITY',1,17,NULL,NULL),
+(19,'2018-02-13 11:33:49',190,0,4,'user_is_publicly_visible','UNIT','VISIBLE USER',0,NULL,NULL,NULL),
+(20,'2018-02-13 11:33:49',200,0,4,'can_grant_user_is_publicly_visible','UNIT','VISIBLE USER',1,19,NULL,NULL),
+(21,'2018-02-13 11:33:49',210,0,5,'user_can_see_publicly_visible_user','UNIT','VIEW USER',0,NULL,NULL,NULL),
+(22,'2018-02-13 11:33:49',220,0,5,'can_grant_user_can_see_publicly_visible_user','UNIT','VIEW USER',1,21,NULL,NULL),
+(23,'2018-02-13 11:33:49',230,0,18,'can_ask_to_approve_flag','UNIT','FLAG',0,NULL,NULL,NULL),
+(24,'2018-02-13 11:33:49',240,0,18,'can_grant_can_ask_to_approve_flag','UNIT','FLAG',1,23,NULL,NULL),
+(25,'2018-02-13 11:33:49',250,0,19,'can_approve_flag','UNIT','FLAG',0,NULL,NULL,NULL),
+(26,'2018-02-13 11:33:49',260,0,19,'can_grant_can_approve_flag','UNIT','FLAG',1,25,NULL,NULL),
+(27,'2018-02-13 11:33:49',270,0,2,'show_case_to_tenant','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(28,'2018-02-13 11:33:49',280,0,2,'can_grant_show_case_to_tenant','UNIT-ROLE','ACCESS',1,27,NULL,NULL),
+(29,'2018-02-13 11:33:49',290,0,22,'user_is_tenant','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(30,'2018-02-13 11:33:49',300,0,22,'can_grant_user_is_tenant','UNIT-ROLE','VISIBLE USER',1,29,NULL,NULL),
+(31,'2018-02-13 11:33:49',310,0,37,'can_see_tenant','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(32,'2018-02-13 11:33:49',320,0,37,'can_grant_can_see_tenant','UNIT-ROLE','VIEW USER',1,31,NULL,NULL),
+(33,'2018-02-13 11:33:49',330,0,2,'show_case_to_landlord','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(34,'2018-02-13 11:33:49',340,0,2,'can_grant_show_case_to_landlord','UNIT-ROLE','ACCESS',1,33,NULL,NULL),
+(35,'2018-02-13 11:33:49',350,0,22,'user_is_lanldord','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(36,'2018-02-13 11:33:49',360,0,22,'can_grant_user_is_lanldord','UNIT-ROLE','VISIBLE USER',1,35,NULL,NULL),
+(37,'2018-02-13 11:33:49',370,0,37,'can_see_landlord','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(38,'2018-02-13 11:33:49',380,0,37,'can_grant_can_see_landlord','UNIT-ROLE','VIEW USER',1,37,NULL,NULL),
+(39,'2018-02-13 11:33:49',390,0,2,'show_case_to_agent','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(40,'2018-02-13 11:33:49',400,0,2,'can_grant_show_case_to_agent','UNIT-ROLE','ACCESS',1,39,NULL,NULL),
+(41,'2018-02-13 11:33:49',410,0,22,'user_is_agent','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(42,'2018-02-13 11:33:49',420,0,22,'can_grant_user_is_agent','UNIT-ROLE','VISIBLE USER',1,41,NULL,NULL),
+(43,'2018-02-13 11:33:49',430,0,37,'can_see_agent','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(44,'2018-02-13 11:33:49',440,0,37,'can_grant_can_see_agent','UNIT-ROLE','VIEW USER',1,43,NULL,NULL),
+(45,'2018-02-13 11:33:49',450,0,2,'show_case_to_contractor','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(46,'2018-02-13 11:33:49',460,0,2,'can_grant_show_case_to_contractor','UNIT-ROLE','ACCESS',1,45,NULL,NULL),
+(47,'2018-02-13 11:33:49',470,0,22,'user_is_contractor','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(48,'2018-02-13 11:33:49',480,0,22,'can_grant_user_is_contractor','UNIT-ROLE','VISIBLE USER',1,47,NULL,NULL),
+(49,'2018-02-13 11:33:49',490,0,37,'can_see_contractor','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(50,'2018-02-13 11:33:49',500,0,37,'can_grant_can_see_contractor','UNIT-ROLE','VIEW USER',1,49,NULL,NULL),
+(51,'2018-02-13 11:33:49',510,0,2,'show_case_to_mgt_cny','UNIT-ROLE','ACCESS',0,NULL,NULL,NULL),
+(52,'2018-02-13 11:33:49',520,0,2,'can_grant_show_case_to_mgt_cny','UNIT-ROLE','ACCESS',1,51,NULL,NULL),
+(53,'2018-02-13 11:33:49',530,0,22,'user_is_mgt_cny','UNIT-ROLE','VISIBLE USER',0,NULL,NULL,NULL),
+(54,'2018-02-13 11:33:49',540,0,22,'can_grant_user_is_mgt_cny','UNIT-ROLE','VISIBLE USER',1,53,NULL,NULL),
+(55,'2018-02-13 11:33:49',550,0,37,'can_see_mgt_cny','UNIT-ROLE','VIEW USER',0,NULL,NULL,NULL),
+(56,'2018-02-13 11:33:49',560,0,37,'can_grant_can_see_mgt_cny','UNIT-ROLE','VIEW USER',1,55,NULL,NULL),
+(57,'2018-02-13 11:33:49',64,0,24,'show_case_to_occupant','UNIT','ACCESS',0,NULL,NULL,NULL),
+(58,'2018-02-13 11:33:49',66,0,24,'can_grant_show_case_to_occupant','UNIT','ACCESS',1,57,NULL,NULL),
+(59,'2018-02-13 11:33:49',590,0,31,'user_is_invited_by','GLOBAL','VISIBLE USER',0,NULL,NULL,NULL),
+(60,'2018-02-13 11:33:49',600,0,31,'can_grant_user_is_invited_by','GLOBAL','VIEW USER',1,59,NULL,NULL),
+(61,'2018-02-13 11:33:49',610,0,38,'user_can_see_that_unit_in_search','UNIT','ACCESS',0,NULL,NULL,NULL),
+(62,'2018-02-13 11:33:49',620,0,38,'can_grant_see_that_unit_in_search','UNIT','ACCESS',1,61,NULL,NULL);
 
 /*Table structure for table `ut_product_group` */
 
@@ -3267,36 +3372,6 @@ CREATE TABLE `ut_product_group` (
 
 /*Data for the table `ut_product_group` */
 
-/*Table structure for table `ut_rep_platform` */
-
-DROP TABLE IF EXISTS `ut_rep_platform`;
-
-CREATE TABLE `ut_rep_platform` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT 0,
-  `isactive` tinyint(4) NOT NULL DEFAULT 1,
-  `visibility_value_id` smallint(6) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `rep_platform_value_idx` (`value`),
-  KEY `rep_platform_sortkey_idx` (`sortkey`,`value`),
-  KEY `rep_platform_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_rep_platform` */
-
-insert  into `ut_rep_platform`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',5,1,NULL),
-(2,'Repair',10,1,NULL),
-(3,'Maintenance',15,1,NULL),
-(4,'Housekeeping',20,1,NULL),
-(5,'Devices',25,1,NULL),
-(6,'Renovation',30,1,NULL),
-(7,'Complex Project',35,1,NULL),
-(8,'Extra Service',40,1,NULL),
-(9,'Utilities',45,1,NULL),
-(10,'Other',50,1,NULL);
-
 /*Table structure for table `ut_role_types` */
 
 DROP TABLE IF EXISTS `ut_role_types`;
@@ -3313,11 +3388,11 @@ CREATE TABLE `ut_role_types` (
 /*Data for the table `ut_role_types` */
 
 insert  into `ut_role_types`(`id_role_type`,`created`,`role_type`,`bz_description`,`description`) values 
-(1,'2017-10-26 22:35:58','Tenant','The Tenant','The person or entity who signed the tenancy agreement.'),
-(2,'2017-10-26 22:35:58','Owner/Landlord','The Landlord','The person(s) or entity that are the registered owner of the property.'),
-(3,'2017-10-26 22:35:58','Contractor','A contractor','A company or a person that can or will do work in the unit (electricity, plumbing, Aircon Maintenance, Housekeeping, etc...).'),
-(4,'2017-10-26 22:35:58','Management Company','The management Company','Is in charge of day to day operations and responsible to fix things if something happens in a unit.'),
-(5,'2017-10-26 22:35:58','Agent','An agent','The user who act as either the representative for the Tenant or for the Landlord. It is possible to have 2 agents attached to the same unit.');
+(1,'2018-02-13 11:33:49','Tenant','The Tenant','The person or entity who signed the tenancy agreement.'),
+(2,'2018-02-13 11:33:49','Owner/Landlord','The Landlord','The person(s) or entity that are the registered owner of the property.'),
+(3,'2018-02-13 11:33:49','Contractor','A contractor','A company or a person that can or will do work in the unit (electricity, plumbing, Aircon Maintenance, Housekeeping, etc...).'),
+(4,'2018-02-13 11:33:49','Management Company','The management Company','Is in charge of day to day operations and responsible to fix things if something happens in a unit.'),
+(5,'2018-02-13 11:33:49','Agent','An agent','The user who act as either the representative for the Tenant or for the Landlord. It is possible to have 2 agents attached to the same unit.');
 
 /*Table structure for table `ut_script_log` */
 
@@ -3332,6 +3407,28 @@ CREATE TABLE `ut_script_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_script_log` */
+
+/*Table structure for table `ut_temp_dummy_users_for_roles` */
+
+DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+CREATE TABLE `ut_temp_dummy_users_for_roles` (
+  `environment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
+  `environment_name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `tenant_id` int(11) NOT NULL,
+  `landlord_id` int(11) NOT NULL,
+  `contractor_id` int(11) NOT NULL,
+  `mgt_cny_id` int(11) NOT NULL,
+  `agent_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`environment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `ut_temp_dummy_users_for_roles` */
+
+insert  into `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) values 
+(1,'DEV/Staging',96,94,93,95,92),
+(2,'Prod',93,91,90,92,89),
+(3,'demo/dev',4,3,5,6,2);
 
 /*Table structure for table `versions` */
 
@@ -3422,6 +3519,69 @@ CREATE TABLE `whine_schedules` (
 
 /*Data for the table `whine_schedules` */
 
+/* Procedure structure for procedure `default_occupant_can_see_occupant` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `default_occupant_can_see_occupant` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `default_occupant_can_see_occupant`()
+BEGIN
+	IF (@is_occupant = 1)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_see_users_occupant, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can see occupant in the unit '
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'can see occupant in the unit.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END */$$
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
