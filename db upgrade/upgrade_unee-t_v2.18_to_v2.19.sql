@@ -29,7 +29,7 @@
 	  `is_mefe_only_user` tinyint(1) DEFAULT 1 COMMENT '1 if the user is a MEFE only user. In this scenario, we will DISABLE the claim mail in the BZFE for that user',
 	  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
 	  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
-	  `api_post_datetime` datetime DEFAULT NULL COMMENT 'Date and time when this invitation has been posted as porcessed via the Unee-T inviation API'
+	  `api_post_datetime` datetime DEFAULT NULL COMMENT 'Date and time when this invitation has been posted as porcessed via the Unee-T inviation API',
 	  PRIMARY KEY (`id`)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
