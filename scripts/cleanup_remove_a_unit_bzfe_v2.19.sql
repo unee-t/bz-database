@@ -6,7 +6,7 @@
 #											#
 #############################################
 #
-# Built for BZFE database v2.18
+# Built for BZFE database v2.18 to 2.19
 #
 # Use this script only if the Unit EXISTS in the BZFE
 #
@@ -32,7 +32,7 @@
 ########################################################################
 #
 # Info about this script
-	SET @script = 'cleanup_remove_a_unit_bzfe_v2.18.sql';
+	SET @script = 'cleanup_remove_a_unit_bzfe_v2.19.sql';
 # 
 # This script will alter the following tables (but NOT in that order):
 #
