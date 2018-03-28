@@ -31,7 +31,7 @@
 #	- Add a comment in the table 'longdesc' to the case to explain that the invitation has been sent to the invited user
 #	- Record the change of assignee in the bug activity table so that we have history
 #	- Does NOT update the bug_user_last_visit table as the user had no action in there.
-#	- NOT IMPLEMENTED YET - Check if the user is a MEFE user only and IF the user is a MEFE user only disable the mail sending functionality from the BZFE.
+#	- Check if the user is a MEFE user only and IF the user is a MEFE user only disable the mail sending functionality from the BZFE.
 #
 # Limits of this script:
 #	- Unit must have all roles created with Dummy user roles.
