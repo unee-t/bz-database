@@ -167,6 +167,120 @@
 	# For the creator
 		SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
 
+
+# We get the information about the goups we need
+	# We need to ge these from the ut_product_table_based on the product_id!
+		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
+		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
+		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
+		
+		# This is needed until MEFE is able to handle more detailed permissions.
+		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
+		
+		# This is needed so that user can see the unit in the Search panel
+		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
+		
+		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
+		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
+
+		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
+		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
+		
+	# Groups created when we created the Role for this product.
+	#	- show_to_tenant
+	#	- are_users_tenant
+	#	- see_users_tenant
+	#	- show_to_landlord
+	#	- are_users_landlord
+	#	- see_users_landlord
+	#	- show_to_agent
+	#	- are_users_agent
+	#	- see_users_agent
+	#	- show_to_contractor
+	#	- are_users_contractor
+	#	- see_users_contractor
+	#	- show_to_mgt_cny
+	#	- are_users_mgt_cny
+	#	- see_users_mgt_cny
+	#	- show_to_occupant
+	#	- are_users_occupant
+	#	- see_users_occupant
+
+		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
+		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
+		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
+
+		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
+		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
+		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
+
+		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
+		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
+		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
+
+		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
+		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
+		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
+
+		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
+		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
+		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
+
+		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
+		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
+		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
+
+# We get the information about the component/roles that were created:
+	
+	# We get that from the product_id and dummy user id to make sure that we do not get components with a valid user
+		SET @component_id_tenant = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_tenant);
+		SET @component_id_landlord = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_landlord);
+		SET @component_id_agent = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_agent);
+		SET @component_id_contractor = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_contractor);
+		SET @component_id_mgt_cny = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_mgt_cny);
+
+	# What is the component_id for this role?
+		SET @component_id_this_role = IF( @id_role_type = 1
+										, @component_id_tenant
+										, IF (@id_role_type = 2
+											, @component_id_landlord
+											, IF (@id_role_type = 3
+												, @component_id_contractor
+												, IF (@id_role_type = 4
+													, @component_id_mgt_cny
+													, IF (@id_role_type = 5
+														, @component_id_agent
+														, 'Something is very wrong!!'
+														)
+													)
+												)
+											)
+										)
+										;
+											
+# Get the old values so we can log those
+	SET @old_component_initialowner = NULL;
+	SET @old_component_initialowner = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
+	SET @old_component_initialqacontact = NULL;
+	SET @old_component_initialqacontact = (SELECT `initialqacontact` FROM `components` WHERE `id` = @component_id_this_role);
+	SET @old_component_description = NULL;
+	SET @old_component_description = (SELECT `description` FROM `components` WHERE `id` = @component_id_this_role);		
+		
 # Variable needed to avoid script error - NEED TO REVISIT THAT
 	SET @can_see_time_tracking = 1;
 	SET @can_create_shared_queries = 1;
@@ -296,122 +410,8 @@
 			, `more_info` = CONCAT('On: ', @timestamp, '.\r\Updated to ', @role_user_more, '. \r\ ', `more_info`)
 			, `comment` = CONCAT('On ', @timestamp, '.\r\Updated with the script - ', @script, '.\r\ ', `comment`)
 		;
-
-# We get the information about the goups we need
-	# We need to ge these from the ut_product_table_based on the product_id!
-		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
-		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
-		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
-		
-		# This is needed until MEFE is able to handle more detailed permissions.
-		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
-		
-		# This is needed so that user can see the unit in the Search panel
-		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
-		
-		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
-		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
-
-		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
-		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-		
-	# Groups created when we created the Role for this product.
-	#	- show_to_tenant
-	#	- are_users_tenant
-	#	- see_users_tenant
-	#	- show_to_landlord
-	#	- are_users_landlord
-	#	- see_users_landlord
-	#	- show_to_agent
-	#	- are_users_agent
-	#	- see_users_agent
-	#	- show_to_contractor
-	#	- are_users_contractor
-	#	- see_users_contractor
-	#	- show_to_mgt_cny
-	#	- are_users_mgt_cny
-	#	- see_users_mgt_cny
-	#	- show_to_occupant
-	#	- are_users_occupant
-	#	- see_users_occupant
-
-		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
-		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
-		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
-
-		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
-		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
-		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
-
-		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
-		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
-		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
-
-		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
-		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
-		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
-
-		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
-		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
-		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
-
-		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
-		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
-		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
-
-# We get the information about the component/roles that were created:
 	
-	# We get that from the product_id and dummy user id to make sure that we do not get components with a valid user
-		SET @component_id_tenant = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_tenant);
-		SET @component_id_landlord = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_landlord);
-		SET @component_id_agent = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_agent);
-		SET @component_id_contractor = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_contractor);
-		SET @component_id_mgt_cny = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_mgt_cny);
-
-	# What is the component_id for this role?
-		SET @component_id_this_role = IF( @id_role_type = 1
-										, @component_id_tenant
-										, IF (@id_role_type = 2
-											, @component_id_landlord
-											, IF (@id_role_type = 3
-												, @component_id_contractor
-												, IF (@id_role_type = 4
-													, @component_id_mgt_cny
-													, IF (@id_role_type = 5
-														, @component_id_agent
-														, 'Something is very wrong!!'
-														)
-													)
-												)
-											)
-										)
-										;
-											
-	# We have everything, we can now update the component/role for the unit and make the user default assignee.
-		# Get the old values so we can log those
-		SET @old_component_initialowner = NULL;
-		SET @old_component_initialowner = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
-		SET @old_component_initialqacontact = NULL;
-		SET @old_component_initialqacontact = (SELECT `initialqacontact` FROM `components` WHERE `id` = @component_id_this_role);
-		SET @old_component_description = NULL;
-		SET @old_component_description = (SELECT `description` FROM `components` WHERE `id` = @component_id_this_role);
-		
-		# Update
+	# Update Component
 		UPDATE `components`
 		SET 
 			`initialowner` = @bz_user_id
