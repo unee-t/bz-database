@@ -115,6 +115,26 @@
 		, NULL)
 		;
 
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('the case histoy for case #'
+									, @bz_case_id
+									, ' has been updatnew user: '
+									, @current_assignee_username
+									, ' was added in CC to the case.'
+									)
+									;
+			
+		INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(@timestamp, @script, @script_log_message)
+				;
+		
+		SET @script_log_message = NULL;
+
 # Update the table 'ut_data_to_add_user_to_a_case' so that we record what we have done
 	UPDATE `ut_data_to_add_user_to_a_case`
 	SET 
