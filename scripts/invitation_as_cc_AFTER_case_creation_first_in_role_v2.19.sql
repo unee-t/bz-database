@@ -54,6 +54,11 @@
 # The unit: What is the id of the record that you want to use in the table 'ut_invitation_api_data'
 	SET @reference_for_update = 1;
 
+# Environment: Which environment are you creating the unit in?
+#	- 1 is for the DEV/Staging
+#	- 2 is for the prod environment
+#	- 3 is for the Demo environment
+	SET @environment = 1;
 	
 ########################################################################
 #
@@ -66,6 +71,43 @@
 
 # Timestamp	
 	SET @timestamp = NOW();
+
+# We create a temporary table to record the ids of the dummy users in each environments:
+	/*Table structure for table `ut_temp_dummy_users_for_roles` */
+		DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+		CREATE TABLE `ut_temp_dummy_users_for_roles` (
+		  `environment_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
+		  `environment_name` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
+		  `tenant_id` INT(11) NOT NULL,
+		  `landlord_id` INT(11) NOT NULL,
+		  `contractor_id` INT(11) NOT NULL,
+		  `mgt_cny_id` INT(11) NOT NULL,
+		  `agent_id` INT(11) DEFAULT NULL,
+		  PRIMARY KEY (`environment_id`)
+		) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+	/*Data for the table `ut_temp_dummy_users_for_roles` */
+		INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) VALUES 
+			(1,'DEV/Staging',96,94,93,95,92),
+			(2,'Prod',93,91,90,92,89),
+			(3,'demo/dev',4,3,5,6,2);
+		
+# Get the BZ profile id of the dummy users based on the environment variable
+	# Tenant 1
+		SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
+	# Landlord 2
+		SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Contractor 3
+		SET @bz_user_id_dummy_contractor = (SELECT `contractor_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Management company 4
+		SET @bz_user_id_dummy_mgt_cny = (SELECT `mgt_cny_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Agent 5
+		SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
 	
 # The unit:
 	
@@ -116,6 +158,11 @@
 		SET @user_role_desc = (CONCAT(@role_user_g_description, ' - ',@role_user_pub_info));
 	
 		SET @invitee_login_name = (SELECT `login_name` FROM `profiles` WHERE `userid` = @bz_user_id);		
+
+		# The role for the invitee:
+		# We need to do this in 2 steps
+			SET @user_role_type_id = (SELECT `user_role_type_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+			SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @user_role_type_id);
 
 	# For the creator
 		SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
@@ -2822,13 +2869,13 @@ DELIMITER ;
 		,`who`
 		) 
 		VALUES 
-		(@case_id,@bz_user_id);
+		(@bz_case_id,@bz_user_id);
 
 	# Log the actions of the script.
 		SET @script_log_message = CONCAT('the bz user #'
 									, @bz_user_id
 									, ' is added as CC for the case #'
-									, @case_id
+									, @bz_case_id
 									)
 									;
 			
