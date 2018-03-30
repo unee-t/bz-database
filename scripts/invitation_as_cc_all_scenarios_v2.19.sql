@@ -1,5 +1,28 @@
 # For any question about this script, ask Franck
 #
+#################################################################
+#																#
+# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS			#
+#																#
+#################################################################
+#
+# The unit: What is the id of the record that you want to use in the table 'ut_invitation_api_data'
+	SET @reference_for_update = 1;
+#
+# Environment: Which environment are you creating the unit in?
+#	- 1 is for the DEV/Staging
+#	- 2 is for the prod environment
+#	- 3 is for the Demo environment
+	SET @environment = 1;
+#	
+########################################################################
+#
+#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
+#
+########################################################################
+#
+#
+#
 #############################################
 #											#
 # IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
@@ -15,97 +38,78 @@
 # This Script is a combination of the scripts:
 #	- 3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.19.sql
 #	AND
-#	- 5_2_add_a_BZ_user_as_assignee_to_a_case_in_unee-t_bzfe_v2.19.sql
+#	- 4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.19.sql
+#	AND
+#	- 5_1_add_a_BZ_user_in_cc_to_a_case_in_unee-t_bzfe_v2.19.sql
+#	AND
+#	- check_if_user_is_first_in_role_v2.19.sql
 #
 # Any changes in one of these scripts should be reflected here too!
 #
 # Pre-requisite:
-#	- We know which is the product/unit
-#	- We know the BZ user id of the user that will be the default assignee for the role for this unit
-#	- We know the BZ user id of the user that creates this first role.
 #	- The table 'ut_invitation_api_data' has been updated and we know the record that we need to update.
+#		- We know which is the product/unit.
+#		- We know the BZ user id of the user that will be the additional invitee for the role for this unit.
+#		- We know the invitor
+#		- We know the case Id this new user must be CCed to.
+#		- We know the environment where this script is run
 # 
 # This script will:
-# 	- Replace the Default 'dummy user' for a specific role
-#	- Add an existing BZ user as ASSIGNEE to an existing case which has already been created.
+#	- Check if this new user is the first in this role for this unit.
+#		- If it IS the first in this role for this unit.
+#		 	- Replace the Default 'dummy user' for a specific role with the BZ user in CC for this role for this unit.
+#		- If it is NOT the first in this role for this unit.
+#			- Do NOT replace the Default assignee for this component/role
+#	- Add the BZ user as CC to the case.
 #	- Add a comment in the table 'longdesc' to the case to explain that the invitation has been sent to the invited user
 #	- Record the change of assignee in the bug activity table so that we have history
 #	- Does NOT update the bug_user_last_visit table as the user had no action in there.
-#	- NOT IMPLEMENTED YET - Check if the user is a MEFE user only and IF the user is a MEFE user only disable the mail sending functionality from the BZFE.
+#	- Check if the user is a MEFE user only and IF the user is a MEFE user only disable the mail sending functionality from the BZFE.
 #
 # Limits of this script:
 #	- Unit must have all roles created with Dummy user roles.
 #
-#################################################################
-#																#
-# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS			#
-#																#
-#################################################################
-
-# The unit: What is the id of the record that you want to use in the table 'ut_invitation_api_data'
-	SET @reference_for_update = 1;
-
-# Environment: Which environment are you creating the unit in?
-#	- 1 is for the DEV/Staging
-#	- 2 is for the prod environment
-#	- 3 is for the Demo environment
-	SET @environment = 1;
-	
-########################################################################
+# IMPORTANT INFORMATION - THIS SCRIPT WILL NOT MAKE THIS NEW USER A DEFAULT CC FOR ALL THE NEW CASES CREATED FOR THIS UNIT!
 #
-#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
-#
-########################################################################
+#####################
+#					#
+# OK WE DO THIS!!	#
+#					#
+#####################
 
 # Info about this script
-	SET @script = 'invitation_as_assignee_at_case_creation_v2.19.sql';
+	SET @script = 'invitation_as_cc_all_scenarios_v2.19.sql';
 
 # Timestamp	
 	SET @timestamp = NOW();
-	
+
 # We create a temporary table to record the ids of the dummy users in each environments:
 	/*Table structure for table `ut_temp_dummy_users_for_roles` */
 		DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
 
 		CREATE TABLE `ut_temp_dummy_users_for_roles` (
-		  `environment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
-		  `environment_name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-		  `tenant_id` int(11) NOT NULL,
-		  `landlord_id` int(11) NOT NULL,
-		  `contractor_id` int(11) NOT NULL,
-		  `mgt_cny_id` int(11) NOT NULL,
-		  `agent_id` int(11) DEFAULT NULL,
+		  `environment_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
+		  `environment_name` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
+		  `tenant_id` INT(11) NOT NULL,
+		  `landlord_id` INT(11) NOT NULL,
+		  `contractor_id` INT(11) NOT NULL,
+		  `mgt_cny_id` INT(11) NOT NULL,
+		  `agent_id` INT(11) DEFAULT NULL,
 		  PRIMARY KEY (`environment_id`)
-		) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 	/*Data for the table `ut_temp_dummy_users_for_roles` */
-		INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) values 
+		INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) VALUES 
 			(1,'DEV/Staging',96,94,93,95,92),
 			(2,'Prod',93,91,90,92,89),
 			(3,'demo/dev',4,3,5,6,2);
-		
-# Get the BZ profile id of the dummy users based on the environment variable
-	# Tenant 1
-		SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-
-	# Landlord 2
-		SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-		
-	# Contractor 3
-		SET @bz_user_id_dummy_contractor = (SELECT `contractor_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-		
-	# Management company 4
-		SET @bz_user_id_dummy_mgt_cny = (SELECT `mgt_cny_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-		
-	# Agent 5
-		SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
 	
 # The unit:
 	
 	# The name and description
 		SET @product_id = (SELECT `bz_unit_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 
-# The user associated to the first role in this unit.	
+# The user who you want to associated to the role in this unit.	
 
 	# BZ user id of the user that is creating the unit (default is 1 - Administrator).
 	# For LMB migration, we use 2 (support.nobody)
@@ -122,25 +126,10 @@
 	#	- Management company 4
 		SET @id_role_type = (SELECT `user_role_type_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 		SET @role_user_more = (SELECT `user_more` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+		SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type);
 
 	# Is the BZ user an occupant of the unit?
 		SET @is_occupant = (SELECT `is_occupant` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
-# The case id
-	SET @bz_case_id = (SELECT `bz_case_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-		
-# The MEFE information:
-	SET @mefe_invitation_id = (SELECT `mefe_invitation_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-	SET @mefe_invitor_user_id = (SELECT `mefe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-	SET @is_mefe_only_user = (SELECT `is_mefe_only_user` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-		
-		
-# We need to get the component for ALL the roles for this product
-# We do that using dummy users for all the roles different from the user role.	
-#		- agent -> temporary.agent.dev@unee-t.com
-#		- landlord  -> temporary.landlord.dev@unee-t.com
-#		- Tenant  -> temporary.tenant.dev@unee-t.com
-#		- Contractor  -> temporary.contractor.dev@unee-t.com
 
 # The Groups to grant the global permissions for the user
 
@@ -163,9 +152,229 @@
 								)
 								;
 		SET @user_role_desc = (CONCAT(@role_user_g_description, ' - ',@role_user_pub_info));
+	
+		SET @invitee_login_name = (SELECT `login_name` FROM `profiles` WHERE `userid` = @bz_user_id);
 
 	# For the creator
-		SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
+		SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);	
+		
+# We get the information about the goups we need
+	# We need to ge these from the ut_product_table_based on the product_id!
+		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
+		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
+		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
+		
+		# This is needed until MEFE is able to handle more detailed permissions.
+		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
+		
+		# This is needed so that user can see the unit in the Search panel
+		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
+
+		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
+		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
+
+		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
+		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
+
+	# Groups created when we created the Role for this product.
+	#	- show_to_tenant
+	#	- are_users_tenant
+	#	- see_users_tenant
+	#	- show_to_landlord
+	#	- are_users_landlord
+	#	- see_users_landlord
+	#	- show_to_agent
+	#	- are_users_agent
+	#	- see_users_agent
+	#	- show_to_contractor
+	#	- are_users_contractor
+	#	- see_users_contractor
+	#	- show_to_mgt_cny
+	#	- are_users_mgt_cny
+	#	- see_users_mgt_cny
+	#	- show_to_occupant
+	#	- are_users_occupant
+	#	- see_users_occupant
+
+		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
+		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
+		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
+
+		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
+		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
+		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
+
+		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
+		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
+		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
+
+		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
+		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
+		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
+
+		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
+		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
+		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
+
+		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
+		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
+		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
+			
+# We get the information about the component/roles that were created for this product:
+	# We get that from the ut_product_group table.
+		SET @component_id_this_role = (SELECT `component_id` 
+									FROM `ut_product_group` 
+									WHERE `product_id` = @product_id 
+										AND `role_type_id` = @id_role_type
+										AND `group_type_id` = 2)
+										;
+
+	# Component for the Tenant 1
+		SET @component_id_tenant = (SELECT `component_id` 
+									FROM `ut_product_group` 
+									WHERE `product_id` = @product_id 
+										AND `role_type_id` = 1
+										AND `group_type_id` = 2)
+										;
+
+	# Component for the Landlord 2
+		SET @component_id_landlord = (SELECT `component_id` 
+									FROM `ut_product_group` 
+									WHERE `product_id` = @product_id 
+										AND `role_type_id` = 2
+										AND `group_type_id` = 2)
+										;
+		
+	# Component for the Contractor 3
+		SET @component_id_contractor = (SELECT `component_id` 
+									FROM `ut_product_group` 
+									WHERE `product_id` = @product_id 
+										AND `role_type_id` = 3
+										AND `group_type_id` = 2)
+										;
+		
+	# Component for the Management company 4
+		SET @component_id_mgt_cny = (SELECT `component_id` 
+									FROM `ut_product_group` 
+									WHERE `product_id` = @product_id 
+										AND `role_type_id` = 4
+										AND `group_type_id` = 2)
+										;
+		
+	# Component for the Agent 5
+		SET @component_id_agent = (SELECT `component_id` 
+									FROM `ut_product_group` 
+									WHERE `product_id` = @product_id 
+										AND `role_type_id` = 5
+										AND `group_type_id` = 2)
+										;
+
+# What is the CURRENT default assignee for these component?
+
+	# for the role defined as a variable for this script
+		SET @current_default_assignee_this_role = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
+	
+	# Tenant 1
+		SET @current_default_assignee_tenant = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_tenant);
+
+	# Landlord 2
+		SET @current_default_assignee_landlord = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_landlord);
+		
+	# Contractor 3
+		SET @current_default_assignee_contractor = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_contractor);
+		
+	# Management company 4
+		SET @current_default_assignee_mgt_cny = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_mgt_cny);
+		
+	# Agent 5
+		SET @current_default_assignee_agent = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_agent);
+		
+# Get the BZ profile id of the dummy users based on the environment variable
+	# Tenant 1
+		SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
+	# Landlord 2
+		SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Contractor 3
+		SET @bz_user_id_dummy_contractor = (SELECT `contractor_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Management company 4
+		SET @bz_user_id_dummy_mgt_cny = (SELECT `mgt_cny_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Agent 5
+		SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
+# What is the BZ dummy user id for this role in this script?
+	SET @bz_user_id_dummy_user_this_role = IF( @id_role_type = 1
+									, @bz_user_id_dummy_tenant
+									, IF (@id_role_type = 2
+										, @bz_user_id_dummy_landlord
+										, IF (@id_role_type = 3
+											, @bz_user_id_dummy_contractor
+											, IF (@id_role_type = 4
+												, @bz_user_id_dummy_mgt_cny
+												, IF (@id_role_type = 5
+													, @bz_user_id_dummy_agent
+													, 'Something is very wrong!!'
+													)
+												)
+											)
+										)
+									)
+									;
+
+# IS the current default assignee one of the dummy users?
+
+	# For the role defined as a variable for this script
+		SET @is_current_assignee_this_role_a_dummy_user = IF ( @current_default_assignee_this_role = @bz_user_id_dummy_user_this_role
+											, 1
+											, 0
+											)
+											;	
+	
+	# Tenant 1
+		SET @is_current_agent_dummy_user = IF ( @current_default_assignee_tenant = @bz_user_id_dummy_tenant
+											, 1
+											, 0
+											)
+											;
+
+	# Landlord 2
+		SET @is_current_landlord_dummy_user = IF ( @current_default_assignee_landlord = @bz_user_id_dummy_landlord
+											, 1
+											, 0
+											)
+											;
+		
+	# Contractor 3
+		SET @is_current_contractor_dummy_user = IF ( @current_default_assignee_contractor = @bz_user_id_dummy_contractor
+											, 1
+											, 0
+											)
+											;
+		
+	# Management company 4
+		SET @is_current_mgt_cny_dummy_user = IF ( @current_default_assignee_mgt_cny = @bz_user_id_dummy_mgt_cny
+											, 1
+											, 0
+											)
+											;
+		
+	# Agent 5
+		SET @is_current_agent_dummy_user = IF ( @current_default_assignee_agent = @bz_user_id_dummy_agent
+											, 1
+											, 0
+											)
+											;
+										
+# Get the old values so we can log those
+	SET @old_component_initialowner = NULL;
+	SET @old_component_initialowner = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
+	SET @old_component_initialqacontact = NULL;
+	SET @old_component_initialqacontact = (SELECT `initialqacontact` FROM `components` WHERE `id` = @component_id_this_role);
+	SET @old_component_description = NULL;
+	SET @old_component_description = (SELECT `description` FROM `components` WHERE `id` = @component_id_this_role);		
 
 # Variable needed to avoid script error - NEED TO REVISIT THAT
 	SET @can_see_time_tracking = 1;
@@ -185,7 +394,17 @@
 	SET @can_approve_user_for_flag = 0;
 	SET @can_decide_if_user_is_visible = 0;
 	SET @can_decide_if_user_can_see_visible = 0;	
+
+# The case id
+	SET @bz_case_id = (SELECT `bz_case_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 		
+# The MEFE information:
+	SET @mefe_invitation_id = (SELECT `mefe_invitation_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+	SET @mefe_invitor_user_id = (SELECT `mefe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+	SET @is_mefe_only_user = (SELECT `is_mefe_only_user` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+
+# We have everything, do it!
+
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
@@ -297,122 +516,18 @@
 			, `comment` = CONCAT('On ', @timestamp, '.\r\Updated with the script - ', @script, '.\r\ ', `comment`)
 		;
 
-# We get the information about the goups we need
-	# We need to ge these from the ut_product_table_based on the product_id!
-		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
-		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
-		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
-		
-		# This is needed until MEFE is able to handle more detailed permissions.
-		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
-		
-		# This is needed so that user can see the unit in the Search panel
-		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
-		
-		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
-		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
+# We create a procedure which will
+# check if the user is the first in this role for this unit
+# IF the user is the first in this role for this unit
+# THEN change the initial owner and initialqa contact to the invited BZ user.
 
-		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
-		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-		
-	# Groups created when we created the Role for this product.
-	#	- show_to_tenant
-	#	- are_users_tenant
-	#	- see_users_tenant
-	#	- show_to_landlord
-	#	- are_users_landlord
-	#	- see_users_landlord
-	#	- show_to_agent
-	#	- are_users_agent
-	#	- see_users_agent
-	#	- show_to_contractor
-	#	- are_users_contractor
-	#	- see_users_contractor
-	#	- show_to_mgt_cny
-	#	- are_users_mgt_cny
-	#	- see_users_mgt_cny
-	#	- show_to_occupant
-	#	- are_users_occupant
-	#	- see_users_occupant
-
-		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
-		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
-		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
-
-		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
-		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
-		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
-
-		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
-		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
-		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
-
-		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
-		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
-		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
-
-		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
-		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
-		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
-
-		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
-		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
-		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
-
-# We get the information about the component/roles that were created:
-	
-	# We get that from the product_id and dummy user id to make sure that we do not get components with a valid user
-		SET @component_id_tenant = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_tenant);
-		SET @component_id_landlord = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_landlord);
-		SET @component_id_agent = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_agent);
-		SET @component_id_contractor = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_contractor);
-		SET @component_id_mgt_cny = (SELECT `id` 
-									FROM `components` 
-									WHERE `product_id` = @product_id 
-										AND `initialowner` = @bz_user_id_dummy_mgt_cny);
-
-	# What is the component_id for this role?
-		SET @component_id_this_role = IF( @id_role_type = 1
-										, @component_id_tenant
-										, IF (@id_role_type = 2
-											, @component_id_landlord
-											, IF (@id_role_type = 3
-												, @component_id_contractor
-												, IF (@id_role_type = 4
-													, @component_id_mgt_cny
-													, IF (@id_role_type = 5
-														, @component_id_agent
-														, 'Something is very wrong!!'
-														)
-													)
-												)
-											)
-										)
-										;
-											
-	# We have everything, we can now update the component/role for the unit and make the user default assignee.
-		# Get the old values so we can log those
-		SET @old_component_initialowner = NULL;
-		SET @old_component_initialowner = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
-		SET @old_component_initialqacontact = NULL;
-		SET @old_component_initialqacontact = (SELECT `initialqacontact` FROM `components` WHERE `id` = @component_id_this_role);
-		SET @old_component_description = NULL;
-		SET @old_component_description = (SELECT `description` FROM `components` WHERE `id` = @component_id_this_role);
-		
-		# Update
-		UPDATE `components`
+DROP PROCEDURE IF EXISTS update_assignee_if_dummy_user;
+DELIMITER $$
+CREATE PROCEDURE update_assignee_if_dummy_user()
+BEGIN
+	IF (@is_current_assignee_this_role_a_dummy_user = 1)
+	# We update the component IF this user is the first in this role
+	THEN UPDATE `components`
 		SET 
 			`initialowner` = @bz_user_id
 			,`initialqacontact` = @bz_user_id
@@ -446,21 +561,58 @@
 		
 		SET @script_log_message = NULL;	
 			
-# We update the BZ logs
-	INSERT  INTO `audit_log`
-		(`user_id`
-		,`class`
-		,`object_id`
-		,`field`
-		,`removed`
-		,`added`
-		,`at_time`
-		) 
+	# We update the BZ logs
+		INSERT  INTO `audit_log`
+			(`user_id`
+			,`class`
+			,`object_id`
+			,`field`
+			,`removed`
+			,`added`
+			,`at_time`
+			) 
+			VALUES 
+			(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id,@timestamp)
+			, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id,@timestamp)
+			, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@user_role_desc,@timestamp)
+			;
+				
+	# Update the table 'ut_data_to_replace_dummy_roles' so that we record what we have done
+		INSERT INTO `ut_data_to_replace_dummy_roles`
+			(`mefe_invitation_id`
+			, `mefe_invitor_user_id`
+			, `bzfe_invitor_user_id`
+			, `bz_unit_id`
+			, `bz_user_id`
+			, `user_role_type_id`
+			, `is_occupant`
+			, `is_mefe_user_only`
+			, `user_more`
+			, `bz_created_date`
+			, `comment`
+			)
 		VALUES 
-		(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id,@timestamp)
-		, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id,@timestamp)
-		, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@user_role_desc,@timestamp)
-		;	
+			(@mefe_invitation_id
+			, @mefe_invitor_user_id
+			, @creator_bz_id
+			, @product_id
+			, @bz_user_id
+			, @id_role_type
+			, @is_occupant
+			, @is_mefe_only_user
+			, @role_user_more
+			, @timestamp
+			, CONCAT ('inserted in BZ with the script \''
+					, @script
+					, '\'\r\ '
+					, IFNULL(`comment`, '')
+					)
+			)
+			;
+
+END IF ;
+END $$
+DELIMITER ;	
 		
 # We now assign the default permissions to the user we just associated to this role:		
 	
@@ -481,18 +633,6 @@
 		INSERT INTO `ut_user_group_map_temp`
 			SELECT *
 			FROM `user_group_map`;
-
-	# We need to get the id of these groups from the 'ut_product_group' table_based on the product_id
-		# For the user - based on the user role:
-			# Visibility group
-			SET @group_id_show_to_user_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = @id_role_type));
-		
-			# Is in user Group for the role we just created
-			SET @group_id_are_users_same_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = @id_role_type));
-			
-			# Can See other users in the same Group
-			SET @group_id_see_users_same_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = @id_role_type));
-
 
 # The default permissions for a user assigned as default for a role are:
 #
@@ -520,6 +660,485 @@
 #	- show_to_occupant
 #	- is_occupant
 #	- can_see_occupant
+
+	# We make sure that we remove all the permission that we had previously created for this user and for this product
+	# This is to make sure that we are starting from a fresh start...
+		DELETE FROM `ut_user_group_map_temp`
+			WHERE (
+				(`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_create_shared_queries_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_tag_comment_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @create_case_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_case_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_component_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_see_cases_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_all_field_case_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_see_unit_in_search_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @all_r_flags_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @all_g_flags_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @list_visible_assignees_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @see_visible_assignees_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_occupant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_occupant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_occupant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_tenant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_tenant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_tenant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_landlord)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_landlord)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_landlord)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_agent)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_agent)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_agent)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_contractor)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_contractor)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_contractor)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_mgt_cny)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_mgt_cny)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
+				)
+				;
+						
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user #'
+										, @bz_user_id
+										, '\r\- can_see_time_tracking: 0'
+										, '\r\- can_create_shared_queries: 0'
+										, '\r\- can_tag_comment: 0'
+										, '\r\- can_create_case: 0'
+										, '\r\- can_edit_a_case: 0'
+										, '\r\- can_edit_component: 0'
+										, '\r\- can_see_cases: 0'
+										, '\r\- can_edit_all_field_in_a_case_regardless_of_role: 0'
+										, '\r\- can_see_unit_in_search: 0'
+										, '\r\- can_ask_to_approve: 0'
+										, '\r\- can_approve: 0'
+										, '\r\- user_can_see_publicly_visible: 0'
+										, '\r\- user_is_publicly_visible: 0'
+										, '\r\- show_to_occupant: 0'
+										, '\r\- are_users_occupant: 0'
+										, '\r\- see_users_occupant: 0'
+										, '\r\- show_to_tenant: 0'
+										, '\r\- are_users_tenant: 0'
+										, '\r\- see_users_tenant: 0'
+										, '\r\- show_to_landlord: 0'
+										, '\r\- are_users_landlord: 0'
+										, '\r\- see_users_landlord: 0'
+										, '\r\- show_to_agent: 0'
+										, '\r\- are_users_agent: 0'
+										, '\r\- see_users_agent: 0'
+										, '\r\- show_to_contractor: 0'
+										, '\r\- are_users_contractor: 0'
+										, '\r\- see_users_contractor: 0'
+										, '\r\- show_to_mgt_cny: 0'
+										, '\r\- are_users_mgt_cny: 0'
+										, '\r\- see_users_mgt_cny: 0'
+										, '\r\For the product #'
+										, @product_id										
+										);
+			
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, @can_see_time_tracking_group_id
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, @can_create_shared_queries_group_id
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, @can_tag_comment_group_id
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@can_see_unit_in_search_group_id, 'can_see_unit_in_search_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
+						, '.')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
+						, '.')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_show_to_occupant, 'group_id_show_to_occupant is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_are_users_occupant, 'group_id_are_users_occupant is NULL'))
+						, '.')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_see_users_occupant, 'group_id_see_users_occupant is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
+						, '.')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_are_users_tenant, 'group_id_are_users_tenant is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_see_users_tenant, 'group_id_see_users_tenant is NULL'))
+						, '.')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_see_users_landlord, 'group_id_see_users_landlord is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_show_to_agent, 'group_id_show_to_agent is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_are_users_agent, 'group_id_are_users_agent is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_see_users_agent, 'group_id_see_users_agent is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_show_to_contractor, 'group_id_show_to_contractor is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_are_users_contractor, 'group_id_are_users_contractor is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_see_users_contractor, 'group_id_see_users_contractor is NULL'))
+						, '.')
+						)
+					 , (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_show_to_mgt_cny, 'group_id_show_to_mgt_cny is NULL'))
+						, '.')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_are_users_mgt_cny, 'group_id_are_users_mgt_cny is NULL'))
+						, '.')
+						)
+					, (NOW() 
+						,@bzfe_table
+						, 'n/a'
+						, 'n/a - we delete the record'
+						, 'n/a - we delete the record'
+						, @script
+						, CONCAT('Remove the record where BZ user id ='
+						, @bz_user_id
+						, ' the group id = '
+						, (SELECT IFNULL(@group_id_see_users_mgt_cny, 'group_id_see_users_mgt_cny is NULL'))
+						, '.')
+						)
+					 ;
+				 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+
+	# Now we assign all the default permissions for that user and for that unit
 
 	# First the global permissions:
 		# Can see timetracking
@@ -1537,191 +2156,6 @@ END IF ;
 END $$
 DELIMITER ;
 
-			# User can see the cases for agent in the unit:
-DROP PROCEDURE IF EXISTS show_to_agent;
-DELIMITER $$
-CREATE PROCEDURE show_to_agent()
-BEGIN
-	IF (@id_role_type = 5)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_show_to_agent, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' CAN see case that are limited to agents'
-										, ' for the unit #'
-										, @product_id
-										, '.'
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(@timestamp, @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'CAN see case that are limited to agents.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;	
-	
-		# User is an agent for the unit:
-DROP PROCEDURE IF EXISTS are_users_agent;
-DELIMITER $$
-CREATE PROCEDURE are_users_agent()
-BEGIN
-	IF (@id_role_type = 5)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_are_users_agent, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' is an agent for the unit #'
-										, @product_id
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(@timestamp, @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'is an agent.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
-
-		# User can see all the agents in the unit:
-DROP PROCEDURE IF EXISTS default_agent_see_users_agent;
-DELIMITER $$
-CREATE PROCEDURE default_agent_see_users_agent()
-BEGIN
-	IF (@id_role_type = 5)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_see_users_agent, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' can see agents for the unit '
-										, @product_id
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(@timestamp, @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'can see agents for the unit.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
-
 			# User can see the cases for contractor for the unit:
 DROP PROCEDURE IF EXISTS show_to_contractor;
 DELIMITER $$
@@ -2092,6 +2526,191 @@ END IF ;
 END $$
 DELIMITER ;
 
+			# User can see the cases for agent in the unit:
+DROP PROCEDURE IF EXISTS show_to_agent;
+DELIMITER $$
+CREATE PROCEDURE show_to_agent()
+BEGIN
+	IF (@id_role_type = 5)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_show_to_agent, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' CAN see case that are limited to agents'
+										, ' for the unit #'
+										, @product_id
+										, '.'
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'CAN see case that are limited to agents.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;	
+	
+		# User is an agent for the unit:
+DROP PROCEDURE IF EXISTS are_users_agent;
+DELIMITER $$
+CREATE PROCEDURE are_users_agent()
+BEGIN
+	IF (@id_role_type = 5)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_are_users_agent, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' is an agent for the unit #'
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'is an agent.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;
+
+		# User can see all the agents in the unit:
+DROP PROCEDURE IF EXISTS default_agent_see_users_agent;
+DELIMITER $$
+CREATE PROCEDURE default_agent_see_users_agent()
+BEGIN
+	IF (@id_role_type = 5)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_see_users_agent, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can see agents for the unit '
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'can see agents for the unit.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;
+
 		# User is an occupant in the unit:
 DROP PROCEDURE IF EXISTS show_to_occupant;
 DELIMITER $$
@@ -2323,39 +2942,9 @@ DELIMITER ;
 				, `grant_type`
 			;
 
-# Update the table 'ut_data_to_replace_dummy_roles' so that we record what we have done
-	INSERT INTO `ut_data_to_replace_dummy_roles`
-		(`mefe_invitation_id`
-		, `mefe_invitor_user_id`
-		, `bzfe_invitor_user_id`
-		, `bz_unit_id`
-		, `bz_user_id`
-		, `user_role_type_id`
-		, `is_occupant`
-		, `is_mefe_user_only`
-		, `user_more`
-		, `bz_created_date`
-		, `comment`
-		)
-	VALUES 
-		(@mefe_invitation_id
-		, @mefe_invitor_user_id
-		, @creator_bz_id
-		, @product_id
-		, @bz_user_id
-		, @id_role_type
-		, @is_occupant
-		, @is_mefe_only_user
-		, @role_user_more
-		, @timestamp
-		, CONCAT ('inserted in BZ with the script \''
-				, @script
-				, '\'\r\ '
-				, IFNULL(`comment`, '')
-				)
-		)
-		;
-			
+# We call the procedure to replace the dummy user if needed
+	CALL update_assignee_if_dummy_user;
+		
 #Clean up
 		
 	# We Delete the temp table as we do not need it anymore
@@ -2387,38 +2976,22 @@ DELIMITER ;
 		DROP PROCEDURE IF EXISTS show_to_occupant;
 		DROP PROCEDURE IF EXISTS is_occupant;
 		DROP PROCEDURE IF EXISTS default_occupant_see_users_occupant;
-
 		
+		DROP PROCEDURE IF EXISTS update_assignee_if_dummy_user;
 		
-# We now change the assignee and add the relevant comments and logs.
-	
-# The role for the invitee:
-	# We need to do this in 2 steps
-	SET @user_role_type_id = (SELECT `user_role_type_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-	SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @user_role_type_id);
 
-# We capture the current assignee for the case so that we can log what we did
-	SET @current_assignee = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @bz_case_id);
-	
-# We also need the login name for the previous assignee and the new assignee
-	SET @current_assignee_username = (SELECT `login_name` FROM `profiles` WHERE `userid` = @current_assignee);
-	
-# We need the login from the user we are inviting to the case
-	SET @invitee_login_name = (SELECT `login_name` FROM `profiles` WHERE `userid` = @bz_user_id);
-	
-# We make the user the assignee for this case:
-	UPDATE `bugs`
-	SET 
-		`assigned_to` = @bz_user_id
-		, `delta_ts` = @timestamp
-		, `lastdiffed` = @timestamp
-	WHERE `bug_id` = @bz_case_id
-	;
+# We make the user in CC for this case:
+	INSERT INTO `cc`
+		(`bug_id`
+		,`who`
+		) 
+		VALUES 
+		(@bz_case_id,@bz_user_id);
 
 	# Log the actions of the script.
 		SET @script_log_message = CONCAT('the bz user #'
 									, @bz_user_id
-									, ' is now the assignee for the case #'
+									, ' is added as CC for the case #'
 									, @bz_case_id
 									)
 									;
@@ -2429,12 +3002,13 @@ DELIMITER ;
 				, `log`
 				)
 				VALUES
-				(@timestamp, @script, @script_log_message)
+				(NOW(), @script, @script_log_message)
 				;
-		
-		SET @script_log_message = NULL;	
-	
+
 # Record the change in the Bug history
+# The old value for the audit will always be '' as this is the first time that this user
+# is involved in this case in that unit.
+
 	INSERT INTO	`bugs_activity`
 		(`bug_id` 
 		, `who` 
@@ -2447,20 +3021,18 @@ DELIMITER ;
 		(@bz_case_id
 		, @creator_bz_id
 		, @timestamp
-		, 16
+		, 22
 		, @invitee_login_name
-		, @current_assignee_username
+		, ''
 		)
 		;
 
 	# Log the actions of the script.
 		SET @script_log_message = CONCAT('the case histoy for case #'
 									, @bz_case_id
-									, ' has been updated: '
-									, 'old assignee was: '
+									, ' has been updatnew user: '
 									, @current_assignee_username
-									, 'new assignee is: '
-									, @invitee_login_name
+									, ' was added in CC to the case.'
 									)
 									;
 			
@@ -2496,7 +3068,7 @@ DELIMITER ;
 	# Log the actions of the script.
 		SET @script_log_message = CONCAT('A message has been added to the case #'
 									, @bz_case_id
-									, ' to inform users that inviation has been sent'
+									, ' to inform users that invitation has been sent'
 									)
 									;
 			
@@ -2528,14 +3100,14 @@ DELIMITER ;
 		, @bz_user_id
 		, @bz_case_id
 		, @timestamp
-		, CONCAT ('inserted in BZ with the script \''
+		, CONCAT ('inserted as CC to the case with the script \''
 				, @script
 				, '\'\r\ '
 				, IFNULL(`comment`, '')
 				)
 		)
 		;	
-
+		
 # We now need to check if we want to disable bugmail for that user. We do this for ALL the users which are MEFE only!
 
 DROP PROCEDURE IF EXISTS disable_bugmail;

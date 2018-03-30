@@ -1,32 +1,48 @@
 # For any question about this script, ask Franck
-
+#
 #############################################
 #											#
 # IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
 #											#
 #############################################
 #
-# Built for BZFE database v2.17 to v2.18
+# Built for BZFE database v2.19
 #
-# This script adds an BZ user to an existing unit in a role which has already been created.
-# It also 
-#	- grants default permission to the a unit to that BZ user.
-#	- makes the new user a CC for all the new cases created for that unit and this role.
+# Use this script only if the Unit EXIST in the BZFE 
+# It assumes that the unit has been created with the script '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.x'
+# OR with a method that creates a unit with all the necessary BZ objects and all the roles assigned to dummy users.
 #
-# Use this script only if 
-#	- the Unit/Product ALREADY EXISTS in the BZFE
-#	- the Role/component ALREADY EXISTS in the BZFE
+# This Script is a combination of the scripts:
+#	- 3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.19.sql
+#	AND
+#	- 4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.19.sql
+#	AND
+#	- 5_1_add_a_BZ_user_in_cc_to_a_case_in_unee-t_bzfe_v2.19.sql
 #
-# This script assumes that
-#	- the unit has been created with the script '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.13'
-#	- the 'real' default user for this role for that unit has been created with the script '4_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.13.sql'
-# 	OR with a method that creates a unit with all the necessary BZ objects and all the roles assigned to dummy users.
-#	- The table 'ut_data_to_add_user_to_a_role' has been updated and we know the record that we need to use to do the update.
+# Any changes in one of these scripts should be reflected here too!
+#
+# Pre-requisite:
+#	- We know which is the product/unit.
+#	- We know the BZ user id of the user that will be the additional assignee for the role for this unit.
+#	- We know the BZ user id of the user that creates this first role.
+#	- the 'real' default user for this role for that unit has been created with the script '4_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.1x.sql'
+#	- we have information about the bug this new user must be CCed to.
+#	- The table 'ut_invitation_api_data' has been updated and we know the record that we need to update.
+# 
+# This script will:
+# 	- Replace the Default 'dummy user' for a specific role
+#	- Add an existing BZ user as ASSIGNEE to an existing case which has already been created.
+#	- Add a comment in the table 'longdesc' to the case to explain that the invitation has been sent to the invited user
+#	- Record the change of assignee in the bug activity table so that we have history
+#	- Does NOT update the bug_user_last_visit table as the user had no action in there.
+#	- Check if the user is a MEFE user only and IF the user is a MEFE user only disable the mail sending functionality from the BZFE.
 #
 # Limits of this script:
-#	- DO NOT USE if the unit DOES NOT exists in the BZ database.
-#	- DO NOT USE if the role DOES NOT exists in the BZ database for that unit.
+#	- Unit must have all roles created with Dummy user roles.
+#	- The invited user MUST be the first user in this role for this unit.
 #	- DO NOT USE if the role created is assigned to a 'dummy' BZ user.
+#
+# IMPORTANT INFORMATION - THIS SCRIPT WILL NOT MAKE THIS NEW USER A DEFAULT CC FOR ALL THE NEW CASES CREATED FOR THIS UNIT!
 #
 #
 #################################################################
@@ -35,8 +51,14 @@
 #																#
 #################################################################
 
-# The unit: What is the id of the record that you want to use in the table 'ut_data_to_add_user_to_a_role'
+# The unit: What is the id of the record that you want to use in the table 'ut_invitation_api_data'
 	SET @reference_for_update = 1;
+
+# Environment: Which environment are you creating the unit in?
+#	- 1 is for the DEV/Staging
+#	- 2 is for the prod environment
+#	- 3 is for the Demo environment
+	SET @environment = 1;
 	
 ########################################################################
 #
@@ -45,20 +67,61 @@
 ########################################################################
 
 # Info about this script
-	SET @script = '4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.18.sql';
+	SET @script = 'invitation_as_cc_AFTER_case_creation_first_in_role_v2.19.sql';
+
+# Timestamp	
+	SET @timestamp = NOW();
+
+# We create a temporary table to record the ids of the dummy users in each environments:
+	/*Table structure for table `ut_temp_dummy_users_for_roles` */
+		DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+		CREATE TABLE `ut_temp_dummy_users_for_roles` (
+		  `environment_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
+		  `environment_name` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
+		  `tenant_id` INT(11) NOT NULL,
+		  `landlord_id` INT(11) NOT NULL,
+		  `contractor_id` INT(11) NOT NULL,
+		  `mgt_cny_id` INT(11) NOT NULL,
+		  `agent_id` INT(11) DEFAULT NULL,
+		  PRIMARY KEY (`environment_id`)
+		) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+	/*Data for the table `ut_temp_dummy_users_for_roles` */
+		INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) VALUES 
+			(1,'DEV/Staging',96,94,93,95,92),
+			(2,'Prod',93,91,90,92,89),
+			(3,'demo/dev',4,3,5,6,2);
+		
+# Get the BZ profile id of the dummy users based on the environment variable
+	# Tenant 1
+		SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
+	# Landlord 2
+		SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Contractor 3
+		SET @bz_user_id_dummy_contractor = (SELECT `contractor_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Management company 4
+		SET @bz_user_id_dummy_mgt_cny = (SELECT `mgt_cny_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Agent 5
+		SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
 	
 # The unit:
 	
 	# The name and description
-		SET @product_id = (SELECT `bz_unit_id` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
+		SET @product_id = (SELECT `bz_unit_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 
-# The user associated to the first role in this unit.	
+# The user who you want to associated to the role in this unit.	
 
 	# BZ user id of the user that is creating the unit (default is 1 - Administrator).
-		SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
+	# For LMB migration, we use 2 (support.nobody)
+		SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 
 	# BZ user id of the user that you want to associate to the unit.
-		SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
+		SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 	
 	# Role of the user associated to this new unit:
 	#	- Tenant 1
@@ -66,14 +129,11 @@
 	#	- Agent 5
 	#	- Contractor 3
 	#	- Management company 4
-		SET @id_role_type = (SELECT `user_role_type_id` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
-		SET @role_user_more = (SELECT `user_more` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
+		SET @id_role_type = (SELECT `user_role_type_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+		SET @role_user_more = (SELECT `user_more` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 
 	# Is the BZ user an occupant of the unit?
-		SET @is_occupant = (SELECT `is_occupant` FROM `ut_data_to_add_user_to_a_role` WHERE `id` = @reference_for_update);
-
-# Timestamp	
-	SET @timestamp = NOW();
+		SET @is_occupant = (SELECT `is_occupant` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 
 # The Groups to grant the global permissions for the user
 
@@ -83,7 +143,7 @@
 		# Can create shared queries
 		SET @can_create_shared_queries_group_id = 17;
 		# Can tag comments
-		SET @can_tag_comment_group_id = 18;	
+		SET @can_tag_comment_group_id = 18;		
 		
 # We populate the additional variables that we will need for this script to work
 	
@@ -96,128 +156,16 @@
 								)
 								;
 		SET @user_role_desc = (CONCAT(@role_user_g_description, ' - ',@role_user_pub_info));
+	
+		SET @invitee_login_name = (SELECT `login_name` FROM `profiles` WHERE `userid` = @bz_user_id);		
+
+		# The role for the invitee:
+		# We need to do this in 2 steps
+			SET @user_role_type_id = (SELECT `user_role_type_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+			SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @user_role_type_id);
 
 	# For the creator
 		SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
-
-# Variable needed to avoid script error - NEED TO REVISIT THAT
-	SET @can_see_time_tracking = 1;
-	SET @can_create_shared_queries = 1;
-	SET @can_tag_comment = 1;
-	SET @user_is_publicly_visible = 1;
-	SET @user_can_see_publicly_visible = 1;
-	SET @user_in_cc_for_cases = 0;
-	SET @can_create_new_cases = 1;
-	SET @can_edit_a_case = 1;
-	SET @can_see_all_public_cases = 1;
-	SET @can_edit_all_field_in_a_case_regardless_of_role = 1;
-	SET @can_ask_to_approve = 1;
-	SET @can_approve = 1;
-	SET @can_create_any_stakeholder = 0;
-	SET @can_create_same_stakeholder = 0;
-	SET @can_approve_user_for_flag = 0;
-	SET @can_decide_if_user_is_visible = 0;
-	SET @can_decide_if_user_can_see_visible = 0;
-		
-/*!40101 SET NAMES utf8 */;
-
-/*!40101 SET SQL_MODE=''*/;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-	
-		INSERT INTO `ut_map_user_unit_details`
-			(`created`
-			, `record_created_by`
-			, `user_id`
-			, `bz_profile_id`
-			, `bz_unit_id`
-			, `role_type_id`
-			, `can_see_time_tracking`
-			, `can_create_shared_queries`
-			, `can_tag_comment`
-			, `is_occupant`
-			, `is_public_assignee`
-			, `is_see_visible_assignee`
-			, `is_in_cc_for_role`
-			, `can_create_case`
-			, `can_edit_case`
-			, `can_see_case`
-			, `can_edit_all_field_regardless_of_role`
-			, `is_flag_requestee`
-			, `is_flag_approver`
-			, `can_create_any_sh`
-			, `can_create_same_sh`
-			, `can_approve_user_for_flags`
-			, `can_decide_if_user_visible`
-			, `can_decide_if_user_can_see_visible`
-			, `public_name`
-			, `more_info`
-			, `comment`
-			)
-			VALUES
-			(NOW()
-			, @creator_bz_id
-			, @bz_user_id
-			, @bz_user_id
-			, @product_id
-			, @id_role_type
-			# Global permission for the whole installation
-			, @can_see_time_tracking
-			, @can_create_shared_queries
-			, @can_tag_comment
-			# Attributes of the user
-			, @is_occupant
-			# User visibility
-			, @user_is_publicly_visible
-			, @user_can_see_publicly_visible
-			# Permissions for cases for this unit.
-			, @user_in_cc_for_cases
-			, @can_create_new_cases
-			, @can_edit_a_case
-			, @can_see_all_public_cases
-			, @can_edit_all_field_in_a_case_regardless_of_role
-			# For the flags
-			, @can_ask_to_approve
-			, @can_approve
-			# Permissions to create or modify other users
-			, @can_create_any_stakeholder
-			, @can_create_same_stakeholder
-			, @can_approve_user_for_flag
-			, @can_decide_if_user_is_visible
-			, @can_decide_if_user_can_see_visible
-			, @user_pub_name
-			, @role_user_more
-			, CONCAT('On ', NOW(), ': Created with the script - ', @script, '.\r\ ', `comment`)
-			)
-			ON DUPLICATE KEY UPDATE
-			`created` = NOW()
-			, `record_created_by` = @creator_bz_id
-			, `role_type_id` = @id_role_type
-			, `can_see_time_tracking` = @can_see_time_tracking
-			, `can_create_shared_queries` = @can_create_shared_queries
-			, `can_tag_comment` = @can_tag_comment
-			, `is_occupant` = @is_occupant
-			, `is_public_assignee` = @user_is_publicly_visible
-			, `is_see_visible_assignee` = @user_can_see_publicly_visible
-			, `is_in_cc_for_role` = @user_in_cc_for_cases
-			, `can_create_case` = @can_create_new_cases
-			, `can_edit_case` = @can_edit_a_case
-			, `can_see_case` = @can_see_all_public_cases
-			, `can_edit_all_field_regardless_of_role` = @can_edit_all_field_in_a_case_regardless_of_role
-			, `is_flag_requestee` = @can_ask_to_approve
-			, `is_flag_approver` = @can_approve
-			, `can_create_any_sh` = @can_create_any_stakeholder
-			, `can_create_same_sh` = @can_create_same_stakeholder
-			, `can_approve_user_for_flags` = @can_approve_user_for_flag
-			, `can_decide_if_user_visible` = @can_decide_if_user_is_visible
-			, `can_decide_if_user_can_see_visible` = @can_decide_if_user_can_see_visible
-			, `public_name` = @user_pub_name
-			, `more_info` = CONCAT('On: ', NOW(), '.\r\Updated to ', @role_user_more, '. \r\ ', `more_info`)
-			, `comment` = CONCAT('On ', NOW(), '.\r\Updated with the script - ', @script, '.\r\ ', `comment`)
-		;
 
 # We get the information about the goups we need
 	# We need to ge these from the ut_product_table_based on the product_id!
@@ -236,7 +184,7 @@
 
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-		
+
 	# Groups created when we created the Role for this product.
 	#	- show_to_tenant
 	#	- are_users_tenant
@@ -280,107 +228,247 @@
 		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
 		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
 		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
-
-# We get the information about the component/roles that were created:
 	
-	# We get that from the ut_product_group table.
-		SET @component_id_this_role = (SELECT `component_id` 
-									FROM `ut_product_group` 
+# We get the information about the component/roles that were created:
+	# We get that from the product_id and dummy user id to make sure that we do not get components with a valid user
+		SET @component_id_tenant = (SELECT `id` 
+									FROM `components` 
 									WHERE `product_id` = @product_id 
-										AND `role_type_id` = @id_role_type
-										AND `group_type_id` = 2)
+										AND `initialowner` = @bz_user_id_dummy_tenant);
+		SET @component_id_landlord = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_landlord);
+		SET @component_id_agent = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_agent);
+		SET @component_id_contractor = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_contractor);
+		SET @component_id_mgt_cny = (SELECT `id` 
+									FROM `components` 
+									WHERE `product_id` = @product_id 
+										AND `initialowner` = @bz_user_id_dummy_mgt_cny);
+
+	# What is the component_id for this role?
+		SET @component_id_this_role = IF( @id_role_type = 1
+										, @component_id_tenant
+										, IF (@id_role_type = 2
+											, @component_id_landlord
+											, IF (@id_role_type = 3
+												, @component_id_contractor
+												, IF (@id_role_type = 4
+													, @component_id_mgt_cny
+													, IF (@id_role_type = 5
+														, @component_id_agent
+														, 'Something is very wrong!!'
+														)
+													)
+												)
+											)
+										)
 										;
+											
+# Get the old values so we can log those
+	SET @old_component_initialowner = NULL;
+	SET @old_component_initialowner = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
+	SET @old_component_initialqacontact = NULL;
+	SET @old_component_initialqacontact = (SELECT `initialqacontact` FROM `components` WHERE `id` = @component_id_this_role);
+	SET @old_component_description = NULL;
+	SET @old_component_description = (SELECT `description` FROM `components` WHERE `id` = @component_id_this_role);		
 
-# We add the user to the list of user that will be in CC when there in a new case for this unit and role type:
- 	# We use a temporary table to make sure we do not have duplicates.
-		
-		# DELETE the temp table if it exists
-		DROP TABLE IF EXISTS `component_cc_temp`;
-		
-		# Re-create the temp table
-		CREATE TABLE `component_cc_temp` (
-		  `user_id` MEDIUMINT(9) NOT NULL
-		  ,`component_id` MEDIUMINT(9) NOT NULL
-		) ENGINE=INNODB DEFAULT CHARSET=utf8;
+# Variable needed to avoid script error - NEED TO REVISIT THAT
+	SET @can_see_time_tracking = 1;
+	SET @can_create_shared_queries = 1;
+	SET @can_tag_comment = 1;
+	SET @user_is_publicly_visible = 1;
+	SET @user_can_see_publicly_visible = 1;
+	SET @user_in_cc_for_cases = 0;
+	SET @can_create_new_cases = 1;
+	SET @can_edit_a_case = 1;
+	SET @can_see_all_public_cases = 1;
+	SET @can_edit_all_field_in_a_case_regardless_of_role = 1;
+	SET @can_ask_to_approve = 1;
+	SET @can_approve = 1;
+	SET @can_create_any_stakeholder = 0;
+	SET @can_create_same_stakeholder = 0;
+	SET @can_approve_user_for_flag = 0;
+	SET @can_decide_if_user_is_visible = 0;
+	SET @can_decide_if_user_can_see_visible = 0;	
 
-		# Add the records that exist in the table component_cc
-		INSERT INTO `component_cc_temp`
-			SELECT *
-			FROM `component_cc`;
+# The case id
+	SET @bz_case_id = (SELECT `bz_case_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+		
+# The MEFE information:
+	SET @mefe_invitation_id = (SELECT `mefe_invitation_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+	SET @mefe_invitor_user_id = (SELECT `mefe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+	SET @is_mefe_only_user = (SELECT `is_mefe_only_user` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 
-		# Add the new user rights for the product
-			INSERT INTO `component_cc_temp`
-				(user_id
-				, component_id
-				)
-				VALUES
-				(@bz_user_id, @component_id_this_role)
-				;
+# We have everything, do it!
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+# The user
+
+	# We record the information about the users that we have just created
+	# If this is the first time we record something for this user for this unit, we create a new record.
+	# If there is already a record for THAT USER for THIS, then we are updating the information
 		
-		# Empty the table `component_cc`
-			TRUNCATE TABLE `component_cc`;
-		
-		# Add all the records for `component_cc`
-			INSERT INTO `component_cc`
-			SELECT `user_id`
-				, `component_id`
-			FROM
-				`component_cc_temp`
-			GROUP BY `user_id`
-				, `component_id`
+		INSERT INTO `ut_map_user_unit_details`
+			(`created`
+			, `record_created_by`
+			, `user_id`
+			, `bz_profile_id`
+			, `bz_unit_id`
+			, `role_type_id`
+			, `can_see_time_tracking`
+			, `can_create_shared_queries`
+			, `can_tag_comment`
+			, `is_occupant`
+			, `is_public_assignee`
+			, `is_see_visible_assignee`
+			, `is_in_cc_for_role`
+			, `can_create_case`
+			, `can_edit_case`
+			, `can_see_case`
+			, `can_edit_all_field_regardless_of_role`
+			, `is_flag_requestee`
+			, `is_flag_approver`
+			, `can_create_any_sh`
+			, `can_create_same_sh`
+			, `can_approve_user_for_flags`
+			, `can_decide_if_user_visible`
+			, `can_decide_if_user_can_see_visible`
+			, `public_name`
+			, `more_info`
+			, `comment`
+			)
+			VALUES
+			(@timestamp
+			, @creator_bz_id
+			, @bz_user_id
+			, @bz_user_id
+			, @product_id
+			, @id_role_type
+			# Global permission for the whole installation
+			, @can_see_time_tracking
+			, @can_create_shared_queries
+			, @can_tag_comment
+			# Attributes of the user
+			, @is_occupant
+			# User visibility
+			, @user_is_publicly_visible
+			, @user_can_see_publicly_visible
+			# Permissions for cases for this unit.
+			, @user_in_cc_for_cases
+			, @can_create_new_cases
+			, @can_edit_a_case
+			, @can_see_all_public_cases
+			, @can_edit_all_field_in_a_case_regardless_of_role
+			# For the flags
+			, @can_ask_to_approve
+			, @can_approve
+			# Permissions to create or modify other users
+			, @can_create_any_stakeholder
+			, @can_create_same_stakeholder
+			, @can_approve_user_for_flag
+			, @can_decide_if_user_is_visible
+			, @can_decide_if_user_can_see_visible
+			, @user_pub_name
+			, @role_user_more
+			, CONCAT('On '
+					, @timestamp
+					, ': Created with the script - '
+					, @script
+					, '.\r\ '
+					, `comment`)
+			)
+			ON DUPLICATE KEY UPDATE
+			`created` = @timestamp
+			, `record_created_by` = @creator_bz_id
+			, `role_type_id` = @id_role_type
+			, `can_see_time_tracking` = @can_see_time_tracking
+			, `can_create_shared_queries` = @can_create_shared_queries
+			, `can_tag_comment` = @can_tag_comment
+			, `is_occupant` = @is_occupant
+			, `is_public_assignee` = @user_is_publicly_visible
+			, `is_see_visible_assignee` = @user_can_see_publicly_visible
+			, `is_in_cc_for_role` = @user_in_cc_for_cases
+			, `can_create_case` = @can_create_new_cases
+			, `can_edit_case` = @can_edit_a_case
+			, `can_see_case` = @can_see_all_public_cases
+			, `can_edit_all_field_regardless_of_role` = @can_edit_all_field_in_a_case_regardless_of_role
+			, `is_flag_requestee` = @can_ask_to_approve
+			, `is_flag_approver` = @can_approve
+			, `can_create_any_sh` = @can_create_any_stakeholder
+			, `can_create_same_sh` = @can_create_same_stakeholder
+			, `can_approve_user_for_flags` = @can_approve_user_for_flag
+			, `can_decide_if_user_visible` = @can_decide_if_user_is_visible
+			, `can_decide_if_user_can_see_visible` = @can_decide_if_user_can_see_visible
+			, `public_name` = @user_pub_name
+			, `more_info` = CONCAT('On: ', @timestamp, '.\r\Updated to ', @role_user_more, '. \r\ ', `more_info`)
+			, `comment` = CONCAT('On ', @timestamp, '.\r\Updated with the script - ', @script, '.\r\ ', `comment`)
+		;
+
+# We update the component as this user is the first in this role
+		UPDATE `components`
+		SET 
+			`initialowner` = @bz_user_id
+			,`initialqacontact` = @bz_user_id
+			,`description` = @user_role_desc
+			WHERE 
+			`id` = @component_id_this_role
 			;
 		
-		# We Delete the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `component_cc_temp`;
-				
-		# Log the actions of the script.
-			SET @script_log_message = CONCAT('the bz user #'
-									, @bz_user_id
-									, ' is one of the copied assignee for the unit #'
-									, @product_id
-									, ' when the role '
-									, @role_user_g_description
-									, ' (the component #'
-									, @component_id_this_role
-									, ')'
-									, ' is chosen'
-									);
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('The component: '
+								, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
+								, ' (for the role_type_id #'
+								, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
+								, ') has been updated.'
+								, '\r\The default user now associated to this role is bz user #'
+								, (SELECT IFNULL(@bz_user_id, 'bz_user_id is NULL'))
+								, ' (real name: '
+								, (SELECT IFNULL(@user_pub_name, 'user_pub_name is NULL'))
+								, ') for the unit #' 
+								, @product_id
+								);
+		
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+			)
+			VALUES
+			(@timestamp, @script, @script_log_message)
+			;
+		
+		SET @script_log_message = NULL;	
 			
-			INSERT INTO `ut_script_log`
-				(`datetime`
-				, `script`
-				, `log`
-				)
-				VALUES
-				(NOW(), @script, @script_log_message)
-				;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'component_cc';
-				SET @permission_granted = ' is in CC when role is chosen.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'component_id', 'UNKNOWN', @component_id_this_role, @script, CONCAT('Make sure the user ', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;	
-
-# We update the BZ logs 
-# NOT NEEDED - BZ DOES NOT LOG THESE EVENTS		
+# We update the BZ logs
+	INSERT  INTO `audit_log`
+		(`user_id`
+		,`class`
+		,`object_id`
+		,`field`
+		,`removed`
+		,`added`
+		,`at_time`
+		) 
+		VALUES 
+		(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id,@timestamp)
+		, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id,@timestamp)
+		, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@user_role_desc,@timestamp)
+		;
 		
 # We now assign the default permissions to the user we just associated to this role:		
 	
@@ -401,18 +489,6 @@
 		INSERT INTO `ut_user_group_map_temp`
 			SELECT *
 			FROM `user_group_map`;
-
-	# We need to get the id of these groups from the 'ut_product_group' table_based on the product_id
-		# For the user - based on the user role:
-			# Visibility group
-			SET @group_id_show_to_user_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = @id_role_type));
-		
-			# Is in user Group for the role we just created
-			SET @group_id_are_users_same_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = @id_role_type));
-			
-			# Can See other users in the same Group
-			SET @group_id_see_users_same_role = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = @id_role_type));
-
 
 # The default permissions for a user assigned as default for a role are:
 #
@@ -919,6 +995,7 @@
 				SET @bzfe_table = NULL;
 
 	# Now we assign all the default permissions for that user and for that unit
+
 	# First the global permissions:
 		# Can see timetracking
 			INSERT  INTO `ut_user_group_map_temp`
@@ -943,7 +1020,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -960,10 +1037,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, 'Add the BZ user id when we grant the permission to see time tracking')
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_time_tracking_group_id, @script, 'Add the BZ group id when we grant the permission to see time tracking')
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, 'user does NOT grant see time tracking permission')
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, 'user is a member of the group see time tracking')
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, 'Add the BZ user id when we grant the permission to see time tracking')
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_time_tracking_group_id, @script, 'Add the BZ group id when we grant the permission to see time tracking')
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, 'user does NOT grant see time tracking permission')
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, 'user is a member of the group see time tracking')
 					 ;
 				 
 			# Cleanup the variables for the log messages
@@ -993,7 +1070,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1010,10 +1087,10 @@
 						 , `comment`
 						 )
 						 VALUES
-						 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, 'Add the BZ user id when we grant the permission to create shared queries')
-						 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_create_shared_queries_group_id, @script, 'Add the BZ group id when we grant the permission to create shared queries')
-						 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, 'user does NOT grant create shared queries permission')
-						 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, 'user is a member of the group create shared queries')
+						 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, 'Add the BZ user id when we grant the permission to create shared queries')
+						 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_create_shared_queries_group_id, @script, 'Add the BZ group id when we grant the permission to create shared queries')
+						 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, 'user does NOT grant create shared queries permission')
+						 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, 'user is a member of the group create shared queries')
 						 ;
 			 
 			# Cleanup the variables for the log messages
@@ -1043,7 +1120,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1060,10 +1137,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, 'Add the BZ user id when we grant the permission to tag comments')
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_tag_comment_group_id, @script, 'Add the BZ group id when we grant the permission to tag comments')
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, 'user does NOT grant tag comments permission')
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, 'user is a member of the group tag comments')
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, 'Add the BZ user id when we grant the permission to tag comments')
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_tag_comment_group_id, @script, 'Add the BZ group id when we grant the permission to tag comments')
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, 'user does NOT grant tag comments permission')
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, 'user is a member of the group tag comments')
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1098,7 +1175,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1116,10 +1193,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @create_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @create_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1151,7 +1228,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1169,10 +1246,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1209,7 +1286,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1227,10 +1304,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_cases_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_cases_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1263,7 +1340,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1281,10 +1358,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_all_field_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_all_field_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1317,7 +1394,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1335,17 +1412,17 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_unit_in_search_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_see_unit_in_search_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;
-				
+		
 		# User can be visible to other users regardless of the other users roles
 			INSERT INTO `ut_user_group_map_temp`
 				(`user_id`
@@ -1370,7 +1447,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1388,10 +1465,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @list_visible_assignees_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @list_visible_assignees_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1426,7 +1503,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1444,10 +1521,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @see_visible_assignees_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @see_visible_assignees_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1479,7 +1556,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1497,10 +1574,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @all_r_flags_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @all_r_flags_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1532,7 +1609,7 @@
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1550,10 +1627,10 @@
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @all_g_flags_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @all_g_flags_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1595,7 +1672,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1613,10 +1690,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_tenant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_tenant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1657,7 +1734,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1675,10 +1752,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_tenant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_tenant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1718,7 +1795,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1736,10 +1813,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_tenant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_tenant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1781,7 +1858,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1799,10 +1876,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_landlord, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_landlord, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1842,7 +1919,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1860,10 +1937,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_landlord, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_landlord, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1903,7 +1980,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1921,10 +1998,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_landlord, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_landlord, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -1966,7 +2043,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -1984,10 +2061,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2027,7 +2104,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2045,10 +2122,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2088,7 +2165,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2106,10 +2183,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2151,7 +2228,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2169,10 +2246,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_contractor, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_contractor, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2212,7 +2289,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2230,10 +2307,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_contractor, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_contractor, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2273,7 +2350,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2291,10 +2368,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_contractor, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_contractor, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2336,7 +2413,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2354,10 +2431,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_mgt_cny, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_mgt_cny, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2397,7 +2474,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2415,10 +2492,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_mgt_cny, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_mgt_cny, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2458,7 +2535,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2476,10 +2553,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_mgt_cny, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_mgt_cny, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2521,7 +2598,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2539,10 +2616,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2582,7 +2659,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2600,10 +2677,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2643,7 +2720,7 @@ BEGIN
 					, `log`
 					)
 					VALUES
-					(NOW(), @script, @script_log_message)
+					(@timestamp, @script, @script_log_message)
 					;
 
 			# We log what we have just done into the `ut_audit_log` table
@@ -2661,10 +2738,10 @@ BEGIN
 					 , `comment`
 					 )
 					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 					;
 			 
 			# Cleanup the variables for the log messages
@@ -2721,21 +2798,44 @@ DELIMITER ;
 				, `grant_type`
 			;
 
-# Update the table 'ut_data_to_add_user_to_a_role' so that we record what we have done
-	UPDATE `ut_data_to_add_user_to_a_role`
-	SET 
-		`bz_created_date` = @timestamp
-		, `comment` = CONCAT ('inserted in BZ with the script \''
+# Update the table 'ut_data_to_replace_dummy_roles' so that we record what we have done
+	INSERT INTO `ut_data_to_replace_dummy_roles`
+		(`mefe_invitation_id`
+		, `mefe_invitor_user_id`
+		, `bzfe_invitor_user_id`
+		, `bz_unit_id`
+		, `bz_user_id`
+		, `user_role_type_id`
+		, `is_occupant`
+		, `is_mefe_user_only`
+		, `user_more`
+		, `bz_created_date`
+		, `comment`
+		)
+	VALUES 
+		(@mefe_invitation_id
+		, @mefe_invitor_user_id
+		, @creator_bz_id
+		, @product_id
+		, @bz_user_id
+		, @id_role_type
+		, @is_occupant
+		, @is_mefe_only_user
+		, @role_user_more
+		, @timestamp
+		, CONCAT ('inserted in BZ with the script \''
 				, @script
 				, '\'\r\ '
 				, IFNULL(`comment`, '')
 				)
-	WHERE `id` = @reference_for_update;
-			
+		)
+		;
+
 #Clean up
 		
 	# We Delete the temp table as we do not need it anymore
 		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
+		DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
 	
 	# Delete the procedures that we do not need anymore:
 		
@@ -2763,9 +2863,256 @@ DELIMITER ;
 		DROP PROCEDURE IF EXISTS is_occupant;
 		DROP PROCEDURE IF EXISTS default_occupant_see_users_occupant;
 
+# We make the user in CC for this case:
+	INSERT INTO `cc`
+		(`bug_id`
+		,`who`
+		) 
+		VALUES 
+		(@bz_case_id,@bz_user_id);
+
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('the bz user #'
+									, @bz_user_id
+									, ' is added as CC for the case #'
+									, @bz_case_id
+									)
+									;
+			
+		INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(NOW(), @script, @script_log_message)
+				;
+
+# Record the change in the Bug history
+# The old value for the audit will always be '' as this is the first time that this user
+# is involved in this case in that unit.
+
+	INSERT INTO	`bugs_activity`
+		(`bug_id` 
+		, `who` 
+		, `bug_when`
+		, `fieldid`
+		, `added`
+		, `removed`
+		)
+		VALUES
+		(@bz_case_id
+		, @creator_bz_id
+		, @timestamp
+		, 22
+		, @invitee_login_name
+		, ''
+		)
+		;
+
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('the case histoy for case #'
+									, @bz_case_id
+									, ' has been updatnew user: '
+									, @current_assignee_username
+									, ' was added in CC to the case.'
+									)
+									;
+			
+		INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(@timestamp, @script, @script_log_message)
+				;
+		
+		SET @script_log_message = NULL;
+		
+# Add a comment to inform users that the invitation has been processed.
+# WARNING - This is technically NOT true as the invitation STILL needs to be processed in the MEFE API too.
+	INSERT INTO `longdescs`
+		(`bug_id`
+		, `who`
+		, `bug_when`
+		, `thetext`
+		)
+		VALUES
+		(@bz_case_id
+		, @creator_bz_id
+		, @timestamp
+		, CONCAT ('An invitation to collaborate on this case has been sent to the '
+			, @user_role_type_description 
+			, ' for this unit'
+			)
+		)
+		;
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('A message has been added to the case #'
+									, @bz_case_id
+									, ' to inform users that invitation has been sent'
+									)
+									;
+			
+		INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(@timestamp, @script, @script_log_message)
+				;
+		
+		SET @script_log_message = NULL;
+
+# Update the table 'ut_data_to_add_user_to_a_case' so that we record what we have done
+	INSERT INTO `ut_data_to_add_user_to_a_case`
+		( `mefe_invitation_id`
+		, `mefe_invitor_user_id`
+		, `bzfe_invitor_user_id`
+		, `bz_user_id`
+		, `bz_case_id`
+		, `bz_created_date`
+		, `comment`
+		)
+	VALUES
+		(@mefe_invitation_id
+		, @mefe_invitor_user_id
+		, @creator_bz_id
+		, @bz_user_id
+		, @bz_case_id
+		, @timestamp
+		, CONCAT ('inserted as CC to the case with the script \''
+				, @script
+				, '\'\r\ '
+				, IFNULL(`comment`, '')
+				)
+		)
+		;	
+		
+# We now need to check if we want to disable bugmail for that user. We do this for ALL the users which are MEFE only!
+
+DROP PROCEDURE IF EXISTS disable_bugmail;
+DELIMITER $$
+CREATE PROCEDURE disable_bugmail()
+BEGIN
+	IF (@is_mefe_only_user = 1)
+	THEN UPDATE `profiles`
+		SET 
+			`disable_mail` = 1
+		WHERE `userid` = @bz_user_id
+		;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' will NOT receive bugmail'
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'profiles';
+				SET @permission_granted = ' will NOT receive bugmail.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table, 'disable_mail', 'UNKNOWN', 1, @script, CONCAT('This BZ user id #', @bz_user_id, @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+		
+		# Add this information to the profile activity table
+		INSERT INTO `profiles_activity`
+			(`userid`
+			, `who`
+			, `profiles_when`
+			, `fieldid`
+			, `oldvalue`
+			, `newvalue`
+			)
+			VALUES
+			(@bz_user_id
+			, @creator_bz_id
+			, @timestamp
+			, 33
+			, (NULL)
+			, @timestamp
+			)
+			;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('Update profile activity for user #'
+										, @bz_user_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'profiles_activity';
+				SET @permission_granted = 'New record added.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table, 'ALL', 'UNKNOWN', 'N/A', @script, CONCAT(@permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+			
+END IF ;
+END $$
+DELIMITER ;
+		
+# We CALL the procedures to check if we need to disable bug mail:
+	CALL disable_bugmail;
+
+# Cleanup 
+	DROP PROCEDURE IF EXISTS disable_bugmail;
+	
+		
 # We implement the FK checks again
 		
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;		
+
