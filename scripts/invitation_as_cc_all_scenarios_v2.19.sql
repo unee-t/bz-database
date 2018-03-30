@@ -49,7 +49,7 @@
 # Pre-requisite:
 #	- The table 'ut_invitation_api_data' has been updated and we know the record that we need to update.
 #		- We know which is the product/unit.
-#		- We know the BZ user id of the user that will be the additional assignee for the role for this unit.
+#		- We know the BZ user id of the user that will be the additional invitee for the role for this unit.
 #		- We know the invitor
 #		- We know the case Id this new user must be CCed to.
 #		- We know the environment where this script is run
@@ -103,42 +103,7 @@
 			(1,'DEV/Staging',96,94,93,95,92),
 			(2,'Prod',93,91,90,92,89),
 			(3,'demo/dev',4,3,5,6,2);
-		
-# Get the BZ profile id of the dummy users based on the environment variable
-	# Tenant 1
-		SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-
-	# Landlord 2
-		SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-		
-	# Contractor 3
-		SET @bz_user_id_dummy_contractor = (SELECT `contractor_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-		
-	# Management company 4
-		SET @bz_user_id_dummy_mgt_cny = (SELECT `mgt_cny_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-		
-	# Agent 5
-		SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-
-# What is the BZ dummy user id for this role in this script?
-	SET @bz_user_id_dummy_user_this_role = IF( @user_role_type_id = 1
-									, @bz_user_id_dummy_tenant
-									, IF (@user_role_type_id = 2
-										, @bz_user_id_dummy_landlord
-										, IF (@user_role_type_id = 3
-											, @bz_user_id_dummy_contractor
-											, IF (@user_role_type_id = 4
-												, @bz_user_id_dummy_mgt_cny
-												, IF (@user_role_type_id = 5
-													, @bz_user_id_dummy_agent
-													, 'Something is very wrong!!'
-													)
-												)
-											)
-										)
-									)
-									;
-		
+	
 # The unit:
 	
 	# The name and description
@@ -161,6 +126,7 @@
 	#	- Management company 4
 		SET @id_role_type = (SELECT `user_role_type_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 		SET @role_user_more = (SELECT `user_more` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+		SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type);
 
 	# Is the BZ user an occupant of the unit?
 		SET @is_occupant = (SELECT `is_occupant` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
@@ -187,16 +153,11 @@
 								;
 		SET @user_role_desc = (CONCAT(@role_user_g_description, ' - ',@role_user_pub_info));
 	
-		SET @invitee_login_name = (SELECT `login_name` FROM `profiles` WHERE `userid` = @bz_user_id);		
-
-		# The role for the invitee:
-		# We need to do this in 2 steps
-			SET @user_role_type_id = (SELECT `user_role_type_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-			SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @user_role_type_id);
+		SET @invitee_login_name = (SELECT `login_name` FROM `profiles` WHERE `userid` = @bz_user_id);
 
 	# For the creator
-		SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
-
+		SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);	
+		
 # We get the information about the goups we need
 	# We need to ge these from the ut_product_table_based on the product_id!
 		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
@@ -264,7 +225,7 @@
 		SET @component_id_this_role = (SELECT `component_id` 
 									FROM `ut_product_group` 
 									WHERE `product_id` = @product_id 
-										AND `role_type_id` = @user_role_type_id
+										AND `role_type_id` = @id_role_type
 										AND `group_type_id` = 2)
 										;
 
@@ -327,6 +288,41 @@
 		
 	# Agent 5
 		SET @current_default_assignee_agent = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_agent);
+		
+# Get the BZ profile id of the dummy users based on the environment variable
+	# Tenant 1
+		SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
+	# Landlord 2
+		SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Contractor 3
+		SET @bz_user_id_dummy_contractor = (SELECT `contractor_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Management company 4
+		SET @bz_user_id_dummy_mgt_cny = (SELECT `mgt_cny_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+		
+	# Agent 5
+		SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
+# What is the BZ dummy user id for this role in this script?
+	SET @bz_user_id_dummy_user_this_role = IF( @id_role_type = 1
+									, @bz_user_id_dummy_tenant
+									, IF (@id_role_type = 2
+										, @bz_user_id_dummy_landlord
+										, IF (@id_role_type = 3
+											, @bz_user_id_dummy_contractor
+											, IF (@id_role_type = 4
+												, @bz_user_id_dummy_mgt_cny
+												, IF (@id_role_type = 5
+													, @bz_user_id_dummy_agent
+													, 'Something is very wrong!!'
+													)
+												)
+											)
+										)
+									)
+									;
 
 # IS the current default assignee one of the dummy users?
 
@@ -565,21 +561,54 @@ BEGIN
 		
 		SET @script_log_message = NULL;	
 			
-# We update the BZ logs
-	INSERT  INTO `audit_log`
-		(`user_id`
-		,`class`
-		,`object_id`
-		,`field`
-		,`removed`
-		,`added`
-		,`at_time`
-		) 
+	# We update the BZ logs
+		INSERT  INTO `audit_log`
+			(`user_id`
+			,`class`
+			,`object_id`
+			,`field`
+			,`removed`
+			,`added`
+			,`at_time`
+			) 
+			VALUES 
+			(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id,@timestamp)
+			, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id,@timestamp)
+			, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@user_role_desc,@timestamp)
+			;
+				
+	# Update the table 'ut_data_to_replace_dummy_roles' so that we record what we have done
+		INSERT INTO `ut_data_to_replace_dummy_roles`
+			(`mefe_invitation_id`
+			, `mefe_invitor_user_id`
+			, `bzfe_invitor_user_id`
+			, `bz_unit_id`
+			, `bz_user_id`
+			, `user_role_type_id`
+			, `is_occupant`
+			, `is_mefe_user_only`
+			, `user_more`
+			, `bz_created_date`
+			, `comment`
+			)
 		VALUES 
-		(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id,@timestamp)
-		, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id,@timestamp)
-		, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@user_role_desc,@timestamp)
-		;
+			(@mefe_invitation_id
+			, @mefe_invitor_user_id
+			, @creator_bz_id
+			, @product_id
+			, @bz_user_id
+			, @id_role_type
+			, @is_occupant
+			, @is_mefe_only_user
+			, @role_user_more
+			, @timestamp
+			, CONCAT ('inserted in BZ with the script \''
+					, @script
+					, '\'\r\ '
+					, IFNULL(`comment`, '')
+					)
+			)
+			;
 
 END IF ;
 END $$
@@ -2127,191 +2156,6 @@ END IF ;
 END $$
 DELIMITER ;
 
-			# User can see the cases for agent in the unit:
-DROP PROCEDURE IF EXISTS show_to_agent;
-DELIMITER $$
-CREATE PROCEDURE show_to_agent()
-BEGIN
-	IF (@id_role_type = 5)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_show_to_agent, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' CAN see case that are limited to agents'
-										, ' for the unit #'
-										, @product_id
-										, '.'
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(@timestamp, @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'CAN see case that are limited to agents.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;	
-	
-		# User is an agent for the unit:
-DROP PROCEDURE IF EXISTS are_users_agent;
-DELIMITER $$
-CREATE PROCEDURE are_users_agent()
-BEGIN
-	IF (@id_role_type = 5)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_are_users_agent, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' is an agent for the unit #'
-										, @product_id
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(@timestamp, @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'is an agent.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
-
-		# User can see all the agents in the unit:
-DROP PROCEDURE IF EXISTS default_agent_see_users_agent;
-DELIMITER $$
-CREATE PROCEDURE default_agent_see_users_agent()
-BEGIN
-	IF (@id_role_type = 5)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_see_users_agent, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' can see agents for the unit '
-										, @product_id
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(@timestamp, @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'can see agents for the unit.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END $$
-DELIMITER ;
-
 			# User can see the cases for contractor for the unit:
 DROP PROCEDURE IF EXISTS show_to_contractor;
 DELIMITER $$
@@ -2682,6 +2526,191 @@ END IF ;
 END $$
 DELIMITER ;
 
+			# User can see the cases for agent in the unit:
+DROP PROCEDURE IF EXISTS show_to_agent;
+DELIMITER $$
+CREATE PROCEDURE show_to_agent()
+BEGIN
+	IF (@id_role_type = 5)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_show_to_agent, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' CAN see case that are limited to agents'
+										, ' for the unit #'
+										, @product_id
+										, '.'
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'CAN see case that are limited to agents.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_show_to_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;	
+	
+		# User is an agent for the unit:
+DROP PROCEDURE IF EXISTS are_users_agent;
+DELIMITER $$
+CREATE PROCEDURE are_users_agent()
+BEGIN
+	IF (@id_role_type = 5)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_are_users_agent, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' is an agent for the unit #'
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'is an agent.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_are_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;
+
+		# User can see all the agents in the unit:
+DROP PROCEDURE IF EXISTS default_agent_see_users_agent;
+DELIMITER $$
+CREATE PROCEDURE default_agent_see_users_agent()
+BEGIN
+	IF (@id_role_type = 5)
+	THEN INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @group_id_see_users_agent, 0, 0)
+				;
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('the bz user #'
+										, @bz_user_id
+										, ' can see agents for the unit '
+										, @product_id
+										);
+				
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+
+			# We log what we have just done into the `ut_audit_log` table
+				
+				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @permission_granted = 'can see agents for the unit.';
+
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_agent, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+					 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+					 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+				SET @permission_granted = NULL;
+END IF ;
+END $$
+DELIMITER ;
+
 		# User is an occupant in the unit:
 DROP PROCEDURE IF EXISTS show_to_occupant;
 DELIMITER $$
@@ -2912,39 +2941,6 @@ DELIMITER ;
 				, `isbless`
 				, `grant_type`
 			;
-			
-# Update the table 'ut_data_to_replace_dummy_roles' so that we record what we have done
-	INSERT INTO `ut_data_to_replace_dummy_roles`
-		(`mefe_invitation_id`
-		, `mefe_invitor_user_id`
-		, `bzfe_invitor_user_id`
-		, `bz_unit_id`
-		, `bz_user_id`
-		, `user_role_type_id`
-		, `is_occupant`
-		, `is_mefe_user_only`
-		, `user_more`
-		, `bz_created_date`
-		, `comment`
-		)
-	VALUES 
-		(@mefe_invitation_id
-		, @mefe_invitor_user_id
-		, @creator_bz_id
-		, @product_id
-		, @bz_user_id
-		, @id_role_type
-		, @is_occupant
-		, @is_mefe_only_user
-		, @role_user_more
-		, @timestamp
-		, CONCAT ('inserted in BZ with the script \''
-				, @script
-				, '\'\r\ '
-				, IFNULL(`comment`, '')
-				)
-		)
-		;
 
 # We call the procedure to replace the dummy user if needed
 	CALL update_assignee_if_dummy_user;
