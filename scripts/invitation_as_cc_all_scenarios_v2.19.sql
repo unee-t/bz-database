@@ -127,6 +127,7 @@
 		SET @id_role_type = (SELECT `user_role_type_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 		SET @role_user_more = (SELECT `user_more` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
 		SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type);
+		SET @user_role_type_name = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type);
 
 	# Is the BZ user an occupant of the unit?
 		SET @is_occupant = (SELECT `is_occupant` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
@@ -3060,7 +3061,7 @@ DELIMITER ;
 		, @creator_bz_id
 		, @timestamp
 		, CONCAT ('An invitation to collaborate on this case has been sent to the '
-			, @user_role_type_description 
+			, @user_role_type_name 
 			, ' for this unit'
 			)
 		)
