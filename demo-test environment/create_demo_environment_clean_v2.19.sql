@@ -7,12 +7,12 @@
 ##################################################################
 
 # pre-requisite: 
-# 	- DB v2.18 clean has been installed.
+# 	- DB v2.19 clean has been installed.
 
 # Dependencies:
 # This script use codes from the following scripts:
 	#- chore_update_fielddefs_v2.x.sql
-	#- cleanup_remove_a_unit_bzfe_v2.18.sql
+	#- cleanup_remove_a_unit_bzfe_v2.19.sql
 	#- 2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.18.sql
 	#- 3_replace_dummy_role_with_genuine_user_as_default_in_unee-t_bzfe_v2.18.sql
 #
@@ -81,7 +81,7 @@
 ################
 
 # Info about this script
-	SET @script = 'demo_environment_clean_v2.18.sql';
+	SET @script = 'demo_environment_clean_v2.19.sql';
 	
 # Timestamp	
 		SET @timestamp = NOW();
@@ -118,22 +118,22 @@
 	DROP TABLE IF EXISTS `fielddefs`;
 
 	CREATE TABLE `fielddefs` (
-	  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-	  `name` varchar(64) NOT NULL,
-	  `type` smallint(6) NOT NULL DEFAULT 0,
-	  `custom` tinyint(4) NOT NULL DEFAULT 0,
-	  `description` tinytext NOT NULL,
-	  `long_desc` varchar(255) NOT NULL DEFAULT '',
-	  `mailhead` tinyint(4) NOT NULL DEFAULT 0,
-	  `sortkey` smallint(6) NOT NULL,
-	  `obsolete` tinyint(4) NOT NULL DEFAULT 0,
-	  `enter_bug` tinyint(4) NOT NULL DEFAULT 0,
-	  `buglist` tinyint(4) NOT NULL DEFAULT 0,
-	  `visibility_field_id` mediumint(9) DEFAULT NULL,
-	  `value_field_id` mediumint(9) DEFAULT NULL,
-	  `reverse_desc` tinytext DEFAULT NULL,
-	  `is_mandatory` tinyint(4) NOT NULL DEFAULT 0,
-	  `is_numeric` tinyint(4) NOT NULL DEFAULT 0,
+	  `id` MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
+	  `name` VARCHAR(64) NOT NULL,
+	  `type` SMALLINT(6) NOT NULL DEFAULT 0,
+	  `custom` TINYINT(4) NOT NULL DEFAULT 0,
+	  `description` TINYTEXT NOT NULL,
+	  `long_desc` VARCHAR(255) NOT NULL DEFAULT '',
+	  `mailhead` TINYINT(4) NOT NULL DEFAULT 0,
+	  `sortkey` SMALLINT(6) NOT NULL,
+	  `obsolete` TINYINT(4) NOT NULL DEFAULT 0,
+	  `enter_bug` TINYINT(4) NOT NULL DEFAULT 0,
+	  `buglist` TINYINT(4) NOT NULL DEFAULT 0,
+	  `visibility_field_id` MEDIUMINT(9) DEFAULT NULL,
+	  `value_field_id` MEDIUMINT(9) DEFAULT NULL,
+	  `reverse_desc` TINYTEXT DEFAULT NULL,
+	  `is_mandatory` TINYINT(4) NOT NULL DEFAULT 0,
+	  `is_numeric` TINYINT(4) NOT NULL DEFAULT 0,
 	  PRIMARY KEY (`id`),
 	  UNIQUE KEY `fielddefs_name_idx` (`name`),
 	  KEY `fielddefs_sortkey_idx` (`sortkey`),
@@ -142,11 +142,11 @@
 	  KEY `fk_fielddefs_visibility_field_id_fielddefs_id` (`visibility_field_id`),
 	  CONSTRAINT `fk_fielddefs_value_field_id_fielddefs_id` FOREIGN KEY (`value_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
 	  CONSTRAINT `fk_fielddefs_visibility_field_id_fielddefs_id` FOREIGN KEY (`visibility_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE
-	) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+	) ENGINE=INNODB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
 
 	/*Data for the table `fielddefs` */
 
-	insert  into `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`mailhead`,`sortkey`,`obsolete`,`enter_bug`,`buglist`,`visibility_field_id`,`value_field_id`,`reverse_desc`,`is_mandatory`,`is_numeric`) values 
+	INSERT  INTO `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`mailhead`,`sortkey`,`obsolete`,`enter_bug`,`buglist`,`visibility_field_id`,`value_field_id`,`reverse_desc`,`is_mandatory`,`is_numeric`) VALUES 
 	(1,'bug_id',0,0,'Case #','',1,100,0,0,1,NULL,NULL,NULL,0,1),
 	(2,'short_desc',0,0,'Summary','',1,200,0,0,1,NULL,NULL,NULL,1,0),
 	(3,'classification',2,0,'Unit Group','',1,300,0,0,1,NULL,NULL,NULL,0,0),
@@ -257,7 +257,8 @@
 			,`last_seen_date`
 			) 
 			VALUES 
-			(1,'administrator.demo@unee-t.com','2O1sq9Ch,nZhoZFTRzZZqXcpkp8bs1OvRiVnPIuHhaKLExSUgG/M{SHA-256}','Administrator Demo','',0,1,NULL,1,NULL),
+			#(1,'administrator.demo@unee-t.com','2O1sq9Ch,nZhoZFTRzZZqXcpkp8bs1OvRiVnPIuHhaKLExSUgG/M{SHA-256}','Administrator Demo','',0,1,NULL,1,NULL),
+			(1,'administrator@example.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,NULL),
 			(2,'temporary.agent@example.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
 			(3,'temporary.landlord@example.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
 			(4,'temporary.tenant@example.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
