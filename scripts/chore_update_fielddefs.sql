@@ -1,6 +1,8 @@
 # When we run the 'checksetup.pl' script the fielddefs are updated to the default BZ value.
 # This script restores the customization of the BZ values for Unee-T
 
+# This script has been tested for BZ DB schema w 2.x to 3.x
+
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
