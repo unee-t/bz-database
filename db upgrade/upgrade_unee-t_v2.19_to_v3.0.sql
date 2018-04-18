@@ -21,15 +21,15 @@
 	DROP TABLE IF EXISTS `ut_notification_messages_cases`;
 
 	CREATE TABLE `ut_notification_messages_cases` (
-	  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
-	  `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
-	  `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
-	  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
-	  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
-	  `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who needs to be notified - a FK to the BZ table ''profiles''',
-	  `update_what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The field that was updated',
+	  `notification_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+	  `created_datetime` DATETIME DEFAULT NULL COMMENT 'Timestamp when this was created',
+	  `processed_datetime` DATETIME DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
+	  `unit_id` SMALLINT(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+	  `case_id` MEDIUMINT(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+	  `user_id` MEDIUMINT(9) DEFAULT NULL COMMENT 'User ID - The user who needs to be notified - a FK to the BZ table ''profiles''',
+	  `update_what` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The field that was updated',
 	  PRIMARY KEY (`notification_id`)
-	) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+	) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 	/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 	/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -128,6 +128,30 @@ BEGIN
 		, @update_what
 		)
 		;
+END;
+$$
+DELIMITER ;
+
+# We add a call to Lambda fucntction - This is a test at this stage
+DROP PROCEDURE IF EXISTS `lambda_notification_change_in_case`;
+
+DELIMITER $$
+CREATE PROCEDURE `lambda_notification_change_in_case` (IN ItemID VARCHAR(255)
+	, IN notification_id INT(11)
+	, IN created_datetime DATETIME
+	, IN processed_datetime DATETIME
+	, IN unit_id SMALLINT(6)
+	, IN case_id MEDIUMINT(9)
+	, IN user_id MEDIUMINT(9)
+	, IN update_what  VARCHAR(255)
+        ) LANGUAGE SQL
+BEGIN
+
+
+
+
+
+
 END;
 $$
 DELIMITER ;
