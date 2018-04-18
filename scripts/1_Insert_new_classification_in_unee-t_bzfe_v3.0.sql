@@ -1,20 +1,4 @@
 # For any question about this script, ask Franck
-
-#############################################
-#											#
-# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
-#											#
-#############################################
-#
-# Built for BZFE database v2.13 to v2.19
-#
-# Use this script only if the Classification/Group of units DOES NOT EXIST YET in the BZFE
-#
-# The Name for the group of unit has to be unique si it will use the Classification id as a unique identifier
-#
-# Classification name are varchar (64) in the BZ table
-# Classification description are mediumtext in the BZ table
-#
 #
 #################################################################
 #																#
@@ -33,9 +17,25 @@
 #	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
 #
 ########################################################################
+#
+#############################################
+#											#
+# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
+#											#
+#############################################
+#
+# Built for BZFE database v2.13 to v3.0
+#
+# Use this script only if the Classification/Group of units DOES NOT EXIST YET in the BZFE
+#
+# The Name for the group of unit has to be unique si it will use the Classification id as a unique identifier
+#
+# Classification name are varchar (64) in the BZ table
+# Classification description are mediumtext in the BZ table
+#
 
 # Info about this script
-	SET @script = '1_Insert_new_classification_in_unee-t_bzfe_v2.19.sql';
+	SET @script = '1_Insert_new_classification_in_unee-t_bzfe_v3.0.sql';
 
 # Get the classification id for the new group of units.
 	SET @classification_id = ((SELECT MAX(`id`) FROM `classifications`) + 1);
