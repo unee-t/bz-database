@@ -1,17 +1,32 @@
 # For any question about this script, ask Franck
+#
+#################################################################
+#																#
+# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS			#
+#																#
+#################################################################
 
+# The unit: What is the id of the record that you want to use in the table 'ut_data_to_add_user_to_a_role'
+	SET @reference_for_update = 1;
+	
+########################################################################
+#
+#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
+#
+########################################################################
+#
 #############################################
 #											#
 # IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
 #											#
 #############################################
 #
-# Built for BZFE database v2.19
+# Built for BZFE database v3.0
 #
 # This script adds an BZ user to an existing unit in a role which has already been created.
 # It also 
 #	- grants default permission to the a unit to that BZ user.
-#	- makes the new user a CC for all the new cases created for that unit and this role.
+#	- DOES NOT (we commented that out) make the new user a CC for all the new cases created for that unit and this role.
 #
 # Use this script only if 
 #	- the Unit/Product ALREADY EXISTS in the BZFE
@@ -30,24 +45,9 @@
 #
 # IMPORTANT INFORMATION - THIS SCRIPT WILL MAKE THIS NEW USER A DEFAULT CC FOR ALL THE NEW CASES CREATED FOR THIS UNIT!
 #
-#
-#################################################################
-#																#
-# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS			#
-#																#
-#################################################################
-
-# The unit: What is the id of the record that you want to use in the table 'ut_data_to_add_user_to_a_role'
-	SET @reference_for_update = 1;
-	
-########################################################################
-#
-#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
-#
-########################################################################
 
 # Info about this script
-	SET @script = '4_add_an_existing_bz_user_to_a_role_in_an_existing_unit_bzfe_v2.19.sql';
+	SET @script = '4_add_an_existing_bz_user_to_an_existing_role_in_an_existing_unit_bzfe_v3.0';
 
 # Timestamp	
 	SET @timestamp = NOW();
@@ -303,89 +303,89 @@
  	# We use a temporary table to make sure we do not have duplicates.
 		
 		# DELETE the temp table if it exists
-		DROP TABLE IF EXISTS `component_cc_temp`;
+#		DROP TABLE IF EXISTS `component_cc_temp`;
 		
 		# Re-create the temp table
-		CREATE TABLE `component_cc_temp` (
-		  `user_id` MEDIUMINT(9) NOT NULL
-		  ,`component_id` MEDIUMINT(9) NOT NULL
-		) ENGINE=INNODB DEFAULT CHARSET=utf8;
+#		CREATE TABLE `component_cc_temp` (
+#		  `user_id` MEDIUMINT(9) NOT NULL
+#		  ,`component_id` MEDIUMINT(9) NOT NULL
+#		) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 		# Add the records that exist in the table component_cc
-		INSERT INTO `component_cc_temp`
-			SELECT *
-			FROM `component_cc`;
+#		INSERT INTO `component_cc_temp`
+#			SELECT *
+#			FROM `component_cc`;
 
 		# Add the new user rights for the product
-			INSERT INTO `component_cc_temp`
-				(user_id
-				, component_id
-				)
-				VALUES
-				(@bz_user_id, @component_id_this_role)
-				;
+#			INSERT INTO `component_cc_temp`
+#				(user_id
+#				, component_id
+#				)
+#				VALUES
+#				(@bz_user_id, @component_id_this_role)
+#				;
 		
 		# Empty the table `component_cc`
-			TRUNCATE TABLE `component_cc`;
+#			TRUNCATE TABLE `component_cc`;
 		
 		# Add all the records for `component_cc`
-			INSERT INTO `component_cc`
-			SELECT `user_id`
-				, `component_id`
-			FROM
-				`component_cc_temp`
-			GROUP BY `user_id`
-				, `component_id`
-			;
+#			INSERT INTO `component_cc`
+#			SELECT `user_id`
+#				, `component_id`
+#			FROM
+#				`component_cc_temp`
+#			GROUP BY `user_id`
+#				, `component_id`
+#			;
 		
 		# We Delete the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `component_cc_temp`;
+#			DROP TABLE IF EXISTS `component_cc_temp`;
 				
 		# Log the actions of the script.
-			SET @script_log_message = CONCAT('the bz user #'
-									, @bz_user_id
-									, ' is one of the copied assignee for the unit #'
-									, @product_id
-									, ' when the role '
-									, @role_user_g_description
-									, ' (the component #'
-									, @component_id_this_role
-									, ')'
-									, ' is chosen'
-									);
-			
-			INSERT INTO `ut_script_log`
-				(`datetime`
-				, `script`
-				, `log`
-				)
-				VALUES
-				(NOW(), @script, @script_log_message)
-				;
+#			SET @script_log_message = CONCAT('the bz user #'
+#									, @bz_user_id
+#									, ' is one of the copied assignee for the unit #'
+#									, @product_id
+#									, ' when the role '
+#									, @role_user_g_description
+#									, ' (the component #'
+#									, @component_id_this_role
+#									, ')'
+#									, ' is chosen'
+#									);
+#			
+#			INSERT INTO `ut_script_log`
+#				(`datetime`
+#				, `script`
+#				, `log`
+#				)
+#				VALUES
+#				(NOW(), @script, @script_log_message)
+#				;
 
 			# We log what we have just done into the `ut_audit_log` table
 				
-				SET @bzfe_table = 'component_cc';
-				SET @permission_granted = ' is in CC when role is chosen.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'component_id', 'UNKNOWN', @component_id_this_role, @script, CONCAT('Make sure the user ', @permission_granted))
-					;
+#				SET @bzfe_table = 'component_cc';
+#				SET @permission_granted = ' is in CC when role is chosen.';
+#
+#				INSERT INTO `ut_audit_log`
+#					 (`datetime`
+#					 , `bzfe_table`
+#					 , `bzfe_field`
+#					 , `previous_value`
+#					 , `new_value`
+#					 , `script`
+#					 , `comment`
+#					 )
+#					 VALUES
+#					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+#					 , (NOW() ,@bzfe_table, 'component_id', 'UNKNOWN', @component_id_this_role, @script, CONCAT('Make sure the user ', @permission_granted))
+#					;
 			 
 			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;	
+#				SET @script_log_message = NULL;
+#				SET @bzfe_table = NULL;
+#				SET @permission_granted = NULL;	
 
 # We update the BZ logs 
 # NOT NEEDED - BZ DOES NOT LOG THESE EVENTS		

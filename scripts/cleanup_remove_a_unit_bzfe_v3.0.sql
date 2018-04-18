@@ -1,20 +1,4 @@
 # For any question about this script, ask Franck
-
-#############################################
-#											#
-# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
-#											#
-#############################################
-#
-# Built for BZFE database v2.18 to 2.19
-#
-# Use this script only if the Unit EXISTS in the BZFE
-#
-# WARNING!!!! THIS SCRIPT WILL ALSO DELETE BUGS AND GROUPS RELATED TO THAT PRODUCT
-# (and also a few other things... See below for details)
-#
-# Pre-requisite:
-#	- We need to know the product_id for the unit in the BZ table 'products'
 #
 #################################################################
 #																#
@@ -31,8 +15,25 @@
 #
 ########################################################################
 #
+#############################################
+#											#
+# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
+#											#
+#############################################
+#
+# Built for BZFE database v2.18 to 3.0
+#
+# Use this script only if the Unit EXISTS in the BZFE
+#
+# WARNING!!!! THIS SCRIPT WILL ALSO DELETE BUGS AND GROUPS RELATED TO THAT PRODUCT
+# (and also a few other things... See below for details)
+#
+# Pre-requisite:
+#	- We need to know the product_id for the unit in the BZ table 'products'
+
+#
 # Info about this script
-	SET @script = 'cleanup_remove_a_unit_bzfe_v2.19.sql';
+	SET @script = 'cleanup_remove_a_unit_bzfe_v3.0.sql';
 # 
 # This script will alter the following tables (but NOT in that order):
 #
