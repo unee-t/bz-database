@@ -1,10 +1,28 @@
-# This update allows us to use lambda to send notifications out
+# This update allows us to use lambda to automate certain processes
+# - Receive information when an invitation is created
+# - send notifications out to make sure other part of Unee-T work correctly.
+#
+# This update also create several procedures and triggers to automate several tasks:
+#	- Invite new users
+#	- Record changes to a bug/case
 #
 #################################################################################
 #
 # WARNING! You MUST use Amazon Aurora database engine for this version to work!!!
 #
 #################################################################################
+
+# We need to make the table InnoDB to be Aurora Compatible:
+	ALTER TABLE `bugs_fulltext` ENGINE=InnoDB; 
+
+# We need to udpate the table 'ut_invitation_api_data' to make sure that the key 'mefe_invitation_id' is UNIQUE
+	/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
+	/* Alter table in target */
+	ALTER TABLE `ut_invitation_api_data` 
+		ADD UNIQUE KEY `MEFE_INVITATION_ID`(`mefe_invitation_id`) ;
+
+	/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 
 # We create a new table 'ut_notification_messages_cases' which captures the notification information about cases.
 
@@ -132,7 +150,7 @@ END;
 $$
 DELIMITER ;
 
-# We add a call to Lambda fucntction - This is a test at this stage
+# We add a call to Lambda function - This is a test at this stage
 DROP PROCEDURE IF EXISTS `lambda_notification_change_in_case`;
 
 DELIMITER $$
