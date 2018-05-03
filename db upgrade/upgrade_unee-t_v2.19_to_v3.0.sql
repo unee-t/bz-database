@@ -21,8 +21,18 @@
 #################################################################################
 
 # We need to make the table InnoDB to be Aurora Compatible:
-	ALTER TABLE `bugs_fulltext` ENGINE=InnoDB; 
+	ALTER TABLE `bugs_fulltext` ENGINE=InnoDB;
 
+# We create a table to record the current version of the BZ DB schema for this environment:
+
+	DROP TABLE IF EXISTS `ut_db_schema_version`;
+
+	CREATE TABLE `ut_db_schema_version` (
+	  `schema_version` varchar(256) DEFAULT NULL COMMENT 'The current version of the BZ DB schema for Unee-T',
+	  `update_datetime` datetime DEFAULT NULL COMMENT 'Timestamp - when this version was implemented in THIS environment',
+	  `comment` text DEFAULT NULL COMMENT 'Comment'
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	
 # We need to udpate the table 'ut_invitation_api_data' to make sure that the key 'mefe_invitation_id' is UNIQUE
 	/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 
