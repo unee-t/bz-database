@@ -12,6 +12,21 @@
 #
 ###############################
 #
+############################################
+#
+# Make sure to update the below variable(s)
+#
+############################################
+#
+# What is the version of the Unee-T BZ Database schema AFTER this update?
+	SET @old_schema_version = 'v2.19';
+	SET @new_schema_version = 'v3.0';
+#
+###############################
+#
+# We have everything we need
+#
+###############################
 #
 #
 #################################################################################
@@ -28,6 +43,7 @@
 	DROP TABLE IF EXISTS `ut_db_schema_version`;
 
 	CREATE TABLE `ut_db_schema_version` (
+	  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID in this table',
 	  `schema_version` varchar(256) DEFAULT NULL COMMENT 'The current version of the BZ DB schema for Unee-T',
 	  `update_datetime` datetime DEFAULT NULL COMMENT 'Timestamp - when this version was implemented in THIS environment',
 	  `comment` text DEFAULT NULL COMMENT 'Comment'
@@ -1256,3 +1272,39 @@ BEGIN
 END;
 $$
 DELIMITER ;
+
+
+
+
+
+# We can now update the version of the database schema
+	# A comment for the update
+		SET @comment_update_schema_version = CONCAT (
+			'Database updated from '
+			, @old_schema_version
+			, ' to '
+			, @new_schema_version
+		)
+		;
+		
+	# Timestamp:
+		SET @timestamp = NOW();
+	
+	# Do the update
+	INSERT INTO `ut_db_schema_version`
+		(`id`
+		, `schema_version`
+		, `update_datetime`
+		, `comment`
+		)
+		VALUES
+		( 1
+		, @new_schema_version
+		, @timestamp
+		, @comment_update_schema_version
+		)
+		ON DUPLICATE KEY UPDATE
+		`schema_version` = @new_schema_version
+		, `update_datetime` = @timestamp
+		, `comment` = @comment_update_schema_version
+		;
