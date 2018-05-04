@@ -257,6 +257,109 @@
 #
 #################################################################
 
+# This is legacy and we keep this alive for now:
+# The user
+
+	# We record the information about the users that we have just created
+	# If this is the first time we record something for this user for this unit, we create a new record.
+	# If there is already a record for THAT USER for THIS, then we are updating the information
+		
+		INSERT INTO `ut_map_user_unit_details`
+			(`created`
+			, `record_created_by`
+			, `user_id`
+			, `bz_profile_id`
+			, `bz_unit_id`
+			, `role_type_id`
+			, `can_see_time_tracking`
+			, `can_create_shared_queries`
+			, `can_tag_comment`
+			, `is_occupant`
+			, `is_public_assignee`
+			, `is_see_visible_assignee`
+			, `is_in_cc_for_role`
+			, `can_create_case`
+			, `can_edit_case`
+			, `can_see_case`
+			, `can_edit_all_field_regardless_of_role`
+			, `is_flag_requestee`
+			, `is_flag_approver`
+			, `can_create_any_sh`
+			, `can_create_same_sh`
+			, `can_approve_user_for_flags`
+			, `can_decide_if_user_visible`
+			, `can_decide_if_user_can_see_visible`
+			, `public_name`
+			, `more_info`
+			, `comment`
+			)
+			VALUES
+			(@timestamp
+			, @creator_bz_id
+			, @bz_user_id
+			, @bz_user_id
+			, @product_id
+			, @id_role_type
+			# Global permission for the whole installation
+			, @can_see_time_tracking
+			, @can_create_shared_queries
+			, @can_tag_comment
+			# Attributes of the user
+			, @is_occupant
+			# User visibility
+			, @user_is_publicly_visible
+			, @user_can_see_publicly_visible
+			# Permissions for cases for this unit.
+			, @add_invitee_in_cc
+			, @can_create_new_cases
+			, @can_edit_a_case
+			, @can_see_all_public_cases
+			, @can_edit_all_field_in_a_case_regardless_of_role
+			# For the flags
+			, @can_ask_to_approve
+			, @can_approve
+			# Permissions to create or modify other users
+			, 0
+			, 0
+			, 0
+			, 0
+			, 0
+			, @user_pub_name
+			, @role_user_more
+			, CONCAT('On '
+					, @timestamp
+					, ': Created with the script - '
+					, @script
+					, '.\r\ '
+					, `comment`)
+			)
+			ON DUPLICATE KEY UPDATE
+			`created` = @timestamp
+			, `record_created_by` = @creator_bz_id
+			, `role_type_id` = @id_role_type
+			, `can_see_time_tracking` = @can_see_time_tracking
+			, `can_create_shared_queries` = @can_create_shared_queries
+			, `can_tag_comment` = @can_tag_comment
+			, `is_occupant` = @is_occupant
+			, `is_public_assignee` = @user_is_publicly_visible
+			, `is_see_visible_assignee` = @user_can_see_publicly_visible
+			, `is_in_cc_for_role` = @add_invitee_in_cc
+			, `can_create_case` = @can_create_new_cases
+			, `can_edit_case` = @can_edit_a_case
+			, `can_see_case` = @can_see_all_public_cases
+			, `can_edit_all_field_regardless_of_role` = @can_edit_all_field_in_a_case_regardless_of_role
+			, `is_flag_requestee` = @can_ask_to_approve
+			, `is_flag_approver` = @can_approve
+			, `can_create_any_sh` = 0
+			, `can_create_same_sh` = 0
+			, `can_approve_user_for_flags` = 0
+			, `can_decide_if_user_visible` = 0
+			, `can_decide_if_user_can_see_visible` = 0
+			, `public_name` = @user_pub_name
+			, `more_info` = CONCAT('On: ', @timestamp, '.\r\Updated to ', @role_user_more, '. \r\ ', `more_info`)
+			, `comment` = CONCAT('On ', @timestamp, '.\r\Updated with the script - ', @script, '.\r\ ', `comment`)
+		;
+
 # Create the table to prepare the permissions
 	CALL `create_temp_table_to_update_permissions`;
 	
@@ -409,162 +512,3 @@
 		
 	# We Delete the temp table as we do not need it anymore
 		DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
-
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-
-
-########
-#
-# We probably do NOT need this...
-#
-########
-
-
-# The user
-
-	# We record the information about the users that we have just created
-	# If this is the first time we record something for this user for this unit, we create a new record.
-	# If there is already a record for THAT USER for THIS, then we are updating the information
-		
-		INSERT INTO `ut_map_user_unit_details`
-			(`created`
-			, `record_created_by`
-			, `user_id`
-			, `bz_profile_id`
-			, `bz_unit_id`
-			, `role_type_id`
-			, `can_see_time_tracking`
-			, `can_create_shared_queries`
-			, `can_tag_comment`
-			, `is_occupant`
-			, `is_public_assignee`
-			, `is_see_visible_assignee`
-			, `is_in_cc_for_role`
-			, `can_create_case`
-			, `can_edit_case`
-			, `can_see_case`
-			, `can_edit_all_field_regardless_of_role`
-			, `is_flag_requestee`
-			, `is_flag_approver`
-			, `can_create_any_sh`
-			, `can_create_same_sh`
-			, `can_approve_user_for_flags`
-			, `can_decide_if_user_visible`
-			, `can_decide_if_user_can_see_visible`
-			, `public_name`
-			, `more_info`
-			, `comment`
-			)
-			VALUES
-			(@timestamp
-			, @creator_bz_id
-			, @bz_user_id
-			, @bz_user_id
-			, @product_id
-			, @id_role_type
-			# Global permission for the whole installation
-			, @can_see_time_tracking
-			, @can_create_shared_queries
-			, @can_tag_comment
-			# Attributes of the user
-			, @is_occupant
-			# User visibility
-			, @user_is_publicly_visible
-			, @user_can_see_publicly_visible
-			# Permissions for cases for this unit.
-			, @user_in_cc_for_cases
-			, @can_create_new_cases
-			, @can_edit_a_case
-			, @can_see_all_public_cases
-			, @can_edit_all_field_in_a_case_regardless_of_role
-			# For the flags
-			, @can_ask_to_approve
-			, @can_approve
-			# Permissions to create or modify other users
-			, @can_create_any_stakeholder
-			, @can_create_same_stakeholder
-			, @can_approve_user_for_flag
-			, @can_decide_if_user_is_visible
-			, @can_decide_if_user_can_see_visible
-			, @user_pub_name
-			, @role_user_more
-			, CONCAT('On '
-					, @timestamp
-					, ': Created with the script - '
-					, @script
-					, '.\r\ '
-					, `comment`)
-			)
-			ON DUPLICATE KEY UPDATE
-			`created` = @timestamp
-			, `record_created_by` = @creator_bz_id
-			, `role_type_id` = @id_role_type
-			, `can_see_time_tracking` = @can_see_time_tracking
-			, `can_create_shared_queries` = @can_create_shared_queries
-			, `can_tag_comment` = @can_tag_comment
-			, `is_occupant` = @is_occupant
-			, `is_public_assignee` = @user_is_publicly_visible
-			, `is_see_visible_assignee` = @user_can_see_publicly_visible
-			, `is_in_cc_for_role` = @user_in_cc_for_cases
-			, `can_create_case` = @can_create_new_cases
-			, `can_edit_case` = @can_edit_a_case
-			, `can_see_case` = @can_see_all_public_cases
-			, `can_edit_all_field_regardless_of_role` = @can_edit_all_field_in_a_case_regardless_of_role
-			, `is_flag_requestee` = @can_ask_to_approve
-			, `is_flag_approver` = @can_approve
-			, `can_create_any_sh` = @can_create_any_stakeholder
-			, `can_create_same_sh` = @can_create_same_stakeholder
-			, `can_approve_user_for_flags` = @can_approve_user_for_flag
-			, `can_decide_if_user_visible` = @can_decide_if_user_is_visible
-			, `can_decide_if_user_can_see_visible` = @can_decide_if_user_can_see_visible
-			, `public_name` = @user_pub_name
-			, `more_info` = CONCAT('On: ', @timestamp, '.\r\Updated to ', @role_user_more, '. \r\ ', `more_info`)
-			, `comment` = CONCAT('On ', @timestamp, '.\r\Updated with the script - ', @script, '.\r\ ', `comment`)
-		;	
-
-
-
-
-
-
-	
-/*!40101 SET NAMES utf8 */;
-
-/*!40101 SET SQL_MODE=''*/;
-
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-
-		
-
-
-	
-		
-# We implement the FK checks again
-		
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;		
-
-
-
-
-########
-#
-# END We probably do NOT need this...
-#
-########
