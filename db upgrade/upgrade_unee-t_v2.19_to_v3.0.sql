@@ -5,12 +5,6 @@
 #	- Invite new users
 #	- Record changes to a bug/case
 #
-##############################
-#
-#	WIP - Security issue - What should be the DEFINER for the procedures we create???
-#
-###############################
-#
 ############################################
 #
 # Make sure to update the below variable(s)
