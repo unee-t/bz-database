@@ -507,7 +507,19 @@
 					)
 			)
 			;
-	
+
+# Update the table 'ut_invitation_api_data' so we record what we have done
+
+	# Timestamp	
+		SET @timestamp = NOW();
+		
+	# We do the update to record that we have reached the end of the script...
+		UPDATE `ut_invitation_api_data`
+			SET `processed_datetime` = @timestamp
+				, `script` = @this_script
+			WHERE `mefe_invitation_id` = @mefe_invitation_id
+			;
+			
 #Clean up
 		
 	# We Delete the temp table as we do not need it anymore
