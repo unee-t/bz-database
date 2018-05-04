@@ -238,14 +238,14 @@
 							;
 
 # Do we need to change the case assignee?
-	SET @change_case_assignee = IF (@invitation_type = 'type_cc'
+	SET @change_case_assignee = IF (@invitation_type = 'type_assigned'
 		, 1
 		, 0
 		)
 		;
 
 # Do we need to put the invitee in CC for this case?
-	SET @add_invitee_in_cc = IF (@invitation_type = 'type_assigned'
+	SET @add_invitee_in_cc = IF (@invitation_type = 'type_cc'
 		, 1
 		, 0
 		)
