@@ -316,8 +316,8 @@
 			, @can_see_all_public_cases
 			, @can_edit_all_field_in_a_case_regardless_of_role
 			# For the flags
-			, @can_ask_to_approve
-			, @can_approve
+			, @can_ask_to_approve_flags
+			, @can_approve_all_flags
 			# Permissions to create or modify other users
 			, 0
 			, 0
@@ -348,8 +348,8 @@
 			, `can_edit_case` = @can_edit_a_case
 			, `can_see_case` = @can_see_all_public_cases
 			, `can_edit_all_field_regardless_of_role` = @can_edit_all_field_in_a_case_regardless_of_role
-			, `is_flag_requestee` = @can_ask_to_approve
-			, `is_flag_approver` = @can_approve
+			, `is_flag_requestee` = @can_ask_to_approve_flags
+			, `is_flag_approver` = @can_approve_all_flags
 			, `can_create_any_sh` = 0
 			, `can_create_same_sh` = 0
 			, `can_approve_user_for_flags` = 0
