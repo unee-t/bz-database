@@ -3879,69 +3879,6 @@ BEGIN
 			;
 END $$
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-	
-	
-	
-	
-	
-	
-
-
-
-
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
-
-
 	
 # We create a new table 'ut_notification_messages_cases' which captures the notification information about cases.
 
@@ -4068,35 +4005,6 @@ BEGIN
 END;
 $$
 DELIMITER ;
-
-# We add a call to Lambda function - This is a test at this stage
-DROP PROCEDURE IF EXISTS `lambda_notification_change_in_case`;
-
-DELIMITER $$
-CREATE PROCEDURE `lambda_notification_change_in_case` (IN ItemID VARCHAR(255)
-	, IN notification_id INT(11)
-	, IN created_datetime DATETIME
-	, IN processed_datetime DATETIME
-	, IN unit_id SMALLINT(6)
-	, IN case_id MEDIUMINT(9)
-	, IN user_id MEDIUMINT(9)
-	, IN update_what  VARCHAR(255)
-        ) LANGUAGE SQL
-SQL SECURITY INVOKER
-BEGIN
-
-
-
-
-
-
-END;
-$$
-DELIMITER ;
-
-
-
-
 
 # We can now update the version of the database schema
 	# A comment for the update
