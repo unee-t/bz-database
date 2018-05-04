@@ -1,34 +1,4 @@
 # For any question about this script, ask Franck
-
-#############################################
-#											#
-# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
-#											#
-#############################################
-#
-# Built for BZFE database v2.19
-#
-# Use this script only if the Unit DOES NOT EXIST YET in the BZFE
-#
-# Pre-requisite:
-#	- We know which classification we will use for this product/unit
-#	- NO NEED to know the BZ user id of the 'real' user that will be the default assignee for the first role for this unit
-#	  We are creating all the needed roles with 'dummy' users.
-#	- We know the BZ user id of the user that creates this unit and first role.
-#	- You have updated the table 'ut_data_to_create_units' and you know the record of the unit in this table
-# 
-# This script will:
-# 	- Create a New product/unit.
-#	- Create all the flags associated to this unit.
-#	- Create all the component_id for all the roles we will need for that unit
-#	- Create all the groups we need to grant the permissions we want for that unit
-#	- Create all the roles/components we need for this unit using dummy users
-#	- Log the relevant group ids so we can grant more permissions in the future
-#	- Log the actions of this script for future audit and debugging.
-#
-# Limits of this script:
-#	- DO NOT USE if the unit already exists in the BZ database
-#	  We will have a different script for that
 #
 #################################################################
 #																#
@@ -51,8 +21,39 @@
 #
 ########################################################################
 
+#############################################
+#											#
+# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
+#											#
+#############################################
+#
+# Built for BZFE database v3.0
+#
+# Use this script only if the Unit DOES NOT EXIST YET in the BZFE
+#
+# Pre-requisite:
+#	- We know which classification we will use for this product/unit
+#	- NO NEED to know the BZ user id of the 'real' user that will be the default assignee for the first role for this unit
+#	  We are creating all the needed roles with 'dummy' users.
+#	- We know the BZ user id of the user that creates this unit and first role.
+#	- You have updated the table 'ut_data_to_create_units' and you know the record of the unit in this table
+# 
+# This script will:
+# 	- Create a New product/unit.
+#	- Create all the flags associated to this unit.
+#	- Create all the component_id for all the roles we will need for that unit
+#	- Create all the groups we need to grant the permissions we want for that unit
+#	- Create all the roles/components we need for this unit using dummy users
+#	- Log the relevant group ids so we can grant more permissions in the future
+#	- Log the actions of this script for future audit and debugging.
+#
+# Limits of this script:
+#	- DO NOT USE if the unit already exists in the BZ database
+#	  We will have a different script for that
+
+
 # Info about this script
-	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v2.19.sql';
+	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v3.0.sql';
 	
 # Timestamp	
 	SET @timestamp = NOW();

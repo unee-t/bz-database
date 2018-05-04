@@ -1,33 +1,45 @@
+# IMPORTANT NOTE
+Since v3.x of the database schema, we have created dependencies which REQUIRE you to run the BZFE of Unee-T on Amazon Aurora.
+This is needed so we can create notifications in a simple and scalable way. 
+See [Issue #13] (https://github.com/unee-t/frontend/issues/13) for more details about that.
+
+# Before your start:
+To use this, you should have installed the Unee-t BZFE on an AWS EC2 instance ideally...
+See the [README file] (https://github.com/unee-t/bugzilla-customisation/blob/master/README.md) on the [bugzilla-customization repo] (https://github.com/unee-t/bugzilla-customisation) for more details, including a step by step video of how this is done.
+
 # What's in this repo:
 Scripts and stuff to play and tinker with the bz database so we can build the BZFE.
 
-To use this, you should have installed the Unee-t BZFE somewhere.
-
 These scripts are meant to be run on the database that you use for your BZFE.
-They are MariaDB scripts and should be compatible with most MariaDB and MySQL clients.
+They are compatible with the Amazon Aurora DB engine (MariaDB/MySQL).
 
 # Upgrade the BZFE database:
-In the folder 'db upgrade' are the MariaDB scripts to update the database to the latest version.
+In the folder 'db upgrade' are the scripts to update the database to the latest version.
 Open these script to better understand the changes that were made.
 
 # Database snapshots:
-In the folder 'db snapsots' are MariaDB scripts to restore a *clean* version of the database for each version of the BZFE.
+In the folder 'db snapsots' are scripts to restore a *clean* version of the database for each version of the BZFE.
 
 A clean version of the database has
 * 1 Administrator user only
   * login: adminitrator@example.com
   * password: `administrator`.
-* No other users
+* Demo units and demo users
 * No case
 * All the variables needed to create a 'blank' Unee-T environment.
 
-# Insert Demo users:
-There is a script which creates several users, units and roles.
-This has been created so that we can stress test the application a verify performances for various scenarii.
+# Demo users:
+When you use the docker image, we create Demo users and demo units as part of the build.
+Details about these demo users and demo units can be found on the [documentation about the demo environment](https://documentation.unee-t.com/2018/03/01/introduction-to-the-demo-environment/)
 
-The script is located in the folder demo-test 'environment'.
-It's a MariaDB script that should run in any compatible MariaDB client
-	
+You can restore a fresh version of the demo environment using scripts in the folder /demo-test environment
+
+# Stress Test
+
+There is one specific script 'insert_DEMO-TEST_users_in_unee-t_bzfe_vx.y.sql' which creates a lot of user and a lot of unit.
+This is use to simulate a large Unee-T environment.
+This script has NOT been updated since db v2.14 (if you want to do that, feel free to help!)
+
 ## Before you run this script:
 Open the script and choose a value for the 2 variables:
 * iteration_number_of_users: This variable allow you to users in batches of 12 users.
@@ -67,102 +79,3 @@ You can define the number of unit created by each user by changing the variable 
 
 The script will loop and create n more unit for each user.
 Example: if you choose `iteration_number_of_users` = 2 and `number_of_units_per_user` = 10, the script will create 1 + 12 * 2 = 25 * 10 = 250 units.
-
-### Roles:
-For each units, we are creating several roles:
-* Tenant
-* Landlord
-* Agent
-* Contractor
-  * Main contact
-  * Employee 1
-  * Employee 2
-* Management Company
-  * Generic Contact
-  * Employee 1
-  * Employee 2
-* Occupant
-  
-### Assignment of roles to Units:
-Because of the way the script was written, users are assigned to several units.
-
-The script behaves as such:
-
-#### First batch of units:
-For each unit, the script assigns one of the users created to one specific role for this unit:
-* A Tenant. This Tenant is also the creator and the occupant of the unit.
-* A Landlord. This Landlord is different from the tenant and is either:
-  * Marley (or Marley-n if you have created n batches of users).
-  * Michael (or Michael-n if you have created n batches of users).
-  * Sabrina (or Sabrina-n if you have created n batches of users).
-* An Agent. This Agent is different from the Tenant and is either:
-  * Celeste (or Celeste-n if you have created n batches of users).
-  * Jocelyn (or Jocelyn-n if you have created n batches of users).
-* A contractor: This contractor has 3 employees/users:
-  * Marina: 
-	* An employee of the contractor.
-    * The main contact for the contractor.
-	* A public contact: it's visible by all the other Roles/Stakeholders (Tenant, Agent, etc...)
-  * Regina: 
-    * An employee of the contractor
-	* A secondary contact for the contractor.
-	* A private contact: it's visible only by the users that are also employees of this contractor.
-  * Marvin
-    * An employee of the contractor
-	* A secodary contact for the contractor.
-	* A private contact: it's visible only by the users that are also employees of this contractor.
-* A management company: This Management company has 1 generic user and 2 employees:
-  * Management Co: 
-	* A generic user for the management company (not an employee)
-	* Allowed to ceate other users in the Management Company role for that unit.
-	* 
-  * Lawrence:
-	* An employee of the management company
-	* A secondary contact for the management company.
-	* A private contact: it's visible only by the users that are also employees of this management company.
-  * Annabelle:
-	* An employee of the management company
-	* A secondary contact for the management company.
-	* A private contact: it's visible only by the users that are also employees of this management company.
-
-#### Every Other batch of units:
-After the first batch of unit, we are creating the rest of the units if applicable.
-
-For each unit after the first batch of units, the script assign the unit creator as the Landlord for that unit.
-* NO Tenant. 
-* NO occupant.This Tenant 
-* A Landlord. This Landlord is also the creator of the unit. It can be ANY of the users.
-* An Agent. This Agent is different from the Landlord and is either:
-  * Celeste (or Celeste-n if you have created n batches of users).
-  * Jocelyn (or Jocelyn-n if you have created n batches of users).
-* A contractor: This contractor has 3 employees/users:
-  * Marina: 
-	* An employee of the contractor.
-    * The main contact for the contractor.
-	* A public contact: it's visible by all the other Roles/Stakeholders (Tenant, Agent, etc...)
-  * Regina: 
-    * An employee of the contractor
-	* A secondary contact for the contractor.
-	* A private contact: it's visible only by the users that are also employees of this contractor.
-  * Marvin
-    * An employee of the contractor
-	* A secodary contact for the contractor.
-	* A private contact: it's visible only by the users that are also employees of this contractor.
-* A management company: This Management company has 1 generic user and 2 employees:
-  * Management Co: 
-	* A generic user for the management company (not an employee)
-	* Allowed to ceate other users in the Management Company role for that unit.
-	* 
-  * Lawrence:
-	* An employee of the management company
-	* A secondary contact for the management company.
-	* A private contact: it's visible only by the users that are also employees of this management company.
-  * Annabelle:
-	* An employee of the management company
-	* A secondary contact for the management company.
-	* A private contact: it's visible only by the users that are also employees of this management company.
-
-#### Limitations of this script:
-As of today, this script:
-* Does NOT create any case.
-* Creates all the units under the same group of units 'My Units' for each users.

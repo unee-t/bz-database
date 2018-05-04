@@ -3519,69 +3519,6 @@ CREATE TABLE `whine_schedules` (
 
 /*Data for the table `whine_schedules` */
 
-/* Procedure structure for procedure `default_occupant_can_see_occupant` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `default_occupant_can_see_occupant` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `default_occupant_can_see_occupant`()
-BEGIN
-	IF (@is_occupant = 1)
-	THEN INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @group_id_see_users_occupant, 0, 0)
-				;
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('the bz user #'
-										, @bz_user_id
-										, ' can see occupant in the unit '
-										, @product_id
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(NOW(), @script, @script_log_message)
-					;
-
-			# We log what we have just done into the `ut_audit_log` table
-				
-				SET @bzfe_table = 'ut_user_group_map_temp';
-				SET @permission_granted = 'can see occupant in the unit.';
-
-				INSERT INTO `ut_audit_log`
-					 (`datetime`
-					 , `bzfe_table`
-					 , `bzfe_field`
-					 , `previous_value`
-					 , `new_value`
-					 , `script`
-					 , `comment`
-					 )
-					 VALUES
-					 (NOW() ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'group_id', 'UNKNOWN', @group_id_see_users_occupant, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-					 , (NOW() ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-					 , (NOW() ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-				SET @bzfe_table = NULL;
-				SET @permission_granted = NULL;
-END IF ;
-END */$$
-DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
