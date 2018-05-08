@@ -35,12 +35,13 @@
 
 	DROP TABLE IF EXISTS `ut_db_schema_version`;
 
-	CREATE TABLE `ut_db_schema_version` (
-	  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID in this table',
-	  `schema_version` varchar(256) DEFAULT NULL COMMENT 'The current version of the BZ DB schema for Unee-T',
-	  `update_datetime` datetime DEFAULT NULL COMMENT 'Timestamp - when this version was implemented in THIS environment',
-	  `comment` text DEFAULT NULL COMMENT 'Comment'
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	CREATE TABLE `ut_db_schema_version`(
+		`id` INT(11) NOT NULL  AUTO_INCREMENT COMMENT 'Unique ID in this table' , 
+		`schema_version` VARCHAR(256) COLLATE utf8_general_ci NULL  COMMENT 'The current version of the BZ DB schema for Unee-T' , 
+		`update_datetime` DATETIME NULL  COMMENT 'Timestamp - when this version was implemented in THIS environment' , 
+		`comment` TEXT COLLATE utf8_general_ci NULL  COMMENT 'Comment' , 
+		PRIMARY KEY (`id`) 
+	) ENGINE=INNODB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' ROW_FORMAT=DYNAMIC;
 	
 # We need to udpate the table 'ut_invitation_api_data' to make sure that the key 'mefe_invitation_id' is UNIQUE
 	/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
@@ -2164,7 +2165,7 @@ BEGIN
 		# Cleanup the variables for the log messages
 			SET @script_log_message = NULL;
 			SET @script = NULL;
-			SET @timestamp = NULL
+			SET @timestamp = NULL;
 			SET @bzfe_table = NULL;
 			SET @permission_granted = NULL;
 END IF ;
