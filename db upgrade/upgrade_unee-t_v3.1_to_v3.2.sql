@@ -12,6 +12,7 @@
 # What are the version of the Unee-T BZ Database schema BEFORE and AFTER this update?
 	SET @old_schema_version = 'v3.1';
 	SET @new_schema_version = 'v3.2';
+	SET @this_script = 'upgrade_unee-t_v3.1_to_v3.2.sql';
 #
 ###############################
 #
@@ -28,7 +29,10 @@
 
 # We alter the table `ut_db_schema_version` to record information on the script which was used to to the update
 
-
+	ALTER TABLE `ut_db_schema_version` 
+		ADD COLUMN `update_script` varchar(256)  COLLATE utf8_general_ci NULL COMMENT 'The script which was used to do the db ugrade' after `update_datetime` , 
+		CHANGE `comment` `comment` text  COLLATE utf8_general_ci NULL COMMENT 'Comment' after `update_script` 
+		;
 
 # We create a table to record the information each time a new user/profile is created
 
@@ -94,11 +98,13 @@
 	INSERT INTO `ut_db_schema_version`
 		(`schema_version`
 		, `update_datetime`
+		, `update_script`
 		, `comment`
 		)
 		VALUES
 		(@new_schema_version
 		, @timestamp
+		, @this_script
 		, @comment_update_schema_version
 		)
 		;
