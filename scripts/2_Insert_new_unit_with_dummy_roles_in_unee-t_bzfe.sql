@@ -1,33 +1,57 @@
 # For any question about this script, ask Franck
 #
-#################################################################
-#																#
-# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS			#
-#																#
-#################################################################
+######################################################
+#
+# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS
+#
+######################################################
+#
+	###################################################################################
+	#
+	# Variables which needs to be verified and changed each time this script is ran
+	#
+	###################################################################################
 
-# The unit: What is the id of the unit in the table 'ut_data_to_create_units'
-	SET @unit_reference_for_import = 1;
+		# The unit: What is the id of the unit in the table 'ut_data_to_create_units'
+			SET @unit_reference_for_import = 1;
 
-# Environment: Which environment are you creatin the unit in?
-#	- 1 is for the DEV/Staging
-#	- 2 is for the prod environment
-#	- 3 is for the Demo environment
-	SET @environment = 1;
-	
+		# Environment: Which environment are you creatin the unit in?
+		#	- 1 is for the DEV/Staging
+		#	- 2 is for the prod environment
+		#	- 3 is for the Demo environment
+			SET @environment = 1;
+
+	###################################################################################
+	#
+	# END Variables which needs to be verified and changed each time this script is ran
+	#
+	###################################################################################
+#
+#	
+	##################################################
+	#
+	# Other needed variable for audit and debugging
+	#
+	##################################################
+		
+		# Which version of the Unee-T schema is this script built for?
+			SET @bz_db_schema_version = '3.3';
+		
+		# Info about this script
+			SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe.sql';
+
+#	
 ########################################################################
 #
-#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
+#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT 
 #
 ########################################################################
 
 #############################################
-#											#
-# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
-#											#
-#############################################
 #
-# Built for BZFE database v3.0
+# IMPORTANT INFORMATION ABOUT THIS SCRIPT
+#
+#############################################
 #
 # Use this script only if the Unit DOES NOT EXIST YET in the BZFE
 #
@@ -51,9 +75,6 @@
 #	- DO NOT USE if the unit already exists in the BZ database
 #	  We will have a different script for that
 
-
-# Info about this script
-	SET @script = '2_Insert_new_unit_with_dummy_roles_in_unee-t_bzfe_v3.0.sql';
 	
 # Timestamp	
 	SET @timestamp = NOW();
@@ -341,7 +362,7 @@
 			, 'Bugzilla::Product'
 			, @product_id
 			, '__create__'
-			, NULL()
+			, NULL
 			, @unit
 			, @timestamp
 			)
@@ -379,7 +400,7 @@
 						, 'Bugzilla::Version'
 						, @version_id
 						, '__create__'
-						, NULL()
+						, NULL
 						, @default_version
 						, @timestamp
 						)
@@ -414,14 +435,7 @@
 				, `at_time`
 				)
 				VALUES
-				(@creator_bz_id
-				, 'Bugzilla::Milestone'
-				, @milestone_id
-				, '__create__'
-				, NULL()
-				, @default_milestone
-				, @timestamp
-				)
+				(@creator_bz_id, 'Bugzilla::Milestone', @milestone_id, '__create__', NULL, @default_milestone, @timestamp)
 				;
 			
 # We create the goups we need
