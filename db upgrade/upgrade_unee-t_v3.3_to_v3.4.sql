@@ -1,13 +1,10 @@
 # For any question about this script, ask Franck
 #
-# This update 
-#	- Move the records from the existing table `ut_data_to_create_units` into an archive `ut_data_to_create_units_legacy_before_3_3`
-#	- Simplify the table `ut_data_to_create_units`
-#	- facilitate the automated creation of a unit in Unee-T
-#		- Alter the table `ut_data_to_create_units`
-#			- Rename a constraint for easier error handling and debugging
-#			- Make sure we are not creating duplicate record of the same MEFE unit
-# 		- Create a procedures which we can call when there is a need to create a unit.
+###################################################################################
+#
+# WARNING! It is recommended to use Amazon Aurora database engine for this version
+#
+###################################################################################
 #
 ############################################
 #
@@ -25,18 +22,25 @@
 # We have everything we need
 #
 ###############################
+# This update 
+#	- Move the records from the existing table `ut_data_to_create_units` into an archive `ut_data_to_create_units_legacy_before_3_3`
+#	- Simplify the table `ut_data_to_create_units`. We only need
+#		- the unit name
+#		- the unit description 
+#		Adding more information there would lead to:
+#		- duplication of information that should only be in the MEFE
+#		- additional complexity to secure some sensitive data
+#	- facilitate the automated creation of a unit in Unee-T
+#		- Alter the table `ut_data_to_create_units`
+#			- Rename a constraint for easier error handling and debugging
+#				- The invitor exists
+#				- The Geography/category exists
+#			- Make sure we are not creating duplicate record of the same MEFE unit
+# 		- Create a procedures which we can call when there is a need to create a unit.
+#	- Disable a unit if needed.
 #
-#
-###################################################################################
-#
-# WARNING! It is recommended to use Amazon Aurora database engine for this version
-#
-###################################################################################
-
 # We rename the constraints for each unit we want to create for easier error handling:
-#	- The invitor exists
-#	- The Geography/category exists
-#	- the `mefe_unit_id` is unique in this table
+#
 # We also simplify this table, in the BZ database / product object, we only need
 #	- the unit name
 #	- the unit description 
@@ -73,12 +77,6 @@
 			`deleted_datetime` datetime NULL  COMMENT 'Timestamp when this was deleted in the BZ db (together with all objects related to this product/unit).' , 
 			`deletion_script` varchar(500) COLLATE utf8_general_ci NULL  COMMENT 'The script used to delete this product and all objects related to this product in the BZ database' , 
 			PRIMARY KEY (`id_unit_to_create`) , 
-			KEY `id_unit_creator_id`(`bzfe_creator_user_id`) , 
-			KEY `id_unit_classification_id`(`classification_id`) , 
-			CONSTRAINT `id_unit_classification_id` 
-			FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE , 
-			CONSTRAINT `id_unit_creator_id` 
-			FOREIGN KEY (`bzfe_creator_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE 
 		) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' ROW_FORMAT=Dynamic
 		;
 
@@ -89,11 +87,23 @@
 		INSERT INTO `ut_data_to_create_units_legacy_before_3_3` SELECT * FROM `ut_data_to_create_units`;
 
 
-	# We can now remove the unnecessary fields and add several constraint to the table `ut_data_to_create_units`
+	# We can now remove the unnecessary fields in the table `ut_data_to_create_units`
 
 		/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 		
 		ALTER TABLE `ut_data_to_create_units` 
+			CHANGE `mefe_unit_id` `mefe_unit_id` varchar(256)  COLLATE utf8_general_ci NULL COMMENT 'The id of this unit in the MEFE database' after `id_unit_to_create` , 
+			CHANGE `mefe_creator_user_id` `mefe_creator_user_id` varchar(256)  COLLATE utf8_general_ci NULL COMMENT 'The id of the creator of this unit in the MEFE database' after `mefe_unit_id` , 
+			CHANGE `bzfe_creator_user_id` `bzfe_creator_user_id` mediumint(9)   NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table \'profiles\'' after `mefe_creator_user_id` , 
+			CHANGE `unit_description_details` `unit_description_details` varchar(500)  COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'More information about the unit - this is a free text space' after `unit_name` , 
+			CHANGE `bz_created_date` `bz_created_date` datetime   NULL COMMENT 'Date and time when this unit has been created in the BZ databae' after `unit_description_details` , 
+			DROP COLUMN `mefe_id` , 
+			DROP COLUMN `matterport_url` , 
+			DROP COLUMN `unit_id` , 
+			DROP COLUMN `unit_condo` , 
+			DROP COLUMN `unit_surface` , 
+			DROP COLUMN `unit_surface_measure` , 
+			DROP COLUMN `unit_address` , 
 			DROP KEY `id_unit_classification_id` , 
 			DROP KEY `id_unit_creator_id` , 
 			ADD KEY `new_unit_classification_id_must_exist`(`classification_id`) , 
@@ -101,23 +111,31 @@
 			ADD UNIQUE KEY `new_unite_mefe_unit_id_must_be_unique`(`mefe_unit_id`) , 
 			DROP FOREIGN KEY `id_unit_classification_id`  , 
 			DROP FOREIGN KEY `id_unit_creator_id`  ;
+			
+	# We add several constraint to the table `ut_data_to_create_units`
+	
 		ALTER TABLE `ut_data_to_create_units`
 			ADD CONSTRAINT `new_unit_classification_id_must_exist` 
 			FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE , 
 			ADD CONSTRAINT `new_unit_unit_creator_bz_id_must_exist` 
 			FOREIGN KEY (`bzfe_creator_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE ;
 
+
 		/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 	
 # We create the procedure that will create a unit
 	
-DROP PROCEDURE IF EXISTS create_unit_with_dummy_users;
+DROP PROCEDURE IF EXISTS unit_create_with_dummy_users;
 DELIMITER $$
-CREATE PROCEDURE create_unit_with_dummy_users()
+CREATE PROCEDURE unit_create_with_dummy_users()
 SQL SECURITY INVOKER
 BEGIN
 
-	# This procredure will create
+	# This procedure needs the following variables:
+	#	- @mefe_unit_id
+	#	- @environment
+	#
+	# This procedure will create
 	#	- The unit
 	#	- All the objects needed by the unit
 	#		- Milestone
@@ -134,16 +152,12 @@ BEGIN
 	#		- Log the group_id that we have created so we can assign permissions later
 	#	- Update the Unee-T script log`
 	#	- Update the BZ db table `audit_log`
-	# 
-	# This procedure needs the following variables:
-	#	- @mefe_unit_id
-	#	- @environment
 	
 	# What is the record that we need to import?
 		SET @unit_reference_for_import = (SELECT `id_unit_to_create` FROM `ut_data_to_create_units` WHERE `mefe_unit_id` = @mefe_unit_id);
 	
 	# We record the name of this procedure for future debugging and audit_log`
-		SET @script = 'PROCEDURE - create_unit_with_dummy_users';
+		SET @script = 'PROCEDURE - unit_create_with_dummy_users';
 		SET @timestamp = NOW();
 
 	# We create a temporary table to record the ids of the dummy users in each environments:
@@ -190,48 +204,8 @@ BEGIN
 
 		# The name and description
 		SET @unit_name = (SELECT `unit_name` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_identification = (SELECT `unit_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_condo = (SELECT `unit_condo` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_surface = (SELECT `unit_surface` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_surface_measure = (SELECT `unit_surface_measure` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 		SET @unit_description_details = (SELECT `unit_description_details` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_address = (SELECT `unit_address` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @matterport_url = (SELECT `matterport_url` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_description = CONCAT(
-					IF (@unit_condo = '', '', 'Condo: ')
-					, IF (@unit_condo = '', '', @unit_condo)
-					, IF (@unit_condo = '', '', '. ')
-					
-					, IF (@unit_identification = '', '', 'Unit #')
-					, IF (@unit_identification = '', '', @unit_identification)
-					, IF (@unit_identification = '', '', '. ')
-					
-					, IF (@unit_description_details = '', '', '')
-					, IF (@unit_description_details = '', '', @unit_description_details)
-					, IF (@unit_description_details = '', '', '. ')
-					
-					, IF (@unit_surface = '', '', 'Size of the unit : ')
-					, IF (@unit_surface = '', '', @unit_surface)
-					, IF (@unit_surface = ''
-							, ''
-							,IF(@unit_surface_measure = 1
-								, ' sqft. '
-								,IF(@unit_surface_measure = 2
-									, ' sqm. '
-									, ' Unknown measure. '
-								) 
-							)
-						)
-					
-					, IF (@unit_address = '', '', '')
-					, IF (@unit_address = '', '', @unit_address)
-					, IF (@unit_address = '', '', '. ')
-					
-					, IF (@matterport_url = '', '', '<a href=\"')
-					, IF (@matterport_url = '', '', @matterport_url)
-					, IF (@matterport_url = '', '', '\" target=\"_blank\">Virtual Visit</a>')
-					)
-					;
+		SET @unit_description = @unit_description_details;
 		
 	# The users associated to this unit.	
 
@@ -1486,19 +1460,19 @@ BEGIN
 				) 
 				VALUES 
 				(NULL,@creator_bz_id,@series_category_product,2,'UNCONFIRMED',1,@serie_search_unconfirmed,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','CONFIRMED',1,@serie_search_confirmed,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','IN_PROGRESS',1,@serie_search_in_progress),1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','REOPENED',1,@serie_search_reopened,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','STAND BY',1,@serie_search_standby,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','RESOLVED',1,@serie_search_resolved,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','VERIFIED',1,@serie_search_verified,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','CLOSED',1,@serie_search_closed,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','FIXED',1,@serie_search_fixed,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','INVALID',1,@serie_search_invalid,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','WONTFIX',1,@serie_search_wontfix,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','DUPLICATE',1,@serie_search_duplicate,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','WORKSFORME',1,@serie_search_worksforme,1)
-				,(NULL,@creator_bz_id,@series_category_product,'2','All Open',1,@serie_search_all_open,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'CONFIRMED',1,@serie_search_confirmed,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'IN_PROGRESS',1,@serie_search_in_progress,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'REOPENED',1,@serie_search_reopened,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'STAND BY',1,@serie_search_standby,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'RESOLVED',1,@serie_search_resolved,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'VERIFIED',1,@serie_search_verified,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'CLOSED',1,@serie_search_closed,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'FIXED',1,@serie_search_fixed,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'INVALID',1,@serie_search_invalid,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'WONTFIX',1,@serie_search_wontfix,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'DUPLICATE',1,@serie_search_duplicate,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'WORKSFORME',1,@serie_search_worksforme,1)
+				,(NULL,@creator_bz_id,@series_category_product,2,'All Open',1,@serie_search_all_open,1)
 				;
 				
 		# Insert the series related to the Components/roles
@@ -1515,7 +1489,7 @@ BEGIN
 				) 
 				VALUES
 				# Tenant
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_tenant,'All Open',1,@serie_search_all_open_tenant,1)
+				(NULL,@creator_bz_id,@series_category_product,@series_category_component_tenant,'All Open',1,@serie_search_all_open_tenant,1)
 				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_tenant,'All Closed',1,@serie_search_all_closed_tenant,1)
 				# Landlord
 				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_landlord,'All Open',1,@serie_search_all_open_landlord,1)
@@ -1885,87 +1859,97 @@ BEGIN
 END $$
 DELIMITER ;
 
+# We create a procedure to DISABLE an existing unit too
+	
+DROP PROCEDURE IF EXISTS unit_disable_existing;
+DELIMITER $$
+CREATE PROCEDURE unit_disable_existing()
+SQL SECURITY INVOKER
+BEGIN
+
+	# This procedure needs the following variables:
+	#	- @product_id
+	# 	- @inactive_when
+	#
+	# This procedure will
+	#	- Disable an existing unit/BZ product
+	#	- Record the action of the script in the ut_log tables.
+	#	- Record the chenge in the BZ `audit_log` table
+	
+	# We record the name of this procedure for future debugging and audit_log`
+		SET @script = 'PROCEDURE - unit_disable_existing';
+		SET @timestamp = NOW();
+
+
+	# Make a unit inactive
+		UPDATE `products`
+			SET `isactive` = '0'
+			WHERE `id` = @product_id
+		;
+
+	# Record the actions of this script in the ut_log
+
+		# Log the actions of the script.
+			SET @script_log_message = CONCAT('the Unit #'
+									, @product_id
+									, ' is inactive. It is not possible to create new cases in this unit.'
+									);
+		
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(@timestamp, @script, @script_log_message)
+				;
+			# We log what we have just done into the `ut_audit_log` table
+			
+			SET @bzfe_table = 'products';
+			
+			INSERT INTO `ut_audit_log`
+				 (`datetime`
+				 , `bzfe_table`
+				 , `bzfe_field`
+				 , `previous_value`
+				 , `new_value`
+				 , `script`
+				 , `comment`
+				 )
+				 VALUES
+				 (@timestamp ,@bzfe_table, 'isactive', '1', '0', @script, @script_log_message)
+				 ;
+		 
+		# Cleanup the variables for the log messages
+			SET @script_log_message = NULL;
+			SET @script = NULL;
+			SET @timestamp = NULL;
+			SET @bzfe_table = NULL;
+
+	# When we mark a unit as inactive, we need to record this in the `audit_log` table
+			INSERT INTO `audit_log`
+			(`user_id`
+			, `class`
+			, `object_id`
+			, `field`
+			, `removed`
+			, `added`
+			, `at_time`
+			)
+			VALUES
+			(@creator_bz_id
+			, 'Bugzilla::Product'
+			, @product_id
+			, 'isactive'
+			, '1'
+			, '0'
+			, @inactive_when
+			)
+			;			
+
+END $$
+DELIMITER ;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	  
 # We can now update the version of the database schema
 	# A comment for the update
 		SET @comment_update_schema_version = CONCAT (
