@@ -13,9 +13,9 @@
 ############################################
 #
 # What are the version of the Unee-T BZ Database schema BEFORE and AFTER this update?
-	SET @old_schema_version = 'v3.2';
-	SET @new_schema_version = 'v3.3';
-	SET @this_script = 'upgrade_unee-t_v3.2_to_v3.3.sql';
+	SET @old_schema_version = 'v3.3';
+	SET @new_schema_version = 'v3.4';
+	SET @this_script = 'upgrade_unee-t_v3.3_to_v3.4.sql';
 #
 ###############################
 #
@@ -57,27 +57,27 @@
 		DROP TABLE IF EXISTS `ut_data_to_create_units_legacy_before_3_3`;
 
 		CREATE TABLE `ut_data_to_create_units_legacy_before_3_3`(
-			`id_unit_to_create` int(11) NOT NULL  auto_increment COMMENT 'The unique ID in this table' , 
-			`mefe_id` varchar(256) COLLATE utf8_general_ci NULL  COMMENT 'The id of the object in the MEFE interface where these information are coming from' , 
-			`mefe_creator_user_id` varchar(256) COLLATE utf8_general_ci NULL  COMMENT 'The id of the creator of this unit in the MEFE database' , 
-			`mefe_unit_id` varchar(256) COLLATE utf8_general_ci NULL  COMMENT 'The id of this unit in the MEFE database' , 
-			`bzfe_creator_user_id` mediumint(9) NOT NULL  COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table \'profiles\'' , 
-			`classification_id` smallint(6) NOT NULL  COMMENT 'The ID of the classification for this unit - a FK to the BZ table \'classifications\'' , 
-			`unit_name` varchar(54) COLLATE utf8_general_ci NOT NULL  DEFAULT '' COMMENT 'A name for the unit. We will append the product id and this will be inserted in the product name field of the BZ tabele product which has a max lenght of 64' , 
-			`unit_id` varchar(54) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'The id of the unit' , 
-			`unit_condo` varchar(50) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'The name of the condo or buildig for the unit' , 
-			`unit_surface` varchar(10) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'The surface of the unit - this is a number - it can be sqm or sqf' , 
-			`unit_surface_measure` tinyint(1) NULL  COMMENT '1 is for square feet (sqf) - 2 is for square meters (sqm)' , 
-			`unit_description_details` varchar(500) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'More information about the unit - this is a free text space' , 
-			`unit_address` varchar(500) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'The address of the unit' , 
-			`matterport_url` varchar(256) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'LMB specific - a the URL for the matterport visit for this unit' , 
-			`bz_created_date` datetime NULL  COMMENT 'Date and time when this unit has been created in the BZ databae' , 
-			`comment` text COLLATE utf8_general_ci NULL  COMMENT 'Any comment' , 
-			`product_id` smallint(6) NULL  COMMENT 'The id of the product in the BZ table \'products\'. Because this is a record that we will keep even AFTER we deleted the record in the BZ table, this can NOT be a FK.' , 
-			`deleted_datetime` datetime NULL  COMMENT 'Timestamp when this was deleted in the BZ db (together with all objects related to this product/unit).' , 
-			`deletion_script` varchar(500) COLLATE utf8_general_ci NULL  COMMENT 'The script used to delete this product and all objects related to this product in the BZ database' , 
-			PRIMARY KEY (`id_unit_to_create`) , 
-		) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' ROW_FORMAT=Dynamic
+			`id_unit_to_create` INT(11) NOT NULL  AUTO_INCREMENT COMMENT 'The unique ID in this table' , 
+			`mefe_id` VARCHAR(256) COLLATE utf8_general_ci NULL  COMMENT 'The id of the object in the MEFE interface where these information are coming from' , 
+			`mefe_creator_user_id` VARCHAR(256) COLLATE utf8_general_ci NULL  COMMENT 'The id of the creator of this unit in the MEFE database' , 
+			`mefe_unit_id` VARCHAR(256) COLLATE utf8_general_ci NULL  COMMENT 'The id of this unit in the MEFE database' , 
+			`bzfe_creator_user_id` MEDIUMINT(9) NOT NULL  COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table \'profiles\'' , 
+			`classification_id` SMALLINT(6) NOT NULL  COMMENT 'The ID of the classification for this unit - a FK to the BZ table \'classifications\'' , 
+			`unit_name` VARCHAR(54) COLLATE utf8_general_ci NOT NULL  DEFAULT '' COMMENT 'A name for the unit. We will append the product id and this will be inserted in the product name field of the BZ tabele product which has a max lenght of 64' , 
+			`unit_id` VARCHAR(54) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'The id of the unit' , 
+			`unit_condo` VARCHAR(50) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'The name of the condo or buildig for the unit' , 
+			`unit_surface` VARCHAR(10) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'The surface of the unit - this is a number - it can be sqm or sqf' , 
+			`unit_surface_measure` TINYINT(1) NULL  COMMENT '1 is for square feet (sqf) - 2 is for square meters (sqm)' , 
+			`unit_description_details` VARCHAR(500) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'More information about the unit - this is a free text space' , 
+			`unit_address` VARCHAR(500) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'The address of the unit' , 
+			`matterport_url` VARCHAR(256) COLLATE utf8_general_ci NULL  DEFAULT '' COMMENT 'LMB specific - a the URL for the matterport visit for this unit' , 
+			`bz_created_date` DATETIME NULL  COMMENT 'Date and time when this unit has been created in the BZ databae' , 
+			`comment` TEXT COLLATE utf8_general_ci NULL  COMMENT 'Any comment' , 
+			`product_id` SMALLINT(6) NULL  COMMENT 'The id of the product in the BZ table \'products\'. Because this is a record that we will keep even AFTER we deleted the record in the BZ table, this can NOT be a FK.' , 
+			`deleted_datetime` DATETIME NULL  COMMENT 'Timestamp when this was deleted in the BZ db (together with all objects related to this product/unit).' , 
+			`deletion_script` VARCHAR(500) COLLATE utf8_general_ci NULL  COMMENT 'The script used to delete this product and all objects related to this product in the BZ database' , 
+			PRIMARY KEY (`id_unit_to_create`)
+		) ENGINE=INNODB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' ROW_FORMAT=DYNAMIC
 		;
 
 		/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -92,11 +92,11 @@
 		/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 		
 		ALTER TABLE `ut_data_to_create_units` 
-			CHANGE `mefe_unit_id` `mefe_unit_id` varchar(256)  COLLATE utf8_general_ci NULL COMMENT 'The id of this unit in the MEFE database' after `id_unit_to_create` , 
-			CHANGE `mefe_creator_user_id` `mefe_creator_user_id` varchar(256)  COLLATE utf8_general_ci NULL COMMENT 'The id of the creator of this unit in the MEFE database' after `mefe_unit_id` , 
-			CHANGE `bzfe_creator_user_id` `bzfe_creator_user_id` mediumint(9)   NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table \'profiles\'' after `mefe_creator_user_id` , 
-			CHANGE `unit_description_details` `unit_description_details` varchar(500)  COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'More information about the unit - this is a free text space' after `unit_name` , 
-			CHANGE `bz_created_date` `bz_created_date` datetime   NULL COMMENT 'Date and time when this unit has been created in the BZ databae' after `unit_description_details` , 
+			CHANGE `mefe_unit_id` `mefe_unit_id` VARCHAR(256)  COLLATE utf8_general_ci NULL COMMENT 'The id of this unit in the MEFE database' AFTER `id_unit_to_create` , 
+			CHANGE `mefe_creator_user_id` `mefe_creator_user_id` VARCHAR(256)  COLLATE utf8_general_ci NULL COMMENT 'The id of the creator of this unit in the MEFE database' AFTER `mefe_unit_id` , 
+			CHANGE `bzfe_creator_user_id` `bzfe_creator_user_id` MEDIUMINT(9)   NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table \'profiles\'' AFTER `mefe_creator_user_id` , 
+			CHANGE `unit_description_details` `unit_description_details` VARCHAR(500)  COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'More information about the unit - this is a free text space' AFTER `unit_name` , 
+			CHANGE `bz_created_date` `bz_created_date` DATETIME   NULL COMMENT 'Date and time when this unit has been created in the BZ databae' AFTER `unit_description_details` , 
 			DROP COLUMN `mefe_id` , 
 			DROP COLUMN `matterport_url` , 
 			DROP COLUMN `unit_id` , 
