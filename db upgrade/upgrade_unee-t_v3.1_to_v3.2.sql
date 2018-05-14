@@ -4,8 +4,6 @@
 #	- makes sure we record the script that was used to do the database upgrade
 #	- fix a bug in the procedure 'disable_bugmail'
 #	- fix a typo in the procedure 'default_landlord_see_users_landlord'
-#	- facilitate the automated creation of a unit in Unee-T
-# 		- It creates several procedures which we can call when there is a need to create a unit.
 #
 ############################################
 #
@@ -221,80 +219,6 @@ END IF ;
 END $$
 DELIMITER ;
 
-
-# We create a table to record the information each time a new geography/Classification is created
-
-
-
-# We create a table to record the information each tima a new unit/Product is created
-
-
-
-# We create a table to record the information each time a new component is created???
-
-
-
-# We make sure that for each unit we want to create:
-#	- The invitor exists
-#	- The invitee exists
-#	- The Geography/category exists
-
-
-
-# When we create a unit, we need to record that the unit has been created in the `audit_log` table
-
-# The variables we need:
-#	- @creator_bz_id
-#	- @product_id
-#	- @unit_name
-
-INSERT INTO `audit_log`
-	(`user_id`
-	, `class`
-	, `object_id`
-	, `field`
-	, `removed`
-	, `added`
-	, `at_time`
-	)
-	VALUES
-	(@creator_bz_id
-	, 'Bugzilla::Product'
-	, @product_id
-	, '__create__'
-	, NULL()
-	, @unit_name
-	, @timestamp
-	)
-	;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	  
 # We can now update the version of the database schema
 	# A comment for the update
 		SET @comment_update_schema_version = CONCAT (
