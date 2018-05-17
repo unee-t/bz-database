@@ -1076,48 +1076,8 @@
 
 			#The name and description
 			SET @unit_name = (SELECT `unit_name` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-			SET @unit_identification = (SELECT `unit_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-			SET @unit_condo = (SELECT `unit_condo` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-			SET @unit_surface = (SELECT `unit_surface` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-			SET @unit_surface_measure = (SELECT `unit_surface_measure` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 			SET @unit_description_details = (SELECT `unit_description_details` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-			SET @unit_address = (SELECT `unit_address` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-			SET @matterport_url = (SELECT `matterport_url` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-			SET @unit_description = CONCAT(
-				IF (@unit_condo = '', '', 'Condo: ')
-						, IF (@unit_condo = '', '', @unit_condo)
-						, IF (@unit_condo = '', '', ' - ')
-						
-						, IF (@unit_identification = '', '', 'Unit #')
-						, IF (@unit_identification = '', '', @unit_identification)
-						, IF (@unit_identification = '', '', ' - ')
-						
-						, IF (@unit_description_details = '', '', ' - ')
-						, IF (@unit_description_details = '', '', @unit_description_details)
-						, IF (@unit_description_details = '', '', ' - ')
-						
-						, IF (@unit_surface = '', '', ' - Size of the unit : ')
-						, IF (@unit_surface = '', '', @unit_surface)
-						, IF (@unit_surface = ''
-								, ''
-								,IF(@unit_surface_measure = 1
-									, ' sqft. '
-									,IF(@unit_surface_measure = 2
-										, ' sqm. '
-										, ' Unknown measure.</br>'
-									) 
-								)
-							)
-						
-						, IF (@unit_address = '', '', ' - ')
-						, IF (@unit_address = '', '', @unit_address)
-						, IF (@unit_address = '', '', '. ')
-						
-						, IF (@matterport_url = '', '', '<br><a href=\"')
-						, IF (@matterport_url = '', '', @matterport_url)
-						, IF (@matterport_url = '', '', '\" target=\"_blank\">Virtual Visit</a></br>')
-						)
-						;
+			SET @unit_description = @unit_description_details;
 			
 		#The users associated to this unit.	
 
