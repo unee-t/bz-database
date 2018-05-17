@@ -1023,9 +1023,9 @@
 		,`deletion_script`
 		) 
 		VALUES 
-	(1,NULL,NULL,NULL,1,2,'Demo - Unit 01-02 - Comp A','01-02','Complex A','2,200',1,'','20 Maple Avenue - San Pedro, CA 90731 - USA','',NULL,NULL,NULL,NULL,NULL)
-	,(2,NULL,NULL,NULL,1,2,'Demo - Unit 13-06 - Comp B','13-06','Complex B','1,800',1,'','601 Sherwood Ave. - San Bernardino, CA 92404 - USA','',NULL,NULL,NULL,NULL,NULL)
-	,(3,NULL,NULL,NULL,1,2,'Demo - Unit 07-08 - Comp B','07-08','Complex B','1,500',1,'','602 Sherwood Ave. - San Bernardino, CA 92404 - USA','',NULL,NULL,NULL,NULL,NULL)
+	(1,NULL,NULL,NULL,1,2,'Demo - Unit 01-02 - Comp A','20 Maple Avenue - San Pedro, CA 90731 - USA','',NULL,NULL,NULL,NULL)
+	,(2,NULL,NULL,NULL,1,2,'Demo - Unit 13-06 - Comp B','601 Sherwood Ave. - San Bernardino, CA 92404 - USA','',NULL,NULL,NULL,NULL)
+	,(3,NULL,NULL,NULL,1,2,'Demo - Unit 07-08 - Comp B','602 Sherwood Ave. - San Bernardino, CA 92404 - USA','',NULL,NULL,NULL,NULL)
 	;
 
 	# Log the actions of the script.
