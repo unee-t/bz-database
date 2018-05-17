@@ -24,6 +24,9 @@
 ###############################
 # This update 
 #	- Creates several views to simplify the generation of KPIs and report
+#		- Snapshot of the units with real user as default assignee for each `role_type_id`
+#		- Count (flash) the number of units with real users by user type and enabled/disabled units
+#		- List all the changes to a component when we added or removed one of the dummy users
 #		- Count the number of invitation sent per user per month
 #		- Count the number of users who sent at least an invite per month
 #		- Count the number of unit where at least 1 invite was sent per month
@@ -32,19 +35,125 @@
 #		- Count the number of invitation sent to an individual invitee per month
 #		- Count the number of new invitee per month (an invitee appears only once if several invites have been sent to him)
 #
-#WIP	- Creates a table to record the current number of units with dummy roles
-#
-#WIP 	- Creates a trigger to populate the table each time a dummy tenant is replaced.
-# 	When we replace a dummy, tenant, we insert a record in the table
-# 	Each time a record is inserted there, we need to compute and record the number of units with dummy tenants.
-#
-#WIP		- Count the average number of component where the default assignee is NOT a dummy user
 #
 
 # When are we doing this?
 	SET @the_timestamp = NOW();
 	
+# Snapshot of the units with real user as default assignee for each `role_type_id`
+	DROP VIEW IF EXISTS `list_components_with_real_default_assignee`;
+
+	CREATE VIEW `list_components_with_real_default_assignee`
+	AS
+		SELECT `ut_product_group`.`product_id`
+			, `components`.`id` AS `component_id`
+			, `initialowner`
+			, `ut_product_group`.`role_type_id`
+			, `products`.`isactive`
+			FROM `components`
+				INNER JOIN `ut_product_group` 
+				ON (`components`.`id` = `ut_product_group`.`component_id`)
+				INNER JOIN `products` 
+				ON (`ut_product_group`.`product_id` = `products`.`id`)
+			# If we add one of the BZ user who is NOT a dummy user, then it is a REAL user
+			WHERE (# The new initial owner is NOT the dummy tenant?
+				`components`.`initialowner` <> 93
+				AND 
+				# The new initial owner is NOT the dummy landlord?
+				`components`.`initialowner` <> 91
+				AND 				
+				# The new initial owner is NOT the dummy contractor?
+				`components`.`initialowner` <> 90
+				AND 
+				# The new initial owner is NOT the dummy Mgt Cny?
+				`components`.`initialowner` <> 92
+				AND 
+				# The new initial owner is NOT the dummy agent?
+				`components`.`initialowner` <> 89
+				AND
+				# the role type is not null
+				`ut_product_group`.`role_type_id` IS NOT NULL
+				)
+			GROUP BY `ut_product_group`.`product_id`
+				, `components`.`id`
+				, `ut_product_group`.`role_type_id`
+			ORDER BY `ut_product_group`.`product_id` ASC
+				, `components`.`id` ASC
+			;
+
+# Create the view to count (flash) the number of units with real users by user type and enabled/disabled units
+	CREATE VIEW `flash_count_units_with_real_roles` 
+	AS
+		SELECT
+			`role_type_id`
+			, COUNT(`product_id`) AS `units_with_real_users`
+			, `isactive`
+		FROM
+			`list_components_with_real_default_assignee`
+		GROUP BY `role_type_id`
+			, `isactive`
+		ORDER BY `isactive` DESC
+			, `role_type_id` ASC
+		;
+			
+# Create the view to list all the changes from the audit log when we replaced the dummy tenant with a real user
+# This script uses the values for the PROD
+#	- Tenant = 93
+#	- Landlord = 91
+#	- Contractor = 90
+#	- Mgt Cny = 92
+#	- Agent = 89
+#
+# The value for the DEV are:
+#	- Tenant = 96
+#	- Landlord = 94
+#	- Contractor = 93
+#	- Mgt Cny = 95
+#	- Agent = 82
+#
+	DROP VIEW IF EXISTS `list_changes_new_assignee_is_real`;
+	
+	CREATE VIEW `list_changes_new_assignee_is_real`
+	AS
+		SELECT `ut_product_group`.`product_id`
+			, `audit_log`.`object_id` AS `component_id`
+			, `audit_log`.`removed`
+			, `audit_log`.`added`
+			, `audit_log`.`at_time`
+			, `ut_product_group`.`role_type_id`
+			FROM `audit_log`
+				INNER JOIN `ut_product_group` 
+				ON (`audit_log`.`object_id` = `ut_product_group`.`component_id`)
+			# If we add one of the BZ user who is NOT a dummy user, then it is a REAL user
+			WHERE (`class` = 'Bugzilla::Component'
+				AND `field` = 'initialowner'
+				AND 
+				# The new initial owner is NOT the dummy tenant?
+				`audit_log`.`added` <> 92
+				AND 
+				# The new initial owner is NOT the dummy landlord?
+				`audit_log`.`added` <> 91
+				AND 				
+				# The new initial owner is NOT the dummy contractor?
+				`audit_log`.`added` <> 90
+				AND 
+				# The new initial owner is NOT the dummy Mgt Cny?
+				`audit_log`.`added` <> 92
+				AND 
+				# The new initial owner is NOT the dummy agent?
+				`audit_log`.`added` <> 89
+				)
+			GROUP BY `audit_log`.`object_id`
+				, `ut_product_group`.`role_type_id`
+			ORDER BY `audit_log`.`at_time` DESC
+				, `ut_product_group`.`product_id` ASC
+				, `audit_log`.`object_id` ASC
+			;
+	
 # We create the view to Count the number of invitation sent per user per month
+	
+	DROP VIEW IF EXISTS `count_invites_per_user_per_month`;
+	
 	CREATE VIEW `count_invites_per_user_per_month`
 	AS
 		SELECT
@@ -62,6 +171,8 @@
 		;
 
 # We Create the view to count the number of user who sent at least 1 invite per month
+	
+	DROP VIEW IF EXISTS `count_invitors_per_month`;
 
 	CREATE VIEW `count_invitors_per_month`
 	AS 
@@ -77,6 +188,9 @@
 		;
 
 # We create the view to count the number of invitation sent per unit per month
+	
+	DROP VIEW IF EXISTS `count_invites_per_unit_per_month`;
+
 	CREATE VIEW `count_invites_per_unit_per_month` 
 	AS
 		SELECT
@@ -94,6 +208,9 @@
 		;
 
 # We create the view to count the number of unit where at least 1 invite was sent
+	
+	DROP VIEW IF EXISTS `count_units_with_invitation_send`;
+
 	CREATE VIEW `count_units_with_invitation_send`
 	AS 
 		SELECT 
@@ -108,6 +225,9 @@
 		;
 
 # We create the view to count the number of invitation sent to an individual invitee per month
+	
+	DROP VIEW IF EXISTS `count_invitation_per_invitee_per_month`;
+
 	CREATE VIEW `count_invitation_per_invitee_per_month` 
 	AS
 		SELECT
@@ -127,6 +247,9 @@
 		
 # We create the view to count the number of new invitee per month 
 # (an invitee appears only once if several invites have been sent to him)
+	
+	DROP VIEW IF EXISTS `count_invitees_per_month`;
+
 	CREATE VIEW `count_invitees_per_month`
 	AS 
 		SELECT 
@@ -140,7 +263,7 @@
 			, `month` DESC
 		;
 
-# We create the view to count the number of invitation sent to each separate role per unit per month
+			
 		
 		
 		
@@ -148,8 +271,23 @@
 		
 		
 		
-# We create the view to count the number of roles activated per unit per month
-	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 
