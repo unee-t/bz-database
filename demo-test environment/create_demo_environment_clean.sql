@@ -1,10 +1,7 @@
 # For any question about this script, ask Franck
 
-##################################################################
-				#				 #
-# UPDATE THE BELOW VARIABLES TO CREATE MORE UNITS AND MORE USERS #
-				#				 #
-##################################################################
+# Info about this script
+	SET @script = 'demo_environment_clean_v3.5.sql';
 
 # pre-requisite: 
 # 	- DB v3.5 clean has been installed.
@@ -79,9 +76,6 @@
 	#We have everything we need, we do this!
 #
 ################
-
-# Info about this script
-	SET @script = 'demo_environment_clean_v2.19.sql';
 	
 # Timestamp	
 		SET @timestamp = NOW();
@@ -3804,7 +3798,6 @@
 			#The name and description
 			SET @unit_name = (SELECT `unit_name` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 			SET @unit_description_details = (SELECT `unit_description_details` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-			SET @unit_address = (SELECT `unit_address` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 			SET @unit_description = @unit_description_details;
 			
 		#The users associated to this unit.	
