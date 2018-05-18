@@ -25,7 +25,8 @@
 # This update 
 #	- Creates several views to simplify the generation of KPIs and report
 #		- Snapshot of the units with real user as default assignee for each `role_type_id`
-#		- Count (flash) the number of units with real users by user type and enabled/disabled units
+#		- Flash count the number of units with real users by user type and enabled/disabled units (at the time the query is run).
+#		- Flash count the number of user per role per unit (at the time the query is run).
 #		- List all the changes to a component when we added or removed one of the dummy users
 #		- Count the number of invitation sent per user per month
 #		- Count the number of users who sent at least an invite per month
@@ -34,7 +35,18 @@
 #		- Count the number of unit where at least 1 invite was sent
 #		- Count the number of invitation sent to an individual invitee per month
 #		- Count the number of new invitee per month (an invitee appears only once if several invites have been sent to him)
-#
+#		- Count the number of invites per unit per role per month
+#		- Count the number of invites per role per month
+#		- Count the number of invites per unit per month
+#		- Count the number of invites per month
+#		- Count the number of new geographies/Classifications created each month
+#		- Count the number of new units created each month
+#		- Count the number of new user created each month
+#		- Count the number of new cases created each month
+#		- Create a table `update_log_count_closed_case` to record the number of closed cases. This table will be udated by a trigger each time 
+#		  a case status is changed from Open to Closed
+#		- Create a procedure to update the table 'update_log_count_closed_case'
+#		- Create a trigger to do the procedure each time a status of a case is changed from open to close or vice versa
 #
 
 # When are we doing this?
@@ -94,6 +106,30 @@
 			, `isactive`
 		ORDER BY `isactive` DESC
 			, `role_type_id` ASC
+		;
+		
+# Flash count the number of user per role per unit (at the time the query is run).
+
+	DROP VIEW IF EXISTS `flash_count_user_per_role_per_unit`;
+
+	CREATE VIEW `flash_count_user_per_role_per_unit`
+	AS
+		SELECT
+		    `ut_product_group`.`product_id`
+		    , `ut_product_group`.`role_type_id`
+		    , COUNT(`profiles`.`userid`) AS `count_users`
+		FROM
+		    `user_group_map`
+		    INNER JOIN `profiles` 
+			ON (`user_group_map`.`user_id` = `profiles`.`userid`)
+		    INNER JOIN `ut_product_group` 
+			ON (`user_group_map`.`group_id` = `ut_product_group`.`group_id`)
+		WHERE `ut_product_group`.`role_type_id` IS NOT NULL
+			AND `ut_product_group`.`group_type_id` = 2
+			AND `user_group_map`.`isbless` = 0
+		GROUP BY `ut_product_group`.`product_id`
+			, `ut_product_group`.`role_type_id`
+			, `user_group_map`.`group_id`
 		;
 			
 # Create the view to list all the changes from the audit log when we replaced the dummy tenant with a real user
@@ -263,23 +299,240 @@
 			, `month` DESC
 		;
 
+# We create the view to count the number of invites per unit per role per month
+	
+	DROP VIEW IF EXISTS `count_invites_per_unit_per_role_per_month`;
+
+	CREATE VIEW `count_invites_per_unit_per_role_per_month` 
+	AS
+		SELECT
+			YEAR(`api_post_datetime`) AS `year`
+			, MONTH(`api_post_datetime`) AS `month`
+			, `bz_unit_id`
+			, `user_role_type_id`
+			, COUNT(`id`) AS `invitation_sent`
+		FROM
+			`ut_invitation_api_data`
+		GROUP BY `bz_user_id`
+			, MONTH(`api_post_datetime`)
+			, YEAR(`api_post_datetime`)
+			, `bz_unit_id`
+			, `user_role_type_id`
+		ORDER BY YEAR(`api_post_datetime`) DESC
+			, MONTH(`api_post_datetime`) DESC
+			, `user_role_type_id` ASC
+			, `bz_unit_id` ASC
+			, COUNT(`id`) DESC
+		;
+		
+# We create the view to count the number of new invites per role per month
+	
+	DROP VIEW IF EXISTS `count_invites_per_role_per_month`;
+
+	CREATE VIEW `count_invites_per_role_per_month` 
+	AS
+		SELECT 
+			`year`
+			, `month`
+			, `user_role_type_id`
+			, COUNT(`invitation_sent`) AS `count_invites`
+		FROM `count_invites_per_unit_per_role_per_month`
+		GROUP BY `month`
+			, `year`
+			, `user_role_type_id`
+		ORDER BY `year` DESC
+			, `month` DESC
+			, `user_role_type_id` ASC
+		;
+		
+# We create the view to count the number of new invites per unit per month
+	
+	DROP VIEW IF EXISTS `count_invites_per_unit_per_month`;
+
+	CREATE VIEW `count_invites_per_unit_per_month` 
+	AS
+		SELECT 
+			`year`
+			, `month`
+			, `bz_unit_id`
+			, COUNT(`invitation_sent`) AS `count_invites`
+		FROM `count_invites_per_unit_per_role_per_month`
+		GROUP BY `month`
+			, `year`
+			, `bz_unit_id`
+		ORDER BY `year` DESC
+			, `month` DESC
+			, `bz_unit_id` ASC
+		;
+		
+# We create the view to count the number of new invites per month
+	
+	DROP VIEW IF EXISTS `count_invites_per_month`;
+
+	CREATE VIEW `count_invites_per_month` 
+	AS
+		SELECT 
+			`year`
+			, `month`
+			, COUNT(`invitation_sent`) AS `count_invites`
+		FROM `count_invites_per_unit_per_role_per_month`
+		GROUP BY `month`
+			, `year`
+		ORDER BY `year` DESC
+			, `month` DESC
+		;
+		
+# We create the view to count the number of new geographies/Classifications created each month			
+
+	DROP VIEW IF EXISTS `count_new_geographies_created_per_month`;
+
+	CREATE VIEW `count_new_geographies_created_per_month`
+	AS 
+		SELECT
+			YEAR (`at_time`) AS `year`
+			, MONTH (`at_time`) AS `month`
+			, COUNT(`object_id`) AS `new_geography`
+		FROM
+			`audit_log`
+			WHERE `class` = 'Bugzilla::Classification' AND `field` = '__create__'
+		GROUP BY YEAR(`at_time`)
+			, MONTH(`at_time`)
+		ORDER BY `at_time` DESC
+		;
+		
+# We create the view to count the number of new units created each month			
+
+	DROP VIEW IF EXISTS `count_new_unit_created_per_month`;
+
+	CREATE VIEW `count_new_unit_created_per_month`
+	AS 
+		SELECT
+		    YEAR(`at_time`) AS `year`
+		    , MONTH(`at_time`) AS `month`
+		    , COUNT(`object_id`) AS `new_geography`
+		FROM
+		    `audit_log`
+			WHERE `class` = 'Bugzilla::Classification' AND `field` = '__create__'
+		GROUP BY YEAR(`at_time`)
+			, MONTH(`at_time`)
+		ORDER BY `at_time` DESC
+		;
 			
+# We create the view to count the number of new user created each month			
+
+	DROP VIEW IF EXISTS `count_new_user_created_per_month`;
+
+	CREATE VIEW `count_new_user_created_per_month`
+	AS 
+		SELECT
+			YEAR (`at_time`) AS `year`
+			, MONTH (`at_time`) AS `month`
+			, COUNT(`object_id`) AS `new_users`
+		FROM
+			`audit_log`
+			WHERE `class` = 'Bugzilla::User' AND `field` = '__create__'
+		GROUP BY YEAR(`at_time`)
+				, MONTH(`at_time`)
+			ORDER BY `at_time` DESC
+		;
+
+# We create the view to count the number of new cases created each month			
+
+	DROP VIEW IF EXISTS `count_new_cases_created_per_month`;
+
+	CREATE VIEW `count_new_cases_created_per_month`
+	AS 
+		SELECT
+			YEAR(`creation_ts`) AS `year`
+			, MONTH(`creation_ts`) AS `month`
+			, COUNT(`bug_id`) AS `count_cases`
+		FROM
+			`bugs`
+		GROUP BY YEAR(`creation_ts`)
+			, MONTH(`creation_ts`)
+		ORDER BY `creation_ts` DESC
+		;
+
+# Create a table `ut_log_count_closed_cases` to record the number of closed cases.
+# This table will be udated by a trigger each time 
+#	- A case status is changed from Open to Closed
+
+	DROP TABLE IF EXISTS `ut_log_count_closed_cases`;
+
+	CREATE TABLE `ut_log_count_closed_cases` (
+	  `id_log_closed_case` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique id in this table',
+	  `timestamp` datetime DEFAULT NULL COMMENT 'The timestamp when this record was created',
+	  `count_closed_cases` int(11) NOT NULL COMMENT 'The number of closed case at this Datetime',
+	  PRIMARY KEY (`id_log_closed_case`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# Create the procedure to insert a record in the table `ut_log_count_closed_cases`
+	
+DROP PROCEDURE IF EXISTS update_log_count_closed_case;
+DELIMITER $$
+CREATE PROCEDURE update_log_count_closed_case()
+SQL SECURITY INVOKER
+BEGIN
+
+	# When are we doing this?
+		SET @timestamp = NOW();	
+
+	# Flash Count the total number of CLOSED cases are the date of this query
+	# Put this in a variable
+
+		SET @count_closed_cases = (SELECT
+			 COUNT(`bugs`.`bug_id`)
+		FROM
+			`bugs`
+			INNER JOIN `bug_status`
+				ON (`bugs`.`bug_status` = `bug_status`.`value`)
+		WHERE `bug_status`.`is_open` = 0)
+		;
+
+	# We have everything: insert in the log table
+		INSERT INTO `ut_log_count_closed_cases`
+			(`timestamp`
+			, `count_closed_cases`
+			)
+			VALUES
+			(@timestamp
+			, @count_closed_cases
+			)
+			;
+END $$
+DELIMITER ;
+
+# Create the trigger to check if the case is has changed from open to closed or vice versa and update the log if needed
+
+DROP TRIGGER IF EXISTS `update_the_log_of_closed_cases`;
+
+DELIMITER $$
+CREATE TRIGGER `update_the_log_of_closed_cases`
+    AFTER UPDATE ON `bugs`
+    FOR EACH ROW
+  BEGIN
+    IF NEW.`bug_status` <> OLD.`bug_status` 
+		THEN
+		# Capture the new bug status
+			SET @new_bug_status = NEW.`bug_status`;
+			SET @old_bug_status = OLD.`bug_status`;
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		# Check if the new bug status is open
+			SET @new_is_open = (SELECT `is_open` FROM `bug_status` WHERE `value` = @new_bug_status);
+			
+		# Check if the old bug status is open
+			SET @old_is_open = (SELECT `is_open` FROM `bug_status` WHERE `value` = @old_bug_status);
+			
+		# If these are different, then we need to update the log of closed cases
+			IF @new_is_open != @old_is_open
+				THEN
+				CALL `update_log_count_closed_case`;
+			END IF;
+    END IF;
+END;
+$$
+DELIMITER ;
+
 		
 		
 		
