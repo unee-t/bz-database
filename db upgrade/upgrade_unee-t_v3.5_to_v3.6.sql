@@ -4,6 +4,9 @@
 #
 # WARNING! It is recommended to use Amazon Aurora database engine for this version
 #
+#	- for the DEV/Staging environment, make sure to run the script `db_v3.6+_adjustments_for_DEV_environment.sql` AFTER this one
+#	  This is needed to make sure the values for the dummy user (bz user id)  are correct for the DEV/Staging envo
+#
 ###################################################################################
 #
 ############################################
@@ -94,6 +97,8 @@
 			;
 
 # Create the view to count (flash) the number of units with real users by user type and enabled/disabled units
+	DROP VIEW IF EXISTS `flash_count_units_with_real_roles`;
+
 	CREATE VIEW `flash_count_units_with_real_roles` 
 	AS
 		SELECT
@@ -469,6 +474,7 @@
 # Create the procedure to insert a record in the table `ut_log_count_closed_cases`
 	
 DROP PROCEDURE IF EXISTS update_log_count_closed_case;
+
 DELIMITER $$
 CREATE PROCEDURE update_log_count_closed_case()
 SQL SECURITY INVOKER
@@ -532,17 +538,6 @@ CREATE TRIGGER `update_the_log_of_closed_cases`
 END;
 $$
 DELIMITER ;
-
-		
-		
-		
-		
-		
-		
-		
-		
-
-
 
 # We can now update the version of the database schema
 	# A comment for the update
