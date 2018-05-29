@@ -23,9 +23,9 @@
 	SET @environment = '1';
 #
 # What are the version of the Unee-T BZ Database schema BEFORE and AFTER this update?
-	SET @old_schema_version = 'v3.6';
-	SET @new_schema_version = 'v3.7';
-	SET @this_script = 'upgrade_unee-t_v3.6_to_v3.5.sql';
+	SET @old_schema_version = 'v3.7';
+	SET @new_schema_version = 'v3.8';
+	SET @this_script = 'upgrade_unee-t_v3.7_to_v3.8.sql';
 #
 ###############################
 #
