@@ -16,7 +16,7 @@
 ############################################
 #
 # What are the version of the Unee-T BZ Database schema BEFORE and AFTER this update?
-	SET @old_schema_version = 'v3.7';
+	SET @old_schema_version = 'v3.7.2';
 	SET @new_schema_version = 'v3.8';
 #
 # What is the name of this script?
@@ -29,16 +29,13 @@
 ###############################
 # This update 
 #	- corrects a typo in a field name for the table `ut_permission_types`
-#	- Create a table `ut_invitation_types` to list and define the type of invites that we need to process
+#	- Creates a table `ut_invitation_types` to list and define the type of invites that we need to process
 #		- type_cc
 #		- type_assignee
 #		- etc...
-#	- Modify the table `ut_invitation_api_data` to add a FK to the list of invitation types.
-#WIP	- Create a table `ut_map_invitation_type_permission_type` to map the invitation types and the permission types
-#
-#
-#
-#
+#	- Modifies the table `ut_invitation_api_data` to add a FK to the list of invitation types.
+#	- Creates a table `ut_map_invitation_type_to_permission_type` to map the invitation types and the permission types
+#	- Creates a procedure `remove_user_from_default_cc` to remove a user in Default CC from a given role
 #
 
 # When are we doing this?
@@ -122,70 +119,102 @@
 		ADD CONSTRAINT `invitation_bz_product_must_exist` 
 		FOREIGN KEY (`bz_unit_id`) REFERENCES `products` (`id`) ;		
 		
-# Create a table `ut_map_invitation_type_permission_type` to map the invitation types and the permission types
+# Create a table `ut_map_invitation_type_to_permission_type` to map the invitation types and the permission types
 
-###########
-#
-#	WIP
-#
-###########
+	DROP TABLE IF EXISTS `ut_map_invitation_type_to_permission_type`;
+
+	CREATE TABLE `ut_map_invitation_type_to_permission_type` (
+	  `invitation_type_id` SMALLINT(6) NOT NULL COMMENT 'id of the invitation type in the table `ut_invitation_types`',
+	  `permission_type_id` SMALLINT(6) NOT NULL COMMENT 'id of the permission type in the table `ut_permission_types`',
+	  `created` DATETIME DEFAULT NULL COMMENT 'creation ts',
+	  `record_created_by` SMALLINT(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
+	  `is_obsolete` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'This is an obsolete record',
+	  `comment` TEXT COMMENT 'Any comment',
+	  PRIMARY KEY (`invitation_type_id`,`permission_type_id`),
+	  KEY `map_invitation_to_permission_permission_type_id` (`permission_type_id`),
+	  CONSTRAINT `map_invitation_to_permission_invitation_type_id` FOREIGN KEY (`invitation_type_id`) REFERENCES `ut_invitation_types` (`id_invitation_type`),
+	  CONSTRAINT `map_invitation_to_permission_permission_type_id` FOREIGN KEY (`permission_type_id`) REFERENCES `ut_permission_types` (`id_permission_type`)
+	) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+
+# Create a procedure `remove_user_from_default_cc` to remove a user in Default CC from a given role
 	
-
-
-
-
-
-
-
-
-
-
-
-	
-	
-# Create the procedure to insert a record in the table `ut_log_count_closed_cases`
-	
-DROP PROCEDURE IF EXISTS update_log_count_closed_case;
+	DROP PROCEDURE IF EXISTS `remove_user_from_default_cc`;
 
 DELIMITER $$
-CREATE PROCEDURE update_log_count_closed_case()
+CREATE PROCEDURE `remove_user_from_default_cc`()
 SQL SECURITY INVOKER
 BEGIN
-
-	# When are we doing this?
-		SET @timestamp = NOW();	
-
-	# Flash Count the total number of CLOSED cases are the date of this query
-	# Put this in a variable
-
-		SET @count_closed_cases = (SELECT
-			 COUNT(`bugs`.`bug_id`)
-		FROM
-			`bugs`
-			INNER JOIN `bug_status`
-				ON (`bugs`.`bug_status` = `bug_status`.`value`)
-		WHERE `bug_status`.`is_open` = 0)
+	# This procedure needs the following objects
+	#	- Variables:
+	#		- @bz_user_id : the BZ user id of the user
+	#		- @component_id_this_role: The id of the role in the bz table `components`
+	#
+	# We delete the record in the table that store default CC information
+		DELETE
+		FROM `component_cc`
+			WHERE `user_id` = @bz_user_id
+				AND `component_id` = @component_id_this_role
 		;
 
-	# We have everything: insert in the log table
-		INSERT INTO `ut_log_count_closed_cases`
-			(`timestamp`
-			, `count_closed_cases`
-			)
+	# We get the product id so we can log this properly
+		SET @product_id_for_this_procedure = (SELECT `product_id` FROM `components` WHERE `id` = @component_id_this_role);
+
+	# We record the name of this procedure for future debugging and audit_log`
+			SET @script = 'PROCEDURE - remove_user_from_default_cc';
+			SET @timestamp = NOW();
+				
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('the bz user #'
+								, @bz_user_id
+								, ' is NOT in Default CC for the component/role '
+								, @component_id_this_role
+								, ' for the product/unit '
+								, @product_id_for_this_procedure
+								);
+				
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+				)
 			VALUES
-			(@timestamp
-			, @count_closed_cases
-			)
+			(@timestamp, @script, @script_log_message)
 			;
+
+	# We log what we have just done into the `ut_audit_log` table
+		SET @bzfe_table = 'component_cc';
+		INSERT INTO `ut_audit_log`
+			 (`datetime`
+			 , `bzfe_table`
+			 , `bzfe_field`
+			 , `previous_value`
+			 , `new_value`
+			 , `script`
+			 , `comment`
+			 )
+			 VALUES
+			 (@timestamp 
+			,@bzfe_table
+			, 'n/a'
+			, CONCAT ('user_id: '
+				, @bz_user_id
+				, ' component_id: '
+				,@component_id_this_role 
+				)
+			, 'n/a'
+			, @script
+			, 'Remove user from Default CC for this role')
+			 ;
+	 
+	# Cleanup the variables for the log messages
+		SET @script_log_message = NULL;
+		SET @script = NULL;
+		SET @timestamp = NULL;
+		SET @bzfe_table = NULL;
+		SET @product_id_for_this_procedure = NULL;
 END $$
 DELIMITER ;
-
-
-
-
-
-
-
 
 # We can now update the version of the database schema
 	# A comment for the update
