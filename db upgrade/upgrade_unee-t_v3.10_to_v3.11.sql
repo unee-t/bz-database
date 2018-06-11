@@ -28,9 +28,9 @@
 #
 ###############################
 # This update 
-#TEST NEEDED	- Alter the table `ut_invitation_api_data` to Make sure invitation type can not be NULL
-#TEST NEEDED	- Alter the table `ut_log_count_closed_cases` to record the total number of case
-#WIP	- Alter the procedure `update_log_count_closed_case` to make sure we also count the total number of cases
+#	- Alter the table `ut_invitation_api_data` to Make sure invitation type can not be NULL
+#	- Alter the table `ut_log_count_closed_cases` to record the total number of case
+#	- Alter the procedure `update_log_count_closed_case` to make sure we also count the total number of cases
 #
 #
 
