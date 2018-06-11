@@ -29,7 +29,7 @@
 ###############################
 # This update 
 #	- Add an invitation type `remove_user` to the table `ut_invitation_types`
-#TEST NEEDED	- Create the procedure `remove_user_from_role` so we can remove a user from a role in a unit.
+#	- Create the procedure `remove_user_from_role` so we can remove a user from a role in a unit.
 #
 
 # When are we doing this?
