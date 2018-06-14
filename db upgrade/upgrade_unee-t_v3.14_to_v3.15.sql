@@ -78,7 +78,7 @@
 #	- rename fields for new list of invited users to `current_list_of_invitees`
 #	- delete the field `old list of invited users`
 	ALTER TABLE `ut_notification_case_assignee` 
-		ADD COLUMN `current_invitee_list_user_id` mediumtext  COLLATE utf8_unicode_ci NULL COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change' after `new_case_assignee_user_id` , 
+		ADD COLUMN `current_list_of_invitees` mediumtext  COLLATE utf8_unicode_ci NULL COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change' after `new_case_assignee_user_id` , 
 		DROP COLUMN `old_case_invitee_list_user_id` , 
 		DROP COLUMN `new_case_invitee_list_user_id` 
 		;
@@ -87,7 +87,7 @@
 #	- rename fields for new list of invited users to `current_list_of_invitees`
 #	- delete the field `old list of invited users`
 	ALTER TABLE `ut_notification_case_invited` 
-		ADD COLUMN `current_invitee_list_user_id` mediumtext  COLLATE utf8_unicode_ci NULL COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change' after `new_case_assignee_user_id` , 
+		ADD COLUMN `current_list_of_invitees` mediumtext  COLLATE utf8_unicode_ci NULL COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change' after `new_case_assignee_user_id` , 
 		DROP COLUMN `old_case_invitee_list_user_id` , 
 		DROP COLUMN `new_case_invitee_list_user_id` 
 		;
@@ -96,7 +96,7 @@
 #	- rename fields for new list of invited users to `current_list_of_invitees`
 #	- delete the field `old list of invited users`
 	ALTER TABLE `ut_notification_case_updated` 
-		ADD COLUMN `current_invitee_list_user_id` mediumtext  COLLATE utf8_unicode_ci NULL COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change' after `new_case_assignee_user_id` , 
+		ADD COLUMN `current_list_of_invitees` mediumtext  COLLATE utf8_unicode_ci NULL COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change' after `new_case_assignee_user_id` , 
 		DROP COLUMN `old_case_invitee_list_user_id` , 
 		DROP COLUMN `new_case_invitee_list_user_id` 
 		;
@@ -105,7 +105,7 @@
 #	- rename fields for new list of invited users to `current_list_of_invitees`
 #	- delete the field `old list of invited users`
 	ALTER TABLE `ut_notification_message_new` 
-		ADD COLUMN `current_invitee_list_user_id` mediumtext  COLLATE utf8_unicode_ci NULL COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change' after `new_case_assignee_user_id` , 
+		ADD COLUMN `current_list_of_invitees` mediumtext  COLLATE utf8_unicode_ci NULL COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change' after `new_case_assignee_user_id` , 
 		DROP COLUMN `old_case_invitee_list_user_id` , 
 		DROP COLUMN `new_case_invitee_list_user_id` 
 		;
