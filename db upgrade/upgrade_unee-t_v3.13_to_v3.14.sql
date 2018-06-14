@@ -24,7 +24,7 @@
 	SET @new_schema_version = 'v3.14';
 #
 # What is the name of this script?
-	SET @this_script = 'upgrade_unee-t_v3.11_to_v3.12.sql';
+	SET @this_script = 'upgrade_unee-t_v3.13_to_v3.14.sql';
 #
 ###############################
 #
