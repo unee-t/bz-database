@@ -10,10 +10,10 @@
 #		- Prod: 192458993663
 #		- Demo: 915001051872
 #	  This MUST be done on the following lines for this script:
-#		- line: 177
-#		- line: 227
-#		- line: 277
-#		- line: 328
+#		- line: 141
+#		- line: 191
+#		- line: 241
+#		- line: 292
 #
 # Make sure to also update the below variable(s)
 #
@@ -48,25 +48,23 @@
 #		- rename fields for new list of invited users to `current_list_of_invitees`
 #		- delete the field `old list of invited users`
 #	- Alters the Procedures 
-#TEST NEEDED		- `lambda_notification_case_assignee_updated` add the following elements to the payload:
-#				- `current_list_of_invitees`
-#TEST NEEDED		- `lambda_notification_case_invited` add the following elements to the payload:
-#				- `current_list_of_invitees`
-#TEST NEEDED		- `lambda_notification_case_updated` add the following elements to the payload:
-#				- `current_list_of_invitees`
-#TEST NEEDED NOT WORKING AS INTENDED		- `lambda_notification_message_new` add the following elements to the payload:
-#				- `current_list_of_invitees`
+#OK		- `lambda_notification_case_assignee_updated` add the following elements to the payload:
+#			- `current_list_of_invitees`
+#OK		- `lambda_notification_case_invited` add the following elements to the payload:
+#			- `current_list_of_invitees`
+#OK		- `lambda_notification_case_updated` add the following elements to the payload:
+#			- `current_list_of_invitees`
+#WARNING! NOT WORKING AS INTENDED		- `lambda_notification_message_new` add the following elements to the payload:
+#			- `current_list_of_invitees`
 #	- Alters the triggers :
-#TEST NEEDED		- `ut_prepare_message_case_activity` make sure we include the following elements in the DB and in the Lambda
-#				- `current_list_of_invitees`
-#TEST NEEDED		- `ut_prepare_message_case_assigned_updated` make sure we include the following elements in the DB and in the Lambda
-#				- `current_list_of_invitees`
-#TEST NEEDED		- `ut_prepare_message_case_invited` make sure we include the following elements in the DB and in the Lambda
-#				- `current_list_of_invitees`
-#TEST NEEDED EXCEPT FOR LAMBDA CALL		- `ut_prepare_message_new_comment` make sure we include the following elements in the DB and in the Lambda
-#				- `current_list_of_invitees`
-#
-#
+#OK		- `ut_prepare_message_case_activity` make sure we include the following elements in the DB and in the Lambda
+#			- `current_list_of_invitees`
+#OK		- `ut_prepare_message_case_assigned_updated` make sure we include the following elements in the DB and in the Lambda
+#			- `current_list_of_invitees`
+#OK		- `ut_prepare_message_case_invited` make sure we include the following elements in the DB and in the Lambda
+#			- `current_list_of_invitees`
+#OK EXCEPT FOR LAMBDA CALL		- `ut_prepare_message_new_comment` make sure we include the following elements in the DB and in the Lambda
+#			- `current_list_of_invitees`
 
 # When are we doing this?
 	SET @the_timestamp = NOW();
