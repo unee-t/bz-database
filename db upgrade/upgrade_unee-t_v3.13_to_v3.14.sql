@@ -10,10 +10,10 @@
 #		- Prod: 192458993663
 #		- Demo: 915001051872
 #	  This MUST be done on the following lines for this script:
-#		- line: 178
-#		- line: 228
-#		- line: 278
-#		- line: 329
+#		- line: 177
+#		- line: 227
+#		- line: 277
+#		- line: 328
 #
 # Make sure to also update the below variable(s)
 #
@@ -60,39 +60,39 @@
 #		- new list of invited users
 #		- old list of invited users
 #	- Alters the Procedures 
-#TEST NEEDED		- `lambda_notification_case_assignee_updated` add the following elements to the payload:
+#OK		- `lambda_notification_case_assignee_updated` add the following elements to the payload:
 #				- reporter for the case
 #				- new assignee for the case
 #				- old assignee for the case
-#TEST NEEDED		- `lambda_notification_case_invited` add the following elements to the payload:
+#OK		- `lambda_notification_case_invited` add the following elements to the payload:
 #				- reporter for the case
 #				- new assignee for the case
 #				- old assignee for the case
-#TEST NEEDED		- `lambda_notification_case_updated` add the following elements to the payload:
+#OK		- `lambda_notification_case_updated` add the following elements to the payload:
 #				- reporter for the case
 #				- new assignee for the case
 #				- old assignee for the case
-#TEST NEEDED		- `lambda_notification_message_new` add the following elements to the payload:
+#NOT WORKING AS INTENDED		- `lambda_notification_message_new` add the following elements to the payload:
 #				- reporter for the case
 #				- new assignee for the case
 #				- old assignee for the case
 #	- Alters the triggers :
-#TEST NEEDED		- `ut_prepare_message_case_activity` make sure we include the following elements in the DB and in the Lambda
+#OK		- `ut_prepare_message_case_activity` make sure we include the following elements in the DB and in the Lambda
 #				- reporter for the case
 #				- new assignee for the case
 #				- old assignee for the case
-#TEST NEEDED		- `ut_prepare_message_case_assigned_updated` make sure we include the following elements in the DB and in the Lambda
+#OK		- `ut_prepare_message_case_assigned_updated` make sure we include the following elements in the DB and in the Lambda
 #				- reporter for the case
 #				- new assignee for the case
 #				- old assignee for the case
-#TEST NEEDED		- `ut_prepare_message_case_invited` make sure we include the following elements in the DB and in the Lambda
+#OK		- `ut_prepare_message_case_invited` make sure we include the following elements in the DB and in the Lambda
 #				- reporter for the case
 #				- new assignee for the case
 #				- old assignee for the case
-#TEST NEEDED		- `ut_prepare_message_new_case` make sure we use the new name for the variables and fields
+#OK		- `ut_prepare_message_new_case` make sure we use the new name for the variables and fields
 #				- change `user_id` to `reporter_user_id`
 #				- change `assignee_id` to `assignee_user_id`
-#TEST NEEDED		- `ut_prepare_message_new_comment` make sure we include the following elements in the DB and in the Lambda
+#OK EXCEPT FOR LAMBDA CALL		- `ut_prepare_message_new_comment` make sure we include the following elements in the DB and in the Lambda
 #				- reporter for the case
 #				- new assignee for the case
 #				- old assignee for the case
