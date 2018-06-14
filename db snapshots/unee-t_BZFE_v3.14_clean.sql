@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.0.0 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.8
+MySQL - 5.7.12 : Database - unee_t_v3.14
 *********************************************************************
 */
 
@@ -3153,7 +3153,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -3165,7 +3165,13 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (5,'v3.5','2018-05-16 05:47:37','upgrade_unee-t_v3.4_to_v3.5.sql','Database updated from v3.4 to v3.5'),
 (6,'v3.6','2018-05-19 03:26:47','upgrade_unee-t_v3.5_to_v3.6.sql','Database updated from v3.5 to v3.6'),
 (7,'v3.7','2018-05-29 08:18:22','upgrade_unee-t_v3.6_to_v3.7.sql','Database updated from v3.6 to v3.7'),
-(8,'v3.8','2018-06-01 06:55:36','upgrade_unee-t_v3.7_to_v3.8.sql','Database updated from v3.7 to v3.8');
+(8,'v3.8','2018-06-01 06:55:36','upgrade_unee-t_v3.7_to_v3.8.sql','Database updated from v3.7 to v3.8'),
+(9,'v3.9','2018-06-01 11:33:11','upgrade_unee-t_v3.8_to_v3.9.sql','Database updated from v3.8 to v3.9'),
+(10,'v3.10','2018-06-02 06:05:03','upgrade_unee-t_v3.9_to_v3.10.sql','Database updated from v3.9 to v3.10'),
+(11,'v3.11','2018-06-08 03:10:48','upgrade_unee-t_v3.10_to_v3.11.sql','Database updated from v3.10 to v3.11'),
+(12,'v3.12','2018-06-11 14:56:23','upgrade_unee-t_v3.11_to_v3.12.sql','Database updated from v3.11 to v3.12'),
+(13,'v3.13','2018-06-14 07:15:02','upgrade_unee-t_v3.11_to_v3.12.sql','Database updated from v3.12 to v3.13'),
+(14,'v3.14','2018-06-14 07:17:36','upgrade_unee-t_v3.11_to_v3.12.sql','Database updated from v3.13 to v3.14');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -3252,7 +3258,7 @@ CREATE TABLE `ut_invitation_api_data` (
   `is_occupant` tinyint(1) DEFAULT '0' COMMENT '1 if TRUE, 0 if FALSE',
   `bz_case_id` mediumint(9) DEFAULT NULL COMMENT 'The id of the bug in th table ''bugs''',
   `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
-  `invitation_type` varchar(255) DEFAULT NULL COMMENT 'The type of the invitation (assigned or CC)',
+  `invitation_type` varchar(255) NOT NULL COMMENT 'The type of the invitation (assigned or CC)',
   `is_mefe_only_user` tinyint(1) DEFAULT '1' COMMENT '1 if the user is a MEFE only user. In this scenario, we will DISABLE the claim mail in the BZFE for that user',
   `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
   `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
@@ -3288,16 +3294,17 @@ CREATE TABLE `ut_invitation_types` (
   `detailed_description` text COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_invitation_type`,`invitation_type`),
   UNIQUE KEY `invitation_type_is_unique` (`invitation_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_invitation_types` */
 
 insert  into `ut_invitation_types`(`id_invitation_type`,`created`,`order`,`is_active`,`invitation_type`,`detailed_description`) values 
 (1,'2018-05-30 00:36:17',10,1,'type_assigned',NULL),
 (2,'2018-05-30 00:37:02',20,1,'type_cc',NULL),
-(3,'2018-05-30 00:38:46',30,0,'replace_default','- Grant the permissions to the invited user for this role for this unit\r\nand \r\n- Remove the existing default user for this role\r\nand \r\n- Replace the default user for this role '),
-(4,'2018-05-30 00:39:57',40,0,'default_cc_all','- Grant the permissions to the invited user for this role for this unit\r\nand\r\n- Keep the existing default user as default\r\nand\r\n- Make the invited user an automatic CC to all the new cases for this role for this unit'),
-(5,'2018-05-30 00:40:33',50,0,'keep_default','- Grant the permissions to the inviter user for this role for this unit\r\nand \r\n- Keep the existing default user as default\r\nand\r\n- Check if this new user is the first in this role for this unit.\r\n	- If it IS the first in this role for this unit.\r\n	  Then Replace the Default \'dummy user\' for this specific role with the BZ user in CC for this role for this unit.\r\n	- If it is NOT the first in this role for this unit.\r\n	  Do Nothing');
+(3,'2018-05-30 00:38:46',30,1,'replace_default','- Grant the permissions to the invited user for this role for this unit\r\nand \r\n- Remove the existing default user for this role\r\nand \r\n- Replace the default user for this role '),
+(4,'2018-05-30 00:39:57',40,1,'default_cc_all','- Grant the permissions to the invited user for this role for this unit\r\nand\r\n- Keep the existing default user as default\r\nand\r\n- Make the invited user an automatic CC to all the new cases for this role for this unit'),
+(5,'2018-05-30 00:40:33',50,1,'keep_default','- Grant the permissions to the inviter user for this role for this unit\r\nand \r\n- Keep the existing default user as default\r\nand\r\n- Check if this new user is the first in this role for this unit.\r\n	- If it IS the first in this role for this unit.\r\n	  Then Replace the Default \'dummy user\' for this specific role with the BZ user in CC for this role for this unit.\r\n	- If it is NOT the first in this role for this unit.\r\n	  Do Nothing'),
+(6,'2018-06-02 10:06:42',100,1,'remove_user','- Revoke the permissions to the user for this role for this unit\r\nand \r\n- Check if this user is the default user for this role for this unit.\r\n	- If it IS the Default user in this role for this unit.\r\n	  Then Replace the Default user in this role for this unit with the \'dummy user\' for this specific role.\r\n	- If it is NOT the Default user in this role for this unit.\r\n	  Do Nothing');
 
 /*Table structure for table `ut_log_count_closed_cases` */
 
@@ -3307,6 +3314,7 @@ CREATE TABLE `ut_log_count_closed_cases` (
   `id_log_closed_case` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique id in this table',
   `timestamp` datetime DEFAULT NULL COMMENT 'The timestamp when this record was created',
   `count_closed_cases` int(11) NOT NULL COMMENT 'The number of closed case at this Datetime',
+  `count_total_cases` int(11) DEFAULT NULL COMMENT 'The total number of cases in Unee-T at this time',
   PRIMARY KEY (`id_log_closed_case`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -3409,22 +3417,138 @@ CREATE TABLE `ut_map_user_unit_details` (
 
 /*Data for the table `ut_map_user_unit_details` */
 
-/*Table structure for table `ut_notification_messages_cases` */
+/*Table structure for table `ut_notification_case_assignee` */
 
-DROP TABLE IF EXISTS `ut_notification_messages_cases`;
+DROP TABLE IF EXISTS `ut_notification_case_assignee`;
 
-CREATE TABLE `ut_notification_messages_cases` (
+CREATE TABLE `ut_notification_case_assignee` (
   `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
   `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
   `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
   `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
-  `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who needs to be notified - a FK to the BZ table ''profiles''',
-  `update_what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The field that was updated',
+  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `invitor_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
+  `assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who has been assigned to the case a FK to the BZ table ''profiles''',
+  `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
+  `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
+  `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
+  `old_case_invitee_list_user_id` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug BEFORE the change',
+  `new_case_invitee_list_user_id` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   PRIMARY KEY (`notification_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-/*Data for the table `ut_notification_messages_cases` */
+/*Data for the table `ut_notification_case_assignee` */
+
+/*Table structure for table `ut_notification_case_invited` */
+
+DROP TABLE IF EXISTS `ut_notification_case_invited`;
+
+CREATE TABLE `ut_notification_case_invited` (
+  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
+  `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
+  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `invitor_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
+  `invitee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who has been invited to the case a FK to the BZ table ''profiles''',
+  `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
+  `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
+  `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
+  `old_case_invitee_list_user_id` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug BEFORE the change',
+  `new_case_invitee_list_user_id` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `ut_notification_case_invited` */
+
+/*Table structure for table `ut_notification_case_new` */
+
+DROP TABLE IF EXISTS `ut_notification_case_new`;
+
+CREATE TABLE `ut_notification_case_new` (
+  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
+  `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
+  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `reporter_user_id` mediumint(9) DEFAULT NULL,
+  `assignee_user_id` mediumint(9) DEFAULT NULL,
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+
+/*Data for the table `ut_notification_case_new` */
+
+/*Table structure for table `ut_notification_case_updated` */
+
+DROP TABLE IF EXISTS `ut_notification_case_updated`;
+
+CREATE TABLE `ut_notification_case_updated` (
+  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
+  `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
+  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
+  `update_what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The field that was updated',
+  `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
+  `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
+  `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
+  `old_case_invitee_list_user_id` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug BEFORE the change',
+  `new_case_invitee_list_user_id` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `ut_notification_case_updated` */
+
+/*Table structure for table `ut_notification_message_new` */
+
+DROP TABLE IF EXISTS `ut_notification_message_new`;
+
+CREATE TABLE `ut_notification_message_new` (
+  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
+  `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
+  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
+  `message_truncated` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The message, truncated to the first 255 characters',
+  `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
+  `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
+  `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
+  `old_case_invitee_list_user_id` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug BEFORE the change',
+  `new_case_invitee_list_user_id` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+
+/*Data for the table `ut_notification_message_new` */
+
+/*Table structure for table `ut_notification_types` */
+
+DROP TABLE IF EXISTS `ut_notification_types`;
+
+CREATE TABLE `ut_notification_types` (
+  `id_role_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `created` datetime DEFAULT NULL COMMENT 'creation ts',
+  `notification_type` varchar(255) NOT NULL COMMENT 'A name for this role type',
+  `short_description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
+  `long_description` text COMMENT 'Detailed description of this group type',
+  PRIMARY KEY (`id_role_type`),
+  UNIQUE KEY `unique_notification_type` (`notification_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_notification_types` */
+
+insert  into `ut_notification_types`(`id_role_type`,`created`,`notification_type`,`short_description`,`long_description`) values 
+(1,'2018-06-14 07:15:02','case_new','A new case has been created','A case has been created.\r\nWe record the following information:\r\n- When was the case created?\r\n- The unit id\r\n- The case id\r\n- Who created the case\r\n- Which field was updated\r\n- What is the title of the case\r\n- Who is the assignee for that case'),
+(2,'2018-06-14 07:15:02','case_updated','A case has been updated','A case has been updated.\r\nWe record the following information:\r\n- When was the case updated?\r\n- The unit id\r\n- The case id\r\n- Who did the update\r\n- Which field was updated\r\n- What is the title of the case'),
+(3,'2018-06-14 07:15:02','case_assignee_updated','The user assigned to that case has changed','A new user has been assigned to a case.\r\nWe record the following information:\r\n- When did this happen?\r\n- Who made this change?\r\n- What is the unit id?\r\n- What is the case id?\r\n- Who is the new user assigned to that case?\r\n- What is the title of the case'),
+(4,'2018-06-14 07:15:02','case_user_invited','A user is invited to a case','A new user has been invited to a case.\r\nThe information we store:\r\n- When has this been done\r\n- What is the unit number\r\n- What is the case number\r\n- Who is the newly invited user\r\n\r\nWe do NOT record who has invited the user as this information is not easily accessible from the trigger we use (insert into the table `cc`)\r\n- What is the title of the case'),
+(5,'2018-06-14 07:15:02','case_new_message','A new message is added to a case','A new message has been added to a case.\r\nThe information we store:\r\n- When has this been done\r\n- What is the unit number\r\n- What is the case number\r\n- The first 255 characters of the newly added message\r\n\r\nwho has created the message\r\n- What is the title of the case');
 
 /*Table structure for table `ut_permission_types` */
 
@@ -3663,41 +3787,63 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_new_case` AFTER INSERT ON `bugs` FOR EACH ROW 
 BEGIN
-	SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_messages_cases`) + 1);
-	SET @created_datetime = NOW();
-	SET @unit_id = NEW.`product_id`;
-	SET @case_id = NEW.`bug_id`;
-	SET @user_id = NEW.`reporter`;
-	SET @update_what = 'New Case';
+	# Clean Slate: make sure all the variables we use are properly flushed first
+		SET @notification_type = NULL;
+		SET @bz_source_table = NULL;
+		SET @notification_id = NULL;
+		SET @unique_notification_id = NULL;
+		SET @created_datetime = NULL;
+		SET @unit_id = NULL;
+		SET @case_id = NULL;
+		SET @case_title = NULL;
+		SET @reporter_user_id = NULL;
+		SET @assignee_user_id = NULL;
+
+	# We have a clean slate, define the variables now
+		SET @notification_type = 'case_new';
+		SET @bz_source_table = 'ut_notification_case_new';
+		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_case_new`) + 1);
+		SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
+		SET @created_datetime = NOW();
+		SET @unit_id = NEW.`product_id`;
+		SET @case_id = NEW.`bug_id`;
+		SET @case_title = NEW.`short_desc`;
+		SET @reporter_user_id = NEW.`reporter`;
+		SET @assignee_user_id = NEW.`assigned_to`;
 	
 	# We insert the event in the notification table
-	INSERT INTO `ut_notification_messages_cases`
-		(notification_id
-		, `created_datetime`
-		, `unit_id`
-		, `case_id`
-		, `user_id`
-		, `update_what`
-		)
-		VALUES
-		(@notification_id
-		, NOW()
-		, @unit_id
-		, @case_id
-		, @user_id
-		, @update_what
-		)
-		;
+		INSERT INTO `ut_notification_case_new`
+			(notification_id
+			, `created_datetime`
+			, `unit_id`
+			, `case_id`
+			, `case_title`
+			, `reporter_user_id`
+			, `assignee_user_id`
+			)
+			VALUES
+			(@notification_id
+			, NOW()
+			, @unit_id
+			, @case_id
+			, @case_title
+			, @reporter_user_id
+			, @assignee_user_id
+			)
+			;
 	
 	# We call the Lambda procedure to notify of the change
-	CALL `lambda_notification_case_event`(@notification_id
-		, @created_datetime
-		, @unit_id
-		, @case_id
-		, @user_id
-		, @update_what
-		)
-		;
+		CALL `lambda_notification_case_new`(@notification_type
+			, @bz_source_table
+			, @unique_notification_id
+			, @created_datetime
+			, @unit_id
+			, @case_id
+			, @case_title
+			, @reporter_user_id
+			, @assignee_user_id
+			)
+			;
 END */$$
 
 
@@ -3734,6 +3880,95 @@ END */$$
 
 DELIMITER ;
 
+/* Trigger structure for table `bugs` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `ut_prepare_message_case_assigned_updated` */$$
+
+/*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_case_assigned_updated` AFTER UPDATE ON `bugs` FOR EACH ROW 
+BEGIN
+	# We only do that if the assignee has changed
+	IF NEW.`assigned_to` != OLD.`assigned_to`
+	THEN 
+		# Clean Slate: make sure all the variables we use are properly flushed first
+			SET @notification_type = NULL;
+			SET @bz_source_table = NULL;
+			SET @notification_id = NULL;
+			SET @unique_notification_id = NULL;
+			SET @created_datetime = NULL;
+			SET @unit_id = NULL;
+			SET @case_id = NULL;
+			SET @case_title = NULL;
+			SET @invitor_user_id = NULL;
+			SET @assignee_user_id = NULL;
+			SET @case_reporter_user_id = NULL;
+			SET @old_case_assignee_user_id = NULL;
+			SET @new_case_assignee_user_id = NULL;
+
+		# We have a clean slate, define the variables now
+			SET @notification_type = 'case_assignee_updated';
+			SET @bz_source_table = 'ut_notification_case_assignee';
+			SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_case_assignee`) + 1);
+			SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
+			SET @created_datetime = NOW();
+			SET @unit_id = NEW.`product_id`;
+			SET @case_id = NEW.`bug_id`;
+			SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
+			SET @invitor_user_id = 0;
+			SET @assignee_user_id = NEW.`assigned_to`;
+			SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
+			SET @old_case_assignee_user_id = OLD.`assigned_to`;
+			SET @new_case_assignee_user_id = NEW.`assigned_to`;
+		
+		# We insert the event in the relevant notification table
+			INSERT INTO `ut_notification_case_assignee`
+				(`notification_id`
+				, `created_datetime`
+				, `unit_id`
+				, `case_id`
+				, `case_title`
+				, `invitor_user_id`
+				, `assignee_user_id`
+				, `case_reporter_user_id`
+				, `old_case_assignee_user_id`
+				, `new_case_assignee_user_id`
+				)
+				VALUES
+				(@notification_id
+				, @created_datetime
+				, @unit_id
+				, @case_id
+				, @case_title
+				, @invitor_user_id
+				, @assignee_user_id
+				, @case_reporter_user_id
+				, @old_case_assignee_user_id
+				, @new_case_assignee_user_id
+				)
+				;
+			
+		# We call the Lambda procedure to notify of the change
+			CALL `lambda_notification_case_assignee_updated`(@notification_type
+				, @bz_source_table
+				, @unique_notification_id
+				, @created_datetime
+				, @unit_id
+				, @case_id
+				, @case_title
+				, @invitor_user_id
+				, @assignee_user_id
+				, @case_reporter_user_id
+				, @old_case_assignee_user_id
+				, @new_case_assignee_user_id
+				)
+				;
+	END IF;
+END */$$
+
+
+DELIMITER ;
+
 /* Trigger structure for table `bugs_activity` */
 
 DELIMITER $$
@@ -3742,39 +3977,158 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_case_activity` AFTER INSERT ON `bugs_activity` FOR EACH ROW 
 BEGIN
-	SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_messages_cases`) + 1);
-	SET @created_datetime = NOW();
-	SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = NEW.`bug_id`);
-	SET @case_id = NEW.`bug_id`;
-	SET @user_id = NEW.`who`;
-	SET @update_what = (SELECT `description` FROM `fielddefs` WHERE `id` = NEW.`fieldid`);
-	INSERT INTO `ut_notification_messages_cases`
-		(notification_id
-		, `created_datetime`
-		, `unit_id`
-		, `case_id`
-		, `user_id`
-		, `update_what`
-		)
-		VALUES
-		(@notification_id
-		, NOW()
-		, @unit_id
-		, @case_id
-		, @user_id
-		, @update_what
-		)
-		;
+	# Clean Slate: make sure all the variables we use are properly flushed first
+		SET @notification_type = NULL;
+		SET @bz_source_table = NULL;
+		SET @notification_id = NULL;
+		SET @unique_notification_id = NULL;
+		SET @created_datetime = NULL;
+		SET @unit_id = NULL;
+		SET @case_id = NULL;
+		SET @case_title = NULL;
+		SET @user_id = NULL;
+		SET @update_what = NULL;
+		SET @case_reporter_user_id = NULL;
+		SET @old_case_assignee_user_id = NULL;
+		SET @new_case_assignee_user_id = NULL;
+
+	# We have a clean slate, define the variables now
+		SET @notification_type = 'case_updated';
+		SET @bz_source_table = 'ut_notification_case_updated';
+		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_case_updated`) + 1);
+		SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
+		SET @created_datetime = NOW();
+		SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = NEW.`bug_id`);
+		SET @case_id = NEW.`bug_id`;
+		SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @user_id = NEW.`who`;
+		SET @update_what = (SELECT `description` FROM `fielddefs` WHERE `id` = NEW.`fieldid`);
+		SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @old_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @new_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
 	
+	# We insert the event in the relevant notification table
+		INSERT INTO `ut_notification_case_updated`
+			(notification_id
+			, `created_datetime`
+			, `unit_id`
+			, `case_id`
+			, `case_title`
+			, `user_id`
+			, `update_what`
+			, `case_reporter_user_id`
+			, `old_case_assignee_user_id`
+			, `new_case_assignee_user_id`
+			)
+			VALUES
+			(@notification_id
+			, @created_datetime
+			, @unit_id
+			, @case_id
+			, @case_title
+			, @user_id
+			, @update_what
+			, @case_reporter_user_id
+			, @old_case_assignee_user_id
+			, @new_case_assignee_user_id
+			)
+			;
+		
 	# We call the Lambda procedure to notify of the change
-	CALL `lambda_notification_case_event`(@notification_id
-		, @created_datetime
-		, @unit_id
-		, @case_id
-		, @user_id
-		, @update_what
-		)
-		;
+		CALL `lambda_notification_case_updated`(@notification_type
+			, @bz_source_table
+			, @unique_notification_id
+			, @created_datetime
+			, @unit_id
+			, @case_id
+			, @case_title
+			, @user_id
+			, @update_what
+			, @case_reporter_user_id
+			, @old_case_assignee_user_id
+			, @new_case_assignee_user_id
+			)
+			;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `cc` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `ut_prepare_message_case_invited` */$$
+
+/*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_case_invited` AFTER INSERT ON `cc` FOR EACH ROW 
+BEGIN
+	# Clean Slate: make sure all the variables we use are properly flushed first
+		SET @notification_type = NULL;
+		SET @bz_source_table = NULL;
+		SET @notification_id = NULL;
+		SET @unique_notification_id = NULL;
+		SET @created_datetime = NULL;
+		SET @unit_id = NULL;
+		SET @case_id = NULL;
+		SET @case_title = NULL;
+		SET @invitee_user_id = NULL;
+		SET @case_reporter_user_id = NULL;
+		SET @old_case_assignee_user_id = NULL;
+		SET @new_case_assignee_user_id = NULL;
+
+	# We have a clean slate, define the variables now
+		SET @notification_type = 'case_user_invited';
+		SET @bz_source_table = 'ut_notification_case_invited';
+		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_case_invited`) + 1);
+		SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
+		SET @created_datetime = NOW();
+		SET @case_id = NEW.`bug_id`;
+		SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @invitee_user_id = NEW.`who`;
+		SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @old_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @new_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
+
+	# We insert the event in the relevant notification table		
+		INSERT INTO `ut_notification_case_invited`
+			(`notification_id`
+			, `created_datetime`
+			, `unit_id`
+			, `case_id`
+			, `case_title`
+			, `invitee_user_id`
+			, `case_reporter_user_id`
+			, `old_case_assignee_user_id`
+			, `new_case_assignee_user_id`
+			)
+			VALUES
+			(@notification_id
+			, @created_datetime
+			, @unit_id
+			, @case_id
+			, @case_title
+			, @invitee_user_id
+			, @case_reporter_user_id
+			, @old_case_assignee_user_id
+			, @new_case_assignee_user_id
+			)
+			;
+		
+	# We call the Lambda procedure to notify of the change
+		CALL `lambda_notification_case_invited`(@notification_type
+			, @bz_source_table
+			, @unique_notification_id
+			, @created_datetime
+			, @unit_id
+			, @case_id
+			, @case_title
+			, @invitee_user_id
+			, @case_reporter_user_id
+			, @old_case_assignee_user_id
+			, @new_case_assignee_user_id
+			)
+			;
 END */$$
 
 
@@ -3788,38 +4142,86 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_new_comment` AFTER INSERT ON `longdescs` FOR EACH ROW 
 BEGIN
-	SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_messages_cases`) + 1);
-	SET @created_datetime = NOW();
-	SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = NEW.`bug_id`);
-	SET @case_id = NEW.`bug_id`;
-	SET @user_id = NEW.`who`;
-	SET @update_what = 'New Message';
-	INSERT INTO `ut_notification_messages_cases`
-		(notification_id
-		, `created_datetime`
-		, `unit_id`
-		, `case_id`
-		, `user_id`
-		, `update_what`
-		)
-		VALUES
-		(@notification_id
-		, NOW()
-		, @unit_id
-		, @case_id
-		, @user_id
-		, @update_what
-		)
-		;
+	# Clean Slate: make sure all the variables we use are properly flushed first
+		SET @notification_type = NULL;
+		SET @bz_source_table = NULL;
+		SET @notification_id = NULL;
+		SET @unique_notification_id = NULL;
+		SET @created_datetime = NULL;
+		SET @unit_id = NULL;
+		SET @case_id = NULL;
+		SET @case_title = NULL;
+		SET @user_id = NULL;
+		SET @message_truncated = NULL;
+		SET @case_reporter_user_id = NULL;
+		SET @old_case_assignee_user_id = NULL;
+		SET @new_case_assignee_user_id = NULL;
+
+	# We have a clean slate, define the variables now
+		SET @notification_type = 'case_new_message';
+		SET @bz_source_table = 'ut_notification_message_new';
+		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_message_new`) + 1);
+		SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
+		SET @created_datetime = NOW();
+		SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = NEW.`bug_id`);
+		SET @case_id = NEW.`bug_id`;
+		SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @user_id = NEW.`who`;
+		SET @message_truncated = NEW.`thetext`;
+		SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @old_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @new_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
+		
+	# We insert the event in the relevant notification table
+		INSERT INTO `ut_notification_message_new`
+			(notification_id
+			, `created_datetime`
+			, `unit_id`
+			, `case_id`
+			, `case_title`
+			, `user_id`
+			, `message_truncated`
+			, `case_reporter_user_id`
+			, `old_case_assignee_user_id`
+			, `new_case_assignee_user_id`
+			)
+			VALUES
+			(@notification_id
+			, @created_datetime
+			, @unit_id
+			, @case_id
+			, @case_title
+			, @user_id
+			, @message_truncated
+			, @case_reporter_user_id
+			, @old_case_assignee_user_id
+			, @new_case_assignee_user_id
+			)
+			;
+
+########
+#
+# WARNING! WE HAVE AN ISSUE THERE:
+#	IF WE TRIGGER THIS TOGETHER WITH CASE CREATION 
+#	THEN IT IS NOT POSSIBLE TO CREATE A CASE ...
+#
+#########
+		
 	# We call the Lambda procedure to notify of the change
-	CALL `lambda_notification_case_event`(@notification_id
-		, @created_datetime
-		, @unit_id
-		, @case_id
-		, @user_id
-		, @update_what
-		)
-		;		
+#		CALL `lambda_notification_message_new`(@notification_type
+#			, @bz_source_table
+#			, @unique_notification_id
+#			, @created_datetime
+#			, @unit_id
+#			, @case_id
+#			, @case_title
+#			, @user_id
+#			, @message_truncated
+#			, @case_reporter_user_id
+#			, @old_case_assignee_user_id
+#			, @new_case_assignee_user_id
+#			)
+#			;
 END */$$
 
 
@@ -5950,19 +6352,25 @@ END IF ;
 END */$$
 DELIMITER ;
 
-/* Procedure structure for procedure `lambda_notification_case_event` */
+/* Procedure structure for procedure `lambda_notification_case_assignee_updated` */
 
-/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_event` */;
+/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_assignee_updated` */;
 
 DELIMITER $$
 
-/*!50003 CREATE PROCEDURE `lambda_notification_case_event`(
-	IN notification_id int(11)
+/*!50003 CREATE PROCEDURE `lambda_notification_case_assignee_updated`(
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
 	, IN created_datetime datetime
 	, IN unit_id smallint(6)
 	, IN case_id mediumint(9)
-	, IN user_id mediumint(9)
-	, IN update_what varchar(255)
+	, IN case_title varchar(255)
+	, IN invitor_user_id mediumint(9)
+	, IN assignee_user_id mediumint(9)
+	, IN case_reporter_user_id mediumint(9)
+	, IN old_case_assignee_user_id mediumint(9)
+	, IN new_case_assignee_user_id mediumint(9)
 	)
     SQL SECURITY INVOKER
 BEGIN
@@ -5972,12 +6380,198 @@ BEGIN
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
 		, CONCAT ('{ '
-			, '"notification_id": "', notification_id
+			, '"notification_type": "', notification_type
+			, '", "bz_source_table": "', bz_source_table
+			, '", "notification_id": "', notification_id
 			, '", "created_datetime" : "', created_datetime
 			, '", "unit_id" : "', unit_id
 			, '", "case_id" : "', case_id
+			, '", "case_title" : "', case_title
+			, '", "invitor_user_id" : "', invitor_user_id
+			, '", "assignee_user_id" : "', assignee_user_id
+			, '", "case_reporter_user_id" : "', case_reporter_user_id
+			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
+			, '"}'
+			)
+		)
+		;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `lambda_notification_case_invited` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_invited` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `lambda_notification_case_invited`(
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN invitee_user_id mediumint(9)
+	, IN case_reporter_user_id mediumint(9)
+	, IN old_case_assignee_user_id mediumint(9)
+	, IN new_case_assignee_user_id mediumint(9)
+	)
+    SQL SECURITY INVOKER
+BEGIN
+	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
+	#	- DEV/Staging: 812644853088
+	#	- Prod: 192458993663
+	#	- Demo: 915001051872
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
+		, CONCAT ('{ '
+			, '"notification_type": "', notification_type
+			, '", "bz_source_table": "', bz_source_table
+			, '", "notification_id": "', notification_id
+			, '", "created_datetime" : "', created_datetime
+			, '", "unit_id" : "', unit_id
+			, '", "case_id" : "', case_id
+			, '", "case_title" : "', case_title
+			, '", "invitee_user_id" : "', invitee_user_id
+			, '", "case_reporter_user_id" : "', case_reporter_user_id
+			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
+			, '"}'
+			)
+		)
+		;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `lambda_notification_case_new` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_new` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `lambda_notification_case_new`(
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN reporter_user_id mediumint(9)
+	, IN assignee_user_id mediumint(9)
+	)
+    SQL SECURITY INVOKER
+BEGIN
+	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
+	#	- DEV/Staging: 812644853088
+	#	- Prod: 192458993663
+	#	- Demo: 915001051872
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
+		, CONCAT ('{ '
+			, '"notification_type": "', notification_type
+			, '", "bz_source_table": "', bz_source_table
+			, '", "notification_id": "', notification_id
+			, '", "created_datetime" : "', created_datetime
+			, '", "unit_id" : "', unit_id
+			, '", "case_id" : "', case_id
+			, '", "case_title" : "', case_title
+			, '", "reporter_user_id" : "', reporter_user_id
+			, '", "assignee_user_id" : "', assignee_user_id
+			, '"}'
+			)
+		)
+		;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `lambda_notification_case_updated` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_updated` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `lambda_notification_case_updated`(
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN user_id mediumint(9)
+	, IN update_what varchar(255)
+	, IN case_reporter_user_id mediumint(9)
+	, IN old_case_assignee_user_id mediumint(9)
+	, IN new_case_assignee_user_id mediumint(9)
+	)
+    SQL SECURITY INVOKER
+BEGIN
+	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
+	#	- DEV/Staging: 812644853088
+	#	- Prod: 192458993663
+	#	- Demo: 915001051872
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
+		, CONCAT ('{ '
+			, '"notification_type": "', notification_type
+			, '", "bz_source_table": "', bz_source_table
+			, '", "notification_id": "', notification_id
+			, '", "created_datetime" : "', created_datetime
+			, '", "unit_id" : "', unit_id
+			, '", "case_id" : "', case_id
+			, '", "case_title" : "', case_title
 			, '", "user_id" : "', user_id
 			, '", "update_what" : "', update_what
+			, '", "case_reporter_user_id" : "', case_reporter_user_id
+			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
+			, '"}'
+			)
+		)
+		;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `lambda_notification_message_new` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_message_new` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `lambda_notification_message_new`(
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN created_by_user_id mediumint(9)
+	, IN message_truncated varchar(255)
+	, IN case_reporter_user_id mediumint(9)
+	, IN old_case_assignee_user_id mediumint(9)
+	, IN new_case_assignee_user_id mediumint(9)
+	)
+    SQL SECURITY INVOKER
+BEGIN
+	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
+	#	- DEV/Staging: 812644853088
+	#	- Prod: 192458993663
+	#	- Demo: 915001051872
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
+		, CONCAT ('{ '
+			, '"notification_type": "', notification_type
+			, '", "bz_source_table": "', bz_source_table
+			, '", "notification_id": "', notification_id
+			, '", "created_datetime" : "', created_datetime
+			, '", "unit_id" : "', unit_id
+			, '", "case_id" : "', case_id
+			, '", "case_title" : "', case_title
+			, '", "created_by_user_id" : "', created_by_user_id
+			, '", "message_truncated" : "', message_truncated
+			, '", "case_reporter_user_id" : "', case_reporter_user_id
+			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
 			, '"}'
 			)
 		)
@@ -6005,10 +6599,8 @@ BEGIN
 			WHERE `user_id` = @bz_user_id
 				AND `component_id` = @component_id_this_role
 		;
-
 	# We get the product id so we can log this properly
 		SET @product_id_for_this_procedure = (SELECT `product_id` FROM `components` WHERE `id` = @component_id_this_role);
-
 	# We record the name of this procedure for future debugging and audit_log`
 			SET @script = 'PROCEDURE - remove_user_from_default_cc';
 			SET @timestamp = NOW();
@@ -6030,7 +6622,6 @@ BEGIN
 			VALUES
 			(@timestamp, @script, @script_log_message)
 			;
-
 	# We log what we have just done into the `ut_audit_log` table
 		SET @bzfe_table = 'component_cc';
 		INSERT INTO `ut_audit_log`
@@ -6062,6 +6653,340 @@ BEGIN
 		SET @timestamp = NULL;
 		SET @bzfe_table = NULL;
 		SET @product_id_for_this_procedure = NULL;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `remove_user_from_role` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `remove_user_from_role` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `remove_user_from_role`()
+    SQL SECURITY INVOKER
+BEGIN
+	# This procedure needs the following objects
+	#	- Variables:
+	#		- @remove_user_from_role
+	#		- @component_id_this_role
+	#		- @product_id
+	#		- @bz_user_id
+	#		- @bz_user_id_dummy_user_this_role
+	#		- @id_role_type
+	# 		- @this_script
+	#		- @creator_bz_id
+	# We only do this if this is needed:
+	IF (@remove_user_from_role = 1)
+	THEN
+		# The script `invite_a_user_to_a_role_in_a_unit.sql` which call this procedure, already calls: 
+		# 	- `table_to_list_dummy_user_by_environment`;
+		# 	- `remove_user_from_default_cc`
+		# There is no need to do this again
+		#
+		# The script also reset the permissions for this user for this role for this unit to the default permissions.
+		# We need to remove ALL the permissions for this user.
+		
+			# Create the table to prepare the permissions
+				CALL `create_temp_table_to_update_permissions`;
+				
+			# Revoke all permissions for this user in this unit
+				# This procedure needs the following objects:
+				#	- Variables:
+				#		- @product_id
+				#		- @bz_user_id
+				CALL `revoke_all_permission_for_this_user_in_this_unit`;
+			
+			# All the permission have been prepared, we can now update the permissions table
+			#		- This NEEDS the table 'ut_user_group_map_temp'
+				CALL `update_permissions_invited_user`;
+		# Who are the initial owner and initialqa contact for this role?
+												
+			# Get the old values so we can 
+			#	- Check if these are default user for this environment
+			#	- log those
+				SET @old_component_initialowner = (SELECT `initialowner`
+					FROM `components` 
+					WHERE `id` = @component_id_this_role)
+					;
+					
+				SET @old_component_initialqacontact = (SELECT `initialqacontact` 
+					FROM `components` 
+					WHERE `id` = @component_id_this_role)
+					;
+					
+				SET @old_component_description = (SELECT `description` 
+					FROM `components` 
+					WHERE `id` = @component_id_this_role)
+					;
+		
+		# We need to check if the user we are removing is the current default user for this role for this unit.
+			SET @is_user_default_assignee = IF(@old_component_initialowner = @bz_user_id
+				, '1'
+				, '0'
+				)
+				;
+		# We need to check if the user we are removing is the current qa user for this role for this unit.
+			SET @is_user_qa = IF(@old_component_initialqacontact = @bz_user_id
+				, '1'
+				, '0'
+				)
+				;
+										
+		# We record the name of this procedure for future debugging and audit_log`
+			SET @script = 'PROCEDURE - remove_user_from_role';
+			SET @timestamp = NOW();
+		IF @is_user_default_assignee = 1
+		THEN
+		# We need to replace this with the default dummy user
+		# The variables needed for this are
+		#	- @bz_user_id_dummy_user_this_role
+		# 	- @component_id_this_role
+		#	- @id_role_type
+		# 	- @this_script
+		#	- @product_id
+		#	- @creator_bz_id
+		
+			# We define the dummy user role description based on the variable @id_role_type
+				SET @dummy_user_role_desc = IF(@id_role_type = 1
+					, CONCAT('Generic '
+						, (SELECT`role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+						, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+						, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+						, ' TO THIS UNIT'
+						)
+					, IF(@id_role_type = 2
+						, CONCAT('Generic '
+							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+							, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+							, ' TO THIS UNIT'
+							)
+						, IF(@id_role_type = 3
+							, CONCAT('Generic '
+								, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+								, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+								, (SELECT`role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+								, ' TO THIS UNIT'
+								)
+							, IF(@id_role_type = 4
+								, CONCAT('Generic '
+									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+									, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+									, ' TO THIS UNIT'
+									)
+								, IF(@id_role_type = 5
+									, CONCAT('Generic '
+										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, ' TO THIS UNIT'
+										)
+									, CONCAT('error in script'
+										, @this_script
+										, 'line 170'
+										)
+									)
+								)
+							)
+						)
+					)
+					;
+					
+			# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
+				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
+			
+			# Update the default assignee
+				UPDATE `components`
+				SET `initialowner` = @bz_user_id_dummy_user_this_role
+					,`description` = @dummy_user_role_desc
+					WHERE 
+					`id` = @component_id_this_role
+					;
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('The component: '
+					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
+					, ' (for the role_type_id #'
+					, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
+					, ') has been updated.'
+					, '\r\The default user now associated to this role is the dummy bz user #'
+					, (SELECT IFNULL(@bz_user_id_dummy_user_this_role, 'bz_user_id is NULL'))
+					, ' (real name: '
+					, (SELECT IFNULL(@dummy_user_pub_name, 'user_pub_name is NULL'))
+					, ') for the unit #' 
+					, @product_id
+					);
+					
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+						
+			# We update the BZ logs
+				INSERT  INTO `audit_log`
+					(`user_id`
+					,`class`
+					,`object_id`
+					,`field`
+					,`removed`
+					,`added`
+					,`at_time`
+					) 
+					VALUES 
+					(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id_dummy_user_this_role,@timestamp)
+					, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@dummy_user_role_desc,@timestamp)
+					;
+			# We log what we have just done into the `ut_audit_log` table
+				SET @bzfe_table = 'components';
+				INSERT INTO `ut_audit_log`
+					(`datetime`
+					, `bzfe_table`
+					, `bzfe_field`
+					, `previous_value`
+					, `new_value`
+					, `script`
+					, `comment`
+					)
+					VALUES
+					(@timestamp ,@bzfe_table , 'initialowner' , @old_component_initialowner , @bz_user_id_dummy_user_this_role , @script , 'Replace user as default assignee for the role')
+					, (@timestamp ,@bzfe_table , 'description' , @old_component_description , @dummy_user_role_desc , @script , 'Change the desription for the role')
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @bzfe_table = NULL;
+		END IF;
+		IF @is_user_qa = 1
+		THEN
+		# IF the user is the current qa contact: We need to replace this with the default dummy user
+		# The variables needed for this are
+		#	- @bz_user_id_dummy_user_this_role
+		# 	- @component_id_this_role
+		#	- @id_role_type
+		# 	- @this_script
+		#	- @product_id
+		#	- @creator_bz_id
+			# We define the dummy user role description based on the variable @id_role_type
+				SET @dummy_user_role_desc = IF(@id_role_type = 1
+					, CONCAT('Generic '
+						, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+						, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+						, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+						, ' TO THIS UNIT'
+						)
+					, IF(@id_role_type = 2
+						, CONCAT('Generic '
+							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+							, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+							, ' TO THIS UNIT'
+							)
+						, IF(@id_role_type = 3
+							, CONCAT('Generic '
+								, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+								, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+								, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+								, ' TO THIS UNIT'
+								)
+							, IF(@id_role_type = 4
+								, CONCAT('Generic '
+									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+									, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+									, ' TO THIS UNIT'
+									)
+								, IF(@id_role_type = 5
+									, CONCAT('Generic '
+										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, ' TO THIS UNIT'
+										)
+									, CONCAT('error in script'
+										, @this_script
+										, 'line 298'
+										)
+									)
+								)
+							)
+						)
+					)
+					;
+					
+			# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
+				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
+		
+			# Update the default assignee and qa contact
+				UPDATE `components`
+				SET 
+					`initialqacontact` = @bz_user_id_dummy_user_this_role
+					WHERE 
+					`id` = @component_id_this_role
+					;	
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('The component: '
+					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
+					, ' (for the role_type_id #'
+					, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
+					, ') has been updated.'
+					, '\r\The QA contact now associated to this role is the dummy bz user #'
+					, (SELECT IFNULL(@bz_user_id_dummy_user_this_role, 'bz_user_id is NULL'))
+					, ' (real name: '
+					, (SELECT IFNULL(@dummy_user_pub_name, 'user_pub_name is NULL'))
+					, ') for the unit #' 
+					, @product_id
+					);
+					
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+						)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+						
+			# We update the BZ logs
+				INSERT  INTO `audit_log`
+					(`user_id`
+					,`class`
+					,`object_id`
+					,`field`
+					,`removed`
+					,`added`
+					,`at_time`
+					) 
+					VALUES 
+					(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id_dummy_user_this_role,@timestamp)
+					;
+			# We log what we have just done into the `ut_audit_log` table
+				SET @bzfe_table = 'components';
+				INSERT INTO `ut_audit_log`
+					 (`datetime`
+					 , `bzfe_table`
+					 , `bzfe_field`
+					 , `previous_value`
+					 , `new_value`
+					 , `script`
+					 , `comment`
+					 )
+					 VALUES
+					 (@timestamp ,@bzfe_table , 'initialqacontact' , @old_component_initialqacontact , @bz_user_id_dummy_user_this_role , @script , 'Replace user as default QA for the role')
+					 ;
+				 
+				# Cleanup the variables for the log messages
+					SET @script_log_message = NULL;
+					SET @bzfe_table = NULL;
+		END IF;
+		
+		# Clean up the variable for the script and timestamp
+			SET @script = NULL;
+			SET @timestamp = NULL;
+	END IF;
 END */$$
 DELIMITER ;
 
@@ -9131,14 +10056,25 @@ BEGIN
 				ON (`bugs`.`bug_status` = `bug_status`.`value`)
 		WHERE `bug_status`.`is_open` = 0)
 		;
+		
+	# Flash Count the total number of ALL cases are the date of this query
+	# Put this in a variable
+		SET @count_total_cases = (SELECT
+			 COUNT(`bug_id`)
+		FROM
+			`bugs`
+			) 
+			;
 	# We have everything: insert in the log table
 		INSERT INTO `ut_log_count_closed_cases`
 			(`timestamp`
 			, `count_closed_cases`
+			, `count_total_cases`
 			)
 			VALUES
 			(@timestamp
 			, @count_closed_cases
+			, @count_total_cases
 			)
 			;
 END */$$
@@ -9368,6 +10304,121 @@ BEGIN
 				SET @bzfe_table = NULL;
 				SET @permission_granted = NULL;	
 END IF ;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `user_is_default_assignee_for_cases` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `user_is_default_assignee_for_cases` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `user_is_default_assignee_for_cases`()
+    SQL SECURITY INVOKER
+BEGIN
+	# This procedure needs the following objects
+	#	- Variables:
+	#		- @replace_default_assignee
+	#		- @component_id_this_role
+	#		- @bz_user_id
+	#		- @user_role_desc
+	#		- @id_role_type
+	#		- @user_pub_name
+	#		- @product_id
+	#
+	# We only do this if this is needed:
+	IF (@replace_default_assignee = 1)
+	
+	THEN
+	# change the initial owner and initialqa contact to the invited BZ user.
+											
+		# Get the old values so we can log those
+			SET @old_component_initialowner = (SELECT `initialowner` 
+										FROM `components` 
+										WHERE `id` = @component_id_this_role)
+										;
+			SET @old_component_initialqacontact = (SELECT `initialqacontact` 
+										FROM `components` 
+										WHERE `id` = @component_id_this_role)
+										;
+			SET @old_component_description = (SELECT `description` 
+										FROM `components` 
+										WHERE `id` = @component_id_this_role)
+										;
+		# Update the default assignee and qa contact
+			UPDATE `components`
+			SET 
+				`initialowner` = @bz_user_id
+				,`initialqacontact` = @bz_user_id
+				,`description` = @user_role_desc
+				WHERE 
+				`id` = @component_id_this_role
+				;	
+		# We record the name of this procedure for future debugging and audit_log`
+				SET @script = 'PROCEDURE - user_is_default_assignee_for_cases';
+				SET @timestamp = NOW();
+					
+		# Log the actions of the script.
+			SET @script_log_message = CONCAT('The component: '
+									, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
+									, ' (for the role_type_id #'
+									, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
+									, ') has been updated.'
+									, '\r\The default user now associated to this role is bz user #'
+									, (SELECT IFNULL(@bz_user_id, 'bz_user_id is NULL'))
+									, ' (real name: '
+									, (SELECT IFNULL(@user_pub_name, 'user_pub_name is NULL'))
+									, ') for the unit #' 
+									, @product_id
+									);
+					
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+					)
+				VALUES
+				(@timestamp, @script, @script_log_message)
+				;
+				
+		# We update the BZ logs
+			INSERT  INTO `audit_log`
+				(`user_id`
+				,`class`
+				,`object_id`
+				,`field`
+				,`removed`
+				,`added`
+				,`at_time`
+				) 
+				VALUES 
+				(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id,@timestamp)
+				, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id,@timestamp)
+				, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@user_role_desc,@timestamp)
+				;
+		# We log what we have just done into the `ut_audit_log` table
+			SET @bzfe_table = 'components';
+			INSERT INTO `ut_audit_log`
+				 (`datetime`
+				 , `bzfe_table`
+				 , `bzfe_field`
+				 , `previous_value`
+				 , `new_value`
+				 , `script`
+				 , `comment`
+				 )
+				 VALUES
+				 (@timestamp ,@bzfe_table , 'initialowner' , @old_component_initialowner , @bz_user_id , @script , 'Add user as default assignee for the role')
+				 , (@timestamp ,@bzfe_table , 'initialqacontact' , @old_component_initialqacontact , @bz_user_id , @script , 'Add user as default QA for the role')
+				 , (@timestamp ,@bzfe_table , 'description' , @old_component_description , @user_role_desc , @script , 'Change the desription for the role')
+				 ;
+		 
+		# Cleanup the variables for the log messages
+			SET @script_log_message = NULL;
+			SET @script = NULL;
+			SET @timestamp = NULL;
+			SET @bzfe_table = NULL;
+	END IF;
 END */$$
 DELIMITER ;
 
