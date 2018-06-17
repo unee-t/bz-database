@@ -56,7 +56,9 @@ unitIds.forEach(id => {
     }
   }
   print('Creating pending invitation...');
-  var result = db.pendingInvitations.insertOne({
+  var newInvitationId = (new ObjectId).valueOf()
+  db.pendingInvitations.insertOne({
+    _id: newInvitationId,
     invitedBy: invitorId,
     invitee: inviteeId,
     role: role,
@@ -70,7 +72,7 @@ unitIds.forEach(id => {
   }, {
     $push: {
       receivedInvites: {
-        invitationId: result.insertedId,
+        invitationId: newInvitationId,
         role: role,
         isOccupant: isOccupant,
         unitId: id,
