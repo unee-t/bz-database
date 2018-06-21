@@ -3034,9 +3034,12 @@ CREATE TABLE `user_api_keys` (
   UNIQUE KEY `user_api_keys_api_key_idx` (`api_key`),
   KEY `user_api_keys_user_id_idx` (`user_id`),
   CONSTRAINT `fk_user_api_keys_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `user_api_keys` */
+
+insert  into `user_api_keys`(`id`,`user_id`,`api_key`,`description`,`revoked`,`last_used`) values 
+(1,1,'forlocaldevtestingonly','MEFE \'God\' Access',0,NULL);
 
 /*Table structure for table `user_group_map` */
 
