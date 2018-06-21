@@ -4,7 +4,7 @@
 	SET @script = 'demo_environment_clean.sql';
 
 # pre-requisite: 
-# 	- DB v3.6 clean has been installed.
+# 	- DB v3.6+ clean has been installed (tested up to DB schema v3.17).
 
 # Dependencies:
 # This script use codes from the following scripts:
