@@ -4909,6 +4909,19 @@ insert  into `ut_invitation_types`(`id_invitation_type`,`created`,`order`,`is_ac
 (5,'2018-05-30 00:40:33',50,1,'keep_default','- Grant the permissions to the inviter user for this role for this unit\r\nand \r\n- Keep the existing default user as default\r\nand\r\n- Check if this new user is the first in this role for this unit.\r\n	- If it IS the first in this role for this unit.\r\n	  Then Replace the Default \'dummy user\' for this specific role with the BZ user in CC for this role for this unit.\r\n	- If it is NOT the first in this role for this unit.\r\n	  Do Nothing'),
 (6,'2018-06-02 10:06:42',100,1,'remove_user','- Revoke the permissions to the user for this role for this unit\r\nand \r\n- Check if this user is the default user for this role for this unit.\r\n	- If it IS the Default user in this role for this unit.\r\n	  Then Replace the Default user in this role for this unit with the \'dummy user\' for this specific role.\r\n	- If it is NOT the Default user in this role for this unit.\r\n	  Do Nothing');
 
+/*Table structure for table `ut_local_dev_lambda_calls` */
+
+DROP TABLE IF EXISTS `ut_local_dev_lambda_calls`;
+
+CREATE TABLE `ut_local_dev_lambda_calls` (
+  `notification_type` varchar(255) NOT NULL,
+  `json_payload` text,
+  KEY `notification_type_must_exist` (`notification_type`),
+  CONSTRAINT `notification_type_must_exist` FOREIGN KEY (`notification_type`) REFERENCES `ut_notification_types` (`notification_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+/*Data for the table `ut_local_dev_lambda_calls` */
+
 /*Table structure for table `ut_log_count_closed_cases` */
 
 DROP TABLE IF EXISTS `ut_log_count_closed_cases`;
@@ -8429,29 +8442,7 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN
-	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
-	#	- DEV/Staging: 812644853088
-	#	- Prod: 192458993663
-	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "invitor_user_id" : "', invitor_user_id
-			, '", "assignee_user_id" : "', assignee_user_id
-			, '", "case_reporter_user_id" : "', case_reporter_user_id
-			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-			, '", "current_list_of_invitees" : "', current_list_of_invitees
-			, '"}'
-			)
-		)
-		;
+
 END */$$
 DELIMITER ;
 
@@ -8477,28 +8468,7 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN
-	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
-	#	- DEV/Staging: 812644853088
-	#	- Prod: 192458993663
-	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "invitee_user_id" : "', invitee_user_id
-			, '", "case_reporter_user_id" : "', case_reporter_user_id
-			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-			, '", "current_list_of_invitees" : "', current_list_of_invitees
-			, '"}'
-			)
-		)
-		;
+
 END */$$
 DELIMITER ;
 
@@ -8521,25 +8491,7 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN
-	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
-	#	- DEV/Staging: 812644853088
-	#	- Prod: 192458993663
-	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "reporter_user_id" : "', reporter_user_id
-			, '", "assignee_user_id" : "', assignee_user_id
-			, '"}'
-			)
-		)
-		;
+
 END */$$
 DELIMITER ;
 
@@ -8566,29 +8518,7 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN
-	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
-	#	- DEV/Staging: 812644853088
-	#	- Prod: 192458993663
-	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "user_id" : "', user_id
-			, '", "update_what" : "', update_what
-			, '", "case_reporter_user_id" : "', case_reporter_user_id
-			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-			, '", "current_list_of_invitees" : "', current_list_of_invitees
-			, '"}'
-			)
-		)
-		;
+
 END */$$
 DELIMITER ;
 
@@ -8614,30 +8544,8 @@ DELIMITER $$
 	, IN current_list_of_invitees mediumtext
 	)
     SQL SECURITY INVOKER
-BEGIN
-	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
-	#	- DEV/Staging: 812644853088
-	#	- Prod: 192458993663
-	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "created_by_user_id" : "', created_by_user_id
-			, '", "message_truncated" : "', message_truncated
-			, '", "case_reporter_user_id" : "', case_reporter_user_id
-			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-			, '", "current_list_of_invitees" : "', current_list_of_invitees
-			, '"}'
-			)
-		)
-		;
+BEGIN	
+
 END */$$
 DELIMITER ;
 
