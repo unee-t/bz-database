@@ -145,7 +145,7 @@ DELIMITER ;
     DROP PROCEDURE IF EXISTS `unit_disable_existing`;
 
 DELIMITER $$
-CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `unit_disable_existing`()
+CREATE PROCEDURE `unit_disable_existing`()
     SQL SECURITY INVOKER
 BEGIN
 	# This procedure needs the following variables:
@@ -386,25 +386,6 @@ DELIMITER ;
     ALTER TABLE `ut_notification_case_assignee` 
         CHANGE `case_reporter_user_id` `case_reporter_user_id` mediumint(9)   NULL COMMENT 'User ID - BZ user id of the reporter for the case' after `invitor_user_id` , 
         DROP COLUMN `assignee_user_id` ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Create a procedure `update_bz_fielddefs` to make sure we use the correct definitions in the table `fielddefs`
 
