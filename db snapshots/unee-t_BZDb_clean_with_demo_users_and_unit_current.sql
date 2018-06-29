@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v13.0.0 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.17
+SQLyog Ultimate v13.0.1 (64 bit)
+MySQL - 5.7.12 : Database - unee_t_v3.18
 *********************************************************************
 */
 
@@ -1669,7 +1669,7 @@ insert  into `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`
 (56,'tag',8,0,'Personal Tags','',0,5600,0,0,1,NULL,NULL,NULL,0,0),
 (57,'last_visit_ts',5,0,'Last Visit','',0,5700,0,0,1,NULL,NULL,NULL,0,0),
 (58,'comment_tag',0,0,'Comment Tag','',0,5800,0,0,0,NULL,NULL,NULL,0,0),
-(59,'days_elapsed',0,0,'Days since bug changed','',0,5900,0,0,0,NULL,NULL,NULL,0,0),
+(59,'days_elapsed',0,0,'Days since case changed','',0,5900,0,0,0,NULL,NULL,NULL,0,0),
 (60,'cf_ipi_clust_4_status_in_progress',2,1,'Progression','More information about the case when the status is \"IN PROGRESS\".',0,10,0,1,1,9,NULL,NULL,0,0),
 (61,'cf_ipi_clust_4_status_standby',2,1,'Stand By Cause','More information about the case when the status is \"STAND BY\"',0,20,0,0,1,9,NULL,NULL,0,0),
 (62,'cf_ipi_clust_2_room',1,1,'Room(s)','Information about the room(s) where the case is located',0,600,0,1,1,NULL,NULL,NULL,0,0),
@@ -2595,24 +2595,24 @@ CREATE TABLE `profiles` (
 /*Data for the table `profiles` */
 
 insert  into `profiles`(`userid`,`login_name`,`cryptpassword`,`realname`,`disabledtext`,`disable_mail`,`mybugslink`,`extern_id`,`is_enabled`,`last_seen_date`) values 
-(1,'administrator@example.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,NULL),
-(2,'temporary.agent@example.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
-(3,'temporary.landlord@example.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
-(4,'temporary.tenant@example.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
-(5,'temporary.contractor@example.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
-(6,'temporary.mgt.cny@example.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL),
-(7,'leonel@example.com','uVkp9Jte,ts7kZpZuOcTkMAh1c4iX4IcEZTxpq0Sfr7XraiZoL+g{SHA-256}','Leonel','',0,1,NULL,1,NULL),
-(8,'marley@example.com','AMOb0L00,NlJF4wyZVyT+xWuUr3RYgDIYxMhfBJCZxvkSh5cRSVs{SHA-256}','Marley','',0,1,NULL,1,NULL),
-(9,'michael@example.com','Tp0jDQnd,kD+mf67/v/ck68nOyRTR4j7JNVpo1XzzDFSIR6U7Lps{SHA-256}','Michael','',0,1,NULL,1,NULL),
-(10,'sabrina@example.com','fjeiOOVC,vUkDbdxcfk9snn9J5Vh4r/cujX2FfOKEcBZBAOcMw3k{SHA-256}','Sabrina','',0,1,NULL,1,NULL),
-(11,'celeste@example.com','ZAU7m97y,kw6J1Bf2Hw21qELelxM3BbK+4avsmJytG/WzssHMbXE{SHA-256}','Celeste','',0,1,NULL,1,NULL),
-(12,'jocelyn@example.com','0ZprH6RJ,zXa/xkkETvkPZ988xpyQQocYYfLAIWdCLCk1wE4QXNA{SHA-256}','Jocelyn','',0,1,NULL,1,NULL),
-(13,'marina@example.com','8c2ofNwd,VpZbBAByL89ZKCI3xT7zFjZBb/X7JHW6KjtA9yY8KYo{SHA-256}','Marina','',0,1,NULL,1,NULL),
-(14,'regina@example.com','HuM6hVYF,Ev6TBPrrOm4pSu5chsr1Q6Hi6q2Tmm98IbLh7ONqtYs{SHA-256}','Regina','',0,1,NULL,1,NULL),
-(15,'marvin@example.com','6kTmgSt9,FI+tK4vrJQa8lInrRGKxmQ0JW2WpVImRk+ylhcMYGKM{SHA-256}','Marvin','',0,1,NULL,1,NULL),
-(16,'lawrence@example.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
-(17,'anabelle@example.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
-(18,'management.co@example.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
+(1,'administrator@mailinator.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,NULL),
+(2,'temporary.agent@mailinator.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
+(3,'temporary.landlord@mailinator.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
+(4,'temporary.tenant@mailinator.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
+(5,'temporary.contractor@mailinator.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
+(6,'temporary.mgt.cny@mailinator.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL),
+(7,'leonel@mailinator.com','uVkp9Jte,ts7kZpZuOcTkMAh1c4iX4IcEZTxpq0Sfr7XraiZoL+g{SHA-256}','Leonel','',0,1,NULL,1,NULL),
+(8,'marley@mailinator.com','AMOb0L00,NlJF4wyZVyT+xWuUr3RYgDIYxMhfBJCZxvkSh5cRSVs{SHA-256}','Marley','',0,1,NULL,1,NULL),
+(9,'michael@mailinator.com','Tp0jDQnd,kD+mf67/v/ck68nOyRTR4j7JNVpo1XzzDFSIR6U7Lps{SHA-256}','Michael','',0,1,NULL,1,NULL),
+(10,'sabrina@mailinator.com','fjeiOOVC,vUkDbdxcfk9snn9J5Vh4r/cujX2FfOKEcBZBAOcMw3k{SHA-256}','Sabrina','',0,1,NULL,1,NULL),
+(11,'celeste@mailinator.com','ZAU7m97y,kw6J1Bf2Hw21qELelxM3BbK+4avsmJytG/WzssHMbXE{SHA-256}','Celeste','',0,1,NULL,1,NULL),
+(12,'jocelyn@mailinator.com','0ZprH6RJ,zXa/xkkETvkPZ988xpyQQocYYfLAIWdCLCk1wE4QXNA{SHA-256}','Jocelyn','',0,1,NULL,1,NULL),
+(13,'marina@mailinator.com','8c2ofNwd,VpZbBAByL89ZKCI3xT7zFjZBb/X7JHW6KjtA9yY8KYo{SHA-256}','Marina','',0,1,NULL,1,NULL),
+(14,'regina@mailinator.com','HuM6hVYF,Ev6TBPrrOm4pSu5chsr1Q6Hi6q2Tmm98IbLh7ONqtYs{SHA-256}','Regina','',0,1,NULL,1,NULL),
+(15,'marvin@mailinator.com','6kTmgSt9,FI+tK4vrJQa8lInrRGKxmQ0JW2WpVImRk+ylhcMYGKM{SHA-256}','Marvin','',0,1,NULL,1,NULL),
+(16,'lawrence@mailinator.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
+(17,'anabelle@mailinator.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
+(18,'management.co@mailinator.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
 
 /*Table structure for table `profiles_activity` */
 
@@ -4753,7 +4753,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -4775,7 +4775,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (15,'v3.15','2018-06-14 12:58:18','upgrade_unee-t_v3.14_to_v3.15.sql','Database updated from v3.14 to v3.15'),
 (16,'v3.16','2018-06-15 01:13:22','upgrade_unee-t_v3.15_to_v3.16.sql','Database updated from v3.15 to v3.16'),
 (17,'v3.17','2018-06-18 08:49:55','upgrade_unee-t_v3.16_to_v3.17.sql','Database updated from v3.16 to v3.17'),
-(18,'v3.17','2018-06-18 08:53:41','upgrade_unee-t_v3.16_to_v3.17.sql','Database updated from v3.16 to v3.17');
+(18,'v3.17','2018-06-18 08:53:41','upgrade_unee-t_v3.16_to_v3.17.sql','Database updated from v3.16 to v3.17'),
+(19,'v3.18','2018-06-29 04:01:09','upgrade_unee-t_v3.17_to_v3.18.sql','Database updated from v3.17 to v3.18');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -5077,7 +5078,6 @@ CREATE TABLE `ut_notification_case_assignee` (
   `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
   `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
   `invitor_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
-  `assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who has been assigned to the case a FK to the BZ table ''profiles''',
   `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
   `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
   `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
@@ -5877,12 +5877,12 @@ BEGIN
 			SET @case_id = NULL;
 			SET @case_title = NULL;
 			SET @invitor_user_id = NULL;
-			SET @assignee_user_id = NULL;
 			SET @case_reporter_user_id = NULL;
 			SET @old_case_assignee_user_id = NULL;
 			SET @new_case_assignee_user_id = NULL;
 			SET @current_list_of_invitees_1 = NULL;
 			SET @current_list_of_invitees = NULL;
+
 		# We have a clean slate, define the variables now
 			SET @notification_type = 'case_assignee_updated';
 			SET @bz_source_table = 'ut_notification_case_assignee';
@@ -5893,7 +5893,6 @@ BEGIN
 			SET @case_id = NEW.`bug_id`;
 			SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
 			SET @invitor_user_id = 0;
-			SET @assignee_user_id = NEW.`assigned_to`;
 			SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
 			SET @old_case_assignee_user_id = OLD.`assigned_to`;
 			SET @new_case_assignee_user_id = NEW.`assigned_to`;
@@ -5912,7 +5911,6 @@ BEGIN
 				, `case_id`
 				, `case_title`
 				, `invitor_user_id`
-				, `assignee_user_id`
 				, `case_reporter_user_id`
 				, `old_case_assignee_user_id`
 				, `new_case_assignee_user_id`
@@ -5925,7 +5923,6 @@ BEGIN
 				, @case_id
 				, @case_title
 				, @invitor_user_id
-				, @assignee_user_id
 				, @case_reporter_user_id
 				, @old_case_assignee_user_id
 				, @new_case_assignee_user_id
@@ -5942,7 +5939,6 @@ BEGIN
 				, @case_id
 				, @case_title
 				, @invitor_user_id
-				, @assignee_user_id
 				, @case_reporter_user_id
 				, @old_case_assignee_user_id
 				, @new_case_assignee_user_id
@@ -8434,7 +8430,6 @@ DELIMITER $$
 	, IN case_id mediumint(9)
 	, IN case_title varchar(255)
 	, IN invitor_user_id mediumint(9)
-	, IN assignee_user_id mediumint(9)
 	, IN case_reporter_user_id mediumint(9)
 	, IN old_case_assignee_user_id mediumint(9)
 	, IN new_case_assignee_user_id mediumint(9)
@@ -8442,7 +8437,28 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN
-
+	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
+	#	- DEV/Staging: 812644853088
+	#	- Prod: 192458993663
+	#	- Demo: 915001051872
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
+		, CONCAT ('{ '
+			, '"notification_type": "', notification_type
+			, '", "bz_source_table": "', bz_source_table
+			, '", "notification_id": "', notification_id
+			, '", "created_datetime" : "', created_datetime
+			, '", "unit_id" : "', unit_id
+			, '", "case_id" : "', case_id
+			, '", "case_title" : "', case_title
+			, '", "invitor_user_id" : "', invitor_user_id
+			, '", "case_reporter_user_id" : "', case_reporter_user_id
+			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
+			, '", "current_list_of_invitees" : "', current_list_of_invitees
+			, '"}'
+			)
+		)
+		;
 END */$$
 DELIMITER ;
 
@@ -8468,7 +8484,6 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN
-
 END */$$
 DELIMITER ;
 
@@ -8491,7 +8506,6 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN
-
 END */$$
 DELIMITER ;
 
@@ -8518,7 +8532,6 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN
-
 END */$$
 DELIMITER ;
 
@@ -8545,7 +8558,6 @@ DELIMITER $$
 	)
     SQL SECURITY INVOKER
 BEGIN	
-
 END */$$
 DELIMITER ;
 
@@ -11668,6 +11680,7 @@ BEGIN
 	# This procedure needs the following variables:
 	#	- @product_id
 	# 	- @inactive_when
+    #   - @bz_user_id
 	#
 	# This procedure will
 	#	- Disable an existing unit/BZ product
@@ -11677,6 +11690,12 @@ BEGIN
 	# We record the name of this procedure for future debugging and audit_log`
 		SET @script = 'PROCEDURE - unit_disable_existing';
 		SET @timestamp = NOW();
+
+
+    # What is the current status of the unit?
+        
+        SET @current_unit_status = (SELECT `isactive` FROM `products` WHERE `id` = @product_id);
+
 	# Make a unit inactive
 		UPDATE `products`
 			SET `isactive` = '0'
@@ -11684,9 +11703,11 @@ BEGIN
 		;
 	# Record the actions of this script in the ut_log
 		# Log the actions of the script.
-			SET @script_log_message = CONCAT('the Unit #'
+			SET @script_log_message = CONCAT('the User #'
+                                    , @bz_user_id
+                                    , ' has made the Unit #'
 									, @product_id
-									, ' is inactive. It is not possible to create new cases in this unit.'
+									, ' inactive. It is NOT possible to create new cases in this unit.'
 									);
 		
 			INSERT INTO `ut_script_log`
@@ -11711,7 +11732,7 @@ BEGIN
 				 , `comment`
 				 )
 				 VALUES
-				 (@timestamp ,@bzfe_table, 'isactive', '1', '0', @script, @script_log_message)
+				 (@timestamp ,@bzfe_table, 'isactive', @current_unit_status, '0', @script, @script_log_message)
 				 ;
 		 
 		# Cleanup the variables for the log messages
@@ -11730,15 +11751,111 @@ BEGIN
 			, `at_time`
 			)
 			VALUES
-			(@creator_bz_id
+			(@bz_user_id
 			, 'Bugzilla::Product'
 			, @product_id
 			, 'isactive'
-			, '1'
+			, @current_unit_status
 			, '0'
 			, @inactive_when
 			)
 			;			
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `unit_enable_existing` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `unit_enable_existing` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `unit_enable_existing`()
+    SQL SECURITY INVOKER
+BEGIN
+        # This procedure needs the following variables:
+        #	- @product_id
+        # 	- @active_when
+        #   - @bz_user_id
+        #
+        # This procedure will
+        #	- Enable an existing unit/BZ product
+        #	- Record the action of the script in the ut_log tables.
+        #	- Record the chenge in the BZ `audit_log` table
+        
+        # We record the name of this procedure for future debugging and audit_log`
+            SET @script = 'PROCEDURE - unit_disable_existing';
+            SET @timestamp = NOW();
+
+        # What is the current status of the unit?
+        
+            SET @current_unit_status = (SELECT `isactive` FROM `products` WHERE `id` = @product_id);
+
+        # Make the unit active
+        
+            UPDATE `products`
+                SET `isactive` = '1'
+                WHERE `id` = @product_id
+            ;
+        # Record the actions of this script in the ut_log
+            # Log the actions of the script.
+                SET @script_log_message = CONCAT('the User #'
+                                        , @bz_user_id
+                                        , ' has made the Unit #'
+                                        , @product_id
+                                        , ' active. It IS possible to create new cases in this unit.'
+                                        );
+            
+                INSERT INTO `ut_script_log`
+                    (`datetime`
+                    , `script`
+                    , `log`
+                    )
+                    VALUES
+                    (@timestamp, @script, @script_log_message)
+                    ;
+                # We log what we have just done into the `ut_audit_log` table
+                
+                SET @bzfe_table = 'products';
+                
+                INSERT INTO `ut_audit_log`
+                    (`datetime`
+                    , `bzfe_table`
+                    , `bzfe_field`
+                    , `previous_value`
+                    , `new_value`
+                    , `script`
+                    , `comment`
+                    )
+                    VALUES
+                    (@timestamp ,@bzfe_table, 'isactive', @current_unit_status, '1', @script, @script_log_message)
+                    ;
+            
+            # Cleanup the variables for the log messages
+                SET @script_log_message = NULL;
+                SET @script = NULL;
+                SET @timestamp = NULL;
+                SET @bzfe_table = NULL;			
+                
+        # When we mark a unit as active, we need to record this in the `audit_log` table
+                INSERT INTO `audit_log`
+                (`user_id`
+                , `class`
+                , `object_id`
+                , `field`
+                , `removed`
+                , `added`
+                , `at_time`
+                )
+                VALUES
+                (@bz_user_id
+                , 'Bugzilla::Product'
+                , @product_id
+                , 'isactive'
+                , @current_unit_status
+                , '1'
+                , @active_when
+                )
+                ;			
 END */$$
 DELIMITER ;
 
@@ -11861,6 +11978,49 @@ BEGIN
 			SET @script = NULL;
 			SET @timestamp = NULL;
 END IF ;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `update_bz_fielddefs` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `update_bz_fielddefs` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `update_bz_fielddefs`()
+    SQL SECURITY INVOKER
+BEGIN
+
+    # Update the name for the field `bug_id`
+    UPDATE `fielddefs`
+    SET `description` = 'Case #'
+    WHERE `id` = 1;
+
+    # Update the name for the field `classification`
+    UPDATE `fielddefs`
+    SET `description` = 'Unit Group'
+    WHERE `id` = 3;
+
+    # Update the name for the field `product`
+    UPDATE `fielddefs`
+    SET `description` = 'Unit'
+    WHERE `id` = 4;
+
+    # Update the name for the field `rep_platform`
+    UPDATE `fielddefs`
+    SET `description` = 'Case Category'
+    WHERE `id` = 6;
+
+    # Update the name for the field `component`
+    UPDATE `fielddefs`
+    SET `description` = 'Role'
+    WHERE `id` = 15;
+
+    # Update the name for the field `days_elapsed`
+    UPDATE `fielddefs`
+    SET `description` = 'Days since case changed'
+    WHERE `id` = 59;
+
 END */$$
 DELIMITER ;
 
