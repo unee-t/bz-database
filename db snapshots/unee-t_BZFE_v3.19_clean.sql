@@ -10936,6 +10936,20 @@ DROP TABLE IF EXISTS `count_new_unit_created_per_month`;
  `new_unit` bigint(21) 
 )*/;
 
+/*Table structure for table `count_new_unit_created_per_week` */
+
+DROP TABLE IF EXISTS `count_new_unit_created_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_new_unit_created_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_new_unit_created_per_week` */;
+
+/*!50001 CREATE TABLE  `count_new_unit_created_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `count_new_units` bigint(21) 
+)*/;
+
 /*Table structure for table `count_new_user_created_per_month` */
 
 DROP TABLE IF EXISTS `count_new_user_created_per_month`;
@@ -11277,6 +11291,13 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP VIEW IF EXISTS `count_new_unit_created_per_month` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_unit_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_unit` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
+
+/*View structure for view count_new_unit_created_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_new_unit_created_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_new_unit_created_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_unit_created_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc,count(`audit_log`.`object_id`) desc */;
 
 /*View structure for view count_new_user_created_per_month */
 

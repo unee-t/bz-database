@@ -40,6 +40,7 @@
 #OK         - 'Number of users who created at least 1 unit' per month
 #OK         - 'Number of new units per user' per year, month, week
 #OK         - 'Number of users who created at least 1 unit' per week
+#           - Number of new units created per week
 #       - Invitations
 #OK         - 'Number of new invitations per user' per year, month
 #OK         - 'Number of users who send at least 1 invitation' per month
@@ -305,6 +306,30 @@
     ORDER BY `year` DESC
         , `week` DESC
     ;
+
+# Number of new units created per week
+
+    DROP VIEW IF EXISTS `count_new_unit_created_per_week`;
+
+    CREATE VIEW `count_new_unit_created_per_week`
+    AS
+    SELECT
+        YEAR(`at_time`) AS `year`
+        , MONTH(`at_time`) AS `month`
+        , WEEK(`at_time`) AS `week`
+        , COUNT(`object_id`) AS `count_new_units`
+    FROM `audit_log`
+    WHERE ((`audit_log`.`class` = 'Bugzilla::Product')
+        AND (`audit_log`.`field` = '__create__'))
+    GROUP BY YEAR(`at_time`)
+        , MONTH(`at_time`)
+        , WEEK(`at_time`)
+    ORDER BY  YEAR(`at_time`) DESC
+        , MONTH(`at_time`) DESC
+        , WEEK(`at_time`) DESC
+        , COUNT(`object_id`) DESC
+    ;
+
 
 # Count the number of invitations sent per user per year, month, week
 
