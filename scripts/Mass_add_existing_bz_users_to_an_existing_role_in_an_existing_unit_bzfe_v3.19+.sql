@@ -1,9 +1,28 @@
 # For any question about this script, ask Franck
 
+###################################################################################
+#
+# Make sure to also update the below variable(s)
+#
+###################################################################################
+#
+# Environment: Which environment are you creatin the unit in?
+#	- 1 is for the DEV/Staging
+#	- 2 is for the prod environment
+#	- 3 is for the Demo environment
+
+	SET @environment = 2;
+
+###############################
+#
+# We have everything we need
+#
+###############################
+
 #############################################
-#											#
-# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
-#											#
+#
+# IMPORTANT INFORMATION ABOUT THIS SCRIPT
+#
 #############################################
 #
 # Rewrtitten for BZFE Db v3.20
@@ -36,7 +55,7 @@
 
 		CREATE TABLE `ut_temp_data_to_add_user_to_a_role` (
 		  `token` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'token of the record to process',
-		  `mefe_invitation_id` varchar(256) NOT NULL COMMENT 'The unique Id for the invitation that was generated manually to do the data import',
+		  `mefe_invitation_id` VARCHAR(256) NOT NULL COMMENT 'The unique Id for the invitation that was generated manually to do the data import',
 		  PRIMARY KEY (`token`)
 		) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 		
