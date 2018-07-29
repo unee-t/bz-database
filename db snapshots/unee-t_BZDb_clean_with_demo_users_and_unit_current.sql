@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.0.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.20
+MySQL - 5.7.12 : Database - unee_t_v3.21
 *********************************************************************
 */
 
@@ -4753,7 +4753,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -4778,7 +4778,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (18,'v3.17','2018-06-18 08:53:41','upgrade_unee-t_v3.16_to_v3.17.sql','Database updated from v3.16 to v3.17'),
 (19,'v3.18','2018-06-29 04:01:09','upgrade_unee-t_v3.17_to_v3.18.sql','Database updated from v3.17 to v3.18'),
 (20,'v3.19','2018-07-09 05:00:03','upgrade_unee-t_v3.18_to_v3.19.sql','Database updated from v3.18 to v3.19'),
-(21,'v3.20','2018-07-10 10:33:55','upgrade_unee-t_v3.19_to_v3.20.sql','Database updated from v3.19 to v3.20');
+(21,'v3.20','2018-07-10 10:33:55','upgrade_unee-t_v3.19_to_v3.20.sql','Database updated from v3.19 to v3.20'),
+(22,'v3.21','2018-07-29 03:11:14','upgrade_unee-t_v3.20_to_v3.21.sql','Database updated from v3.20 to v3.21');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -6386,7 +6387,6 @@ DELIMITER $$
 
 /*!50003 CREATE PROCEDURE `add_user_to_role_in_unit`()
 BEGIN
-
     # This procedure needs the following variables:
     #   - `mefe_invitation_id`
     #   - `environment`: Which environment are you creating the unit in?
@@ -6479,7 +6479,6 @@ BEGIN
     # First we need to define all the variables we need
     #					
     #####################################################
-
     # We make sure that all the variable we user are set to NULL first
     # This is to avoid issue of a variable 'silently' using a value from a previous run
         SET @reference_for_update = NULL;
@@ -6524,10 +6523,8 @@ BEGIN
         SET @can_approve_all_flags = NULL;
         SET @is_current_assignee_this_role_a_dummy_user = NULL;
         SET @this_script = NULL;
-
     # Timestamp	
         SET @timestamp = NOW();
-
     # We define the name of this script for future reference:
         SET @this_script = 'PROCEDURE add_user_to_role_in_unit';
         
@@ -6536,19 +6533,14 @@ BEGIN
         
     # The reference of the record we want to update in the table `ut_invitation_api_data`
         SET @reference_for_update = (SELECT `id` FROM `ut_invitation_api_data` WHERE `mefe_invitation_id` = @mefe_invitation_id);	
-
     # The MEFE information:
         SET @mefe_invitor_user_id = (SELECT `mefe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
     # The unit name and description
         SET @product_id = (SELECT `bz_unit_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
     # The Invitor - BZ user id of the user that has genereated the invitation.
         SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
         # We populate the additional variables that we will need for this script to work:
             SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
-
     # Role in this unit for the invited user:
         #	- Tenant 1
         # 	- Landlord 2
@@ -6559,7 +6551,6 @@ BEGIN
             
     # The user who you want to associate to this unit - BZ user id of the user that you want to associate/invite to the unit.
         SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
         # We populate the additional variables that we will need for this script to work:
             SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
             SET @user_pub_name = (SELECT (LEFT(`login_name`,INSTR(`login_name`,"@")-1)) FROM `profiles` WHERE `userid` = @bz_user_id);
@@ -6584,10 +6575,8 @@ BEGIN
                                             ;
                     
         # Is the current assignee for this role for this unit one of the dummy user in this environment?
-
             # What is the CURRENT default assignee for the role this user has been invited to?
                 SET @current_default_assignee_this_role = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
-
             # What is the default dummy user id for this environment?
             
                 # Get the BZ profile id of the dummy users based on the environment variable
@@ -6596,7 +6585,6 @@ BEGIN
                                                     FROM `ut_temp_dummy_users_for_roles` 
                                                     WHERE `environment_id` = @environment)
                                                     ;
-
                     # Landlord 2
                         SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` 
                                                     FROM `ut_temp_dummy_users_for_roles` 
@@ -6620,7 +6608,6 @@ BEGIN
                                                     FROM `ut_temp_dummy_users_for_roles` 
                                                     WHERE `environment_id` = @environment)
                                                     ;
-
             # What is the BZ dummy user id for this role in this script?
                 SET @bz_user_id_dummy_user_this_role = IF( @id_role_type = 1
                                                 , @bz_user_id_dummy_tenant
@@ -6639,7 +6626,6 @@ BEGIN
                                                     )
                                                 )
                                                 ;
-
     # Is the invited user an occupant of the unit?
         SET @is_occupant = (SELECT `is_occupant` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
         
@@ -6657,7 +6643,6 @@ BEGIN
         #	- The invitation type
         #	- The default values currently configured
         # We NEED to have defined the variable @invitation_type FIRST!
-
         # Things which depends on the invitation type:
         
             # Do we need to make the invitee a default CC for all new cases for this role in this unit?
@@ -6671,7 +6656,6 @@ BEGIN
                         , '0'
                         )
                         ;
-
             # Do we need to replace the default assignee for this role in this unit?
             # This depends on the type of invitation that we are creating
             #	- 1 (YES) if the invitation type is
@@ -6716,7 +6700,6 @@ BEGIN
                     # These are defined based on the invited user attributes:
                     # 	- role_type_id 
                     # 	- is_occupant
-
     # Answer to the question "Is the current default assignee for this role one of the dummy users?"
         SET @is_current_assignee_this_role_a_dummy_user = IF( @replace_default_assignee = '1'
             , '0'
@@ -6741,10 +6724,8 @@ BEGIN
     #		- @component_id_this_role: 
     #		  The id of the role in the bz table `components`
         CALL `remove_user_from_default_cc`;
-
     # We are recording this for KPI measurements
     #	- Number of user per role per unit.
-
         # We record the information about the users that we have just created
         # If this is the first time we record something for this user for this unit, we create a new record.
         # If there is already a record for THAT USER for THIS, then we are updating the information
@@ -6861,9 +6842,7 @@ BEGIN
                     , '.\r\ '
                     , `comment`)
             ;
-
     # We always reset the permissions to the default permissions first
-
         # Create the table to prepare the permissions
             CALL `create_temp_table_to_update_permissions`;
             
@@ -6961,7 +6940,6 @@ BEGIN
     #		- @is_mefe_only_user
     #		- @role_user_more
         CALL `update_assignee_if_dummy_user`;
-
     # Make the invited user default CC for all cases in this unit if needed
     # This procedure needs the following objects:
     #	- variables:
@@ -6975,7 +6953,6 @@ BEGIN
         
         # Run the procedure
             CALL `user_in_default_cc_for_cases`;	
-
     # Make the invited user the new default assignee for all cases in this role in this unit if needed
     # This procedure needs the following objects:
     #	- variables:
@@ -6989,7 +6966,6 @@ BEGIN
         
         # Run the procedure
             CALL `user_is_default_assignee_for_cases`;
-
     # Remove this user from this role in this unit if needed:
     # This procedure needs the following objects
     #	- Variables:
@@ -7003,9 +6979,7 @@ BEGIN
     #		- @user_pub_name
     #		- @creator_bz_id
         CALL `remove_user_from_role`;
-
     # Update the table 'ut_invitation_api_data' so we record what we have done
-
         # Timestamp	
             SET @timestamp = NOW();
             
@@ -7020,7 +6994,6 @@ BEGIN
             
         # We Delete the temp table as we do not need it anymore
             DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
-
 END */$$
 DELIMITER ;
 
@@ -13303,21 +13276,81 @@ DROP TABLE IF EXISTS `count_invitation_per_invitee_per_month`;
 /*!50001 CREATE TABLE  `count_invitation_per_invitee_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `bz_user_id` mediumint(9) ,
+ `invitee_bz_user_id` mediumint(9) ,
  `invitation_sent` bigint(21) 
 )*/;
 
-/*Table structure for table `count_invitees_per_month` */
+/*Table structure for table `count_invitation_per_invitee_per_week` */
 
-DROP TABLE IF EXISTS `count_invitees_per_month`;
+DROP TABLE IF EXISTS `count_invitation_per_invitee_per_week`;
 
-/*!50001 DROP VIEW IF EXISTS `count_invitees_per_month` */;
-/*!50001 DROP TABLE IF EXISTS `count_invitees_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitee_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitee_per_week` */;
 
-/*!50001 CREATE TABLE  `count_invitees_per_month`(
+/*!50001 CREATE TABLE  `count_invitation_per_invitee_per_week`(
  `year` int(4) ,
  `month` int(2) ,
- `count_invitees` bigint(21) 
+ `week` int(2) ,
+ `invitee_bz_user_id` mediumint(9) ,
+ `invitation_sent` bigint(21) 
+)*/;
+
+/*Table structure for table `count_invitation_per_invitor_per_month` */
+
+DROP TABLE IF EXISTS `count_invitation_per_invitor_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitor_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitor_per_month` */;
+
+/*!50001 CREATE TABLE  `count_invitation_per_invitor_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `invitor_bz_user_id` mediumint(9) ,
+ `invitation_sent` bigint(21) 
+)*/;
+
+/*Table structure for table `count_invitation_per_invitor_per_week` */
+
+DROP TABLE IF EXISTS `count_invitation_per_invitor_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitor_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitor_per_week` */;
+
+/*!50001 CREATE TABLE  `count_invitation_per_invitor_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `invitor_bz_user_id` mediumint(9) ,
+ `invitation_sent` bigint(21) 
+)*/;
+
+/*Table structure for table `count_invitation_sent_per_unit_per_month` */
+
+DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_unit_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_month` */;
+
+/*!50001 CREATE TABLE  `count_invitation_sent_per_unit_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `bz_unit_id` smallint(6) ,
+ `invitation_sent` bigint(21) 
+)*/;
+
+/*Table structure for table `count_invitation_sent_per_unit_per_week` */
+
+DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_unit_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_week` */;
+
+/*!50001 CREATE TABLE  `count_invitation_sent_per_unit_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `bz_unit_id` smallint(6) ,
+ `invitation_sent` bigint(21) 
 )*/;
 
 /*Table structure for table `count_invites_per_month` */
@@ -13447,6 +13480,20 @@ DROP TABLE IF EXISTS `count_new_cases_created_per_month`;
  `count_cases` bigint(21) 
 )*/;
 
+/*Table structure for table `count_new_cases_created_per_week` */
+
+DROP TABLE IF EXISTS `count_new_cases_created_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_new_cases_created_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_new_cases_created_per_week` */;
+
+/*!50001 CREATE TABLE  `count_new_cases_created_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `count_cases_created` bigint(21) 
+)*/;
+
 /*Table structure for table `count_new_geographies_created_per_month` */
 
 DROP TABLE IF EXISTS `count_new_geographies_created_per_month`;
@@ -13458,6 +13505,33 @@ DROP TABLE IF EXISTS `count_new_geographies_created_per_month`;
  `year` int(4) ,
  `month` int(2) ,
  `new_geography` bigint(21) 
+)*/;
+
+/*Table structure for table `count_new_messages_created_per_month` */
+
+DROP TABLE IF EXISTS `count_new_messages_created_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_new_messages_created_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_new_messages_created_per_month` */;
+
+/*!50001 CREATE TABLE  `count_new_messages_created_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `count_messages_created` bigint(21) 
+)*/;
+
+/*Table structure for table `count_new_messages_created_per_week` */
+
+DROP TABLE IF EXISTS `count_new_messages_created_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_new_messages_created_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_new_messages_created_per_week` */;
+
+/*!50001 CREATE TABLE  `count_new_messages_created_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `count_messages_created` bigint(21) 
 )*/;
 
 /*Table structure for table `count_new_unit_created_per_month` */
@@ -13500,6 +13574,20 @@ DROP TABLE IF EXISTS `count_new_user_created_per_month`;
  `new_users` bigint(21) 
 )*/;
 
+/*Table structure for table `count_new_user_created_per_week` */
+
+DROP TABLE IF EXISTS `count_new_user_created_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_new_user_created_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_new_user_created_per_week` */;
+
+/*!50001 CREATE TABLE  `count_new_user_created_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `new_users` bigint(21) 
+)*/;
+
 /*Table structure for table `count_unit_created_per_users_per_month` */
 
 DROP TABLE IF EXISTS `count_unit_created_per_users_per_month`;
@@ -13529,16 +13617,30 @@ DROP TABLE IF EXISTS `count_unit_created_per_users_per_week`;
  `count_new_units` bigint(21) 
 )*/;
 
-/*Table structure for table `count_units_with_invitation_send` */
+/*Table structure for table `count_units_with_invitation_sent_per_month` */
 
-DROP TABLE IF EXISTS `count_units_with_invitation_send`;
+DROP TABLE IF EXISTS `count_units_with_invitation_sent_per_month`;
 
-/*!50001 DROP VIEW IF EXISTS `count_units_with_invitation_send` */;
-/*!50001 DROP TABLE IF EXISTS `count_units_with_invitation_send` */;
+/*!50001 DROP VIEW IF EXISTS `count_units_with_invitation_sent_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_units_with_invitation_sent_per_month` */;
 
-/*!50001 CREATE TABLE  `count_units_with_invitation_send`(
+/*!50001 CREATE TABLE  `count_units_with_invitation_sent_per_month`(
  `year` int(4) ,
  `month` int(2) ,
+ `count_units` bigint(21) 
+)*/;
+
+/*Table structure for table `count_units_with_invitation_sent_per_week` */
+
+DROP TABLE IF EXISTS `count_units_with_invitation_sent_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_units_with_invitation_sent_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_units_with_invitation_sent_per_week` */;
+
+/*!50001 CREATE TABLE  `count_units_with_invitation_sent_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
  `count_units` bigint(21) 
 )*/;
 
@@ -13623,6 +13725,33 @@ DROP TABLE IF EXISTS `count_users_who_create_units_per_week`;
  `count_users_who_created_units` bigint(21) 
 )*/;
 
+/*Table structure for table `count_users_who_invited_someone_per_month` */
+
+DROP TABLE IF EXISTS `count_users_who_invited_someone_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_users_who_invited_someone_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_users_who_invited_someone_per_month` */;
+
+/*!50001 CREATE TABLE  `count_users_who_invited_someone_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `count_invitors` bigint(21) 
+)*/;
+
+/*Table structure for table `count_users_who_invited_someone_per_week` */
+
+DROP TABLE IF EXISTS `count_users_who_invited_someone_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_users_who_invited_someone_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_users_who_invited_someone_per_week` */;
+
+/*!50001 CREATE TABLE  `count_users_who_invited_someone_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `count_invitors` bigint(21) 
+)*/;
+
 /*Table structure for table `count_users_who_sent_message_per_month` */
 
 DROP TABLE IF EXISTS `count_users_who_sent_message_per_month`;
@@ -13648,6 +13777,33 @@ DROP TABLE IF EXISTS `count_users_who_sent_message_per_week`;
  `month` int(2) ,
  `week` int(2) ,
  `count_users_who_sent_messages` bigint(21) 
+)*/;
+
+/*Table structure for table `count_users_who_were_invited_per_month` */
+
+DROP TABLE IF EXISTS `count_users_who_were_invited_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_users_who_were_invited_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_users_who_were_invited_per_month` */;
+
+/*!50001 CREATE TABLE  `count_users_who_were_invited_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `count_invitees` bigint(21) 
+)*/;
+
+/*Table structure for table `count_users_who_were_invited_per_week` */
+
+DROP TABLE IF EXISTS `count_users_who_were_invited_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_users_who_were_invited_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_users_who_were_invited_per_week` */;
+
+/*!50001 CREATE TABLE  `count_users_who_were_invited_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `count_invitees` bigint(21) 
 )*/;
 
 /*Table structure for table `flash_count_units_with_real_roles` */
@@ -13743,14 +13899,42 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitee_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitee_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitee_per_month` AS select year(`ut_invitation_api_data`.`api_post_datetime`) AS `year`,month(`ut_invitation_api_data`.`api_post_datetime`) AS `month`,`ut_invitation_api_data`.`bz_user_id` AS `bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,month(`ut_invitation_api_data`.`api_post_datetime`),year(`ut_invitation_api_data`.`api_post_datetime`) order by year(`ut_invitation_api_data`.`api_post_datetime`) desc,month(`ut_invitation_api_data`.`api_post_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitee_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bz_user_id` AS `invitee_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,month(`ut_invitation_api_data`.`processed_datetime`),year(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
-/*View structure for view count_invitees_per_month */
+/*View structure for view count_invitation_per_invitee_per_week */
 
-/*!50001 DROP TABLE IF EXISTS `count_invitees_per_month` */;
-/*!50001 DROP VIEW IF EXISTS `count_invitees_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitee_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitee_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitees_per_month` AS select `count_invitation_per_invitee_per_month`.`year` AS `year`,`count_invitation_per_invitee_per_month`.`month` AS `month`,count(`count_invitation_per_invitee_per_month`.`bz_user_id`) AS `count_invitees` from `count_invitation_per_invitee_per_month` group by `count_invitation_per_invitee_per_month`.`month`,`count_invitation_per_invitee_per_month`.`year` order by `count_invitation_per_invitee_per_month`.`year` desc,`count_invitation_per_invitee_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitee_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bz_user_id` AS `invitee_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
+
+/*View structure for view count_invitation_per_invitor_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitor_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitor_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitor_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bzfe_invitor_user_id`,month(`ut_invitation_api_data`.`processed_datetime`),year(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
+
+/*View structure for view count_invitation_per_invitor_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitor_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitor_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitor_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bzfe_invitor_user_id`,year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
+
+/*View structure for view count_invitation_sent_per_unit_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_unit_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_unit_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),`ut_invitation_api_data`.`bz_unit_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
+
+/*View structure for view count_invitation_sent_per_unit_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_unit_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_unit_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0),`ut_invitation_api_data`.`bz_unit_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invites_per_month */
 
@@ -13815,12 +13999,33 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_cases_created_per_month` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,count(`bugs`.`bug_id`) AS `count_cases` from `bugs` group by year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`) order by `bugs`.`creation_ts` desc */;
 
+/*View structure for view count_new_cases_created_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_new_cases_created_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_new_cases_created_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_cases_created_per_week` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,week(`bugs`.`creation_ts`,0) AS `week`,count(`bugs`.`bug_id`) AS `count_cases_created` from `bugs` group by year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`),week(`bugs`.`creation_ts`,0) order by `bugs`.`creation_ts` desc */;
+
 /*View structure for view count_new_geographies_created_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_geographies_created_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_geographies_created_per_month` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_geographies_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_geography` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Classification') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
+
+/*View structure for view count_new_messages_created_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_new_messages_created_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_new_messages_created_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_messages_created_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,count(`longdescs`.`comment_id`) AS `count_messages_created` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc */;
+
+/*View structure for view count_new_messages_created_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_new_messages_created_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_new_messages_created_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_messages_created_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,count(`longdescs`.`comment_id`) AS `count_messages_created` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc */;
 
 /*View structure for view count_new_unit_created_per_month */
 
@@ -13843,6 +14048,13 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_user_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_users` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::User') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
 
+/*View structure for view count_new_user_created_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_new_user_created_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_new_user_created_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_user_created_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,count(`audit_log`.`object_id`) AS `new_users` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::User') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc */;
+
 /*View structure for view count_unit_created_per_users_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_unit_created_per_users_per_month` */;
@@ -13857,12 +14069,19 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_unit_created_per_users_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,`audit_log`.`user_id` AS `user_id`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by `audit_log`.`user_id`,year(`audit_log`.`at_time`),month(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc,count(`audit_log`.`object_id`) desc */;
 
-/*View structure for view count_units_with_invitation_send */
+/*View structure for view count_units_with_invitation_sent_per_month */
 
-/*!50001 DROP TABLE IF EXISTS `count_units_with_invitation_send` */;
-/*!50001 DROP VIEW IF EXISTS `count_units_with_invitation_send` */;
+/*!50001 DROP TABLE IF EXISTS `count_units_with_invitation_sent_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_units_with_invitation_sent_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_with_invitation_send` AS select `count_invites_per_unit_per_month`.`year` AS `year`,`count_invites_per_unit_per_month`.`month` AS `month`,count(`count_invites_per_unit_per_month`.`bz_unit_id`) AS `count_units` from `count_invites_per_unit_per_month` group by `count_invites_per_unit_per_month`.`month`,`count_invites_per_unit_per_month`.`year` order by `count_invites_per_unit_per_month`.`year` desc,`count_invites_per_unit_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_with_invitation_sent_per_month` AS select `count_invitation_sent_per_unit_per_month`.`year` AS `year`,`count_invitation_sent_per_unit_per_month`.`month` AS `month`,count(`count_invitation_sent_per_unit_per_month`.`bz_unit_id`) AS `count_units` from `count_invitation_sent_per_unit_per_month` group by `count_invitation_sent_per_unit_per_month`.`month`,`count_invitation_sent_per_unit_per_month`.`year` order by `count_invitation_sent_per_unit_per_month`.`year` desc,`count_invitation_sent_per_unit_per_month`.`month` desc */;
+
+/*View structure for view count_units_with_invitation_sent_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_units_with_invitation_sent_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_units_with_invitation_sent_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_with_invitation_sent_per_week` AS select `count_invitation_sent_per_unit_per_week`.`year` AS `year`,`count_invitation_sent_per_unit_per_week`.`month` AS `month`,`count_invitation_sent_per_unit_per_week`.`week` AS `week`,count(`count_invitation_sent_per_unit_per_week`.`bz_unit_id`) AS `count_units` from `count_invitation_sent_per_unit_per_week` group by `count_invitation_sent_per_unit_per_week`.`year`,`count_invitation_sent_per_unit_per_week`.`month`,`count_invitation_sent_per_unit_per_week`.`week` order by `count_invitation_sent_per_unit_per_week`.`year` desc,`count_invitation_sent_per_unit_per_week`.`month` desc,`count_invitation_sent_per_unit_per_week`.`week` desc */;
 
 /*View structure for view count_users_who_create_case_per_month */
 
@@ -13906,6 +14125,20 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_create_units_per_week` AS select `count_unit_created_per_users_per_week`.`year` AS `year`,`count_unit_created_per_users_per_week`.`month` AS `month`,`count_unit_created_per_users_per_week`.`week` AS `week`,count(`count_unit_created_per_users_per_week`.`user_id`) AS `count_users_who_created_units` from `count_unit_created_per_users_per_week` group by `count_unit_created_per_users_per_week`.`year`,`count_unit_created_per_users_per_week`.`month`,`count_unit_created_per_users_per_week`.`week` order by `count_unit_created_per_users_per_week`.`year` desc,`count_unit_created_per_users_per_week`.`week` desc */;
 
+/*View structure for view count_users_who_invited_someone_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_users_who_invited_someone_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_users_who_invited_someone_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_invited_someone_per_month` AS select `count_invitation_per_invitor_per_month`.`year` AS `year`,`count_invitation_per_invitor_per_month`.`month` AS `month`,count(`count_invitation_per_invitor_per_month`.`invitor_bz_user_id`) AS `count_invitors` from `count_invitation_per_invitor_per_month` group by `count_invitation_per_invitor_per_month`.`year`,`count_invitation_per_invitor_per_month`.`month` order by `count_invitation_per_invitor_per_month`.`year` desc,`count_invitation_per_invitor_per_month`.`month` desc */;
+
+/*View structure for view count_users_who_invited_someone_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_users_who_invited_someone_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_users_who_invited_someone_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_invited_someone_per_week` AS select `count_invitation_per_invitor_per_week`.`year` AS `year`,`count_invitation_per_invitor_per_week`.`month` AS `month`,`count_invitation_per_invitor_per_week`.`week` AS `week`,count(`count_invitation_per_invitor_per_week`.`invitor_bz_user_id`) AS `count_invitors` from `count_invitation_per_invitor_per_week` group by `count_invitation_per_invitor_per_week`.`year`,`count_invitation_per_invitor_per_week`.`month`,`count_invitation_per_invitor_per_week`.`week` order by `count_invitation_per_invitor_per_week`.`year` desc,`count_invitation_per_invitor_per_week`.`week` desc */;
+
 /*View structure for view count_users_who_sent_message_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_sent_message_per_month` */;
@@ -13919,6 +14152,20 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_sent_message_per_week` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_sent_message_per_week` AS select `count_messages_per_users_per_week`.`year` AS `year`,`count_messages_per_users_per_week`.`month` AS `month`,`count_messages_per_users_per_week`.`week` AS `week`,count(`count_messages_per_users_per_week`.`who`) AS `count_users_who_sent_messages` from `count_messages_per_users_per_week` group by `count_messages_per_users_per_week`.`year`,`count_messages_per_users_per_week`.`month`,`count_messages_per_users_per_week`.`week` order by `count_messages_per_users_per_week`.`year` desc,`count_messages_per_users_per_week`.`week` desc */;
+
+/*View structure for view count_users_who_were_invited_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_users_who_were_invited_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_users_who_were_invited_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_were_invited_per_month` AS select `count_invitation_per_invitee_per_month`.`year` AS `year`,`count_invitation_per_invitee_per_month`.`month` AS `month`,count(`count_invitation_per_invitee_per_month`.`invitee_bz_user_id`) AS `count_invitees` from `count_invitation_per_invitee_per_month` group by `count_invitation_per_invitee_per_month`.`year`,`count_invitation_per_invitee_per_month`.`month` order by `count_invitation_per_invitee_per_month`.`year` desc,`count_invitation_per_invitee_per_month`.`month` desc */;
+
+/*View structure for view count_users_who_were_invited_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_users_who_were_invited_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_users_who_were_invited_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_were_invited_per_week` AS select `count_invitation_per_invitee_per_week`.`year` AS `year`,`count_invitation_per_invitee_per_week`.`month` AS `month`,`count_invitation_per_invitee_per_week`.`week` AS `week`,count(`count_invitation_per_invitee_per_week`.`invitee_bz_user_id`) AS `count_invitees` from `count_invitation_per_invitee_per_week` group by `count_invitation_per_invitee_per_week`.`year`,`count_invitation_per_invitee_per_week`.`month`,`count_invitation_per_invitee_per_week`.`week` order by `count_invitation_per_invitee_per_week`.`year` desc,`count_invitation_per_invitee_per_week`.`week` desc */;
 
 /*View structure for view flash_count_units_with_real_roles */
 
