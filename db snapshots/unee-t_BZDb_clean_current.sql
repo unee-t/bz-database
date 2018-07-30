@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.0.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.22
+MySQL - 5.7.12 : Database - unee_t_v3.23
 *********************************************************************
 */
 
@@ -3153,7 +3153,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -3180,7 +3180,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (20,'v3.19','2018-07-09 04:58:23','upgrade_unee-t_v3.18_to_v3.19.sql','Database updated from v3.18 to v3.19'),
 (21,'v3.20','2018-07-10 10:30:32','upgrade_unee-t_v3.19_to_v3.20.sql','Database updated from v3.19 to v3.20'),
 (22,'v3.21','2018-07-29 03:08:31','upgrade_unee-t_v3.20_to_v3.21.sql','Database updated from v3.20 to v3.21'),
-(23,'v3.22','2018-07-30 05:43:06','upgrade_unee-t_v3.21_to_v3.22.sql','Database updated from v3.21 to v3.22');
+(23,'v3.22','2018-07-30 05:43:06','upgrade_unee-t_v3.21_to_v3.22.sql','Database updated from v3.21 to v3.22'),
+(24,'v3.23','2018-07-30 08:46:40','upgrade_unee-t_v3.22_to_v3.23.sql','Database updated from v3.22 to v3.23');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -11377,6 +11378,33 @@ DROP TABLE IF EXISTS `count_cases_per_users_per_week`;
  `bugs_created` bigint(21) 
 )*/;
 
+/*Table structure for table `count_cases_with_messages_per_month` */
+
+DROP TABLE IF EXISTS `count_cases_with_messages_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_cases_with_messages_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_cases_with_messages_per_month` */;
+
+/*!50001 CREATE TABLE  `count_cases_with_messages_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `count_cases_with_messages` bigint(21) 
+)*/;
+
+/*Table structure for table `count_cases_with_messages_per_week` */
+
+DROP TABLE IF EXISTS `count_cases_with_messages_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_cases_with_messages_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_cases_with_messages_per_week` */;
+
+/*!50001 CREATE TABLE  `count_cases_with_messages_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `count_cases_with_messages` bigint(21) 
+)*/;
+
 /*Table structure for table `count_invitation_per_invitee_per_month` */
 
 DROP TABLE IF EXISTS `count_invitation_per_invitee_per_month`;
@@ -11547,6 +11575,35 @@ DROP TABLE IF EXISTS `count_invites_per_user_per_week`;
  `week` int(2) ,
  `invitor` mediumint(9) ,
  `invitation_sent` bigint(21) 
+)*/;
+
+/*Table structure for table `count_messages_per_case_per_month` */
+
+DROP TABLE IF EXISTS `count_messages_per_case_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_messages_per_case_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_messages_per_case_per_month` */;
+
+/*!50001 CREATE TABLE  `count_messages_per_case_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `case_id` mediumint(9) ,
+ `count_messages` bigint(21) 
+)*/;
+
+/*Table structure for table `count_messages_per_case_per_week` */
+
+DROP TABLE IF EXISTS `count_messages_per_case_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_messages_per_case_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_messages_per_case_per_week` */;
+
+/*!50001 CREATE TABLE  `count_messages_per_case_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `case_id` mediumint(9) ,
+ `count_messages` bigint(21) 
 )*/;
 
 /*Table structure for table `count_messages_per_unit_per_month` */
@@ -12061,6 +12118,20 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_cases_per_users_per_week` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,week(`bugs`.`creation_ts`,0) AS `week`,`bugs`.`reporter` AS `reporter`,count(`bugs`.`bug_id`) AS `bugs_created` from `bugs` group by `bugs`.`reporter`,year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`),week(`bugs`.`creation_ts`,0) order by year(`bugs`.`creation_ts`) desc,month(`bugs`.`creation_ts`) desc,week(`bugs`.`creation_ts`,0) desc,count(`bugs`.`bug_id`) desc */;
 
+/*View structure for view count_cases_with_messages_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_cases_with_messages_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_cases_with_messages_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_cases_with_messages_per_month` AS select `count_messages_per_case_per_month`.`year` AS `year`,`count_messages_per_case_per_month`.`month` AS `month`,count(`count_messages_per_case_per_month`.`case_id`) AS `count_cases_with_messages` from `count_messages_per_case_per_month` group by `count_messages_per_case_per_month`.`month`,`count_messages_per_case_per_month`.`year` order by `count_messages_per_case_per_month`.`year` desc,`count_messages_per_case_per_month`.`month` desc */;
+
+/*View structure for view count_cases_with_messages_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_cases_with_messages_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_cases_with_messages_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_cases_with_messages_per_week` AS select `count_messages_per_case_per_week`.`year` AS `year`,`count_messages_per_case_per_week`.`month` AS `month`,`count_messages_per_case_per_week`.`week` AS `week`,count(`count_messages_per_case_per_week`.`case_id`) AS `count_cases_with_messages` from `count_messages_per_case_per_week` group by `count_messages_per_case_per_week`.`year`,`count_messages_per_case_per_week`.`month`,`count_messages_per_case_per_week`.`week` order by `count_messages_per_case_per_week`.`year` desc,`count_messages_per_case_per_week`.`week` desc */;
+
 /*View structure for view count_invitation_per_invitee_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitee_per_month` */;
@@ -12144,6 +12215,20 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP VIEW IF EXISTS `count_invites_per_user_per_week` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invites_per_user_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0),`ut_invitation_api_data`.`bzfe_invitor_user_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
+
+/*View structure for view count_messages_per_case_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_messages_per_case_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_messages_per_case_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_case_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`longdescs`.`bug_id` AS `case_id`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),`longdescs`.`bug_id` order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`longdescs`.`bug_id` desc */;
+
+/*View structure for view count_messages_per_case_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_messages_per_case_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_messages_per_case_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_case_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,`longdescs`.`bug_id` AS `case_id`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by year(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0),`longdescs`.`bug_id` order by year(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc,count(`longdescs`.`comment_id`) desc,`longdescs`.`bug_id` desc */;
 
 /*View structure for view count_messages_per_unit_per_month */
 
