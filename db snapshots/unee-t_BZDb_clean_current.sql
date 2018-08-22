@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.0.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.23
+MySQL - 5.7.12 : Database - unee_t_v3.24
 *********************************************************************
 */
 
@@ -3153,7 +3153,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -3181,7 +3181,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (21,'v3.20','2018-07-10 10:30:32','upgrade_unee-t_v3.19_to_v3.20.sql','Database updated from v3.19 to v3.20'),
 (22,'v3.21','2018-07-29 03:08:31','upgrade_unee-t_v3.20_to_v3.21.sql','Database updated from v3.20 to v3.21'),
 (23,'v3.22','2018-07-30 05:43:06','upgrade_unee-t_v3.21_to_v3.22.sql','Database updated from v3.21 to v3.22'),
-(24,'v3.23','2018-07-30 08:46:40','upgrade_unee-t_v3.22_to_v3.23.sql','Database updated from v3.22 to v3.23');
+(24,'v3.23','2018-07-30 08:46:40','upgrade_unee-t_v3.22_to_v3.23.sql','Database updated from v3.22 to v3.23'),
+(25,'v3.24','2018-08-22 13:20:44','upgrade_unee-t_v3.23_to_v3.24.sql','Database updated from v3.23 to v3.24');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -3328,6 +3329,20 @@ CREATE TABLE `ut_log_count_closed_cases` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_log_count_closed_cases` */
+
+/*Table structure for table `ut_log_count_enabled_units` */
+
+DROP TABLE IF EXISTS `ut_log_count_enabled_units`;
+
+CREATE TABLE `ut_log_count_enabled_units` (
+  `id_log_enabled_units` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique id in this table',
+  `timestamp` datetime DEFAULT NULL COMMENT 'The timestamp when this record was created',
+  `count_enabled_units` int(11) NOT NULL COMMENT 'The number of enabled products/units at this Datetime',
+  `count_total_units` int(11) NOT NULL COMMENT 'The total number of products/units at this Datetime',
+  PRIMARY KEY (`id_log_enabled_units`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_log_count_enabled_units` */
 
 /*Table structure for table `ut_map_contractor_to_type` */
 
@@ -4248,6 +4263,52 @@ BEGIN
 			, @current_list_of_invitees
 			)
 			;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `products` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_the_log_of_enabled_units_when_unit_is_created` */$$
+
+/*!50003 CREATE */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_created` AFTER INSERT ON `products` FOR EACH ROW 
+  BEGIN
+    CALL `update_log_count_enabled_units`;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `products` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_the_log_of_enabled_units_when_unit_is_updated` */$$
+
+/*!50003 CREATE */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_updated` AFTER UPDATE ON `products` FOR EACH ROW 
+  BEGIN
+    IF NEW.`isactive` <> OLD.`isactive` 
+		THEN
+		# If these are different, then we need to update the log of closed cases
+			CALL `update_log_count_enabled_units`;
+    END IF;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `products` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_the_log_of_enabled_units_when_unit_is_deleted` */$$
+
+/*!50003 CREATE */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_deleted` AFTER DELETE ON `products` FOR EACH ROW 
+  BEGIN
+    CALL `update_log_count_enabled_units`;
 END */$$
 
 
@@ -10930,6 +10991,52 @@ BEGIN
 END */$$
 DELIMITER ;
 
+/* Procedure structure for procedure `update_log_count_enabled_units` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `update_log_count_enabled_units` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `update_log_count_enabled_units`()
+    SQL SECURITY INVOKER
+BEGIN
+ 
+	# When are we doing this?
+		SET @timestamp = NOW();	
+
+	# Flash Count the total number of Enabled unit at the date of this query
+	# Put this in a variable
+		SET @count_enabled_units = (SELECT
+			 COUNT(`products`.`id`)
+		FROM
+			`products`
+		WHERE `products`.`isactive` = 1)
+		;
+		
+	# Flash Count the total number of ALL cases are the date of this query
+	# Put this in a variable
+		SET @count_total_units = (SELECT
+			 COUNT(`products`.`id`)
+		FROM
+			`products`
+			) 
+			;
+
+	# We have everything: insert in the log table
+		INSERT INTO `ut_log_count_enabled_units`
+			(`timestamp`
+			, `count_enabled_units`
+			, `count_total_units`
+			)
+			VALUES
+			(@timestamp
+			, @count_enabled_units
+			, @count_total_units
+			)
+			;
+END */$$
+DELIMITER ;
+
 /* Procedure structure for procedure `update_permissions_invited_user` */
 
 /*!50003 DROP PROCEDURE IF EXISTS  `update_permissions_invited_user` */;
@@ -11463,6 +11570,19 @@ DROP TABLE IF EXISTS `count_invitation_per_invitor_per_week`;
  `invitation_sent` bigint(21) 
 )*/;
 
+/*Table structure for table `count_invitation_sent_per_month` */
+
+DROP TABLE IF EXISTS `count_invitation_sent_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_month` */;
+
+/*!50001 CREATE TABLE  `count_invitation_sent_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `invitation_sent` bigint(21) 
+)*/;
+
 /*Table structure for table `count_invitation_sent_per_unit_per_month` */
 
 DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_month`;
@@ -11489,6 +11609,20 @@ DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_week`;
  `month` int(2) ,
  `week` int(2) ,
  `bz_unit_id` smallint(6) ,
+ `invitation_sent` bigint(21) 
+)*/;
+
+/*Table structure for table `count_invitation_sent_per_week` */
+
+DROP TABLE IF EXISTS `count_invitation_sent_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_week` */;
+
+/*!50001 CREATE TABLE  `count_invitation_sent_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -11812,6 +11946,35 @@ DROP TABLE IF EXISTS `count_unit_created_per_users_per_week`;
  `week` int(2) ,
  `user_id` mediumint(9) ,
  `count_new_units` bigint(21) 
+)*/;
+
+/*Table structure for table `count_units_enabled_and_total_per_month` */
+
+DROP TABLE IF EXISTS `count_units_enabled_and_total_per_month`;
+
+/*!50001 DROP VIEW IF EXISTS `count_units_enabled_and_total_per_month` */;
+/*!50001 DROP TABLE IF EXISTS `count_units_enabled_and_total_per_month` */;
+
+/*!50001 CREATE TABLE  `count_units_enabled_and_total_per_month`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `average_enabled_units` decimal(14,4) ,
+ `average_total_units` decimal(14,4) 
+)*/;
+
+/*Table structure for table `count_units_enabled_and_total_per_week` */
+
+DROP TABLE IF EXISTS `count_units_enabled_and_total_per_week`;
+
+/*!50001 DROP VIEW IF EXISTS `count_units_enabled_and_total_per_week` */;
+/*!50001 DROP TABLE IF EXISTS `count_units_enabled_and_total_per_week` */;
+
+/*!50001 CREATE TABLE  `count_units_enabled_and_total_per_week`(
+ `year` int(4) ,
+ `month` int(2) ,
+ `week` int(2) ,
+ `average_enabled_units` decimal(14,4) ,
+ `average_total_units` decimal(14,4) 
 )*/;
 
 /*Table structure for table `count_units_with_invitation_sent_per_month` */
@@ -12160,6 +12323,13 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitor_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bzfe_invitor_user_id`,year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
+/*View structure for view count_invitation_sent_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc */;
+
 /*View structure for view count_invitation_sent_per_unit_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_month` */;
@@ -12173,6 +12343,13 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_unit_per_week` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_unit_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0),`ut_invitation_api_data`.`bz_unit_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
+
+/*View structure for view count_invitation_sent_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc */;
 
 /*View structure for view count_invites_per_month */
 
@@ -12334,6 +12511,20 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP VIEW IF EXISTS `count_unit_created_per_users_per_week` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_unit_created_per_users_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,`audit_log`.`user_id` AS `user_id`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by `audit_log`.`user_id`,year(`audit_log`.`at_time`),month(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc,count(`audit_log`.`object_id`) desc */;
+
+/*View structure for view count_units_enabled_and_total_per_month */
+
+/*!50001 DROP TABLE IF EXISTS `count_units_enabled_and_total_per_month` */;
+/*!50001 DROP VIEW IF EXISTS `count_units_enabled_and_total_per_month` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_enabled_and_total_per_month` AS select year(`ut_log_count_enabled_units`.`timestamp`) AS `year`,month(`ut_log_count_enabled_units`.`timestamp`) AS `month`,avg(`ut_log_count_enabled_units`.`count_enabled_units`) AS `average_enabled_units`,avg(`ut_log_count_enabled_units`.`count_total_units`) AS `average_total_units` from `ut_log_count_enabled_units` group by year(`ut_log_count_enabled_units`.`timestamp`),month(`ut_log_count_enabled_units`.`timestamp`) order by year(`ut_log_count_enabled_units`.`timestamp`) desc,month(`ut_log_count_enabled_units`.`timestamp`) desc */;
+
+/*View structure for view count_units_enabled_and_total_per_week */
+
+/*!50001 DROP TABLE IF EXISTS `count_units_enabled_and_total_per_week` */;
+/*!50001 DROP VIEW IF EXISTS `count_units_enabled_and_total_per_week` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_enabled_and_total_per_week` AS select year(`ut_log_count_enabled_units`.`timestamp`) AS `year`,month(`ut_log_count_enabled_units`.`timestamp`) AS `month`,week(`ut_log_count_enabled_units`.`timestamp`,0) AS `week`,avg(`ut_log_count_enabled_units`.`count_enabled_units`) AS `average_enabled_units`,avg(`ut_log_count_enabled_units`.`count_total_units`) AS `average_total_units` from `ut_log_count_enabled_units` group by year(`ut_log_count_enabled_units`.`timestamp`),month(`ut_log_count_enabled_units`.`timestamp`),week(`ut_log_count_enabled_units`.`timestamp`,0) order by year(`ut_log_count_enabled_units`.`timestamp`) desc,week(`ut_log_count_enabled_units`.`timestamp`,0) desc */;
 
 /*View structure for view count_units_with_invitation_sent_per_month */
 
