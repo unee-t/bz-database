@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v13.0.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.24
+SQLyog Ultimate v13.1.1 (64 bit)
+MySQL - 5.7.12 : Database - unee_t_v3.25
 *********************************************************************
 */
 
@@ -2264,6 +2264,112 @@ CREATE TABLE `keywords` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `keywords` */
+
+/*Table structure for table `lmb_units_10july18` */
+
+DROP TABLE IF EXISTS `lmb_units_10july18`;
+
+CREATE TABLE `lmb_units_10july18` (
+  `mefe_invitation_id` varchar(255) DEFAULT NULL,
+  `bzfe_invitor_user_id` double DEFAULT NULL,
+  `bz_user_id` double DEFAULT NULL,
+  `user_role_type_id` double DEFAULT NULL,
+  `is_occupant` double DEFAULT NULL,
+  `bz_case_id` double DEFAULT NULL,
+  `bz_unit_id` double DEFAULT NULL,
+  `invitation_type` varchar(255) DEFAULT NULL,
+  `is_mefe_only_user` double DEFAULT NULL,
+  `user_more` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `lmb_units_10july18` */
+
+insert  into `lmb_units_10july18`(`mefe_invitation_id`,`bzfe_invitor_user_id`,`bz_user_id`,`user_role_type_id`,`is_occupant`,`bz_case_id`,`bz_unit_id`,`invitation_type`,`is_mefe_only_user`,`user_more`) values 
+('manualInsert1',6,1,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert2',6,2,4,0,0,486,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert3',6,13,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert4',6,21,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert5',6,37,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert6',6,38,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert7',6,49,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert8',6,66,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert9',6,71,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert10',6,76,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert11',6,77,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert12',6,79,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert13',6,80,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert14',6,85,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert15',6,86,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert16',6,87,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert17',6,88,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert18',6,1,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert19',6,2,4,0,0,487,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert20',6,13,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert21',6,21,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert22',6,37,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert23',6,38,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert24',6,49,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert25',6,66,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert26',6,71,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert27',6,76,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert28',6,77,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert29',6,79,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert30',6,80,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert31',6,85,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert32',6,86,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert33',6,87,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert34',6,88,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert35',6,1,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert36',6,2,4,0,0,488,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert37',6,13,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert38',6,21,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert39',6,37,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert40',6,38,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert41',6,49,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert42',6,66,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert43',6,71,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert44',6,76,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert45',6,77,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert46',6,79,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert47',6,80,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert48',6,85,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert49',6,86,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert50',6,87,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert51',6,88,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert52',6,1,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert53',6,2,4,0,0,489,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert54',6,13,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert55',6,21,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert56',6,37,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert57',6,38,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert58',6,49,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert59',6,66,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert60',6,71,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert61',6,76,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert62',6,77,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert63',6,79,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert64',6,80,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert65',6,85,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert66',6,86,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert67',6,87,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert68',6,88,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert69',6,1,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert70',6,2,4,0,0,490,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert71',6,13,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert72',6,21,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert73',6,37,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert74',6,38,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert75',6,49,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert76',6,66,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert77',6,71,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert78',6,76,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert79',6,77,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert80',6,79,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert81',6,80,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert82',6,85,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert83',6,86,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert84',6,87,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert85',6,88,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply');
 
 /*Table structure for table `login_failure` */
 
@@ -4753,7 +4859,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -4782,7 +4888,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (22,'v3.21','2018-07-29 03:11:14','upgrade_unee-t_v3.20_to_v3.21.sql','Database updated from v3.20 to v3.21'),
 (23,'v3.22','2018-07-30 05:44:48','upgrade_unee-t_v3.21_to_v3.22.sql','Database updated from v3.21 to v3.22'),
 (24,'v3.23','2018-07-30 08:48:28','upgrade_unee-t_v3.22_to_v3.23.sql','Database updated from v3.22 to v3.23'),
-(25,'v3.24','2018-08-22 13:22:34','upgrade_unee-t_v3.23_to_v3.24.sql','Database updated from v3.23 to v3.24');
+(25,'v3.24','2018-08-22 13:22:34','upgrade_unee-t_v3.23_to_v3.24.sql','Database updated from v3.23 to v3.24'),
+(26,'v3.25','2018-10-24 10:58:49','upgrade_unee-t_v3.24_to_v3.25.sql','Database updated from v3.24 to v3.25');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -9664,11 +9771,13 @@ DELIMITER $$
 /*!50003 CREATE PROCEDURE `revoke_all_permission_for_this_user_in_this_unit`()
     SQL SECURITY INVOKER
 BEGIN
+
 	# We record the name of this procedure for future debugging and audit_log`
 		SET @script = 'PROCEDURE - revoke_all_permission_for_this_user_in_this_unit';
 		SET @timestamp = NOW();
-		
+
 	# We need to get the group_id for this unit
+
 		SET @can_see_time_tracking_group_id = 16;
 		SET @can_create_shared_queries_group_id = 17;
 		SET @can_tag_comment_group_id = 18;	
@@ -9676,36 +9785,44 @@ BEGIN
 		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
 		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
 		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
-		
+	
 		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
 		
 		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
+
 		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
+
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-	
+
 		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
 		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
 		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
+
 		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
 		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
 		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
+
 		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
 		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
 		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
+
 		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
 		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
 		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
+
 		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
 		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
 		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
+
 		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
 		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
 		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
-	
+
 	# We can now remove all the permissions for this unit.
-		DELETE FROM `ut_user_group_map_temp`
+
+		DELETE FROM `user_group_map`
 			WHERE (
 				(`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @can_create_shared_queries_group_id)
@@ -9739,8 +9856,9 @@ BEGIN
 				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
 				)
 				;
-						
+
 			# Log the actions of the script.
+
 				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user #'
 										, @bz_user_id
 										, '\r\- can_see_time_tracking: 0'
@@ -9785,9 +9903,10 @@ BEGIN
 					VALUES
 					(NOW(), @script, @script_log_message)
 					;
+
 			# We log what we have just done into the `ut_audit_log` table
 				
-				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @bzfe_table = 'user_group_map';
 				
 				INSERT INTO `ut_audit_log`
 					 (`datetime`
@@ -9984,13 +10103,13 @@ BEGIN
 						, 'n/a'
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the group id = '
-						, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
-						, '.')
-						)
+					, @script
+					, CONCAT('Remove the record where BZ user id ='
+					, @bz_user_id
+					, ' the group id = '
+					, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
+					, '.')
+					)
 					, (NOW() 
 						,@bzfe_table
 						, 'n/a'
@@ -10003,7 +10122,7 @@ BEGIN
 						, (SELECT IFNULL(@group_id_are_users_tenant, 'group_id_are_users_tenant is NULL'))
 						, '.')
 						)
-					 , (NOW() 
+					, (NOW() 
 						,@bzfe_table
 						, 'n/a'
 						, 'n/a - we delete the record'
@@ -10027,18 +10146,18 @@ BEGIN
 						, (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
 						, '.')
 						)
-					 , (NOW() 
+					, (NOW() 
 						,@bzfe_table
-						, 'n/a'
-						, 'n/a - we delete the record'
-						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the group id = '
-						, (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
-						, '.')
-						)
+							, 'n/a'
+							, 'n/a - we delete the record'
+							, 'n/a - we delete the record'
+							, @script
+							, CONCAT('Remove the record where BZ user id ='
+							, @bz_user_id
+							, ' the group id = '
+							, (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
+							, '.')
+							)
 					 , (NOW() 
 						,@bzfe_table
 						, 'n/a'
@@ -12893,7 +13012,6 @@ BEGIN
  
 	# When are we doing this?
 		SET @timestamp = NOW();	
-
 	# Flash Count the total number of Enabled unit at the date of this query
 	# Put this in a variable
 		SET @count_enabled_units = (SELECT
@@ -12911,7 +13029,6 @@ BEGIN
 			`products`
 			) 
 			;
-
 	# We have everything: insert in the log table
 		INSERT INTO `ut_log_count_enabled_units`
 			(`timestamp`
@@ -12937,39 +13054,62 @@ DELIMITER $$
     SQL SECURITY INVOKER
 BEGIN
 	# We update the `user_group_map` table
-	
-	# First we disable the FK checks
-		 SET NAMES utf8 ;
-		 SET SQL_MODE='' ;
-		 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 ;
-		 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 ;
-		 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' ;
-		 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 ;
+    #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
+    #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
+    #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
+
+	# We drop the deduplication table if it exists:
+		DROP TABLE IF EXISTS `user_group_map_dedup`;
+
+	# We create a table `user_group_map_dedup` to prepare the data we need to insert
+		CREATE TABLE `user_group_map_dedup` (
+			`user_id` MEDIUMINT(9) NOT NULL,
+			`group_id` MEDIUMINT(9) NOT NULL,
+			`isbless` TINYINT(4) NOT NULL DEFAULT '0',
+			`grant_type` TINYINT(4) NOT NULL DEFAULT '0',
+			UNIQUE KEY `user_group_map_dedup_user_id_idx` (`user_id`,`group_id`,`grant_type`,`isbless`),
+			KEY `fk_user_group_map_dedup_group_id_groups_id` (`group_id`),
+			CONSTRAINT `fk_user_group_map_dedup_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+			CONSTRAINT `fk_user_group_map_dedup_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
+			)
+		;
 		
-		# We truncate the table first (to avoid duplicates)
-			TRUNCATE TABLE `user_group_map`;
+	# We insert the de-duplicated record in the table `user_group_map_dedup`
+
+		INSERT INTO `user_group_map_dedup`
+		SELECT `user_id`
+			, `group_id`
+			, `isbless`
+			, `grant_type`
+		FROM
+			`ut_user_group_map_temp`
+		GROUP BY `user_id`
+			, `group_id`
+			, `isbless`
+			, `grant_type`
+		;
 			
-		# We insert the data we need
-			INSERT INTO `user_group_map`
-			SELECT `user_id`
-				, `group_id`
-				, `isbless`
-				, `grant_type`
-			FROM
-				`ut_user_group_map_temp`
-			GROUP BY `user_id`
-				, `group_id`
-				, `isbless`
-				, `grant_type`
-			;
-		# We drop the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `ut_user_group_map_temp`;
-			
-	# We implement the FK checks again		
-		 SET SQL_MODE=@OLD_SQL_MODE ;
-		 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS ;
-		 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS ;
-		 SET SQL_NOTES=@OLD_SQL_NOTES ;	
+	# We insert the data we need in the `user_group_map` table
+		INSERT INTO `user_group_map`
+		SELECT `user_id`
+			, `group_id`
+			, `isbless`
+			, `grant_type`
+		FROM
+			`user_group_map_dedup`
+		# The below code is overkill in this context: 
+		# the Unique Key Constraint makes sure that all records are unique in the table `user_group_map`
+		ON DUPLICATE KEY UPDATE
+			`user_id` = `user_group_map_dedup`.`user_id`
+			, `group_id` = `user_group_map_dedup`.`group_id`
+			, `isbless` = `user_group_map_dedup`.`isbless`
+			, `grant_type` = `user_group_map_dedup`.`grant_type`
+		;
+
+	# We drop the temp table as we do not need it anymore
+		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
+		DROP TABLE IF EXISTS `user_group_map_dedup`;
+
 END */$$
 DELIMITER ;
 
@@ -13644,6 +13784,20 @@ DROP TABLE IF EXISTS `count_messages_per_unit_per_month`;
  `count_messages` bigint(21) 
 )*/;
 
+/*Table structure for table `count_messages_per_unit_per_quarter` */
+
+DROP TABLE IF EXISTS `count_messages_per_unit_per_quarter`;
+
+/*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_quarter` */;
+/*!50001 DROP TABLE IF EXISTS `count_messages_per_unit_per_quarter` */;
+
+/*!50001 CREATE TABLE  `count_messages_per_unit_per_quarter`(
+ `year` int(4) ,
+ `quarter` int(1) ,
+ `bz_unit_id` smallint(6) ,
+ `count_messages` bigint(21) 
+)*/;
+
 /*Table structure for table `count_messages_per_unit_per_week` */
 
 DROP TABLE IF EXISTS `count_messages_per_unit_per_week`;
@@ -14303,6 +14457,13 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_month` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
+
+/*View structure for view count_messages_per_unit_per_quarter */
+
+/*!50001 DROP TABLE IF EXISTS `count_messages_per_unit_per_quarter` */;
+/*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_quarter` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_quarter` AS select year(`longdescs`.`bug_when`) AS `year`,quarter(`longdescs`.`bug_when`) AS `quarter`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),quarter(`longdescs`.`bug_when`),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,quarter(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
 
 /*View structure for view count_messages_per_unit_per_week */
 
