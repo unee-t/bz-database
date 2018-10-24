@@ -181,6 +181,25 @@ BEGIN
         SET @is_current_assignee_this_role_a_dummy_user = NULL;
         SET @this_script = NULL;
 
+    # Default values:
+        
+        #User Permissions in the unit:
+            SET @can_see_time_tracking = 1;
+            SET @can_create_shared_queries = 0;
+            SET @can_tag_comment = 1;
+            SET @can_create_new_cases = 1;
+            SET @can_edit_a_case = 1;
+            SET @can_see_all_public_cases = 1;
+            SET @can_edit_all_field_in_a_case_regardless_of_role = 1;
+            SET @can_see_unit_in_search = 1;
+            SET @user_is_publicly_visible = 1;
+            SET @user_can_see_publicly_visible = 1;
+            SET @can_ask_to_approve_flags = 1;
+            SET @can_approve_all_flags = 1;
+        
+        # Do we need to make the invitee a default CC for all new cases for this role in this unit?
+            SET @user_in_default_cc_for_cases = 0;
+
     # Timestamp	
         SET @timestamp = NOW();
 
