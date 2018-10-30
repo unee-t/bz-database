@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v13.0.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.24
+SQLyog Ultimate v13.1.1 (64 bit)
+MySQL - 5.7.12 : Database - unee_t_v3.26
 *********************************************************************
 */
 
@@ -2265,6 +2265,112 @@ CREATE TABLE `keywords` (
 
 /*Data for the table `keywords` */
 
+/*Table structure for table `lmb_units_10july18` */
+
+DROP TABLE IF EXISTS `lmb_units_10july18`;
+
+CREATE TABLE `lmb_units_10july18` (
+  `mefe_invitation_id` varchar(255) DEFAULT NULL,
+  `bzfe_invitor_user_id` double DEFAULT NULL,
+  `bz_user_id` double DEFAULT NULL,
+  `user_role_type_id` double DEFAULT NULL,
+  `is_occupant` double DEFAULT NULL,
+  `bz_case_id` double DEFAULT NULL,
+  `bz_unit_id` double DEFAULT NULL,
+  `invitation_type` varchar(255) DEFAULT NULL,
+  `is_mefe_only_user` double DEFAULT NULL,
+  `user_more` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `lmb_units_10july18` */
+
+insert  into `lmb_units_10july18`(`mefe_invitation_id`,`bzfe_invitor_user_id`,`bz_user_id`,`user_role_type_id`,`is_occupant`,`bz_case_id`,`bz_unit_id`,`invitation_type`,`is_mefe_only_user`,`user_more`) values 
+('manualInsert1',6,1,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert2',6,2,4,0,0,486,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert3',6,13,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert4',6,21,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert5',6,37,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert6',6,38,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert7',6,49,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert8',6,66,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert9',6,71,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert10',6,76,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert11',6,77,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert12',6,79,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert13',6,80,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert14',6,85,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert15',6,86,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert16',6,87,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert17',6,88,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert18',6,1,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert19',6,2,4,0,0,487,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert20',6,13,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert21',6,21,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert22',6,37,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert23',6,38,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert24',6,49,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert25',6,66,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert26',6,71,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert27',6,76,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert28',6,77,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert29',6,79,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert30',6,80,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert31',6,85,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert32',6,86,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert33',6,87,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert34',6,88,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert35',6,1,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert36',6,2,4,0,0,488,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert37',6,13,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert38',6,21,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert39',6,37,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert40',6,38,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert41',6,49,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert42',6,66,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert43',6,71,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert44',6,76,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert45',6,77,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert46',6,79,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert47',6,80,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert48',6,85,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert49',6,86,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert50',6,87,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert51',6,88,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert52',6,1,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert53',6,2,4,0,0,489,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert54',6,13,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert55',6,21,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert56',6,37,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert57',6,38,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert58',6,49,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert59',6,66,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert60',6,71,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert61',6,76,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert62',6,77,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert63',6,79,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert64',6,80,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert65',6,85,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert66',6,86,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert67',6,87,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert68',6,88,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert69',6,1,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert70',6,2,4,0,0,490,'replace_default',1,'Use Unee-T for a faster reply'),
+('manualInsert71',6,13,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert72',6,21,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert73',6,37,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert74',6,38,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert75',6,49,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert76',6,66,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert77',6,71,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert78',6,76,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert79',6,77,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert80',6,79,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert81',6,80,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert82',6,85,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert83',6,86,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert84',6,87,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
+('manualInsert85',6,88,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply');
+
 /*Table structure for table `login_failure` */
 
 DROP TABLE IF EXISTS `login_failure`;
@@ -2390,6 +2496,55 @@ CREATE TABLE `mail_staging` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `mail_staging` */
+
+/*Table structure for table `manually_created_units` */
+
+DROP TABLE IF EXISTS `manually_created_units`;
+
+CREATE TABLE `manually_created_units` (
+  `pilot_user` varchar(255) DEFAULT NULL,
+  `pilotId` varchar(255) DEFAULT NULL,
+  `bzId` smallint(6) NOT NULL AUTO_INCREMENT,
+  `bz_name` varchar(64) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `ownerIds` json DEFAULT NULL,
+  `ownerIds_dev` json DEFAULT NULL,
+  `moreInfo` varchar(255) DEFAULT NULL,
+  `unitType` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `displayName` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `streetAddress` varchar(255) DEFAULT NULL,
+  `zipCode` varchar(255) DEFAULT NULL,
+  `comment` text,
+  PRIMARY KEY (`bzId`)
+) ENGINE=InnoDB AUTO_INCREMENT=329 DEFAULT CHARSET=utf8;
+
+/*Data for the table `manually_created_units` */
+
+insert  into `manually_created_units`(`pilot_user`,`pilotId`,`bzId`,`bz_name`,`createdAt`,`ownerIds`,`ownerIds_dev`,`moreInfo`,`unitType`,`city`,`country`,`displayName`,`state`,`streetAddress`,`zipCode`,`comment`) values 
+('DEFAULT_DATA','DEFAULT_DATA',1,NULL,'1999-09-09 09:09:09','[\"rsiKqbiXm3xpNKe8M\"]','[\"Zun9DGWunPnrR8Lv5\", \"QMDJ2csjRSv3Jx6Fz\"]',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'# For the DEV/Staging (1)\r\n#	- Franck (Zun9DGWunPnrR8Lv5)\r\n#	- Unee-T Administrator (QMDJ2csjRSv3Jx6Fz)\r\n\r\n# For the PROD (2)\r\n#	- Franck (rsiKqbiXm3xpNKe8M)'),
+('OxfordCaps',NULL,303,'Mendon Springs 01-02-303','2018-02-08 11:11:11','[\"9BrRDWFxZYWi84bGp\", \"M363Xf6wZXD2ERkRr\"]',NULL,'Mendon Springs','Apartment/Flat','Singapore','Singapore','Mendon Springs 01-02',NULL,'198 Pasir Pajang Road Singapore #01-02','117526',NULL),
+('OxfordCaps',NULL,304,'Kentview Park 04-07-304','2018-02-08 11:11:11','[\"9BrRDWFxZYWi84bGp\", \"M363Xf6wZXD2ERkRr\"]',NULL,'Kentview Park','Apartment/Flat','Singapore','Singapore','Kentview Park 04-07',NULL,'87 Pasir Panjang Hill #04-07','118892',NULL),
+('OxfordCaps',NULL,305,'Emerald Park 03-01-305','2018-02-08 11:11:11','[\"9BrRDWFxZYWi84bGp\", \"M363Xf6wZXD2ERkRr\"]',NULL,'Emerald Park','Apartment/Flat','Singapore','Singapore','Emerald Park 03-01',NULL,'2 Indus Road #03-01','169586',NULL),
+('OxfordCaps',NULL,306,'Alessandra 16-03-306','2018-02-08 11:11:11','[\"9BrRDWFxZYWi84bGp\", \"M363Xf6wZXD2ERkRr\"]',NULL,'Alessandra','Apartment/Flat','Singapore','Singapore','Alessandra 16-03',NULL,'31 Alexandra Road #16-03','159967',NULL),
+('OxfordCaps',NULL,307,'HV_C_09-02_3-307','2018-02-08 11:11:11','[\"9BrRDWFxZYWi84bGp\", \"M363Xf6wZXD2ERkRr\"]',NULL,'Heritage View','Apartment/Flat','Singapore','Singapore','HV_C_09-02_3',NULL,'6 Dover Rise #09-02','138678',NULL),
+('Denise',NULL,310,'Bombshell - Bliss-310',NULL,'[\"Wb3Qy5yqakPYRp22r\"]',NULL,NULL,'Salon','Bend','USA','Bombshell - Bliss','Oregon','555 NW Arizona Suite 10','97702',NULL),
+('Denise',NULL,311,'Bombshell-311',NULL,'[\"Wb3Qy5yqakPYRp22r\"]',NULL,NULL,'Salon','Bend','USA','Bombshell','Oregon','1470 SW Knoll Ave Suite 102','97702',NULL),
+('Denise',NULL,312,'Quimby-312',NULL,'[\"Wb3Qy5yqakPYRp22r\"]',NULL,NULL,'House','Bend','USA','Quimby','Oregon','444 NE Quimby Unit B','97701',NULL),
+('OxfordCaps',NULL,314,'Spring Grove 01-03-314','2018-02-08 11:11:11','[\"9BrRDWFxZYWi84bGp\", \"M363Xf6wZXD2ERkRr\"]',NULL,NULL,'Apartment/Flat','Singapore','Singapore','Spring Grove 01-03',NULL,'53A Grange Road #01-03','249566',NULL),
+('OxfordCaps',NULL,315,'11 Windsor Park-315','2018-02-08 11:11:11','[\"9BrRDWFxZYWi84bGp\", \"M363Xf6wZXD2ERkRr\"]',NULL,NULL,'Apartment/Flat','Singapore','Singapore','11 Windsor Park',NULL,'11 Windsor Park Hill','574201',NULL),
+('Phare de l\'arche',NULL,317,'C43 - 43/49 Av Puvis de Chavanne-317',NULL,'[\"n45iyDTfCczoCoWd3\", \"fjt7SPcbrWutaZgWG\"]',NULL,'Phare de l\'Arche','Apartment/Flat','Courbevoie','France','C43 Phare de l\'Arche',NULL,'43/49 Av Puvis de Chavanne','92400',NULL),
+('Ewa',NULL,318,'The Sail 32-02-318',NULL,'[\"KZYpxK74tPtCvQa8z\"]',NULL,'The Sail','Apartment/Flat','Singapore','Singapore','The Sail - 32-02',NULL,'2 marina boulevard #32-02','018987',NULL),
+('Oliver Mosmann',NULL,321,'114 Arthur Road-321',NULL,'[\"ma7NMgXoz6r36H8vi\", \"8XG9zmDLMpjLwCcJm\"]',NULL,NULL,'House','Singapore','Singapore','114 Arthur Road',NULL,'114 Arthur Road','439825 ',NULL),
+('Oliver Mosmann',NULL,322,'152-06 Marc-Chagall-Strasse-322',NULL,'[\"ma7NMgXoz6r36H8vi\", \"8XG9zmDLMpjLwCcJm\"]',NULL,'LeFlair','Apartment/Flat','Duesseldorf','Germany','152-06 Marc-Chagall-Strasse',NULL,'Marc-Chagall-Strasse 152-06','40477 ',NULL),
+('Oliver Mosmann',NULL,323,'176-02 Marc-Chagall-Strasse-323',NULL,'[\"ma7NMgXoz6r36H8vi\", \"8XG9zmDLMpjLwCcJm\"]',NULL,'LeFlair','Apartment/Flat','Duesseldorf','Germany','176-02 Marc-Chagall-Strasse',NULL,'Marc-Chagall-Strasse 176-02','40477 ',NULL),
+('Oliver Mosmann',NULL,324,'72 Grand Tower-324',NULL,'[\"ma7NMgXoz6r36H8vi\", \"8XG9zmDLMpjLwCcJm\"]',NULL,NULL,'Apartment/Flat','Frankfurt','Germany','72 Grand Tower',NULL,'Europaallee 2','60327 ',NULL),
+('Kiat','kiatlim',325,'30A Seah Street -325','2018-04-02 16:40:10','[\"C3WsF23qjkFNsiA7w\"]',NULL,NULL,'Office','Singapore','Singapore','30A Seah Street ',NULL,'30A Seah Street ','188386',NULL),
+('Sebastiaan','sebdeckers',326,'4 Ghim Moh - 04-254-326','2018-04-06 12:19:30','[\"EotsRL8vWABoHj8Mc\"]',NULL,NULL,'Apartment/Flat','Singapore','Singapore','4 Ghim Moh - 04-254',NULL,'#04-254 - 4 ghim moh','27004',NULL),
+('Roger','Roger',327,'One North Residence - 04-24-327','2018-06-24 13:07:36','[\"bi9ARnTsAZeBH4zXs\"]',NULL,'One North Residence','Apartment/Flat','Singapore','Singapore','One North Residence - 04-24',NULL,'#04-24 - 7 one north gateway','138642',NULL),
+('Kai','hendry@iki.fi',328,'Sunny Palms - 03-11-328','2018-04-09 09:32:19','[\"uZXic5XhEQpNqznDX\"]',NULL,'Sunny Palms','Apartment/Flat','Singapore','Singapore','Sunny Palms - 03-11',NULL,'65 Lor G Telok Kurau #03-11','426323',NULL);
 
 /*Table structure for table `milestones` */
 
@@ -2595,24 +2750,24 @@ CREATE TABLE `profiles` (
 /*Data for the table `profiles` */
 
 insert  into `profiles`(`userid`,`login_name`,`cryptpassword`,`realname`,`disabledtext`,`disable_mail`,`mybugslink`,`extern_id`,`is_enabled`,`last_seen_date`) values 
-(1,'administrator@mailinator.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,NULL),
-(2,'temporary.agent@mailinator.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
-(3,'temporary.landlord@mailinator.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
-(4,'temporary.tenant@mailinator.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
-(5,'temporary.contractor@mailinator.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
-(6,'temporary.mgt.cny@mailinator.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL),
-(7,'leonel@mailinator.com','uVkp9Jte,ts7kZpZuOcTkMAh1c4iX4IcEZTxpq0Sfr7XraiZoL+g{SHA-256}','Leonel','',0,1,NULL,1,NULL),
-(8,'marley@mailinator.com','AMOb0L00,NlJF4wyZVyT+xWuUr3RYgDIYxMhfBJCZxvkSh5cRSVs{SHA-256}','Marley','',0,1,NULL,1,NULL),
-(9,'michael@mailinator.com','Tp0jDQnd,kD+mf67/v/ck68nOyRTR4j7JNVpo1XzzDFSIR6U7Lps{SHA-256}','Michael','',0,1,NULL,1,NULL),
-(10,'sabrina@mailinator.com','fjeiOOVC,vUkDbdxcfk9snn9J5Vh4r/cujX2FfOKEcBZBAOcMw3k{SHA-256}','Sabrina','',0,1,NULL,1,NULL),
-(11,'celeste@mailinator.com','ZAU7m97y,kw6J1Bf2Hw21qELelxM3BbK+4avsmJytG/WzssHMbXE{SHA-256}','Celeste','',0,1,NULL,1,NULL),
-(12,'jocelyn@mailinator.com','0ZprH6RJ,zXa/xkkETvkPZ988xpyQQocYYfLAIWdCLCk1wE4QXNA{SHA-256}','Jocelyn','',0,1,NULL,1,NULL),
-(13,'marina@mailinator.com','8c2ofNwd,VpZbBAByL89ZKCI3xT7zFjZBb/X7JHW6KjtA9yY8KYo{SHA-256}','Marina','',0,1,NULL,1,NULL),
-(14,'regina@mailinator.com','HuM6hVYF,Ev6TBPrrOm4pSu5chsr1Q6Hi6q2Tmm98IbLh7ONqtYs{SHA-256}','Regina','',0,1,NULL,1,NULL),
-(15,'marvin@mailinator.com','6kTmgSt9,FI+tK4vrJQa8lInrRGKxmQ0JW2WpVImRk+ylhcMYGKM{SHA-256}','Marvin','',0,1,NULL,1,NULL),
-(16,'lawrence@mailinator.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
-(17,'anabelle@mailinator.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
-(18,'management.co@mailinator.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
+(1,'administrator@case.dev.unee-t.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,NULL),
+(2,'temporary.agent@case.dev.unee-t.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
+(3,'temporary.landlord@case.dev.unee-t.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
+(4,'temporary.tenant@case.dev.unee-t.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
+(5,'temporary.contractor@case.dev.unee-t.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
+(6,'temporary.mgt.cny@case.dev.unee-t.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL),
+(7,'leonel@case.dev.unee-t.com','uVkp9Jte,ts7kZpZuOcTkMAh1c4iX4IcEZTxpq0Sfr7XraiZoL+g{SHA-256}','Leonel','',0,1,NULL,1,NULL),
+(8,'marley@case.dev.unee-t.com','AMOb0L00,NlJF4wyZVyT+xWuUr3RYgDIYxMhfBJCZxvkSh5cRSVs{SHA-256}','Marley','',0,1,NULL,1,NULL),
+(9,'michael@case.dev.unee-t.com','Tp0jDQnd,kD+mf67/v/ck68nOyRTR4j7JNVpo1XzzDFSIR6U7Lps{SHA-256}','Michael','',0,1,NULL,1,NULL),
+(10,'sabrina@case.dev.unee-t.com','fjeiOOVC,vUkDbdxcfk9snn9J5Vh4r/cujX2FfOKEcBZBAOcMw3k{SHA-256}','Sabrina','',0,1,NULL,1,NULL),
+(11,'celeste@case.dev.unee-t.com','ZAU7m97y,kw6J1Bf2Hw21qELelxM3BbK+4avsmJytG/WzssHMbXE{SHA-256}','Celeste','',0,1,NULL,1,NULL),
+(12,'jocelyn@case.dev.unee-t.com','0ZprH6RJ,zXa/xkkETvkPZ988xpyQQocYYfLAIWdCLCk1wE4QXNA{SHA-256}','Jocelyn','',0,1,NULL,1,NULL),
+(13,'marina@case.dev.unee-t.com','8c2ofNwd,VpZbBAByL89ZKCI3xT7zFjZBb/X7JHW6KjtA9yY8KYo{SHA-256}','Marina','',0,1,NULL,1,NULL),
+(14,'regina@case.dev.unee-t.com','HuM6hVYF,Ev6TBPrrOm4pSu5chsr1Q6Hi6q2Tmm98IbLh7ONqtYs{SHA-256}','Regina','',0,1,NULL,1,NULL),
+(15,'marvin@case.dev.unee-t.com','6kTmgSt9,FI+tK4vrJQa8lInrRGKxmQ0JW2WpVImRk+ylhcMYGKM{SHA-256}','Marvin','',0,1,NULL,1,NULL),
+(16,'lawrence@case.dev.unee-t.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
+(17,'anabelle@case.dev.unee-t.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
+(18,'management.co@case.dev.unee-t.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
 
 /*Table structure for table `profiles_activity` */
 
@@ -4753,7 +4908,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -4782,7 +4937,9 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (22,'v3.21','2018-07-29 03:11:14','upgrade_unee-t_v3.20_to_v3.21.sql','Database updated from v3.20 to v3.21'),
 (23,'v3.22','2018-07-30 05:44:48','upgrade_unee-t_v3.21_to_v3.22.sql','Database updated from v3.21 to v3.22'),
 (24,'v3.23','2018-07-30 08:48:28','upgrade_unee-t_v3.22_to_v3.23.sql','Database updated from v3.22 to v3.23'),
-(25,'v3.24','2018-08-22 13:22:34','upgrade_unee-t_v3.23_to_v3.24.sql','Database updated from v3.23 to v3.24');
+(25,'v3.24','2018-08-22 13:22:34','upgrade_unee-t_v3.23_to_v3.24.sql','Database updated from v3.23 to v3.24'),
+(26,'v3.25','2018-10-24 10:58:49','upgrade_unee-t_v3.24_to_v3.25.sql','Database updated from v3.24 to v3.25'),
+(27,'v3.26','2018-10-25 03:29:15','upgrade_unee-t_v3.25_to_v3.26.sql','Database updated from v3.25 to v3.26');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -5191,6 +5348,230 @@ CREATE TABLE `ut_notification_message_new` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_notification_message_new` */
+
+/*Table structure for table `ut_notification_messages_cases` */
+
+DROP TABLE IF EXISTS `ut_notification_messages_cases`;
+
+CREATE TABLE `ut_notification_messages_cases` (
+  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
+  `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
+  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who needs to be notified - a FK to the BZ table ''profiles''',
+  `update_what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The field that was updated',
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `ut_notification_messages_cases` */
+
+insert  into `ut_notification_messages_cases`(`notification_id`,`created_datetime`,`processed_datetime`,`unit_id`,`case_id`,`user_id`,`update_what`) values 
+(1,'2018-05-04 14:48:41',NULL,283,61914,99,'CC'),
+(2,'2018-05-04 14:49:09',NULL,283,61914,99,'CC'),
+(3,'2018-05-04 14:52:30',NULL,283,61914,99,'CC'),
+(4,'2018-05-04 14:53:16',NULL,283,61914,99,'CC'),
+(5,'2018-05-04 14:53:22',NULL,283,61914,99,'CC'),
+(6,'2018-05-04 14:53:39',NULL,283,61914,99,'AssignedTo'),
+(7,'2018-05-04 14:55:53',NULL,284,61915,99,'CC'),
+(8,'2018-05-07 06:13:09',NULL,286,61925,99,'CC'),
+(9,'2018-05-08 06:59:33',NULL,283,61920,99,'CC'),
+(10,'2018-05-08 06:59:37',NULL,283,61920,99,'New Message'),
+(11,'2018-05-08 07:19:22',NULL,283,61920,99,'CC'),
+(12,'2018-05-08 07:19:26',NULL,283,61920,99,'New Message'),
+(13,'2018-05-10 10:40:47',NULL,287,61936,99,'CC'),
+(14,'2018-05-10 10:40:52',NULL,287,61936,99,'New Message'),
+(15,'2018-05-13 14:53:03',NULL,266,61932,85,'New Message'),
+(16,'2018-05-15 00:48:57',NULL,283,61918,99,'CC'),
+(17,'2018-05-15 00:49:02',NULL,283,61918,99,'New Message'),
+(18,'2018-05-15 01:05:34',NULL,286,61925,99,'CC'),
+(19,'2018-05-15 01:05:38',NULL,286,61925,99,'New Message'),
+(20,'2018-05-15 01:09:48',NULL,287,61936,99,'CC'),
+(21,'2018-05-15 01:09:52',NULL,287,61936,99,'New Message'),
+(22,'2018-05-16 03:51:23',NULL,286,61925,99,'Status'),
+(23,'2018-05-21 08:21:19',NULL,283,61960,104,'New Case'),
+(24,'2018-05-21 08:21:19',NULL,283,61960,104,'New Message'),
+(25,'2018-05-21 08:21:38',NULL,283,61960,104,'New Message'),
+(26,'2018-05-21 08:21:42',NULL,283,61960,104,'New Message'),
+(27,'2018-05-21 08:21:50',NULL,283,61960,104,'New Message'),
+(28,'2018-05-21 08:42:47',NULL,283,61961,104,'New Case'),
+(29,'2018-05-21 08:42:47',NULL,283,61961,104,'New Message'),
+(30,'2018-05-21 08:46:48',NULL,283,61958,100,'New Message'),
+(31,'2018-05-21 08:46:51',NULL,283,61958,100,'New Message'),
+(32,'2018-05-21 09:11:18',NULL,283,61962,104,'New Case'),
+(33,'2018-05-21 09:11:18',NULL,283,61962,104,'New Message'),
+(34,'2018-05-21 09:11:37',NULL,283,61962,104,'New Message'),
+(35,'2018-05-21 09:11:48',NULL,283,61962,104,'New Message'),
+(36,'2018-05-21 09:18:12',NULL,283,61954,100,'New Message'),
+(37,'2018-05-21 09:26:23',NULL,283,61963,104,'New Case'),
+(38,'2018-05-21 09:26:23',NULL,283,61963,104,'New Message'),
+(39,'2018-05-21 09:26:29',NULL,283,61963,104,'New Message'),
+(40,'2018-05-21 09:26:56',NULL,283,61963,104,'New Message'),
+(41,'2018-05-21 09:29:53',NULL,283,61964,104,'New Case'),
+(42,'2018-05-21 09:29:53',NULL,283,61964,104,'New Message'),
+(43,'2018-05-21 09:29:58',NULL,283,61964,104,'New Message'),
+(44,'2018-05-21 09:30:25',NULL,283,61964,104,'New Message'),
+(45,'2018-05-21 09:52:51',NULL,283,61965,104,'New Case'),
+(46,'2018-05-21 09:52:51',NULL,283,61965,104,'New Message'),
+(47,'2018-05-21 09:56:18',NULL,283,61966,104,'New Case'),
+(48,'2018-05-21 09:56:18',NULL,283,61966,104,'New Message'),
+(49,'2018-05-21 09:56:24',NULL,283,61966,104,'New Message'),
+(50,'2018-05-21 09:56:27',NULL,283,61966,104,'New Message'),
+(51,'2018-05-21 09:56:35',NULL,283,61966,104,'New Message'),
+(52,'2018-05-21 10:05:27',NULL,283,61967,104,'New Case'),
+(53,'2018-05-21 10:05:27',NULL,283,61967,104,'New Message'),
+(54,'2018-05-21 10:05:33',NULL,283,61967,104,'New Message'),
+(55,'2018-05-21 10:05:36',NULL,283,61967,104,'New Message'),
+(56,'2018-05-21 10:06:01',NULL,283,61967,104,'New Message'),
+(57,'2018-05-21 10:07:33',NULL,283,61968,104,'New Case'),
+(58,'2018-05-21 10:07:33',NULL,283,61968,104,'New Message'),
+(59,'2018-05-21 10:07:38',NULL,283,61968,104,'New Message'),
+(60,'2018-05-21 10:07:41',NULL,283,61968,104,'New Message'),
+(61,'2018-05-21 10:08:09',NULL,283,61968,104,'New Message'),
+(62,'2018-05-21 10:09:28',NULL,283,61969,104,'New Case'),
+(63,'2018-05-21 10:09:28',NULL,283,61969,104,'New Message'),
+(64,'2018-05-21 10:09:34',NULL,283,61969,104,'New Message'),
+(65,'2018-05-21 10:09:37',NULL,283,61969,104,'New Message'),
+(66,'2018-05-21 10:10:03',NULL,283,61969,104,'New Message'),
+(67,'2018-05-21 11:34:13',NULL,283,61969,100,'Status'),
+(68,'2018-05-21 11:34:13',NULL,283,61969,100,'Resolution'),
+(69,'2018-05-22 02:56:17',NULL,283,61970,104,'New Case'),
+(70,'2018-05-22 02:56:17',NULL,283,61970,104,'New Message'),
+(71,'2018-05-22 02:56:22',NULL,283,61970,104,'New Message'),
+(72,'2018-05-22 02:56:25',NULL,283,61970,104,'New Message'),
+(73,'2018-05-22 02:56:34',NULL,283,61970,104,'New Message'),
+(74,'2018-05-22 08:05:41',NULL,283,61955,100,'CC'),
+(75,'2018-05-22 08:05:45',NULL,283,61955,100,'New Message'),
+(76,'2018-05-22 08:07:20',NULL,288,61937,99,'CC'),
+(77,'2018-05-22 08:07:24',NULL,288,61937,99,'New Message'),
+(78,'2018-05-22 12:11:13',NULL,283,61969,100,'CC'),
+(79,'2018-05-22 12:12:38',NULL,283,61969,100,'CC'),
+(80,'2018-05-23 01:36:42',NULL,283,61918,99,'Solution'),
+(81,'2018-05-23 01:37:16',NULL,283,61918,99,'Next Step'),
+(82,'2018-05-23 01:39:08',NULL,283,61918,99,'New Message'),
+(83,'2018-05-23 14:32:11',NULL,283,61961,99,'New Message'),
+(84,'2018-05-24 03:33:10',NULL,284,61915,99,'Solution'),
+(85,'2018-05-24 03:33:12',NULL,284,61915,99,'Solution'),
+(86,'2018-05-24 03:33:16',NULL,284,61915,99,'Next Step'),
+(87,'2018-05-24 12:36:21',NULL,283,61969,100,'CC'),
+(88,'2018-05-24 12:36:25',NULL,283,61969,100,'New Message'),
+(89,'2018-05-24 12:36:25',NULL,288,61937,99,'CC'),
+(90,'2018-05-24 12:36:29',NULL,288,61937,99,'New Message'),
+(91,'2018-05-24 12:40:47',NULL,288,61937,99,'CC'),
+(92,'2018-05-24 12:40:54',NULL,288,61937,99,'CC'),
+(93,'2018-05-24 12:57:19',NULL,288,61937,208,'Solution'),
+(94,'2018-05-24 12:57:23',NULL,288,61937,208,'Next Step'),
+(95,'2018-05-24 12:57:37',NULL,288,61937,208,'Solution'),
+(96,'2018-05-24 12:57:40',NULL,288,61937,208,'Next Step'),
+(97,'2018-05-25 07:32:31',NULL,284,61924,99,'CC'),
+(98,'2018-05-25 07:32:35',NULL,284,61924,99,'New Message'),
+(99,'2018-05-25 08:21:42',NULL,284,61924,99,'CC'),
+(100,'2018-05-25 08:21:46',NULL,284,61924,99,'New Message'),
+(101,'2018-05-25 08:22:19',NULL,284,61924,99,'CC'),
+(102,'2018-05-25 08:22:23',NULL,284,61924,99,'New Message'),
+(103,'2018-05-25 08:24:13',NULL,284,61924,99,'CC'),
+(104,'2018-05-25 08:24:17',NULL,284,61924,99,'New Message'),
+(105,'2018-05-25 08:29:10',NULL,284,61924,99,'CC'),
+(106,'2018-05-25 08:29:14',NULL,284,61924,99,'New Message'),
+(107,'2018-05-25 08:35:30',NULL,284,61924,99,'CC'),
+(108,'2018-05-25 08:35:34',NULL,284,61924,99,'New Message'),
+(109,'2018-05-25 08:36:19',NULL,284,61924,99,'CC'),
+(110,'2018-05-25 08:36:23',NULL,284,61924,99,'New Message'),
+(111,'2018-05-25 15:11:03',NULL,288,61937,99,'Next Step'),
+(112,'2018-05-25 15:11:10',NULL,288,61937,99,'Next Step'),
+(113,'2018-05-25 15:51:29',NULL,288,61937,99,'CC'),
+(114,'2018-05-25 15:51:32',NULL,288,61937,99,'New Message'),
+(115,'2018-05-25 15:51:53',NULL,288,61937,99,'Solution'),
+(116,'2018-05-25 15:51:58',NULL,288,61937,99,'Solution'),
+(117,'2018-05-25 15:54:29',NULL,288,61937,216,'New Message'),
+(118,'2018-05-27 05:16:15',NULL,284,61924,99,'CC'),
+(119,'2018-05-28 07:54:13',NULL,284,61924,99,'Next Step'),
+(120,'2018-05-28 10:12:10',NULL,284,61924,99,'CC'),
+(121,'2018-05-28 10:12:12',NULL,284,61924,99,'New Message'),
+(122,'2018-05-29 04:11:39',NULL,287,61936,99,'New Message'),
+(123,'2018-05-29 04:11:55',NULL,287,61936,99,'Solution'),
+(124,'2018-05-29 04:11:57',NULL,287,61936,99,'Solution'),
+(125,'2018-05-29 04:12:04',NULL,287,61936,99,'Solution'),
+(126,'2018-05-29 05:57:50',NULL,287,61936,99,'New Message'),
+(127,'2018-05-29 05:58:20',NULL,287,61936,99,'New Message'),
+(128,'2018-05-29 06:39:46',NULL,287,61936,99,'New Message'),
+(129,'2018-05-29 06:40:31',NULL,287,61936,99,'New Message'),
+(130,'2018-05-29 06:46:54',NULL,287,61936,99,'New Message'),
+(131,'2018-05-29 06:50:38',NULL,287,61936,99,'New Message'),
+(132,'2018-05-29 06:53:17',NULL,287,61936,99,'New Message'),
+(133,'2018-05-29 07:02:21',NULL,287,61936,99,'New Message'),
+(134,'2018-05-29 07:21:12',NULL,287,61936,99,'New Message'),
+(135,'2018-05-29 07:23:33',NULL,287,61936,99,'New Message'),
+(136,'2018-05-29 07:30:14',NULL,286,61925,99,'New Message'),
+(137,'2018-05-29 07:30:41',NULL,286,61925,99,'New Message'),
+(138,'2018-05-29 07:30:59',NULL,286,61925,99,'Solution'),
+(139,'2018-05-29 07:31:37',NULL,284,61971,99,'New Case'),
+(140,'2018-05-29 07:31:37',NULL,284,61971,99,'New Message'),
+(141,'2018-05-29 07:31:57',NULL,288,61972,99,'New Case'),
+(142,'2018-05-29 07:31:57',NULL,288,61972,99,'New Message'),
+(143,'2018-05-30 03:08:39',NULL,283,61920,99,'New Message'),
+(144,'2018-05-30 03:27:05',NULL,283,61920,99,'New Message'),
+(145,'2018-05-30 03:30:56',NULL,283,61920,99,'New Message'),
+(146,'2018-05-30 03:32:14',NULL,283,61920,99,'New Message'),
+(147,'2018-05-30 03:34:56',NULL,283,61920,99,'New Message'),
+(148,'2018-05-30 03:36:15',NULL,283,61920,99,'New Message'),
+(149,'2018-05-30 03:37:58',NULL,283,61920,99,'New Message'),
+(150,'2018-05-30 03:41:30',NULL,283,61920,99,'New Message'),
+(151,'2018-05-30 03:43:37',NULL,283,61920,99,'New Message'),
+(152,'2018-05-30 03:44:29',NULL,283,61920,99,'New Message'),
+(153,'2018-05-30 06:16:23',NULL,284,61915,99,'New Message'),
+(154,'2018-05-30 06:20:15',NULL,283,61920,99,'New Message'),
+(155,'2018-05-30 07:08:32',NULL,283,61920,99,'New Message'),
+(156,'2018-05-30 07:09:52',NULL,283,61920,99,'New Message'),
+(157,'2018-05-30 07:13:12',NULL,283,61920,99,'New Message'),
+(158,'2018-05-30 07:24:08',NULL,283,61920,99,'New Message'),
+(159,'2018-05-30 07:24:55',NULL,283,61920,99,'New Message'),
+(160,'2018-05-30 07:26:25',NULL,283,61920,99,'New Message'),
+(161,'2018-05-30 07:32:03',NULL,283,61920,99,'New Message'),
+(162,'2018-05-30 07:33:57',NULL,283,61920,99,'New Message'),
+(163,'2018-05-30 07:36:02',NULL,283,61920,99,'New Message'),
+(164,'2018-05-30 07:36:38',NULL,283,61920,99,'New Message'),
+(165,'2018-05-30 07:37:48',NULL,283,61920,99,'New Message'),
+(166,'2018-05-30 07:38:50',NULL,284,61915,99,'New Message'),
+(167,'2018-05-30 07:40:00',NULL,284,61971,99,'New Message'),
+(168,'2018-05-30 07:41:37',NULL,283,61918,99,'New Message'),
+(169,'2018-05-31 01:00:35',NULL,284,61915,99,'New Message'),
+(170,'2018-05-31 01:14:43',NULL,284,61915,99,'New Message'),
+(171,'2018-05-31 02:28:39',NULL,284,61915,99,'New Message'),
+(172,'2018-05-31 02:32:33',NULL,284,61915,99,'New Message'),
+(173,'2018-05-31 03:49:32',NULL,286,61925,99,'New Message'),
+(174,'2018-06-03 04:32:23',NULL,283,61914,99,'New Message'),
+(175,'2018-06-03 04:32:55',NULL,283,61914,99,'New Message'),
+(176,'2018-06-03 04:40:43',NULL,284,61924,99,'New Message'),
+(177,'2018-06-03 04:45:20',NULL,284,61924,99,'New Message'),
+(178,'2018-06-04 12:59:19',NULL,283,61973,99,'New Case'),
+(179,'2018-06-04 12:59:19',NULL,283,61973,99,'New Message'),
+(180,'2018-06-05 09:17:31',NULL,283,61973,105,'New Message'),
+(181,'2018-06-05 09:17:32',NULL,283,61973,105,'CC'),
+(182,'2018-06-05 09:17:32',NULL,283,61973,105,'URL'),
+(183,'2018-06-06 09:05:22',NULL,284,61926,99,'AssignedTo'),
+(184,'2018-06-08 11:20:23',NULL,286,61974,99,'New Case'),
+(185,'2018-06-08 11:20:23',NULL,286,61974,99,'New Message'),
+(186,'2018-06-11 07:19:51',NULL,286,61974,99,'CC'),
+(187,'2018-06-11 12:44:14',NULL,283,61914,99,'New Message'),
+(188,'2018-06-11 12:59:13',NULL,283,61914,99,'CC'),
+(189,'2018-06-11 13:00:11',NULL,283,61914,99,'CC'),
+(190,'2018-06-11 14:13:44',NULL,32,12345,1,'AssignedTo'),
+(191,'2018-06-11 14:13:57',NULL,32,12345,1,'AssignedTo'),
+(192,'2018-06-11 14:19:25',NULL,32,12345,1,'AssignedTo'),
+(193,'2018-06-11 14:19:37',NULL,32,12345,1,'AssignedTo'),
+(194,'2018-06-11 14:22:35',NULL,32,12345,1,'AssignedTo'),
+(195,'2018-06-11 14:24:52',NULL,289,61975,100,'New Case'),
+(196,'2018-06-11 14:24:52',NULL,289,61975,100,'New Message'),
+(197,'2018-06-11 14:25:48',NULL,289,61975,100,'AssignedTo'),
+(198,'2018-06-11 14:26:13',NULL,289,61975,100,'CC'),
+(199,'2018-06-11 14:26:52',NULL,289,61975,100,'CC'),
+(200,'2018-06-11 14:29:31',NULL,289,61975,100,'CC'),
+(201,'2018-06-11 14:50:22',NULL,289,61975,100,'CC'),
+(202,'2018-06-11 14:50:29',NULL,289,61975,100,'CC'),
+(203,'2018-06-12 01:59:01',NULL,284,61926,99,'Solution'),
+(204,'2018-06-12 01:59:28',NULL,284,61926,99,'New Message'),
+(205,'2018-06-12 02:00:03',NULL,284,61926,99,'New Message');
 
 /*Table structure for table `ut_notification_types` */
 
@@ -6450,6 +6831,7 @@ DELIMITER $$
 
 /*!50003 CREATE PROCEDURE `add_user_to_role_in_unit`()
 BEGIN
+
     # This procedure needs the following variables:
     #   - `mefe_invitation_id`
     #   - `environment`: Which environment are you creating the unit in?
@@ -6542,6 +6924,7 @@ BEGIN
     # First we need to define all the variables we need
     #					
     #####################################################
+
     # We make sure that all the variable we user are set to NULL first
     # This is to avoid issue of a variable 'silently' using a value from a previous run
         SET @reference_for_update = NULL;
@@ -6586,8 +6969,29 @@ BEGIN
         SET @can_approve_all_flags = NULL;
         SET @is_current_assignee_this_role_a_dummy_user = NULL;
         SET @this_script = NULL;
+
+    # Default values:
+        
+        #User Permissions in the unit:
+            SET @can_see_time_tracking = 1;
+            SET @can_create_shared_queries = 0;
+            SET @can_tag_comment = 1;
+            SET @can_create_new_cases = 1;
+            SET @can_edit_a_case = 1;
+            SET @can_see_all_public_cases = 1;
+            SET @can_edit_all_field_in_a_case_regardless_of_role = 1;
+            SET @can_see_unit_in_search = 1;
+            SET @user_is_publicly_visible = 1;
+            SET @user_can_see_publicly_visible = 1;
+            SET @can_ask_to_approve_flags = 1;
+            SET @can_approve_all_flags = 1;
+        
+        # Do we need to make the invitee a default CC for all new cases for this role in this unit?
+            SET @user_in_default_cc_for_cases = 0;
+
     # Timestamp	
         SET @timestamp = NOW();
+
     # We define the name of this script for future reference:
         SET @this_script = 'PROCEDURE add_user_to_role_in_unit';
         
@@ -6596,14 +7000,19 @@ BEGIN
         
     # The reference of the record we want to update in the table `ut_invitation_api_data`
         SET @reference_for_update = (SELECT `id` FROM `ut_invitation_api_data` WHERE `mefe_invitation_id` = @mefe_invitation_id);	
+
     # The MEFE information:
         SET @mefe_invitor_user_id = (SELECT `mefe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+
     # The unit name and description
         SET @product_id = (SELECT `bz_unit_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+
     # The Invitor - BZ user id of the user that has genereated the invitation.
         SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+
         # We populate the additional variables that we will need for this script to work:
             SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
+
     # Role in this unit for the invited user:
         #	- Tenant 1
         # 	- Landlord 2
@@ -6614,6 +7023,7 @@ BEGIN
             
     # The user who you want to associate to this unit - BZ user id of the user that you want to associate/invite to the unit.
         SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
+
         # We populate the additional variables that we will need for this script to work:
             SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
             SET @user_pub_name = (SELECT (LEFT(`login_name`,INSTR(`login_name`,"@")-1)) FROM `profiles` WHERE `userid` = @bz_user_id);
@@ -6638,8 +7048,10 @@ BEGIN
                                             ;
                     
         # Is the current assignee for this role for this unit one of the dummy user in this environment?
+
             # What is the CURRENT default assignee for the role this user has been invited to?
                 SET @current_default_assignee_this_role = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
+
             # What is the default dummy user id for this environment?
             
                 # Get the BZ profile id of the dummy users based on the environment variable
@@ -6648,6 +7060,7 @@ BEGIN
                                                     FROM `ut_temp_dummy_users_for_roles` 
                                                     WHERE `environment_id` = @environment)
                                                     ;
+
                     # Landlord 2
                         SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` 
                                                     FROM `ut_temp_dummy_users_for_roles` 
@@ -6671,6 +7084,7 @@ BEGIN
                                                     FROM `ut_temp_dummy_users_for_roles` 
                                                     WHERE `environment_id` = @environment)
                                                     ;
+
             # What is the BZ dummy user id for this role in this script?
                 SET @bz_user_id_dummy_user_this_role = IF( @id_role_type = 1
                                                 , @bz_user_id_dummy_tenant
@@ -6689,6 +7103,7 @@ BEGIN
                                                     )
                                                 )
                                                 ;
+
     # Is the invited user an occupant of the unit?
         SET @is_occupant = (SELECT `is_occupant` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
         
@@ -6706,6 +7121,7 @@ BEGIN
         #	- The invitation type
         #	- The default values currently configured
         # We NEED to have defined the variable @invitation_type FIRST!
+
         # Things which depends on the invitation type:
         
             # Do we need to make the invitee a default CC for all new cases for this role in this unit?
@@ -6719,6 +7135,7 @@ BEGIN
                         , '0'
                         )
                         ;
+
             # Do we need to replace the default assignee for this role in this unit?
             # This depends on the type of invitation that we are creating
             #	- 1 (YES) if the invitation type is
@@ -6763,6 +7180,7 @@ BEGIN
                     # These are defined based on the invited user attributes:
                     # 	- role_type_id 
                     # 	- is_occupant
+
     # Answer to the question "Is the current default assignee for this role one of the dummy users?"
         SET @is_current_assignee_this_role_a_dummy_user = IF( @replace_default_assignee = '1'
             , '0'
@@ -6787,8 +7205,10 @@ BEGIN
     #		- @component_id_this_role: 
     #		  The id of the role in the bz table `components`
         CALL `remove_user_from_default_cc`;
+
     # We are recording this for KPI measurements
     #	- Number of user per role per unit.
+
         # We record the information about the users that we have just created
         # If this is the first time we record something for this user for this unit, we create a new record.
         # If there is already a record for THAT USER for THIS, then we are updating the information
@@ -6905,16 +7325,17 @@ BEGIN
                     , '.\r\ '
                     , `comment`)
             ;
+
     # We always reset the permissions to the default permissions first
-        # Create the table to prepare the permissions
-            CALL `create_temp_table_to_update_permissions`;
-            
         # Revoke all permissions for this user in this unit
             # This procedure needs the following objects:
             #	- Variables:
             #		- @product_id
             #		- @bz_user_id
             CALL `revoke_all_permission_for_this_user_in_this_unit`;
+
+        # Create the table to prepare the permissions
+            CALL `create_temp_table_to_update_permissions`;
             
         # Prepare the permissions - configure these to default:
             # Generic Permissions
@@ -7003,6 +7424,7 @@ BEGIN
     #		- @is_mefe_only_user
     #		- @role_user_more
         CALL `update_assignee_if_dummy_user`;
+
     # Make the invited user default CC for all cases in this unit if needed
     # This procedure needs the following objects:
     #	- variables:
@@ -7016,6 +7438,7 @@ BEGIN
         
         # Run the procedure
             CALL `user_in_default_cc_for_cases`;	
+
     # Make the invited user the new default assignee for all cases in this role in this unit if needed
     # This procedure needs the following objects:
     #	- variables:
@@ -7029,6 +7452,7 @@ BEGIN
         
         # Run the procedure
             CALL `user_is_default_assignee_for_cases`;
+
     # Remove this user from this role in this unit if needed:
     # This procedure needs the following objects
     #	- Variables:
@@ -7042,7 +7466,9 @@ BEGIN
     #		- @user_pub_name
     #		- @creator_bz_id
         CALL `remove_user_from_role`;
+
     # Update the table 'ut_invitation_api_data' so we record what we have done
+
         # Timestamp	
             SET @timestamp = NOW();
             
@@ -7057,6 +7483,7 @@ BEGIN
             
         # We Delete the temp table as we do not need it anymore
             DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
 END */$$
 DELIMITER ;
 
@@ -9145,6 +9572,41 @@ BEGIN
 END */$$
 DELIMITER ;
 
+/* Procedure structure for procedure `lambda_notification_case_event` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_event` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `lambda_notification_case_event`(
+	IN notification_id int(11)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN user_id mediumint(9)
+	, IN update_what varchar(255)
+	)
+    SQL SECURITY INVOKER
+BEGIN
+	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
+	#	- DEV/Staging: 812644853088
+	#	- Prod: 192458993663
+	#	- Demo: 915001051872
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:function:alambda_simple')
+		, CONCAT ('{ '
+			, '"notification_id": "', notification_id
+			, '", "created_datetime" : "', created_datetime
+			, '", "unit_id" : "', unit_id
+			, '", "case_id" : "', case_id
+			, '", "user_id" : "', user_id
+			, '", "update_what" : "', update_what
+			, '"}'
+			)
+		)
+		;
+END */$$
+DELIMITER ;
+
 /* Procedure structure for procedure `lambda_notification_case_invited` */
 
 /*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_invited` */;
@@ -9667,7 +10129,6 @@ BEGIN
 	# We record the name of this procedure for future debugging and audit_log`
 		SET @script = 'PROCEDURE - revoke_all_permission_for_this_user_in_this_unit';
 		SET @timestamp = NOW();
-		
 	# We need to get the group_id for this unit
 		SET @can_see_time_tracking_group_id = 16;
 		SET @can_create_shared_queries_group_id = 17;
@@ -9676,7 +10137,7 @@ BEGIN
 		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
 		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
 		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
-		
+	
 		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
 		
 		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
@@ -9684,7 +10145,6 @@ BEGIN
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-	
 		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
 		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
 		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
@@ -9703,9 +10163,8 @@ BEGIN
 		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
 		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
 		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
-	
 	# We can now remove all the permissions for this unit.
-		DELETE FROM `ut_user_group_map_temp`
+		DELETE FROM `user_group_map`
 			WHERE (
 				(`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
 				OR (`user_id` = @bz_user_id AND `group_id` = @can_create_shared_queries_group_id)
@@ -9739,7 +10198,6 @@ BEGIN
 				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
 				)
 				;
-						
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user #'
 										, @bz_user_id
@@ -9787,7 +10245,7 @@ BEGIN
 					;
 			# We log what we have just done into the `ut_audit_log` table
 				
-				SET @bzfe_table = 'ut_user_group_map_temp';
+				SET @bzfe_table = 'user_group_map';
 				
 				INSERT INTO `ut_audit_log`
 					 (`datetime`
@@ -9984,13 +10442,13 @@ BEGIN
 						, 'n/a'
 						, 'n/a - we delete the record'
 						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the group id = '
-						, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
-						, '.')
-						)
+					, @script
+					, CONCAT('Remove the record where BZ user id ='
+					, @bz_user_id
+					, ' the group id = '
+					, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
+					, '.')
+					)
 					, (NOW() 
 						,@bzfe_table
 						, 'n/a'
@@ -10003,7 +10461,7 @@ BEGIN
 						, (SELECT IFNULL(@group_id_are_users_tenant, 'group_id_are_users_tenant is NULL'))
 						, '.')
 						)
-					 , (NOW() 
+					, (NOW() 
 						,@bzfe_table
 						, 'n/a'
 						, 'n/a - we delete the record'
@@ -10027,18 +10485,18 @@ BEGIN
 						, (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
 						, '.')
 						)
-					 , (NOW() 
+					, (NOW() 
 						,@bzfe_table
-						, 'n/a'
-						, 'n/a - we delete the record'
-						, 'n/a - we delete the record'
-						, @script
-						, CONCAT('Remove the record where BZ user id ='
-						, @bz_user_id
-						, ' the group id = '
-						, (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
-						, '.')
-						)
+							, 'n/a'
+							, 'n/a - we delete the record'
+							, 'n/a - we delete the record'
+							, @script
+							, CONCAT('Remove the record where BZ user id ='
+							, @bz_user_id
+							, ' the group id = '
+							, (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
+							, '.')
+							)
 					 , (NOW() 
 						,@bzfe_table
 						, 'n/a'
@@ -12893,7 +13351,6 @@ BEGIN
  
 	# When are we doing this?
 		SET @timestamp = NOW();	
-
 	# Flash Count the total number of Enabled unit at the date of this query
 	# Put this in a variable
 		SET @count_enabled_units = (SELECT
@@ -12911,7 +13368,6 @@ BEGIN
 			`products`
 			) 
 			;
-
 	# We have everything: insert in the log table
 		INSERT INTO `ut_log_count_enabled_units`
 			(`timestamp`
@@ -12937,39 +13393,57 @@ DELIMITER $$
     SQL SECURITY INVOKER
 BEGIN
 	# We update the `user_group_map` table
-	
-	# First we disable the FK checks
-		 SET NAMES utf8 ;
-		 SET SQL_MODE='' ;
-		 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 ;
-		 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 ;
-		 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' ;
-		 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 ;
+    #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
+    #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
+    #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
+	# We drop the deduplication table if it exists:
+		DROP TABLE IF EXISTS `user_group_map_dedup`;
+	# We create a table `user_group_map_dedup` to prepare the data we need to insert
+		CREATE TABLE `user_group_map_dedup` (
+			`user_id` MEDIUMINT(9) NOT NULL,
+			`group_id` MEDIUMINT(9) NOT NULL,
+			`isbless` TINYINT(4) NOT NULL DEFAULT '0',
+			`grant_type` TINYINT(4) NOT NULL DEFAULT '0',
+			UNIQUE KEY `user_group_map_dedup_user_id_idx` (`user_id`,`group_id`,`grant_type`,`isbless`),
+			KEY `fk_user_group_map_dedup_group_id_groups_id` (`group_id`),
+			CONSTRAINT `fk_user_group_map_dedup_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+			CONSTRAINT `fk_user_group_map_dedup_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
+			)
+		;
 		
-		# We truncate the table first (to avoid duplicates)
-			TRUNCATE TABLE `user_group_map`;
+	# We insert the de-duplicated record in the table `user_group_map_dedup`
+		INSERT INTO `user_group_map_dedup`
+		SELECT `user_id`
+			, `group_id`
+			, `isbless`
+			, `grant_type`
+		FROM
+			`ut_user_group_map_temp`
+		GROUP BY `user_id`
+			, `group_id`
+			, `isbless`
+			, `grant_type`
+		;
 			
-		# We insert the data we need
-			INSERT INTO `user_group_map`
-			SELECT `user_id`
-				, `group_id`
-				, `isbless`
-				, `grant_type`
-			FROM
-				`ut_user_group_map_temp`
-			GROUP BY `user_id`
-				, `group_id`
-				, `isbless`
-				, `grant_type`
-			;
-		# We drop the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `ut_user_group_map_temp`;
-			
-	# We implement the FK checks again		
-		 SET SQL_MODE=@OLD_SQL_MODE ;
-		 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS ;
-		 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS ;
-		 SET SQL_NOTES=@OLD_SQL_NOTES ;	
+	# We insert the data we need in the `user_group_map` table
+		INSERT INTO `user_group_map`
+		SELECT `user_id`
+			, `group_id`
+			, `isbless`
+			, `grant_type`
+		FROM
+			`user_group_map_dedup`
+		# The below code is overkill in this context: 
+		# the Unique Key Constraint makes sure that all records are unique in the table `user_group_map`
+		ON DUPLICATE KEY UPDATE
+			`user_id` = `user_group_map_dedup`.`user_id`
+			, `group_id` = `user_group_map_dedup`.`group_id`
+			, `isbless` = `user_group_map_dedup`.`isbless`
+			, `grant_type` = `user_group_map_dedup`.`grant_type`
+		;
+	# We drop the temp table as we do not need it anymore
+		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
+		DROP TABLE IF EXISTS `user_group_map_dedup`;
 END */$$
 DELIMITER ;
 
@@ -13644,6 +14118,20 @@ DROP TABLE IF EXISTS `count_messages_per_unit_per_month`;
  `count_messages` bigint(21) 
 )*/;
 
+/*Table structure for table `count_messages_per_unit_per_quarter` */
+
+DROP TABLE IF EXISTS `count_messages_per_unit_per_quarter`;
+
+/*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_quarter` */;
+/*!50001 DROP TABLE IF EXISTS `count_messages_per_unit_per_quarter` */;
+
+/*!50001 CREATE TABLE  `count_messages_per_unit_per_quarter`(
+ `year` int(4) ,
+ `quarter` int(1) ,
+ `bz_unit_id` smallint(6) ,
+ `count_messages` bigint(21) 
+)*/;
+
 /*Table structure for table `count_messages_per_unit_per_week` */
 
 DROP TABLE IF EXISTS `count_messages_per_unit_per_week`;
@@ -14303,6 +14791,13 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_month` */;
 
 /*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
+
+/*View structure for view count_messages_per_unit_per_quarter */
+
+/*!50001 DROP TABLE IF EXISTS `count_messages_per_unit_per_quarter` */;
+/*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_quarter` */;
+
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_quarter` AS select year(`longdescs`.`bug_when`) AS `year`,quarter(`longdescs`.`bug_when`) AS `quarter`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),quarter(`longdescs`.`bug_when`),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,quarter(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
 
 /*View structure for view count_messages_per_unit_per_week */
 
