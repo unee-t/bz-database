@@ -23,9 +23,16 @@
 ###############################
 # This update
 #
+#   - Add a unique key constraint to the table `group_group_map`
+#     This is to facilitate updates of this table
+#
 #   - Create the table `ut_user_group_map_temp` once.
 #
-#    - When we revoke permissions, make sure we do this also in the table `ut_user_group_map_temp`
+#   - Create a procedure `create_temp_table_to_update_group_permissions` to create the table `ut_group_group_map_temp`
+#
+#   - Call the procedure `create_temp_table_to_update_group_permissions` to create the table `ut_group_group_map_temp`
+#
+#   - When we revoke permissions, make sure we do this also in the table `ut_user_group_map_temp`
 #         Update the procedure `revoke_all_permission_for_this_user_in_this_unit`
 #
 #   - Make sure we never call `create_temp_table_to_update_permissions` as part of another procedure.
@@ -74,8 +81,48 @@
 # When are we doing this?
 	SET @the_timestamp = NOW();
 
+# Add a unique key constraint to the table `group_group_map`
+
+    ALTER TABLE `group_group_map` 
+    	ADD UNIQUE KEY `group_group_map_member_id_idx`(`member_id`,`grantor_id`,`grant_type`) 
+    ;
+
 # We create the table `ut_user_group_map_temp`
     CALL `create_temp_table_to_update_permissions`;
+
+# Create a procedure `create_temp_table_to_update_group_permissions` to create the table `ut_group_group_map_temp`
+
+    # First we drop the table if it exists
+        DROP PROCEDURE IF EXISTS create_temp_table_to_update_group_permissions;
+
+    # We then re-create the table `ut_group_group_map_temp`
+
+DELIMITER $$
+CREATE PROCEDURE create_temp_table_to_update_group_permissions()
+SQL SECURITY INVOKER
+BEGIN
+	# We use a temporary table to do this, this is to avoid duplicate in the group_group_map table
+	# DELETE the temp table if it exists
+	    DROP TABLE IF EXISTS `ut_group_group_map_temp`;
+	
+	# Re-create the temp table
+        CREATE TABLE `ut_group_group_map_temp` (
+        `member_id` MEDIUMINT(9) NOT NULL,
+        `grantor_id` MEDIUMINT(9) NOT NULL,
+        `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+        ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+    # Add the records that exist in the table group_group_map
+        INSERT INTO `ut_group_group_map_temp`
+            SELECT *
+            FROM `group_group_map`;
+
+END $$
+DELIMITER ;
+
+# Call the procedure `create_temp_table_to_update_group_permissions` to create the table `ut_group_group_map_temp`
+
+    CALL `create_temp_table_to_update_group_permissions`;
 
 # Update the procedure to revoke the permission for a given user
 # make sure we do this also in the table `ut_user_group_map_temp`
@@ -2336,23 +2383,8 @@ BEGIN
 			
 	# We configure the group permissions:
 		# Data for the table `group_group_map`
-		# We use a temporary table to do this, this is to avoid duplicate in the group_group_map table
-		# DELETE the temp table if it exists
-		    DROP TABLE IF EXISTS `ut_group_group_map_temp`;
-		
-		# Re-create the temp table
-            CREATE TABLE `ut_group_group_map_temp` (
-            `member_id` MEDIUMINT(9) NOT NULL,
-            `grantor_id` MEDIUMINT(9) NOT NULL,
-            `grant_type` TINYINT(4) NOT NULL DEFAULT 0
-            ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+        # We first insert these in the table `ut_group_group_map_temp`
 
-        # Add the records that exist in the table group_group_map
-            INSERT INTO `ut_group_group_map_temp`
-                SELECT *
-                FROM `group_group_map`;
-			
-		# Add the new records
             INSERT INTO `ut_group_group_map_temp`
                 (`member_id`
                 ,`grantor_id`
@@ -2961,22 +2993,33 @@ BEGIN
 					SET @permission_granted = NULL;
 			
 	# We give the user the permission they need.
-			
-		# First the `group_group_map` table
 
-            # We remove the FK checks
-            	/*!40101 SET SQL_MODE=''*/;
-	            /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-	            /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */; 
-	            /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-                /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-		
-			# We truncate the table first (to avoid duplicates)
-		    	TRUNCATE TABLE `group_group_map`;
-			
-			# We insert the data we need
-			# Grouping like this makes sure that we have no dupes!
-                INSERT INTO `group_group_map`
+        # We update the `group_group_map` table first
+        #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
+        #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
+        #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
+
+            # We drop the deduplication table if it exists:
+                DROP TABLE IF EXISTS `ut_group_group_map_dedup`;
+
+            # We create a table `ut_group_group_map_dedup` to prepare the data we need to insert
+
+                CREATE TABLE `ut_group_group_map_dedup` (
+                    `member_id` mediumint(9) NOT NULL,
+                    `grantor_id` mediumint(9) NOT NULL,
+                    `grant_type` tinyint(4) NOT NULL DEFAULT '0',
+                    UNIQUE KEY `ut_group_group_map_dedup_member_id_idx` (`member_id`,`grantor_id`,`grant_type`),
+                    KEY `fk_group_group_map_dedup_grantor_id_groups_id` (`grantor_id`),
+                    KEY `group_group_map_dedup_grantor_id_grant_type_idx` (`grantor_id`,`grant_type`),
+                    KEY `group_group_map_dedup_member_id_grant_type_idx` (`member_id`,`grant_type`),
+                    CONSTRAINT `fk_group_group_map_dedup_grantor_id_groups_id` FOREIGN KEY (`grantor_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                    CONSTRAINT `fk_group_group_map_dedup_member_id_groups_id` FOREIGN KEY (`member_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+                    ) 
+                ;
+    
+            # We insert the de-duplicated record in the table `ut_group_group_map_dedup`
+
+                INSERT INTO `ut_group_group_map_dedup`
                 SELECT `member_id`
                     , `grantor_id`
                     , `grant_type`
@@ -2986,15 +3029,26 @@ BEGIN
                     , `grantor_id`
                     , `grant_type`
                 ;
-
-            # We implement the FK checks again
                     
-            SET SQL_MODE=@OLD_SQL_MODE ;
-            SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS ;
-            SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS ;
-            SET SQL_NOTES=@OLD_SQL_NOTES ;
+            # We insert the data we need in the `group_group_map` table
+                INSERT INTO `group_group_map`
+                SELECT `member_id`
+                    , `grantor_id`
+                    , `grant_type`
+                FROM
+                    `ut_group_group_map_dedup`
+                # The below code is overkill in this context: 
+                # the Unique Key Constraint makes sure that all records are unique in the table `ut_group_group_map_dedup`
+                ON DUPLICATE KEY UPDATE
+                    `member_id` = `ut_group_group_map_dedup`.`member_id`
+                    , `grantor_id` = `ut_group_group_map_dedup`.`grantor_id`
+                    , `grant_type` = `ut_group_group_map_dedup`.`grant_type`
+                ;
 
-        # All the permission have been prepared, we can now update the permissions table
+            # We drop the temp table as we do not need it anymore
+                DROP TABLE IF EXISTS `user_group_map_dedup`;
+
+        # We can now update the permissions table for the users
         # This NEEDS the table 'ut_user_group_map_temp'
             CALL `update_permissions_invited_user`;
 
