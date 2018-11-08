@@ -872,6 +872,9 @@ BEGIN
 	#		- Contractor  -> temporary.contractor.dev@unee-t.com
 	# We populate the additional variables that we will need for this script to work
 		# For the product
+        
+   			SET @product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
+
 			SET @unit = CONCAT(@unit_name, '-', @product_id);
 			
 			SET @unit_for_query = REPLACE(@unit,' ','%');
@@ -909,8 +912,6 @@ BEGIN
 			
 			SET @default_milestone = '---';
 			SET @default_version = '---';
-
-   			SET @product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
 			
 	# We now create the unit we need.
 		INSERT INTO `products`
