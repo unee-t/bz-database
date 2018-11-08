@@ -114,7 +114,7 @@ CREATE PROCEDURE `revoke_all_permission_for_this_user_in_this_unit`()
     SQL SECURITY INVOKER
 BEGIN
 
-	# We record the name of this procedure for future debugging and audit_log`
+	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - revoke_all_permission_for_this_user_in_this_unit';
 		SET @timestamp = NOW();
 
