@@ -36,7 +36,7 @@
 #         Update the procedure `revoke_all_permission_for_this_user_in_this_unit`
 #
 #   - Make sure we never call `create_temp_table_to_update_permissions` as part of another procedure.
-#     This could create a race condition where the table is delete at the wrong time.
+#     This could create a race condition where the table is deleted at the wrong time.
 #     We need to update the procedures:
 #       - `add_user_to_role_in_unit`
 #           - BEFORE: the table `ut_user_group_map_temp` was recreated each time
@@ -92,16 +92,17 @@
 
 # Create a procedure `create_temp_table_to_update_group_permissions` to create the table `ut_group_group_map_temp`
 
-    # First we drop the table if it exists
+    # First we drop the procedure if it exists
+
         DROP PROCEDURE IF EXISTS create_temp_table_to_update_group_permissions;
 
-    # We then re-create the table `ut_group_group_map_temp`
+    # We then re-create the procedure `create_temp_table_to_update_group_permissions`
 
 DELIMITER $$
 CREATE PROCEDURE create_temp_table_to_update_group_permissions()
 SQL SECURITY INVOKER
 BEGIN
-	# We use a temporary table to do this, this is to avoid duplicate in the group_group_map table
+
 	# DELETE the temp table if it exists
 	    DROP TABLE IF EXISTS `ut_group_group_map_temp`;
 	
@@ -125,7 +126,7 @@ DELIMITER ;
     CALL `create_temp_table_to_update_group_permissions`;
 
 # Update the procedure to revoke the permission for a given user
-# make sure we do this also in the table `ut_user_group_map_temp`
+# make sure we revoke permissions also in the table `ut_user_group_map_temp`
 
 	DROP PROCEDURE IF EXISTS `revoke_all_permission_for_this_user_in_this_unit`;
 
@@ -224,7 +225,7 @@ BEGIN
 				;
 
         # We also delete from the table `ut_user_group_map_temp`
-        # This is needed so we do not re-create the permissions when we invite a new user
+        # This is needed so we do not re-create the permissions when we invite a new user or create a new unit.
 
             DELETE FROM `ut_user_group_map_temp`
                 WHERE (
@@ -701,6 +702,7 @@ DELIMITER $$
 CREATE PROCEDURE `update_permissions_invited_user`()
 SQL SECURITY INVOKER
 BEGIN
+
 	# We update the `user_group_map` table
     #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
     #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
@@ -870,8 +872,6 @@ BEGIN
 	#		- Contractor  -> temporary.contractor.dev@unee-t.com
 	# We populate the additional variables that we will need for this script to work
 		# For the product
-			SET @product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
-			
 			SET @unit = CONCAT(@unit_name, '-', @product_id);
 			
 			SET @unit_for_query = REPLACE(@unit,' ','%');
@@ -909,6 +909,8 @@ BEGIN
 			
 			SET @default_milestone = '---';
 			SET @default_version = '---';
+
+   			SET @product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
 			
 	# We now create the unit we need.
 		INSERT INTO `products`
@@ -1042,7 +1044,7 @@ BEGIN
 					(@creator_bz_id, 'Bugzilla::Milestone', @milestone_id, '__create__', NULL, @default_milestone, @timestamp)
 					;
 
-	#  We will create all component_id for all the components/roles we need
+	#  We create all the components/roles we need
 		# For the temporary users:
 			# Tenant
 				SET @role_user_g_description_tenant = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 1);
@@ -1103,7 +1105,7 @@ BEGIN
         # We insert the component 1 by 1 to minimize the risks of a race condition
 
 			# Tenant (component_id_tenant)
-                SET @ = ((SELECT MAX(`id`) FROM `components`) + 1);
+                SET @component_id_tenant = ((SELECT MAX(`id`) FROM `components`) + 1);
 
                 INSERT INTO `components`
                     (`id`
@@ -1273,7 +1275,7 @@ BEGIN
 		# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
 		# This will avoid a scenario where we need to grant permission to see occupants for instances but the group for occupants does not exist yet...
 		
-		# We get the group ids that we will use to do that
+		# We prepare the information for each group that we will use to do that
 		
 			# Groups common to all components/roles for this unit
 				# Allow user to create a case for this unit
@@ -2173,7 +2175,7 @@ BEGIN
 			
 	# We now Create the flagtypes and flags for this new unit (we NEEDED the group ids for that!):
 		
-		# We need to define the name for the flags
+		# We need to define the data we need for each flag
 			SET @flag_next_step_name = CONCAT('Next_Step_',@unit_for_flag);
 			SET @flag_solution_name = CONCAT('Solution_',@unit_for_flag);
 			SET @flag_budget_name = CONCAT('Budget_',@unit_for_flag);
@@ -2181,6 +2183,8 @@ BEGIN
 			SET @flag_ok_to_pay_name = CONCAT('OK_to_pay_',@unit_for_flag);
 			SET @flag_is_paid_name = CONCAT('is_paid_',@unit_for_flag);
 	
+        # We insert the flagtypes 1 by 1 to minimize the risk of a race condition
+
 		# We need to get the flagype id for next_step
 			SET @flag_next_step_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
 
@@ -3066,11 +3070,7 @@ BEGIN
 
 	# Clean up
 		# We Delete the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `ut_group_group_map_temp`;
 			DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
-			
-		# We Delete the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `ut_user_group_map_temp`;
 	
 END 
 $$
@@ -3740,22 +3740,6 @@ BEGIN
 END
 $$
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # We also make sure that we use the correct definition for the Unee-T fields:
 
