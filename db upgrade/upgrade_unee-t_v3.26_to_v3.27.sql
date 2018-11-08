@@ -25,16 +25,15 @@
 #
 #   - Create the table `ut_user_group_map_temp` once.
 #
-#   - Make sure we never call `create_temp_table_to_update_permissions`
-#     as part of another procedure. This could create a race condition
-#     where the table is delete at the wrong time.
+#    - When we revoke permissions, make sure we do this also in the table `ut_user_group_map_temp`
+#         Update the procedure `revoke_all_permission_for_this_user_in_this_unit`
+#
+#   - Make sure we never call `create_temp_table_to_update_permissions` as part of another procedure.
+#     This could create a race condition where the table is delete at the wrong time.
 #     We need to update the procedures:
 #       - `add_user_to_role_in_unit`
 #           - BEFORE: the table `ut_user_group_map_temp` was recreated each time
-#           - AFTER:  the table `ut_user_group_map_temp` is not ree-created
-#
-#    - When we revoke permissions, make sure we do this also in the table `ut_user_group_map_temp`
-#         Update the procedure `revoke_all_permission_for_this_user_in_this_unit`
+#           - AFTER:  the table `ut_user_group_map_temp` is not re-created
 #
 #   - When we update the permissions, make sure we do not delete the table `ut_user_group_map_temp`
 #     We update the procedure
@@ -43,10 +42,10 @@
 #           - AFTER: we do NOT delete the table `ut_user_group_map_temp`
 #
 #   - Update the procedure `unit_create_with_dummy_users` to
-#       - make sure we do not truncate table for user_group_map
+#       - make sure we do not truncate table `user_group_map`
 #       - use standardized procedures where needed:
 #           - `table_to_list_dummy_user_by_environment` 
-#             to create a temporary table to record the ids of the dummy users in each environments
+#             a procedure to create a temporary table to record the ids of the dummy users in each environments
 #
 #        - Minimizes the risk of race condition for components:
 #         for each component we need to:
@@ -728,7 +727,7 @@ BEGIN
     #
     # This procedure needs the table `ut_user_group_map_temp`
     #
-    # This procedure needs info in the table `ut_data_to_create_units`
+    # This procedure needs the following info in the table `ut_data_to_create_units`
     #   - id_unit_to_create
     #   - mefe_unit_id
     #   - mefe_creator_user_id
@@ -765,7 +764,7 @@ BEGIN
     #   - `table_to_list_dummy_user_by_environment`
     
 	
-	# What is the record that we need to import?
+	# What is the record that we need to use to create the objects in BZ?
 		SET @unit_reference_for_import = (SELECT `id_unit_to_create` FROM `ut_data_to_create_units` WHERE `mefe_unit_id` = @mefe_unit_id);
 	
 	# We record the name of this procedure for future debugging and audit_log
@@ -779,7 +778,8 @@ BEGIN
 	# Get the BZ profile id of the dummy users based on the environment variable
 		# Tenant 1
 			SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-		# Landlord 2
+		
+        # Landlord 2
 			SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
 			
 		# Contractor 3
@@ -793,20 +793,21 @@ BEGIN
 
 	# The unit:
 		# BZ Classification id for the unit that you want to create (default is 2)
-		SET @classification_id = (SELECT `classification_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		# The name and description
-		SET @unit_name = (SELECT `unit_name` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_description_details = (SELECT `unit_description_details` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_description = @unit_description_details;
+		    SET @classification_id = (SELECT `classification_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
+		
+        # The name and description
+            SET @unit_name = (SELECT `unit_name` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
+            SET @unit_description_details = (SELECT `unit_description_details` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
+            SET @unit_description = @unit_description_details;
 		
 	# The users associated to this unit.	
 		# BZ user id of the user that is creating the unit (default is 1 - Administrator).
 		# For LMB migration, we use 2 (support.nobody)
-		SET @creator_bz_id = (SELECT `bzfe_creator_user_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
+		    SET @creator_bz_id = (SELECT `bzfe_creator_user_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 		
 	# Other important information that should not change:
-		SET @visibility_explanation_1 = 'Visible only to ';
-		SET @visibility_explanation_2 = ' for this unit.';
+            SET @visibility_explanation_1 = 'Visible only to ';
+            SET @visibility_explanation_2 = ' for this unit.';
 
 	# The global permission for the application
 
@@ -1369,7 +1370,7 @@ BEGIN
 					SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
 
 		# We can populate the 'groups' table now.
-        # We insert the groups one by one to minimize the risk of a race conditions when we get the group_id
+        # We insert the groups 1 by 1 to minimize the risk of a race conditions when we get the group_id
 
             # create_case_group_id
 				SET @create_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
@@ -2337,82 +2338,84 @@ BEGIN
 		# Data for the table `group_group_map`
 		# We use a temporary table to do this, this is to avoid duplicate in the group_group_map table
 		# DELETE the temp table if it exists
-		DROP TABLE IF EXISTS `ut_group_group_map_temp`;
+		    DROP TABLE IF EXISTS `ut_group_group_map_temp`;
 		
 		# Re-create the temp table
-		CREATE TABLE `ut_group_group_map_temp` (
-		  `member_id` MEDIUMINT(9) NOT NULL,
-		  `grantor_id` MEDIUMINT(9) NOT NULL,
-		  `grant_type` TINYINT(4) NOT NULL DEFAULT 0
-		) ENGINE=INNODB DEFAULT CHARSET=utf8;
-		# Add the records that exist in the table group_group_map
-		INSERT INTO `ut_group_group_map_temp`
-			SELECT *
-			FROM `group_group_map`;
+            CREATE TABLE `ut_group_group_map_temp` (
+            `member_id` MEDIUMINT(9) NOT NULL,
+            `grantor_id` MEDIUMINT(9) NOT NULL,
+            `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+            ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+        # Add the records that exist in the table group_group_map
+            INSERT INTO `ut_group_group_map_temp`
+                SELECT *
+                FROM `group_group_map`;
 			
 		# Add the new records
-		INSERT INTO `ut_group_group_map_temp`
-			(`member_id`
-			,`grantor_id`
-			,`grant_type`
-			) 
-		##########################################################
-		# Logic:
-		# If you are a member of group_id XXX (ex: 1 / Admin) 
-		# then you have the following permissions:
-		# 	- 0: You are automatically a member of group ZZZ
-		#	- 1: You can grant access to group ZZZ
-		#	- 2: You can see users in group ZZZ
-		##########################################################
-			VALUES 
-			# Admin group can grant membership to all
-			(1,@create_case_group_id,1)
-			,(1,@can_edit_case_group_id,1)
-			,(1,@can_see_cases_group_id,1)
-			,(1,@can_edit_all_field_case_group_id,1)
-			,(1,@can_edit_component_group_id,1)
-			,(1,@can_see_unit_in_search_group_id,1)
-			,(1,@all_g_flags_group_id,1)
-			,(1,@all_r_flags_group_id,1)
-			,(1,@list_visible_assignees_group_id,1)
-			,(1,@see_visible_assignees_group_id,1)
-			,(1,@active_stakeholder_group_id,1)
-			,(1,@unit_creator_group_id,1)
-			,(1,@group_id_show_to_tenant,1)
-			,(1,@group_id_are_users_tenant,1)
-			,(1,@group_id_see_users_tenant,1)
-			,(1,@group_id_show_to_landlord,1)
-			,(1,@group_id_are_users_landlord,1)
-			,(1,@group_id_see_users_landlord,1)
-			,(1,@group_id_show_to_agent,1)
-			,(1,@group_id_are_users_agent,1)
-			,(1,@group_id_see_users_agent,1)
-			,(1,@group_id_show_to_contractor,1)
-			,(1,@group_id_are_users_contractor,1)
-			,(1,@group_id_see_users_contractor,1)
-			,(1,@group_id_show_to_mgt_cny,1)
-			,(1,@group_id_are_users_mgt_cny,1)
-			,(1,@group_id_see_users_mgt_cny,1)
-			,(1,@group_id_show_to_occupant,1)
-			,(1,@group_id_are_users_occupant,1)
-			,(1,@group_id_see_users_occupant,1)
-			,(1,@group_id_are_users_invited_by,1)
-			,(1,@group_id_see_users_invited_by,1)
-			
-			# Admin MUST be a member of the mandatory group for this unit
-			# If not it is impossible to see this product in the BZFE backend.
-			,(1,@can_see_unit_in_search_group_id,0)
-			# Visibility groups:
-			,(@all_r_flags_group_id,@all_g_flags_group_id,2)
-			,(@see_visible_assignees_group_id,@list_visible_assignees_group_id,2)
-			,(@unit_creator_group_id,@unit_creator_group_id,2)
-			,(@group_id_see_users_tenant,@group_id_are_users_tenant,2)
-			,(@group_id_see_users_landlord,@group_id_are_users_landlord,2)
-			,(@group_id_see_users_agent,@group_id_are_users_contractor,2)
-			,(@group_id_see_users_mgt_cny,@group_id_are_users_mgt_cny,2)
-			,(@group_id_see_users_occupant,@group_id_are_users_occupant,2)
-			,(@group_id_see_users_invited_by,@group_id_are_users_invited_by,2)
-			;
+            INSERT INTO `ut_group_group_map_temp`
+                (`member_id`
+                ,`grantor_id`
+                ,`grant_type`
+                ) 
+                ##########################################################
+                # Logic:
+                # If you are a member of group_id XXX (ex: 1 / Admin) 
+                # then you have the following permissions:
+                # 	- 0: You are automatically a member of group ZZZ
+                #	- 1: You can grant access to group ZZZ
+                #	- 2: You can see users in group ZZZ
+                ##########################################################
+                VALUES 
+                # Admin group can grant membership to all
+                (1,@create_case_group_id,1)
+                ,(1,@can_edit_case_group_id,1)
+                ,(1,@can_see_cases_group_id,1)
+                ,(1,@can_edit_all_field_case_group_id,1)
+                ,(1,@can_edit_component_group_id,1)
+                ,(1,@can_see_unit_in_search_group_id,1)
+                ,(1,@all_g_flags_group_id,1)
+                ,(1,@all_r_flags_group_id,1)
+                ,(1,@list_visible_assignees_group_id,1)
+                ,(1,@see_visible_assignees_group_id,1)
+                ,(1,@active_stakeholder_group_id,1)
+                ,(1,@unit_creator_group_id,1)
+                ,(1,@group_id_show_to_tenant,1)
+                ,(1,@group_id_are_users_tenant,1)
+                ,(1,@group_id_see_users_tenant,1)
+                ,(1,@group_id_show_to_landlord,1)
+                ,(1,@group_id_are_users_landlord,1)
+                ,(1,@group_id_see_users_landlord,1)
+                ,(1,@group_id_show_to_agent,1)
+                ,(1,@group_id_are_users_agent,1)
+                ,(1,@group_id_see_users_agent,1)
+                ,(1,@group_id_show_to_contractor,1)
+                ,(1,@group_id_are_users_contractor,1)
+                ,(1,@group_id_see_users_contractor,1)
+                ,(1,@group_id_show_to_mgt_cny,1)
+                ,(1,@group_id_are_users_mgt_cny,1)
+                ,(1,@group_id_see_users_mgt_cny,1)
+                ,(1,@group_id_show_to_occupant,1)
+                ,(1,@group_id_are_users_occupant,1)
+                ,(1,@group_id_see_users_occupant,1)
+                ,(1,@group_id_are_users_invited_by,1)
+                ,(1,@group_id_see_users_invited_by,1)
+                
+                # Admin MUST be a member of the mandatory group for this unit
+                # If not it is impossible to see this product in the BZFE backend.
+                ,(1,@can_see_unit_in_search_group_id,0)
+                # Visibility groups:
+                ,(@all_r_flags_group_id,@all_g_flags_group_id,2)
+                ,(@see_visible_assignees_group_id,@list_visible_assignees_group_id,2)
+                ,(@unit_creator_group_id,@unit_creator_group_id,2)
+                ,(@group_id_see_users_tenant,@group_id_are_users_tenant,2)
+                ,(@group_id_see_users_landlord,@group_id_are_users_landlord,2)
+                ,(@group_id_see_users_agent,@group_id_are_users_contractor,2)
+                ,(@group_id_see_users_mgt_cny,@group_id_are_users_mgt_cny,2)
+                ,(@group_id_see_users_occupant,@group_id_are_users_occupant,2)
+                ,(@group_id_see_users_invited_by,@group_id_are_users_invited_by,2)
+                ;
+
 	# We make sure that only user in certain groups can create, edit or see cases.
 		INSERT INTO `group_control_map`
 			(`group_id`
@@ -2960,25 +2963,39 @@ BEGIN
 	# We give the user the permission they need.
 			
 		# First the `group_group_map` table
+
+            # We remove the FK checks
+            	/*!40101 SET SQL_MODE=''*/;
+	            /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+	            /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */; 
+	            /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+                /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 		
 			# We truncate the table first (to avoid duplicates)
-			TRUNCATE TABLE `group_group_map`;
+		    	TRUNCATE TABLE `group_group_map`;
 			
 			# We insert the data we need
 			# Grouping like this makes sure that we have no dupes!
-			INSERT INTO `group_group_map`
-			SELECT `member_id`
-				, `grantor_id`
-				, `grant_type`
-			FROM
-				`ut_group_group_map_temp`
-			GROUP BY `member_id`
-				, `grantor_id`
-				, `grant_type`
-			;
+                INSERT INTO `group_group_map`
+                SELECT `member_id`
+                    , `grantor_id`
+                    , `grant_type`
+                FROM
+                    `ut_group_group_map_temp`
+                GROUP BY `member_id`
+                    , `grantor_id`
+                    , `grant_type`
+                ;
+
+            # We implement the FK checks again
+                    
+            SET SQL_MODE=@OLD_SQL_MODE ;
+            SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS ;
+            SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS ;
+            SET SQL_NOTES=@OLD_SQL_NOTES ;
 
         # All the permission have been prepared, we can now update the permissions table
-        #		- This NEEDS the table 'ut_user_group_map_temp'
+        # This NEEDS the table 'ut_user_group_map_temp'
             CALL `update_permissions_invited_user`;
 
 	# Update the table 'ut_data_to_create_units' so that we record that the unit has been created
@@ -3000,12 +3017,6 @@ BEGIN
 			
 		# We Delete the temp table as we do not need it anymore
 			DROP TABLE IF EXISTS `ut_user_group_map_temp`;
-	# We implement the FK checks again
-			
-	 SET SQL_MODE=@OLD_SQL_MODE ;
-	 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS ;
-	 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS ;
-	 SET SQL_NOTES=@OLD_SQL_NOTES ;
 	
 END 
 $$
