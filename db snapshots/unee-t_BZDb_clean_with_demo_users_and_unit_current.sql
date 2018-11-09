@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.26
+MySQL - 5.7.12 : Database - unee_t_v3.27
 *********************************************************************
 */
 
@@ -1901,6 +1901,7 @@ CREATE TABLE `group_group_map` (
   `member_id` mediumint(9) NOT NULL,
   `grantor_id` mediumint(9) NOT NULL,
   `grant_type` tinyint(4) NOT NULL DEFAULT '0',
+  UNIQUE KEY `group_group_map_member_id_idx` (`member_id`,`grantor_id`,`grant_type`),
   KEY `fk_group_group_map_grantor_id_groups_id` (`grantor_id`),
   KEY `group_group_map_grantor_id_grant_type_idx` (`grantor_id`,`grant_type`),
   KEY `group_group_map_member_id_grant_type_idx` (`member_id`,`grant_type`),
@@ -1965,6 +1966,7 @@ insert  into `group_group_map`(`member_id`,`grantor_id`,`grant_type`) values
 (1,18,0),
 (1,18,1),
 (1,18,2),
+(19,18,2),
 (1,19,0),
 (1,19,1),
 (1,19,2),
@@ -1976,30 +1978,39 @@ insert  into `group_group_map`(`member_id`,`grantor_id`,`grant_type`) values
 (1,25,0),
 (1,25,1),
 (1,26,1),
+(27,26,2),
 (1,27,1),
 (1,28,1),
+(29,28,2),
 (1,29,1),
 (1,30,1),
 (1,31,1),
+(31,31,2),
 (1,32,1),
 (1,33,1),
+(34,33,2),
 (1,34,1),
 (1,35,1),
 (1,36,1),
+(37,36,2),
 (1,37,1),
 (1,38,1),
 (1,39,1),
 (1,40,1),
 (1,41,1),
 (1,42,1),
+(40,42,2),
 (1,43,1),
 (1,44,1),
 (1,45,1),
+(46,45,2),
 (1,46,1),
 (1,47,1),
 (1,48,1),
+(49,48,2),
 (1,49,1),
 (1,50,1),
+(51,50,2),
 (1,51,1),
 (1,52,1),
 (1,53,1),
@@ -2009,30 +2020,39 @@ insert  into `group_group_map`(`member_id`,`grantor_id`,`grant_type`) values
 (1,57,0),
 (1,57,1),
 (1,58,1),
+(59,58,2),
 (1,59,1),
 (1,60,1),
+(61,60,2),
 (1,61,1),
 (1,62,1),
 (1,63,1),
+(63,63,2),
 (1,64,1),
 (1,65,1),
+(66,65,2),
 (1,66,1),
 (1,67,1),
 (1,68,1),
+(69,68,2),
 (1,69,1),
 (1,70,1),
 (1,71,1),
 (1,72,1),
 (1,73,1),
 (1,74,1),
+(72,74,2),
 (1,75,1),
 (1,76,1),
 (1,77,1),
+(78,77,2),
 (1,78,1),
 (1,79,1),
 (1,80,1),
+(81,80,2),
 (1,81,1),
 (1,82,1),
+(83,82,2),
 (1,83,1),
 (1,84,1),
 (1,85,1),
@@ -2042,59 +2062,40 @@ insert  into `group_group_map`(`member_id`,`grantor_id`,`grant_type`) values
 (1,89,0),
 (1,89,1),
 (1,90,1),
+(91,90,2),
 (1,91,1),
 (1,92,1),
+(93,92,2),
 (1,93,1),
 (1,94,1),
 (1,95,1),
+(95,95,2),
 (1,96,1),
 (1,97,1),
+(98,97,2),
 (1,98,1),
 (1,99,1),
 (1,100,1),
+(101,100,2),
 (1,101,1),
 (1,102,1),
 (1,103,1),
 (1,104,1),
 (1,105,1),
 (1,106,1),
+(104,106,2),
 (1,107,1),
 (1,108,1),
 (1,109,1),
+(110,109,2),
 (1,110,1),
 (1,111,1),
 (1,112,1),
+(113,112,2),
 (1,113,1),
 (1,114,1),
-(1,115,1),
-(19,18,2),
-(27,26,2),
-(29,28,2),
-(31,31,2),
-(34,33,2),
-(37,36,2),
-(40,42,2),
-(46,45,2),
-(49,48,2),
-(51,50,2),
-(59,58,2),
-(61,60,2),
-(63,63,2),
-(66,65,2),
-(69,68,2),
-(72,74,2),
-(78,77,2),
-(81,80,2),
-(83,82,2),
-(91,90,2),
-(93,92,2),
-(95,95,2),
-(98,97,2),
-(101,100,2),
-(104,106,2),
-(110,109,2),
-(113,112,2),
-(115,114,2);
+(115,114,2),
+(1,115,1);
 
 /*Table structure for table `groups` */
 
@@ -2264,112 +2265,6 @@ CREATE TABLE `keywords` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `keywords` */
-
-/*Table structure for table `lmb_units_10july18` */
-
-DROP TABLE IF EXISTS `lmb_units_10july18`;
-
-CREATE TABLE `lmb_units_10july18` (
-  `mefe_invitation_id` varchar(255) DEFAULT NULL,
-  `bzfe_invitor_user_id` double DEFAULT NULL,
-  `bz_user_id` double DEFAULT NULL,
-  `user_role_type_id` double DEFAULT NULL,
-  `is_occupant` double DEFAULT NULL,
-  `bz_case_id` double DEFAULT NULL,
-  `bz_unit_id` double DEFAULT NULL,
-  `invitation_type` varchar(255) DEFAULT NULL,
-  `is_mefe_only_user` double DEFAULT NULL,
-  `user_more` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `lmb_units_10july18` */
-
-insert  into `lmb_units_10july18`(`mefe_invitation_id`,`bzfe_invitor_user_id`,`bz_user_id`,`user_role_type_id`,`is_occupant`,`bz_case_id`,`bz_unit_id`,`invitation_type`,`is_mefe_only_user`,`user_more`) values 
-('manualInsert1',6,1,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert2',6,2,4,0,0,486,'replace_default',1,'Use Unee-T for a faster reply'),
-('manualInsert3',6,13,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert4',6,21,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert5',6,37,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert6',6,38,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert7',6,49,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert8',6,66,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert9',6,71,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert10',6,76,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert11',6,77,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert12',6,79,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert13',6,80,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert14',6,85,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert15',6,86,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert16',6,87,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert17',6,88,4,0,0,486,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert18',6,1,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert19',6,2,4,0,0,487,'replace_default',1,'Use Unee-T for a faster reply'),
-('manualInsert20',6,13,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert21',6,21,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert22',6,37,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert23',6,38,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert24',6,49,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert25',6,66,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert26',6,71,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert27',6,76,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert28',6,77,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert29',6,79,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert30',6,80,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert31',6,85,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert32',6,86,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert33',6,87,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert34',6,88,4,0,0,487,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert35',6,1,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert36',6,2,4,0,0,488,'replace_default',1,'Use Unee-T for a faster reply'),
-('manualInsert37',6,13,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert38',6,21,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert39',6,37,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert40',6,38,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert41',6,49,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert42',6,66,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert43',6,71,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert44',6,76,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert45',6,77,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert46',6,79,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert47',6,80,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert48',6,85,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert49',6,86,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert50',6,87,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert51',6,88,4,0,0,488,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert52',6,1,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert53',6,2,4,0,0,489,'replace_default',1,'Use Unee-T for a faster reply'),
-('manualInsert54',6,13,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert55',6,21,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert56',6,37,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert57',6,38,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert58',6,49,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert59',6,66,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert60',6,71,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert61',6,76,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert62',6,77,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert63',6,79,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert64',6,80,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert65',6,85,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert66',6,86,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert67',6,87,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert68',6,88,4,0,0,489,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert69',6,1,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert70',6,2,4,0,0,490,'replace_default',1,'Use Unee-T for a faster reply'),
-('manualInsert71',6,13,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert72',6,21,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert73',6,37,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert74',6,38,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert75',6,49,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert76',6,66,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert77',6,71,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert78',6,76,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert79',6,77,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert80',6,79,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert81',6,80,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert82',6,85,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert83',6,86,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert84',6,87,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply'),
-('manualInsert85',6,88,4,0,0,490,'keep_default',1,'Use Unee-T for a faster reply');
 
 /*Table structure for table `login_failure` */
 
@@ -2750,24 +2645,24 @@ CREATE TABLE `profiles` (
 /*Data for the table `profiles` */
 
 insert  into `profiles`(`userid`,`login_name`,`cryptpassword`,`realname`,`disabledtext`,`disable_mail`,`mybugslink`,`extern_id`,`is_enabled`,`last_seen_date`) values 
-(1,'test+administrator@case.dev.unee-t.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,NULL),
-(2,'test+temporary.agent@case.dev.unee-t.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
-(3,'test+temporary.landlord@case.dev.unee-t.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
-(4,'test+temporary.tenant@case.dev.unee-t.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
-(5,'test+temporary.contractor@case.dev.unee-t.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
-(6,'test+temporary.mgt.cny@case.dev.unee-t.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL),
-(7,'test+leonel@case.dev.unee-t.com','uVkp9Jte,ts7kZpZuOcTkMAh1c4iX4IcEZTxpq0Sfr7XraiZoL+g{SHA-256}','Leonel','',0,1,NULL,1,NULL),
-(8,'test+marley@case.dev.unee-t.com','AMOb0L00,NlJF4wyZVyT+xWuUr3RYgDIYxMhfBJCZxvkSh5cRSVs{SHA-256}','Marley','',0,1,NULL,1,NULL),
-(9,'test+michael@case.dev.unee-t.com','Tp0jDQnd,kD+mf67/v/ck68nOyRTR4j7JNVpo1XzzDFSIR6U7Lps{SHA-256}','Michael','',0,1,NULL,1,NULL),
-(10,'test+sabrina@case.dev.unee-t.com','fjeiOOVC,vUkDbdxcfk9snn9J5Vh4r/cujX2FfOKEcBZBAOcMw3k{SHA-256}','Sabrina','',0,1,NULL,1,NULL),
-(11,'test+celeste@case.dev.unee-t.com','ZAU7m97y,kw6J1Bf2Hw21qELelxM3BbK+4avsmJytG/WzssHMbXE{SHA-256}','Celeste','',0,1,NULL,1,NULL),
-(12,'test+jocelyn@case.dev.unee-t.com','0ZprH6RJ,zXa/xkkETvkPZ988xpyQQocYYfLAIWdCLCk1wE4QXNA{SHA-256}','Jocelyn','',0,1,NULL,1,NULL),
-(13,'test+marina@case.dev.unee-t.com','8c2ofNwd,VpZbBAByL89ZKCI3xT7zFjZBb/X7JHW6KjtA9yY8KYo{SHA-256}','Marina','',0,1,NULL,1,NULL),
-(14,'test+regina@case.dev.unee-t.com','HuM6hVYF,Ev6TBPrrOm4pSu5chsr1Q6Hi6q2Tmm98IbLh7ONqtYs{SHA-256}','Regina','',0,1,NULL,1,NULL),
-(15,'test+marvin@case.dev.unee-t.com','6kTmgSt9,FI+tK4vrJQa8lInrRGKxmQ0JW2WpVImRk+ylhcMYGKM{SHA-256}','Marvin','',0,1,NULL,1,NULL),
-(16,'test+lawrence@case.dev.unee-t.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
-(17,'test+anabelle@case.dev.unee-t.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
-(18,'test+management.co@case.dev.unee-t.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
+(1,'test+administrator@case.demo.unee-t.com','B8AgzURt,NDrX2Bt8stpgXPKsNRYaHmm0V2K1+qhfnt76oLAvN+Q{SHA-256}','Administrator','',0,1,NULL,1,NULL),
+(2,'test+temporary.agent@case.demo.unee-t.com','8IF0bErt,DWxzG95hJ7+7YGjCvCdMO+8IcCWdAW2+ojoSKnYxQYg{SHA-256}','Generic Agent','',0,1,NULL,1,NULL),
+(3,'test+temporary.landlord@case.demo.unee-t.com','YxnRDOJe,h1YQJqMCsMi4JItnllV5tMNJSKNXpARxD/wkyyIuhQM{SHA-256}','Generic Landlord','',0,1,NULL,1,NULL),
+(4,'test+temporary.tenant@case.demo.unee-t.com','lm6aQER6,H2pgJVfTP38j+7RE2rlPcekO5k1MYzMtvYRgOTQQw/M{SHA-256}','Generic Tenant','',0,1,NULL,1,NULL),
+(5,'test+temporary.contractor@case.demo.unee-t.com','4ri3AF6X,Hlu9YmDzumnQdn5fr4J6kKbjDe/3KxJPPhCcwkYBqe4{SHA-256}','Generic Contractor','',0,1,NULL,1,NULL),
+(6,'test+temporary.mgt.cny@case.demo.unee-t.com','dHGU8lRe,odrIC0TGEuEsYBAxm918zU2HWjsDHeEmMaT7mIQ5C/s{SHA-256}','Generic Management Company','',0,1,NULL,1,NULL),
+(7,'test+leonel@case.demo.unee-t.com','uVkp9Jte,ts7kZpZuOcTkMAh1c4iX4IcEZTxpq0Sfr7XraiZoL+g{SHA-256}','Leonel','',0,1,NULL,1,NULL),
+(8,'test+marley@case.demo.unee-t.com','AMOb0L00,NlJF4wyZVyT+xWuUr3RYgDIYxMhfBJCZxvkSh5cRSVs{SHA-256}','Marley','',0,1,NULL,1,NULL),
+(9,'test+michael@case.demo.unee-t.com','Tp0jDQnd,kD+mf67/v/ck68nOyRTR4j7JNVpo1XzzDFSIR6U7Lps{SHA-256}','Michael','',0,1,NULL,1,NULL),
+(10,'test+sabrina@case.demo.unee-t.com','fjeiOOVC,vUkDbdxcfk9snn9J5Vh4r/cujX2FfOKEcBZBAOcMw3k{SHA-256}','Sabrina','',0,1,NULL,1,NULL),
+(11,'test+celeste@case.demo.unee-t.com','ZAU7m97y,kw6J1Bf2Hw21qELelxM3BbK+4avsmJytG/WzssHMbXE{SHA-256}','Celeste','',0,1,NULL,1,NULL),
+(12,'test+jocelyn@case.demo.unee-t.com','0ZprH6RJ,zXa/xkkETvkPZ988xpyQQocYYfLAIWdCLCk1wE4QXNA{SHA-256}','Jocelyn','',0,1,NULL,1,NULL),
+(13,'test+marina@case.demo.unee-t.com','8c2ofNwd,VpZbBAByL89ZKCI3xT7zFjZBb/X7JHW6KjtA9yY8KYo{SHA-256}','Marina','',0,1,NULL,1,NULL),
+(14,'test+regina@case.demo.unee-t.com','HuM6hVYF,Ev6TBPrrOm4pSu5chsr1Q6Hi6q2Tmm98IbLh7ONqtYs{SHA-256}','Regina','',0,1,NULL,1,NULL),
+(15,'test+marvin@case.demo.unee-t.com','6kTmgSt9,FI+tK4vrJQa8lInrRGKxmQ0JW2WpVImRk+ylhcMYGKM{SHA-256}','Marvin','',0,1,NULL,1,NULL),
+(16,'test+lawrence@case.demo.unee-t.com','JqPmW7RA,tJopvIAj1kbeRJ61pZUqjce1dZrGoBpnHMzycgTuTqE{SHA-256}','Lawrence','',0,1,NULL,1,NULL),
+(17,'test+anabelle@case.demo.unee-t.com','9bgiCNi8,32d10yq/btaTsj/awDksNPjdUDLIrGfkK+vRKWfYbQo{SHA-256}','Anabelle','',0,1,NULL,1,NULL),
+(18,'test+management.co@case.demo.unee-t.com','C162r0Mo,/V0m+v2cmZqU0JOjQBR8X5Q26xSgKTBs/f/Wke51oSI{SHA-256}','Management Co','',0,1,NULL,1,NULL);
 
 /*Table structure for table `profiles_activity` */
 
@@ -4908,7 +4803,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -4939,7 +4834,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (24,'v3.23','2018-07-30 08:48:28','upgrade_unee-t_v3.22_to_v3.23.sql','Database updated from v3.22 to v3.23'),
 (25,'v3.24','2018-08-22 13:22:34','upgrade_unee-t_v3.23_to_v3.24.sql','Database updated from v3.23 to v3.24'),
 (26,'v3.25','2018-10-24 10:58:49','upgrade_unee-t_v3.24_to_v3.25.sql','Database updated from v3.24 to v3.25'),
-(27,'v3.26','2018-10-25 03:29:15','upgrade_unee-t_v3.25_to_v3.26.sql','Database updated from v3.25 to v3.26');
+(27,'v3.26','2018-10-25 03:29:15','upgrade_unee-t_v3.25_to_v3.26.sql','Database updated from v3.25 to v3.26'),
+(28,'v3.27','2018-11-09 00:42:50','upgrade_unee-t_v3.26_to_v3.27.sql','Database updated from v3.26 to v3.27');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -4956,6 +4852,204 @@ CREATE TABLE `ut_flash_units_with_dummy_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_flash_units_with_dummy_users` */
+
+/*Table structure for table `ut_group_group_map_temp` */
+
+DROP TABLE IF EXISTS `ut_group_group_map_temp`;
+
+CREATE TABLE `ut_group_group_map_temp` (
+  `member_id` mediumint(9) NOT NULL,
+  `grantor_id` mediumint(9) NOT NULL,
+  `grant_type` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_group_group_map_temp` */
+
+insert  into `ut_group_group_map_temp`(`member_id`,`grantor_id`,`grant_type`) values 
+(1,1,0),
+(1,1,1),
+(1,1,2),
+(1,2,0),
+(1,2,1),
+(1,2,2),
+(1,3,0),
+(1,3,1),
+(1,3,2),
+(1,4,0),
+(1,4,1),
+(1,4,2),
+(1,5,0),
+(1,5,1),
+(1,5,2),
+(1,6,0),
+(1,6,1),
+(1,6,2),
+(1,7,0),
+(1,7,1),
+(1,7,2),
+(1,8,0),
+(1,8,1),
+(1,8,2),
+(1,9,0),
+(1,9,1),
+(1,9,2),
+(1,10,0),
+(1,10,1),
+(1,10,2),
+(1,11,0),
+(1,11,1),
+(1,11,2),
+(1,12,0),
+(1,12,1),
+(1,12,2),
+(1,13,0),
+(1,13,1),
+(1,13,2),
+(1,14,0),
+(1,14,1),
+(1,14,2),
+(1,15,0),
+(1,15,1),
+(1,15,2),
+(1,16,0),
+(1,16,1),
+(1,16,2),
+(1,17,0),
+(1,17,1),
+(1,17,2),
+(1,18,0),
+(1,18,1),
+(1,18,2),
+(19,18,2),
+(1,19,0),
+(1,19,1),
+(1,19,2),
+(1,20,1),
+(1,21,1),
+(1,22,1),
+(1,23,1),
+(1,24,1),
+(1,25,0),
+(1,25,1),
+(1,26,1),
+(27,26,2),
+(1,27,1),
+(1,28,1),
+(29,28,2),
+(1,29,1),
+(1,30,1),
+(1,31,1),
+(31,31,2),
+(1,32,1),
+(1,33,1),
+(34,33,2),
+(1,34,1),
+(1,35,1),
+(1,36,1),
+(37,36,2),
+(1,37,1),
+(1,38,1),
+(1,39,1),
+(1,40,1),
+(1,41,1),
+(1,42,1),
+(40,42,2),
+(1,43,1),
+(1,44,1),
+(1,45,1),
+(46,45,2),
+(1,46,1),
+(1,47,1),
+(1,48,1),
+(49,48,2),
+(1,49,1),
+(1,50,1),
+(51,50,2),
+(1,51,1),
+(1,52,1),
+(1,53,1),
+(1,54,1),
+(1,55,1),
+(1,56,1),
+(1,57,0),
+(1,57,1),
+(1,58,1),
+(59,58,2),
+(1,59,1),
+(1,60,1),
+(61,60,2),
+(1,61,1),
+(1,62,1),
+(1,63,1),
+(63,63,2),
+(1,64,1),
+(1,65,1),
+(66,65,2),
+(1,66,1),
+(1,67,1),
+(1,68,1),
+(69,68,2),
+(1,69,1),
+(1,70,1),
+(1,71,1),
+(1,72,1),
+(1,73,1),
+(1,74,1),
+(72,74,2),
+(1,75,1),
+(1,76,1),
+(1,77,1),
+(78,77,2),
+(1,78,1),
+(1,79,1),
+(1,80,1),
+(81,80,2),
+(1,81,1),
+(1,82,1),
+(83,82,2),
+(1,83,1),
+(1,84,1),
+(1,85,1),
+(1,86,1),
+(1,87,1),
+(1,88,1),
+(1,89,0),
+(1,89,1),
+(1,90,1),
+(91,90,2),
+(1,91,1),
+(1,92,1),
+(93,92,2),
+(1,93,1),
+(1,94,1),
+(1,95,1),
+(95,95,2),
+(1,96,1),
+(1,97,1),
+(98,97,2),
+(1,98,1),
+(1,99,1),
+(1,100,1),
+(101,100,2),
+(1,101,1),
+(1,102,1),
+(1,103,1),
+(1,104,1),
+(1,105,1),
+(1,106,1),
+(104,106,2),
+(1,107,1),
+(1,108,1),
+(1,109,1),
+(110,109,2),
+(1,110,1),
+(1,111,1),
+(1,112,1),
+(113,112,2),
+(1,113,1),
+(1,114,1),
+(115,114,2),
+(1,115,1);
 
 /*Table structure for table `ut_group_types` */
 
@@ -6066,6 +6160,268 @@ insert  into `ut_script_log`(`id_ut_script_log`,`datetime`,`script`,`log`) value
 (229,'2018-06-20 11:10:35','PROCEDURE - are_users_contractor','the bz user #17 is a contractor for the unit #2'),
 (230,'2018-06-20 11:10:35','PROCEDURE - default_contractor_see_users_contractor','the bz user #17 can see employee of Contractor for the unit 2');
 
+/*Table structure for table `ut_user_group_map_temp` */
+
+DROP TABLE IF EXISTS `ut_user_group_map_temp`;
+
+CREATE TABLE `ut_user_group_map_temp` (
+  `user_id` mediumint(9) NOT NULL,
+  `group_id` mediumint(9) NOT NULL,
+  `isbless` tinyint(4) NOT NULL DEFAULT '0',
+  `grant_type` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `ut_user_group_map_temp` */
+
+insert  into `ut_user_group_map_temp`(`user_id`,`group_id`,`isbless`,`grant_type`) values 
+(1,1,0,0),
+(2,16,0,0),
+(3,16,0,0),
+(4,16,0,0),
+(5,16,0,0),
+(6,16,0,0),
+(7,16,0,0),
+(8,16,0,0),
+(9,16,0,0),
+(10,16,0,0),
+(11,16,0,0),
+(12,16,0,0),
+(13,16,0,0),
+(14,16,0,0),
+(15,16,0,0),
+(16,16,0,0),
+(17,16,0,0),
+(18,16,0,0),
+(2,17,0,0),
+(3,17,0,0),
+(4,17,0,0),
+(5,17,0,0),
+(6,17,0,0),
+(7,17,0,0),
+(8,17,0,0),
+(9,17,0,0),
+(10,17,0,0),
+(11,17,0,0),
+(12,17,0,0),
+(13,17,0,0),
+(14,17,0,0),
+(15,17,0,0),
+(16,17,0,0),
+(17,17,0,0),
+(18,17,0,0),
+(2,18,0,0),
+(3,18,0,0),
+(4,18,0,0),
+(5,18,0,0),
+(6,18,0,0),
+(7,18,0,0),
+(8,18,0,0),
+(9,18,0,0),
+(10,18,0,0),
+(11,18,0,0),
+(12,18,0,0),
+(13,18,0,0),
+(14,18,0,0),
+(15,18,0,0),
+(16,18,0,0),
+(17,18,0,0),
+(18,18,0,0),
+(2,20,0,0),
+(3,20,0,0),
+(4,20,0,0),
+(5,20,0,0),
+(6,20,0,0),
+(7,20,0,0),
+(8,20,0,0),
+(9,20,0,0),
+(12,20,0,0),
+(15,20,0,0),
+(2,21,0,0),
+(3,21,0,0),
+(4,21,0,0),
+(5,21,0,0),
+(6,21,0,0),
+(7,21,0,0),
+(8,21,0,0),
+(9,21,0,0),
+(12,21,0,0),
+(15,21,0,0),
+(7,22,0,0),
+(8,22,0,0),
+(9,22,0,0),
+(12,22,0,0),
+(15,22,0,0),
+(7,23,0,0),
+(8,23,0,0),
+(9,23,0,0),
+(12,23,0,0),
+(15,23,0,0),
+(2,25,0,0),
+(3,25,0,0),
+(4,25,0,0),
+(5,25,0,0),
+(6,25,0,0),
+(7,25,0,0),
+(8,25,0,0),
+(9,25,0,0),
+(12,25,0,0),
+(15,25,0,0),
+(7,26,0,0),
+(8,26,0,0),
+(9,26,0,0),
+(12,26,0,0),
+(15,26,0,0),
+(7,27,0,0),
+(8,27,0,0),
+(9,27,0,0),
+(12,27,0,0),
+(15,27,0,0),
+(7,28,0,0),
+(8,28,0,0),
+(9,28,0,0),
+(12,28,0,0),
+(15,28,0,0),
+(7,29,0,0),
+(8,29,0,0),
+(9,29,0,0),
+(12,29,0,0),
+(15,29,0,0),
+(12,32,0,0),
+(12,33,0,0),
+(12,34,0,0),
+(8,35,0,0),
+(8,36,0,0),
+(8,37,0,0),
+(7,38,0,0),
+(7,39,0,0),
+(7,40,0,0),
+(15,41,0,0),
+(15,42,0,0),
+(15,43,0,0),
+(9,44,0,0),
+(9,45,0,0),
+(9,46,0,0),
+(12,47,0,0),
+(12,48,0,0),
+(12,49,0,0),
+(2,52,0,0),
+(3,52,0,0),
+(4,52,0,0),
+(5,52,0,0),
+(6,52,0,0),
+(7,52,0,0),
+(11,52,0,0),
+(14,52,0,0),
+(17,52,0,0),
+(2,53,0,0),
+(3,53,0,0),
+(4,53,0,0),
+(5,53,0,0),
+(6,53,0,0),
+(7,53,0,0),
+(11,53,0,0),
+(14,53,0,0),
+(17,53,0,0),
+(7,54,0,0),
+(11,54,0,0),
+(14,54,0,0),
+(17,54,0,0),
+(7,55,0,0),
+(11,55,0,0),
+(14,55,0,0),
+(17,55,0,0),
+(2,57,0,0),
+(3,57,0,0),
+(4,57,0,0),
+(5,57,0,0),
+(6,57,0,0),
+(7,57,0,0),
+(11,57,0,0),
+(14,57,0,0),
+(17,57,0,0),
+(7,58,0,0),
+(11,58,0,0),
+(14,58,0,0),
+(17,58,0,0),
+(7,59,0,0),
+(11,59,0,0),
+(14,59,0,0),
+(17,59,0,0),
+(7,60,0,0),
+(11,60,0,0),
+(14,60,0,0),
+(17,60,0,0),
+(7,61,0,0),
+(11,61,0,0),
+(14,61,0,0),
+(17,61,0,0),
+(14,67,0,0),
+(14,68,0,0),
+(14,69,0,0),
+(7,70,0,0),
+(7,71,0,0),
+(7,72,0,0),
+(17,73,0,0),
+(17,74,0,0),
+(17,75,0,0),
+(11,76,0,0),
+(11,77,0,0),
+(11,78,0,0),
+(2,84,0,0),
+(3,84,0,0),
+(4,84,0,0),
+(5,84,0,0),
+(6,84,0,0),
+(8,84,0,0),
+(9,84,0,0),
+(15,84,0,0),
+(2,85,0,0),
+(3,85,0,0),
+(4,85,0,0),
+(5,85,0,0),
+(6,85,0,0),
+(8,85,0,0),
+(9,85,0,0),
+(15,85,0,0),
+(8,86,0,0),
+(9,86,0,0),
+(15,86,0,0),
+(8,87,0,0),
+(9,87,0,0),
+(15,87,0,0),
+(2,89,0,0),
+(3,89,0,0),
+(4,89,0,0),
+(5,89,0,0),
+(6,89,0,0),
+(8,89,0,0),
+(9,89,0,0),
+(15,89,0,0),
+(8,90,0,0),
+(9,90,0,0),
+(15,90,0,0),
+(8,91,0,0),
+(9,91,0,0),
+(15,91,0,0),
+(8,92,0,0),
+(9,92,0,0),
+(15,92,0,0),
+(8,93,0,0),
+(9,93,0,0),
+(15,93,0,0),
+(8,99,0,0),
+(8,100,0,0),
+(8,101,0,0),
+(15,105,0,0),
+(15,106,0,0),
+(15,107,0,0),
+(9,108,0,0),
+(9,109,0,0),
+(9,110,0,0),
+(8,111,0,0),
+(8,112,0,0),
+(8,113,0,0);
+
 /*Table structure for table `versions` */
 
 DROP TABLE IF EXISTS `versions`;
@@ -6830,6 +7186,7 @@ DELIMITER ;
 DELIMITER $$
 
 /*!50003 CREATE PROCEDURE `add_user_to_role_in_unit`()
+    SQL SECURITY INVOKER
 BEGIN
 
     # This procedure needs the following variables:
@@ -7333,9 +7690,6 @@ BEGIN
             #		- @product_id
             #		- @bz_user_id
             CALL `revoke_all_permission_for_this_user_in_this_unit`;
-
-        # Create the table to prepare the permissions
-            CALL `create_temp_table_to_update_permissions`;
             
         # Prepare the permissions - configure these to default:
             # Generic Permissions
@@ -8695,6 +9049,34 @@ BEGIN
 				SET @script = NULL;
 				SET @timestamp = NULL;
 END IF ;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `create_temp_table_to_update_group_permissions` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `create_temp_table_to_update_group_permissions` */;
+
+DELIMITER $$
+
+/*!50003 CREATE PROCEDURE `create_temp_table_to_update_group_permissions`()
+    SQL SECURITY INVOKER
+BEGIN
+
+	# DELETE the temp table if it exists
+	    DROP TABLE IF EXISTS `ut_group_group_map_temp`;
+	
+	# Re-create the temp table
+        CREATE TABLE `ut_group_group_map_temp` (
+        `member_id` MEDIUMINT(9) NOT NULL,
+        `grantor_id` MEDIUMINT(9) NOT NULL,
+        `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+        ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+    # Add the records that exist in the table group_group_map
+        INSERT INTO `ut_group_group_map_temp`
+            SELECT *
+            FROM `group_group_map`;
+
 END */$$
 DELIMITER ;
 
@@ -10126,10 +10508,17 @@ DELIMITER $$
 /*!50003 CREATE PROCEDURE `revoke_all_permission_for_this_user_in_this_unit`()
     SQL SECURITY INVOKER
 BEGIN
-	# We record the name of this procedure for future debugging and audit_log`
+
+    # this procedure needs the following variables:
+    #   - @product_id
+    #   - @bz_user_id
+
+	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - revoke_all_permission_for_this_user_in_this_unit';
 		SET @timestamp = NOW();
+
 	# We need to get the group_id for this unit
+
 		SET @can_see_time_tracking_group_id = 16;
 		SET @can_create_shared_queries_group_id = 17;
 		SET @can_tag_comment_group_id = 18;	
@@ -10141,29 +10530,39 @@ BEGIN
 		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
 		
 		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
+
 		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
+
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
+
 		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
 		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
 		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
+
 		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
 		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
 		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
+
 		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
 		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
 		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
+
 		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
 		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
 		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
+
 		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
 		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
 		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
+
 		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
 		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
 		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
+
 	# We can now remove all the permissions for this unit.
+
 		DELETE FROM `user_group_map`
 			WHERE (
 				(`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
@@ -10198,7 +10597,47 @@ BEGIN
 				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
 				)
 				;
+
+        # We also delete from the table `ut_user_group_map_temp`
+        # This is needed so we do not re-create the permissions when we invite a new user or create a new unit.
+
+            DELETE FROM `ut_user_group_map_temp`
+                WHERE (
+                    (`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_create_shared_queries_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_tag_comment_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @create_case_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_case_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_see_cases_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_all_field_case_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_see_unit_in_search_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @list_visible_assignees_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @see_visible_assignees_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @all_r_flags_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @all_g_flags_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_occupant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_occupant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_occupant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_tenant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_tenant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_tenant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_landlord)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_landlord)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_landlord)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_agent)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_agent)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_agent)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_contractor)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_contractor)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_contractor)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_mgt_cny)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_mgt_cny)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
+                    )
+                    ;
+
 			# Log the actions of the script.
+
 				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user #'
 										, @bz_user_id
 										, '\r\- can_see_time_tracking: 0'
@@ -10243,6 +10682,7 @@ BEGIN
 					VALUES
 					(NOW(), @script, @script_log_message)
 					;
+
 			# We log what we have just done into the `ut_audit_log` table
 				
 				SET @bzfe_table = 'user_group_map';
@@ -11149,7 +11589,18 @@ BEGIN
 	# This procedure needs the following variables:
 	#	- @mefe_unit_id
 	#	- @environment
-	#
+    #
+    # This procedure needs the table `ut_user_group_map_temp`
+    #
+    # This procedure needs the following info in the table `ut_data_to_create_units`
+    #   - id_unit_to_create
+    #   - mefe_unit_id
+    #   - mefe_creator_user_id
+    #   - bzfe_creator_user_id
+    #   - classification_id
+    #   - unit_name
+    #   - unit_description_details
+    # 
 	# This procedure will create
 	#	- The unit
 	#	- All the objects needed by the unit
@@ -11165,38 +11616,35 @@ BEGIN
 	#			- Agent
 	#		- Assign the permission so we can do what we need
 	#		- Log the group_id that we have created so we can assign permissions later
-	#	- Update the Unee-T script log`
-	#	- Update the BZ db table `audit_log`
+    #
+    # This procedure will update the following information:
+    #   -  in the table `ut_data_to_create_units`
+    #       - bz_created_date
+    #       - comment
+    #       - product_id    
+	#	- the Unee-T script log
+	#	- BZ db table `audit_log`
+    #
+    # This procedure depends on the following procedures:
+    #   - `table_to_list_dummy_user_by_environment`
+    
 	
-	# What is the record that we need to import?
+	# What is the record that we need to use to create the objects in BZ?
 		SET @unit_reference_for_import = (SELECT `id_unit_to_create` FROM `ut_data_to_create_units` WHERE `mefe_unit_id` = @mefe_unit_id);
 	
-	# We record the name of this procedure for future debugging and audit_log`
+	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - unit_create_with_dummy_users';
 		SET @timestamp = NOW();
+
 	# We create a temporary table to record the ids of the dummy users in each environments:
-		/*Table structure for table `ut_temp_dummy_users_for_roles` */
-			DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
-			CREATE TABLE `ut_temp_dummy_users_for_roles` (
-			  `environment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
-			  `environment_name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-			  `tenant_id` int(11) NOT NULL,
-			  `landlord_id` int(11) NOT NULL,
-			  `contractor_id` int(11) NOT NULL,
-			  `mgt_cny_id` int(11) NOT NULL,
-			  `agent_id` int(11) DEFAULT NULL,
-			  PRIMARY KEY (`environment_id`)
-			) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-		/*Data for the table `ut_temp_dummy_users_for_roles` */
-			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) values 
-				(1,'DEV/Staging',96,94,93,95,92),
-				(2,'Prod',93,91,90,92,89),
-				(3,'demo/dev',4,3,5,6,2);
+
+        CALL `table_to_list_dummy_user_by_environment`;
 			
 	# Get the BZ profile id of the dummy users based on the environment variable
 		# Tenant 1
 			SET @bz_user_id_dummy_tenant = (SELECT `tenant_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-		# Landlord 2
+		
+        # Landlord 2
 			SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
 			
 		# Contractor 3
@@ -11207,23 +11655,27 @@ BEGIN
 			
 		# Agent 5
 			SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
 	# The unit:
 		# BZ Classification id for the unit that you want to create (default is 2)
-		SET @classification_id = (SELECT `classification_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		# The name and description
-		SET @unit_name = (SELECT `unit_name` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_description_details = (SELECT `unit_description_details` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
-		SET @unit_description = @unit_description_details;
+		    SET @classification_id = (SELECT `classification_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
+		
+        # The name and description
+            SET @unit_name = (SELECT `unit_name` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
+            SET @unit_description_details = (SELECT `unit_description_details` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
+            SET @unit_description = @unit_description_details;
 		
 	# The users associated to this unit.	
 		# BZ user id of the user that is creating the unit (default is 1 - Administrator).
 		# For LMB migration, we use 2 (support.nobody)
-		SET @creator_bz_id = (SELECT `bzfe_creator_user_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
+		    SET @creator_bz_id = (SELECT `bzfe_creator_user_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
 		
 	# Other important information that should not change:
-		SET @visibility_explanation_1 = 'Visible only to ';
-		SET @visibility_explanation_2 = ' for this unit.';
+            SET @visibility_explanation_1 = 'Visible only to ';
+            SET @visibility_explanation_2 = ' for this unit.';
+
 	# The global permission for the application
+
 	# This should not change, it was hard coded when we created Unee-T
 		# Can tag comments
 			SET @can_tag_comment_group_id = 18;	
@@ -11236,8 +11688,9 @@ BEGIN
 	#		- Contractor  -> temporary.contractor.dev@unee-t.com
 	# We populate the additional variables that we will need for this script to work
 		# For the product
-			SET @product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
-			
+        
+   			SET @product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
+
 			SET @unit = CONCAT(@unit_name, '-', @product_id);
 			
 			SET @unit_for_query = REPLACE(@unit,' ','%');
@@ -11276,73 +11729,6 @@ BEGIN
 			SET @default_milestone = '---';
 			SET @default_version = '---';
 			
-	#  We will create all component_id for all the components/roles we need
-		# For the temporary users:
-			# Tenant
-				SET @component_id_tenant = ((SELECT MAX(`id`) FROM `components`) + 1);
-				SET @role_user_g_description_tenant = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 1);
-				SET @user_pub_name_tenant = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_tenant);
-				SET @role_user_pub_info_tenant = CONCAT(@user_pub_name_tenant
-													,' - '
-													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
-													, @role_user_g_description_tenant
-													, ' TO THIS UNIT'
-													);
-				SET @user_role_desc_tenant = @role_user_pub_info_tenant;
-			# Landlord
-				SET @component_id_landlord = (@component_id_tenant + 1);
-				SET @role_user_g_description_landlord = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 2);
-				SET @user_pub_name_landlord = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_landlord);
-				SET @role_user_pub_info_landlord = CONCAT(@user_pub_name_landlord
-													,' - '
-													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
-													, @role_user_g_description_landlord
-													, ' TO THIS UNIT'
-													);
-				SET @user_role_desc_landlord = @role_user_pub_info_landlord;
-			
-			# Agent
-				SET @component_id_agent = (@component_id_landlord + 1);
-				SET @role_user_g_description_agent = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 5);
-				SET @user_pub_name_agent = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_agent);
-				SET @role_user_pub_info_agent = CONCAT(@user_pub_name_agent
-													,' - '
-													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
-													, @role_user_g_description_agent
-													, ' TO THIS UNIT'
-													);
-				SET @user_role_desc_agent = @role_user_pub_info_agent;
-			
-			# Contractor
-				SET @component_id_contractor = (@component_id_agent + 1);
-				SET @role_user_g_description_contractor = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 3);
-				SET @user_pub_name_contractor = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_contractor);
-				SET @role_user_pub_info_contractor = CONCAT(@user_pub_name_contractor
-													,' - '
-													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
-													, @role_user_g_description_contractor
-													, ' TO THIS UNIT'
-													);
-				SET @user_role_desc_contractor = @role_user_pub_info_contractor;
-			
-			# Management Company
-				SET @component_id_mgt_cny = (@component_id_contractor + 1);
-				SET @role_user_g_description_mgt_cny = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 4);
-				SET @user_pub_name_mgt_cny = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_mgt_cny);
-				SET @role_user_pub_info_mgt_cny = CONCAT(@user_pub_name_mgt_cny
-													,' - '
-													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
-													, @role_user_g_description_mgt_cny
-													, ' TO THIS UNIT'
-													);
-				SET @user_role_desc_mgt_cny = @role_user_pub_info_mgt_cny;
-				
-	 SET NAMES utf8 ;
-	 SET SQL_MODE='' ;
-	 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 ;
-	 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 ;
-	 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' ;
-	 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 ;
 	# We now create the unit we need.
 		INSERT INTO `products`
 			(`id`
@@ -11355,7 +11741,8 @@ BEGIN
 			)
 			VALUES
 			(@product_id,@unit,@classification_id,@unit_description,1,@default_milestone,1);
-		# Log the actions of the script.
+	
+    	# Log the actions of the script.
 			SET @script_log_message = CONCAT('A new unit #'
 									, (SELECT IFNULL(@product_id, 'product_id is NULL'))
 									, ' ('
@@ -11382,7 +11769,8 @@ BEGIN
 				;
 			
 			SET @script_log_message = NULL;
-		# We also log this in the `audit_log` table
+	
+    	# We also log this in the `audit_log` table
 		
 			INSERT INTO `audit_log` 
 				(`user_id`
@@ -11418,6 +11806,7 @@ BEGIN
 					VALUES
 					(@version_id,@default_version,@product_id,1)
 					;
+
 			# We also log this in the `audit_log` table
 					
 						INSERT INTO `audit_log` 
@@ -11445,7 +11834,7 @@ BEGIN
 			# What is the next available milestone id:
 				SET @milestone_id = ((SELECT MAX(`id`) FROM `versions`) + 1);
 			
-			# We can now insert the version there
+			# We can now insert the milestone there
 			INSERT INTO `milestones`
 				(`id`
 				,`product_id`
@@ -11471,229 +11860,896 @@ BEGIN
 					VALUES
 					(@creator_bz_id, 'Bugzilla::Milestone', @milestone_id, '__create__', NULL, @default_milestone, @timestamp)
 					;
-				
+
+	#  We create all the components/roles we need
+		# For the temporary users:
+			# Tenant
+				SET @role_user_g_description_tenant = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 1);
+				SET @user_pub_name_tenant = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_tenant);
+				SET @role_user_pub_info_tenant = CONCAT(@user_pub_name_tenant
+													,' - '
+													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
+													, @role_user_g_description_tenant
+													, ' TO THIS UNIT'
+													);
+				SET @user_role_desc_tenant = @role_user_pub_info_tenant;
+
+			# Landlord
+				SET @role_user_g_description_landlord = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 2);
+				SET @user_pub_name_landlord = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_landlord);
+				SET @role_user_pub_info_landlord = CONCAT(@user_pub_name_landlord
+													,' - '
+													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
+													, @role_user_g_description_landlord
+													, ' TO THIS UNIT'
+													);
+				SET @user_role_desc_landlord = @role_user_pub_info_landlord;
+			
+			# Agent
+				SET @role_user_g_description_agent = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 5);
+				SET @user_pub_name_agent = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_agent);
+				SET @role_user_pub_info_agent = CONCAT(@user_pub_name_agent
+													,' - '
+													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
+													, @role_user_g_description_agent
+													, ' TO THIS UNIT'
+													);
+				SET @user_role_desc_agent = @role_user_pub_info_agent;
+			
+			# Contractor
+				SET @role_user_g_description_contractor = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 3);
+				SET @user_pub_name_contractor = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_contractor);
+				SET @role_user_pub_info_contractor = CONCAT(@user_pub_name_contractor
+													,' - '
+													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
+													, @role_user_g_description_contractor
+													, ' TO THIS UNIT'
+													);
+				SET @user_role_desc_contractor = @role_user_pub_info_contractor;
+			
+			# Management Company
+				SET @role_user_g_description_mgt_cny = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 4);
+				SET @user_pub_name_mgt_cny = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_mgt_cny);
+				SET @role_user_pub_info_mgt_cny = CONCAT(@user_pub_name_mgt_cny
+													,' - '
+													, 'THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL '
+													, @role_user_g_description_mgt_cny
+													, ' TO THIS UNIT'
+													);
+				SET @user_role_desc_mgt_cny = @role_user_pub_info_mgt_cny;
+
+		# We have eveything, we can create the components we need:
+        # We insert the component 1 by 1 to minimize the risks of a race condition
+
+			# Tenant (component_id_tenant)
+                SET @component_id_tenant = ((SELECT MAX(`id`) FROM `components`) + 1);
+
+                INSERT INTO `components`
+                    (`id`
+                    ,`name`
+                    ,`product_id`
+                    ,`initialowner`
+                    ,`initialqacontact`
+                    ,`description`
+                    ,`isactive`
+                    ) 
+                    VALUES
+                    (@component_id_tenant,@role_user_g_description_tenant,@product_id,@bz_user_id_dummy_tenant,@bz_user_id_dummy_tenant,@user_role_desc_tenant,1)
+                    ;
+
+            # Landlord (component_id_landlord)
+                SET @component_id_landlord = ((SELECT MAX(`id`) FROM `components`) + 1);
+
+                INSERT INTO `components`
+                    (`id`
+                    ,`name`
+                    ,`product_id`
+                    ,`initialowner`
+                    ,`initialqacontact`
+                    ,`description`
+                    ,`isactive`
+                    ) 
+                    VALUES
+                    (@component_id_landlord, @role_user_g_description_landlord, @product_id, @bz_user_id_dummy_landlord, @bz_user_id_dummy_landlord, @user_role_desc_landlord, 1)
+                    ;
+
+            # Agent (component_id_agent)
+                SET @component_id_agent = ((SELECT MAX(`id`) FROM `components`) + 1);
+
+                INSERT INTO `components`
+                    (`id`
+                    ,`name`
+                    ,`product_id`
+                    ,`initialowner`
+                    ,`initialqacontact`
+                    ,`description`
+                    ,`isactive`
+                    ) 
+                    VALUES
+                    (@component_id_agent, @role_user_g_description_agent, @product_id, @bz_user_id_dummy_agent, @bz_user_id_dummy_agent, @user_role_desc_agent, 1)
+                    ;
+
+            # Contractor (component_id_contractor)
+                SET @component_id_contractor = ((SELECT MAX(`id`) FROM `components`) + 1);
+
+                INSERT INTO `components`
+                    (`id`
+                    ,`name`
+                    ,`product_id`
+                    ,`initialowner`
+                    ,`initialqacontact`
+                    ,`description`
+                    ,`isactive`
+                    ) 
+                    VALUES
+                    (@component_id_contractor, @role_user_g_description_contractor, @product_id, @bz_user_id_dummy_contractor, @bz_user_id_dummy_contractor, @user_role_desc_contractor, 1)
+                    ;
+            
+            # Management Company (component_id_mgt_cny)
+				SET @component_id_mgt_cny = ((SELECT MAX(`id`) FROM `components`) + 1);
+
+                INSERT INTO `components`
+                    (`id`
+                    ,`name`
+                    ,`product_id`
+                    ,`initialowner`
+                    ,`initialqacontact`
+                    ,`description`
+                    ,`isactive`
+                    ) 
+                    VALUES
+                    (@component_id_mgt_cny, @role_user_g_description_mgt_cny, @product_id, @bz_user_id_dummy_mgt_cny, @bz_user_id_dummy_mgt_cny, @user_role_desc_mgt_cny, 1)
+                    ;
+
+            # Log the actions of the script.
+                SET @script_log_message = CONCAT('The role created for that unit with temporary users were:'
+                                        , '\r\- '
+                                        , (SELECT IFNULL(@role_user_g_description_tenant, 'role_user_g_description is NULL'))
+                                        , ' (role_type_id #'
+                                        , '1'
+                                        , ') '
+                                        , '\r\The user associated to this role was bz user #'
+                                        , (SELECT IFNULL(@bz_user_id_dummy_tenant, 'bz_user_id is NULL'))
+                                        , ' (real name: '
+                                        , (SELECT IFNULL(@user_pub_name_tenant, 'user_pub_name is NULL'))
+                                        , '. This user is the default assignee for this role for that unit).' 
+                                        
+                                        , '\r\- '
+                                        , (SELECT IFNULL(@role_user_g_description_landlord, 'role_user_g_description is NULL'))
+                                        , ' (role_type_id #'
+                                        , '2'
+                                        , ') '
+                                        , '\r\The user associated to this role was bz user #'
+                                        , (SELECT IFNULL(@bz_user_id_dummy_landlord, 'bz_user_id is NULL'))
+                                        , ' (real name: '
+                                        , (SELECT IFNULL(@user_pub_name_landlord, 'user_pub_name is NULL'))
+                                        , '. This user is the default assignee for this role for that unit).'
+                                        
+                                        , '\r\- '
+                                        , (SELECT IFNULL(@role_user_g_description_agent, 'role_user_g_description is NULL'))
+                                        , ' (role_type_id #'
+                                        , '5'
+                                        , ') '
+                                        , '\r\The user associated to this role was bz user #'
+                                        , (SELECT IFNULL(@bz_user_id_dummy_agent, 'bz_user_id is NULL'))
+                                        , ' (real name: '
+                                        , (SELECT IFNULL(@user_pub_name_agent, 'user_pub_name is NULL'))
+                                        , '. This user is the default assignee for this role for that unit).'
+                                        
+                                        , '\r\- '
+                                        , (SELECT IFNULL(@role_user_g_description_contractor, 'role_user_g_description is NULL'))
+                                        , ' (role_type_id #'
+                                        , '3'
+                                        , ') '
+                                        , '\r\The user associated to this role was bz user #'
+                                        , (SELECT IFNULL(@bz_user_id_dummy_contractor, 'bz_user_id is NULL'))
+                                        , ' (real name: '
+                                        , (SELECT IFNULL(@user_pub_name_contractor, 'user_pub_name is NULL'))
+                                        , '. This user is the default assignee for this role for that unit).'
+                                        , '\r\- '
+                                        , (SELECT IFNULL(@role_user_g_description_mgt_cny, 'role_user_g_description is NULL'))
+                                        , ' (role_type_id #'
+                                        , '3'
+                                        , ') '
+                                        , '\r\The user associated to this role was bz user #'
+                                        , (SELECT IFNULL(@bz_user_id_dummy_mgt_cny, 'bz_user_id is NULL'))
+                                        , ' (real name: '
+                                        , (SELECT IFNULL(@user_pub_name_mgt_cny, 'user_pub_name is NULL'))
+                                        , '. This user is the default assignee for this role for that unit).'								
+                                        )
+                                        ;
+                
+                INSERT INTO `ut_script_log`
+                    (`datetime`
+                    , `script`
+                    , `log`
+                    )
+                    VALUES
+                    (NOW(), @script, @script_log_message)
+                    ;
+                
+                SET @script_log_message = NULL;	
+                    
+            # We update the BZ logs
+                INSERT INTO `audit_log`
+                    (`user_id`
+                    ,`class`
+                    ,`object_id`
+                    ,`field`
+                    ,`removed`
+                    ,`added`
+                    ,`at_time`
+                    ) 
+                    VALUES 
+                    (@creator_bz_id, 'Bugzilla::Component', @component_id_tenant, '__create__', NULL, @role_user_g_description_tenant, @timestamp)
+                    ,(@creator_bz_id, 'Bugzilla::Component', @component_id_landlord, '__create__', NULL, @role_user_g_description_landlord, @timestamp)
+                    ,(@creator_bz_id, 'Bugzilla::Component', @component_id_agent, '__create__', NULL, @role_user_g_description_agent, @timestamp)
+                    ,(@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
+                    ,(@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
+                    ;
+
 	# We create the goups we need
 		# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
 		# This will avoid a scenario where we need to grant permission to see occupants for instances but the group for occupants does not exist yet...
 		
-		# We get the group ids that we will use to do that
+		# We prepare the information for each group that we will use to do that
 		
 			# Groups common to all components/roles for this unit
 				# Allow user to create a case for this unit
-					SET @create_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
 					SET @group_name_create_case_group = (CONCAT(@unit_for_group,'-01-Can-Create-Cases'));
 					SET @group_description_create_case_group = 'User can create cases for this unit.';
 					
 				# Allow user to create a case for this unit
-					SET @can_edit_case_group_id = (@create_case_group_id + 1);
 					SET @group_name_can_edit_case_group = (CONCAT(@unit_for_group,'-01-Can-Edit-Cases'));
 					SET @group_description_can_edit_case_group = 'User can edit a case they have access to';
 					
 				# Allow user to see the cases for this unit
-					SET @can_see_cases_group_id = (@can_edit_case_group_id + 1);
 					SET @group_name_can_see_cases_group = (CONCAT(@unit_for_group,'-02-Case-Is-Visible-To-All'));
 					SET @group_description_can_see_cases_group = 'User can see the public cases for the unit';
 					
 				# Allow user to edit all fields in the case for this unit regardless of his/her role
-					SET @can_edit_all_field_case_group_id = (@can_see_cases_group_id + 1);
 					SET @group_name_can_edit_all_field_case_group = (CONCAT(@unit_for_group,'-03-Can-Always-Edit-all-Fields'));
 					SET @group_description_can_edit_all_field_case_group = 'Triage - User can edit all fields in a case they have access to, regardless of role';
 					
 				# Allow user to edit all the fields in a case, regardless of user role for this unit
-					SET @can_edit_component_group_id = (@can_edit_all_field_case_group_id + 1);
 					SET @group_name_can_edit_component_group = (CONCAT(@unit_for_group,'-04-Can-Edit-Components'));
 					SET @group_description_can_edit_component_group = 'User can edit components/roles for the unit';
 					
 				# Allow user to see the unit in the search
-					SET @can_see_unit_in_search_group_id = (@can_edit_component_group_id + 1);
 					SET @group_name_can_see_unit_in_search_group = (CONCAT(@unit_for_group,'-00-Can-See-Unit-In-Search'));
 					SET @group_description_can_see_unit_in_search_group = 'User can see the unit in the search panel';
 					
 			# The groups related to Flags
 				# Allow user to  for this unit
-					SET @all_g_flags_group_id = (@can_see_unit_in_search_group_id + 1);
 					SET @group_name_all_g_flags_group = (CONCAT(@unit_for_group,'-05-Can-Approve-All-Flags'));
 					SET @group_description_all_g_flags_group = 'User can approve all flags';
 					
 				# Allow user to  for this unit
-					SET @all_r_flags_group_id = (@all_g_flags_group_id + 1);
 					SET @group_name_all_r_flags_group = (CONCAT(@unit_for_group,'-05-Can-Request-All-Flags'));
 					SET @group_description_all_r_flags_group = 'User can request a Flag to be approved';
 					
 				
 			# The Groups that control user visibility
 				# Allow user to  for this unit
-					SET @list_visible_assignees_group_id = (@all_r_flags_group_id + 1);
 					SET @group_name_list_visible_assignees_group = (CONCAT(@unit_for_group,'-06-List-Public-Assignee'));
 					SET @group_description_list_visible_assignees_group = 'User are visible assignee(s) for this unit';
 					
 				# Allow user to  for this unit
-					SET @see_visible_assignees_group_id = (@list_visible_assignees_group_id + 1);
 					SET @group_name_see_visible_assignees_group = (CONCAT(@unit_for_group,'-06-Can-See-Public-Assignee'));
 					SET @group_description_see_visible_assignees_group = 'User can see all visible assignee(s) for this unit';
 					
 			# Other Misc Groups
 				# Allow user to  for this unit
-					SET @active_stakeholder_group_id = (@see_visible_assignees_group_id + 1);
 					SET @group_name_active_stakeholder_group = (CONCAT(@unit_for_group,'-07-Active-Stakeholder'));
 					SET @group_description_active_stakeholder_group = 'Users who have a role in this unit as of today (WIP)';
 					
 				# Allow user to  for this unit
-					SET @unit_creator_group_id = (@active_stakeholder_group_id + 1);
 					SET @group_name_unit_creator_group = (CONCAT(@unit_for_group,'-07-Unit-Creator'));
 					SET @group_description_unit_creator_group = 'User is considered to be the creator of the unit';
 					
 			# Groups associated to the components/roles
 				# For the tenant
 					# Visibility group
-					SET @group_id_show_to_tenant = (@unit_creator_group_id + 1);
 					SET @group_name_show_to_tenant = (CONCAT(@unit_for_group,'-02-Limit-to-Tenant'));
 					SET @group_description_tenant = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1),@visibility_explanation_2));
 				
 					# Is in tenant user Group
-					SET @group_id_are_users_tenant = (@group_id_show_to_tenant + 1);
 					SET @group_name_are_users_tenant = (CONCAT(@unit_for_group,'-06-List-Tenant'));
 					SET @group_description_are_users_tenant = (CONCAT('list the tenant(s)', @unit));
 					
 					# Can See tenant user Group
-					SET @group_id_see_users_tenant = (@group_id_are_users_tenant + 1);
 					SET @group_name_see_users_tenant = (CONCAT(@unit_for_group,'-06-Can-see-Tenant'));
 					SET @group_description_see_users_tenant = (CONCAT('See the list of tenant(s) for ', @unit));
 			
 				# For the Landlord
 					# Visibility group 
-					SET @group_id_show_to_landlord = (@group_id_see_users_tenant + 1);
 					SET @group_name_show_to_landlord = (CONCAT(@unit_for_group,'-02-Limit-to-Landlord'));
 					SET @group_description_show_to_landlord = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2),@visibility_explanation_2));
 					
 					# Is in landlord user Group
-					SET @group_id_are_users_landlord = (@group_id_show_to_landlord + 1);
 					SET @group_name_are_users_landlord = (CONCAT(@unit_for_group,'-06-List-landlord'));
 					SET @group_description_are_users_landlord = (CONCAT('list the landlord(s)', @unit));
 					
 					# Can See landlord user Group
-					SET @group_id_see_users_landlord = (@group_id_are_users_landlord + 1);
 					SET @group_name_see_users_landlord = (CONCAT(@unit_for_group,'-06-Can-see-lanldord'));
 					SET @group_description_see_users_landlord = (CONCAT('See the list of lanldord(s) for ', @unit));
 					
 				# For the agent
 					# Visibility group 
-					SET @group_id_show_to_agent = (@group_id_see_users_landlord + 1);
 					SET @group_name_show_to_agent = (CONCAT(@unit_for_group,'-02-Limit-to-Agent'));
 					SET @group_description_show_to_agent = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5),@visibility_explanation_2));
 					
 					# Is in Agent user Group
-					SET @group_id_are_users_agent = (@group_id_show_to_agent + 1);
 					SET @group_name_are_users_agent = (CONCAT(@unit_for_group,'-06-List-agent'));
 					SET @group_description_are_users_agent = (CONCAT('list the agent(s)', @unit));
 					
 					# Can See Agent user Group
-					SET @group_id_see_users_agent = (@group_id_are_users_agent + 1);
 					SET @group_name_see_users_agent = (CONCAT(@unit_for_group,'-06-Can-see-agent'));
 					SET @group_description_see_users_agent = (CONCAT('See the list of agent(s) for ', @unit));
 				
 				# For the contractor
 					# Visibility group 
-					SET @group_id_show_to_contractor = (@group_id_see_users_agent + 1);
 					SET @group_name_show_to_contractor = (CONCAT(@unit_for_group,'-02-Limit-to-Contractor-Employee'));
 					SET @group_description_show_to_contractor = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3),@visibility_explanation_2));
 					
 					# Is in contractor user Group
-					SET @group_id_are_users_contractor = (@group_id_show_to_contractor + 1);
 					SET @group_name_are_users_contractor = (CONCAT(@unit_for_group,'-06-List-contractor-employee'));
 					SET @group_description_are_users_contractor = (CONCAT('list the contractor employee(s)', @unit));
 					
 					# Can See contractor user Group
-					SET @group_id_see_users_contractor = (@group_id_are_users_contractor + 1);
 					SET @group_name_see_users_contractor = (CONCAT(@unit_for_group,'-06-Can-see-contractor-employee'));
 					SET @group_description_see_users_contractor = (CONCAT('See the list of contractor employee(s) for ', @unit));
 					
 				# For the Mgt Cny
 					# Visibility group
-					SET @group_id_show_to_mgt_cny = (@group_id_see_users_contractor + 1);
 					SET @group_name_show_to_mgt_cny = (CONCAT(@unit_for_group,'-02-Limit-to-Mgt-Cny-Employee'));
 					SET @group_description_show_to_mgt_cny = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4),@visibility_explanation_2));
 					
 					# Is in mgt cny user Group
-					SET @group_id_are_users_mgt_cny = (@group_id_show_to_mgt_cny + 1);
 					SET @group_name_are_users_mgt_cny = (CONCAT(@unit_for_group,'-06-List-Mgt-Cny-Employee'));
 					SET @group_description_are_users_mgt_cny = (CONCAT('list the Mgt Cny Employee(s)', @unit));
 					
 					# Can See mgt cny user Group
-					SET @group_id_see_users_mgt_cny = (@group_id_are_users_mgt_cny + 1);
 					SET @group_name_see_users_mgt_cny = (CONCAT(@unit_for_group,'-06-Can-see-Mgt-Cny-Employee'));
 					SET @group_description_see_users_mgt_cny = (CONCAT('See the list of Mgt Cny Employee(s) for ', @unit));
 				
 				# For the occupant
 					# Visibility group
-					SET @group_id_show_to_occupant = (@group_id_see_users_mgt_cny + 1);
 					SET @group_name_show_to_occupant = (CONCAT(@unit_for_group,'-02-Limit-to-occupant'));
 					SET @group_description_show_to_occupant = (CONCAT(@visibility_explanation_1,'Occupants'));
 					
 					# Is in occupant user Group
-					SET @group_id_are_users_occupant = (@group_id_show_to_occupant + 1);
 					SET @group_name_are_users_occupant = (CONCAT(@unit_for_group,'-06-List-occupant'));
 					SET @group_description_are_users_occupant = (CONCAT('list-the-occupant(s)-', @unit));
 					
 					# Can See occupant user Group
-					SET @group_id_see_users_occupant = (@group_id_are_users_occupant + 1);
 					SET @group_name_see_users_occupant = (CONCAT(@unit_for_group,'-06-Can-see-occupant'));
 					SET @group_description_see_users_occupant = (CONCAT('See the list of occupant(s) for ', @unit));
 					
 				# For the people invited by this user:
 					# Is in invited_by user Group
-					SET @group_id_are_users_invited_by = (@group_id_see_users_occupant + 1);
 					SET @group_name_are_users_invited_by = (CONCAT(@unit_for_group,'-06-List-invited-by'));
 					SET @group_description_are_users_invited_by = (CONCAT('list the invited_by(s)', @unit));
 					
 					# Can See users in invited_by user Group
-					SET @group_id_see_users_invited_by = (@group_id_are_users_invited_by + 1);
 					SET @group_name_see_users_invited_by = (CONCAT(@unit_for_group,'-06-Can-see-invited-by'));
 					SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
+
 		# We can populate the 'groups' table now.
-			INSERT INTO `groups`
-				(`id`
-				,`name`
-				,`description`
-				,`isbuggroup`
-				,`userregexp`
-				,`isactive`
-				,`icon_url`
-				) 
-				VALUES 
-					(@create_case_group_id,@group_name_create_case_group,@group_description_create_case_group,1,'',1,NULL)
-					,(@can_edit_case_group_id,@group_name_can_edit_case_group,@group_description_can_edit_case_group,1,'',1,NULL)
-					,(@can_see_cases_group_id,@group_name_can_see_cases_group,@group_description_can_see_cases_group,1,'',1,NULL)
-					,(@can_edit_all_field_case_group_id,@group_name_can_edit_all_field_case_group,@group_description_can_edit_all_field_case_group,1,'',1,NULL)
-					,(@can_edit_component_group_id,@group_name_can_edit_component_group,@group_description_can_edit_component_group,1,'',1,NULL)
-					,(@can_see_unit_in_search_group_id,@group_name_can_see_unit_in_search_group,@group_description_can_see_unit_in_search_group,1,'',1,NULL)
-					,(@all_g_flags_group_id,@group_name_all_g_flags_group,@group_description_all_g_flags_group,1,'',0,NULL)
-					,(@all_r_flags_group_id,@group_name_all_r_flags_group,@group_description_all_r_flags_group,1,'',0,NULL)
-					,(@list_visible_assignees_group_id,@group_name_list_visible_assignees_group,@group_description_list_visible_assignees_group,1,'',0,NULL)
-					,(@see_visible_assignees_group_id,@group_name_see_visible_assignees_group,@group_description_see_visible_assignees_group,1,'',0,NULL)
-					,(@active_stakeholder_group_id,@group_name_active_stakeholder_group,@group_description_active_stakeholder_group,1,'',1,NULL)
-					,(@unit_creator_group_id,@group_name_unit_creator_group,@group_description_unit_creator_group,1,'',0,NULL)
-					,(@group_id_show_to_tenant,@group_name_show_to_tenant,@group_description_tenant,1,'',1,NULL)
-					,(@group_id_are_users_tenant,@group_name_are_users_tenant,@group_description_are_users_tenant,1,'',0,NULL)
-					,(@group_id_see_users_tenant,@group_name_see_users_tenant,@group_description_see_users_tenant,1,'',0,NULL)
-					,(@group_id_show_to_landlord,@group_name_show_to_landlord,@group_description_show_to_landlord,1,'',1,NULL)
-					,(@group_id_are_users_landlord,@group_name_are_users_landlord,@group_description_are_users_landlord,1,'',0,NULL)
-					,(@group_id_see_users_landlord,@group_name_see_users_landlord,@group_description_see_users_landlord,1,'',0,NULL)
-					,(@group_id_show_to_agent,@group_name_show_to_agent,@group_description_show_to_agent,1,'',1,NULL)
-					,(@group_id_are_users_agent,@group_name_are_users_agent,@group_description_are_users_agent,1,'',0,NULL)
-					,(@group_id_see_users_agent,@group_name_see_users_agent,@group_description_see_users_agent,1,'',0,NULL)
-					,(@group_id_show_to_contractor,@group_name_show_to_contractor,@group_description_show_to_contractor,1,'',1,NULL)
-					,(@group_id_are_users_contractor,@group_name_are_users_contractor,@group_description_are_users_contractor,1,'',0,NULL)
-					,(@group_id_see_users_contractor,@group_name_see_users_contractor,@group_description_see_users_contractor,1,'',0,NULL)
-					,(@group_id_show_to_mgt_cny,@group_name_show_to_mgt_cny,@group_description_show_to_mgt_cny,1,'',1,NULL)
-					,(@group_id_are_users_mgt_cny,@group_name_are_users_mgt_cny,@group_description_are_users_mgt_cny,1,'',0,NULL)
-					,(@group_id_see_users_mgt_cny,@group_name_see_users_mgt_cny,@group_description_see_users_mgt_cny,1,'',0,NULL)
-					,(@group_id_show_to_occupant,@group_name_show_to_occupant,@group_description_show_to_occupant,1,'',1,NULL)
-					,(@group_id_are_users_occupant,@group_name_are_users_occupant,@group_description_are_users_occupant,1,'',0,NULL)
-					,(@group_id_see_users_occupant,@group_name_see_users_occupant,@group_description_see_users_occupant,1,'',0,NULL)
-					,(@group_id_are_users_invited_by,@group_name_are_users_invited_by,@group_description_are_users_invited_by,1,'',0,NULL)
-					,(@group_id_see_users_invited_by,@group_name_see_users_invited_by,@group_description_see_users_invited_by,1,'',0,NULL)
-					;
+        # We insert the groups 1 by 1 to minimize the risk of a race conditions when we get the group_id
+
+            # create_case_group_id
+				SET @create_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@create_case_group_id,@group_name_create_case_group,@group_description_create_case_group,1,'',1,NULL)
+                    ;
+
+            # can_edit_case_group_id
+                SET @can_edit_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@can_edit_case_group_id,@group_name_can_edit_case_group,@group_description_can_edit_case_group,1,'',1,NULL)
+                    ;            
+
+            # can_see_cases_group_id
+                SET @can_see_cases_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@can_see_cases_group_id,@group_name_can_see_cases_group,@group_description_can_see_cases_group,1,'',1,NULL)
+                    ;
+
+            # can_edit_all_field_case_group_id
+                SET @can_edit_all_field_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@can_edit_all_field_case_group_id,@group_name_can_edit_all_field_case_group,@group_description_can_edit_all_field_case_group,1,'',1,NULL)
+                    ;
+
+            # can_edit_component_group_id
+                SET @can_edit_component_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@can_edit_component_group_id,@group_name_can_edit_component_group,@group_description_can_edit_component_group,1,'',1,NULL)
+                    ;
+
+            # can_see_unit_in_search_group_id
+                SET @can_see_unit_in_search_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@can_see_unit_in_search_group_id,@group_name_can_see_unit_in_search_group,@group_description_can_see_unit_in_search_group,1,'',1,NULL)
+                    ;
+
+            # all_g_flags_group_id
+                SET @all_g_flags_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@all_g_flags_group_id,@group_name_all_g_flags_group,@group_description_all_g_flags_group,1,'',0,NULL)
+                    ;
+
+            # all_r_flags_group_id
+                SET @all_r_flags_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@all_r_flags_group_id,@group_name_all_r_flags_group,@group_description_all_r_flags_group,1,'',0,NULL)
+                    ;
+
+            # list_visible_assignees_group_id
+                SET @list_visible_assignees_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@list_visible_assignees_group_id,@group_name_list_visible_assignees_group,@group_description_list_visible_assignees_group,1,'',0,NULL)
+                    ;
+
+            # see_visible_assignees_group_id
+                SET @see_visible_assignees_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@see_visible_assignees_group_id,@group_name_see_visible_assignees_group,@group_description_see_visible_assignees_group,1,'',0,NULL)
+                    ;
+
+            # active_stakeholder_group_id
+                SET @active_stakeholder_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@active_stakeholder_group_id,@group_name_active_stakeholder_group,@group_description_active_stakeholder_group,1,'',1,NULL)
+                    ;
+
+            # unit_creator_group_id
+                SET @unit_creator_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@unit_creator_group_id,@group_name_unit_creator_group,@group_description_unit_creator_group,1,'',0,NULL)
+                    ;
+
+            # group_id_show_to_tenant
+                SET @group_id_show_to_tenant = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_show_to_tenant,@group_name_show_to_tenant,@group_description_tenant,1,'',1,NULL)
+                    ;
+
+            # group_id_are_users_tenant
+                SET @group_id_are_users_tenant = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_are_users_tenant,@group_name_are_users_tenant,@group_description_are_users_tenant,1,'',0,NULL)
+                    ;
+
+            # group_id_see_users_tenant
+                SET @group_id_see_users_tenant = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_see_users_tenant,@group_name_see_users_tenant,@group_description_see_users_tenant,1,'',0,NULL)
+                    ;
+
+            # group_id_show_to_landlord
+                SET @group_id_show_to_landlord = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_show_to_landlord,@group_name_show_to_landlord,@group_description_show_to_landlord,1,'',1,NULL)
+                    ;
+
+            # group_id_are_users_landlord
+                SET @group_id_are_users_landlord = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_are_users_landlord,@group_name_are_users_landlord,@group_description_are_users_landlord,1,'',0,NULL)
+                    ;
+
+            # group_id_see_users_landlord
+                SET @group_id_see_users_landlord = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_see_users_landlord,@group_name_see_users_landlord,@group_description_see_users_landlord,1,'',0,NULL)
+                    ;
+
+            # group_id_show_to_agent
+                SET @group_id_show_to_agent = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_show_to_agent,@group_name_show_to_agent,@group_description_show_to_agent,1,'',1,NULL)
+                    ;
+
+            # group_id_are_users_agent
+                SET @group_id_are_users_agent = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_are_users_agent,@group_name_are_users_agent,@group_description_are_users_agent,1,'',0,NULL)
+                    ;
+
+            # group_id_see_users_agent
+                SET @group_id_see_users_agent = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_see_users_agent,@group_name_see_users_agent,@group_description_see_users_agent,1,'',0,NULL)
+                    ;
+
+            # group_id_show_to_contractor
+                SET @group_id_show_to_contractor = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_show_to_contractor,@group_name_show_to_contractor,@group_description_show_to_contractor,1,'',1,NULL)
+                    ;
+
+            # group_id_are_users_contractor
+                SET @group_id_are_users_contractor = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_are_users_contractor,@group_name_are_users_contractor,@group_description_are_users_contractor,1,'',0,NULL)
+                    ;
+
+            # group_id_see_users_contractor
+                SET @group_id_see_users_contractor = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_see_users_contractor,@group_name_see_users_contractor,@group_description_see_users_contractor,1,'',0,NULL)
+                    ;
+
+            # group_id_show_to_mgt_cny
+                SET @group_id_show_to_mgt_cny = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_show_to_mgt_cny,@group_name_show_to_mgt_cny,@group_description_show_to_mgt_cny,1,'',1,NULL)
+                    ;
+
+            # group_id_are_users_mgt_cny
+                SET @group_id_are_users_mgt_cny = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_are_users_mgt_cny,@group_name_are_users_mgt_cny,@group_description_are_users_mgt_cny,1,'',0,NULL)
+                    ;
+
+            # group_id_see_users_mgt_cny
+                SET @group_id_see_users_mgt_cny = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_see_users_mgt_cny,@group_name_see_users_mgt_cny,@group_description_see_users_mgt_cny,1,'',0,NULL)
+                    ;            
+
+            # group_id_show_to_occupant
+                SET @group_id_show_to_occupant = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_show_to_occupant,@group_name_show_to_occupant,@group_description_show_to_occupant,1,'',1,NULL)
+                    ;            
+
+            # group_id_are_users_occupant
+                SET @group_id_are_users_occupant = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_are_users_occupant,@group_name_are_users_occupant,@group_description_are_users_occupant,1,'',0,NULL)
+                    ;            
+
+            # group_id_see_users_occupant
+                SET @group_id_see_users_occupant = ((SELECT MAX(`id`) FROM `groups`) + 1);
+           
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_see_users_occupant,@group_name_see_users_occupant,@group_description_see_users_occupant,1,'',0,NULL)
+                    ;            
+
+            # group_id_are_users_invited_by
+                SET @group_id_are_users_invited_by = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+            	INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_are_users_invited_by,@group_name_are_users_invited_by,@group_description_are_users_invited_by,1,'',0,NULL)
+                    ;
+
+            # group_id_see_users_invited_by
+                SET @group_id_see_users_invited_by = ((SELECT MAX(`id`) FROM `groups`) + 1);
+
+                INSERT INTO `groups`
+                    (`id`
+                    ,`name`
+                    ,`description`
+                    ,`isbuggroup`
+                    ,`userregexp`
+                    ,`isactive`
+                    ,`icon_url`
+                    ) 
+                    VALUES 
+                    (@group_id_see_users_invited_by,@group_name_see_users_invited_by,@group_description_see_users_invited_by,1,'',0,NULL)
+                    ;
+
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('We have created the groups that we will need for that unit #'
 										, @product_id
@@ -11936,22 +12992,20 @@ BEGIN
 			
 	# We now Create the flagtypes and flags for this new unit (we NEEDED the group ids for that!):
 		
-		# We need to get the flatype id
-			SET @flag_next_step = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
-			SET @flag_solution = (@flag_next_step + 1);
-			SET @flag_budget = (@flag_solution + 1);
-			SET @flag_attachment = (@flag_budget + 1);
-			SET @flag_ok_to_pay = (@flag_attachment + 1);
-			SET @flag_is_paid = (@flag_ok_to_pay + 1);
-		
-		# We need to define the name for the flags
+		# We need to define the data we need for each flag
 			SET @flag_next_step_name = CONCAT('Next_Step_',@unit_for_flag);
 			SET @flag_solution_name = CONCAT('Solution_',@unit_for_flag);
 			SET @flag_budget_name = CONCAT('Budget_',@unit_for_flag);
 			SET @flag_attachment_name = CONCAT('Attachment_',@unit_for_flag);
 			SET @flag_ok_to_pay_name = CONCAT('OK_to_pay_',@unit_for_flag);
 			SET @flag_is_paid_name = CONCAT('is_paid_',@unit_for_flag);
-		# We can now create the flagtypes
+	
+        # We insert the flagtypes 1 by 1 to minimize the risk of a race condition
+
+		# We need to get the flagype id for next_step
+			SET @flag_next_step_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+
+		# We can now create the flagtypes for next_step
 			INSERT INTO `flagtypes`
 				(`id`
 				,`name`
@@ -11967,13 +13021,119 @@ BEGIN
 				,`request_group_id`
 				) 
 				VALUES 
-				(@flag_next_step,@flag_next_step_name ,'Approval for the Next Step of the case.','','b',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
-				,(@flag_solution,@flag_solution_name ,'Approval for the Solution of this case.','','b',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
-				,(@flag_budget,@flag_budget_name ,'Approval for the Budget for this case.','','b',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
-				,(@flag_attachment,@flag_attachment_name ,'Approval for this Attachment.','','a',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
-				,(@flag_ok_to_pay,@flag_ok_to_pay_name ,'Approval to pay this bill.','','a',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
-				,(@flag_is_paid,@flag_is_paid_name ,'Confirm if this bill has been paid.','','a',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
-				;
+				(@flag_next_step_id,@flag_next_step_name ,'Approval for the Next Step of the case.','','b',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
+                ;
+
+		# We need to get the flagype id for solution
+			SET @flag_solution_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+
+		# We can now create the flagtypes for solution
+			INSERT INTO `flagtypes`
+				(`id`
+				,`name`
+				,`description`
+				,`cc_list`
+				,`target_type`
+				,`is_active`
+				,`is_requestable`
+				,`is_requesteeble`
+				,`is_multiplicable`
+				,`sortkey`
+				,`grant_group_id`
+				,`request_group_id`
+				) 
+				VALUES 
+				(@flag_solution_id,@flag_solution_name ,'Approval for the Solution of this case.','','b',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
+                ;
+
+		# We need to get the flagype id for budget
+			SET @flag_budget_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+
+		# We can now create the flagtypes for budget
+			INSERT INTO `flagtypes`
+				(`id`
+				,`name`
+				,`description`
+				,`cc_list`
+				,`target_type`
+				,`is_active`
+				,`is_requestable`
+				,`is_requesteeble`
+				,`is_multiplicable`
+				,`sortkey`
+				,`grant_group_id`
+				,`request_group_id`
+				) 
+				VALUES 
+				(@flag_budget_id,@flag_budget_name ,'Approval for the Budget for this case.','','b',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
+                ;
+
+		# We need to get the flagype id for attachment
+			SET @flag_attachment_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+
+		# We can now create the flagtypes for attachment
+			INSERT INTO `flagtypes`
+				(`id`
+				,`name`
+				,`description`
+				,`cc_list`
+				,`target_type`
+				,`is_active`
+				,`is_requestable`
+				,`is_requesteeble`
+				,`is_multiplicable`
+				,`sortkey`
+				,`grant_group_id`
+				,`request_group_id`
+				) 
+				VALUES                 
+                (@flag_attachment_id,@flag_attachment_name ,'Approval for this Attachment.','','a',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
+                ;
+
+		# We need to get the flagype id for ok_to_pay
+			SET @flag_ok_to_pay_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+
+		# We can now create the flagtypes for ok_to_pay
+			INSERT INTO `flagtypes`
+				(`id`
+				,`name`
+				,`description`
+				,`cc_list`
+				,`target_type`
+				,`is_active`
+				,`is_requestable`
+				,`is_requesteeble`
+				,`is_multiplicable`
+				,`sortkey`
+				,`grant_group_id`
+				,`request_group_id`
+				) 
+				VALUES 
+                (@flag_ok_to_pay_id,@flag_ok_to_pay_name ,'Approval to pay this bill.','','a',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
+                ;
+
+		# We need to get the flagype id for is_paid
+			SET @flag_is_paid_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+
+		# We can now create the flagtypes for is_paid
+			INSERT INTO `flagtypes`
+				(`id`
+				,`name`
+				,`description`
+				,`cc_list`
+				,`target_type`
+				,`is_active`
+				,`is_requestable`
+				,`is_requesteeble`
+				,`is_multiplicable`
+				,`sortkey`
+				,`grant_group_id`
+				,`request_group_id`
+				) 
+				VALUES 
+                (@flag_is_paid_id,@flag_is_paid_name ,'Confirm if this bill has been paid.','','a',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
+                ;
+
 		# We also define the flag inclusion
 			INSERT INTO `flaginclusions`
 				(`type_id`
@@ -11981,32 +13141,33 @@ BEGIN
 				,`component_id`
 				) 
 				VALUES
-				(@flag_next_step,@product_id,NULL)
-				,(@flag_solution,@product_id,NULL)
-				,(@flag_budget,@product_id,NULL)
-				,(@flag_attachment,@product_id,NULL)
-				,(@flag_ok_to_pay,@product_id,NULL)
-				,(@flag_is_paid,@product_id,NULL)
+				(@flag_next_step_id,@product_id,NULL)
+				,(@flag_solution_id,@product_id,NULL)
+				,(@flag_budget_id,@product_id,NULL)
+				,(@flag_attachment_id,@product_id,NULL)
+				,(@flag_ok_to_pay_id,@product_id,NULL)
+				,(@flag_is_paid_id,@product_id,NULL)
 				;
+
 		# Log the actions of the script.
 			SET @script_log_message = CONCAT('We have created the following flags which are restricted to that unit: '
 									, '\r\ - Next Step (#'
-									, (SELECT IFNULL(@flag_next_step, 'flag_next_step is NULL'))
+									, (SELECT IFNULL(@flag_next_step_id, 'flag_next_step is NULL'))
 									, ').'
 									, '\r\ - Solution (#'
-									, (SELECT IFNULL(@flag_solution, 'flag_solution is NULL'))
+									, (SELECT IFNULL(@flag_solution_id, 'flag_solution is NULL'))
 									, ').'
 									, '\r\ - Budget (#'
-									, (SELECT IFNULL(@flag_budget, 'flag_budget is NULL'))
+									, (SELECT IFNULL(@flag_budget_id, 'flag_budget is NULL'))
 									, ').'
 									, '\r\ - Attachment (#'
-									, (SELECT IFNULL(@flag_attachment, 'flag_attachment is NULL'))
+									, (SELECT IFNULL(@flag_attachment_id, 'flag_attachment is NULL'))
 									, ').'
 									, '\r\ - OK to pay (#'
-									, (SELECT IFNULL(@flag_ok_to_pay, 'flag_ok_to_pay is NULL'))
+									, (SELECT IFNULL(@flag_ok_to_pay_id, 'flag_ok_to_pay is NULL'))
 									, ').'
 									, '\r\ - Is paid (#'
-									, (SELECT IFNULL(@flag_is_paid, 'flag_is_paid is NULL'))
+									, (SELECT IFNULL(@flag_is_paid_id, 'flag_is_paid is NULL'))
 									, ').'
 									);
 			
@@ -12018,6 +13179,7 @@ BEGIN
 				VALUES
 				(NOW(), @script, @script_log_message)
 				;
+
 		# We update the BZ logs
 			INSERT INTO `audit_log`
 				(`user_id`
@@ -12029,12 +13191,12 @@ BEGIN
 				,`at_time`
 				) 
 				VALUES 
-				(@creator_bz_id, 'Bugzilla::FlagType', @flag_next_step, '__create__', NULL, @flag_next_step_name, @timestamp)
-				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_solution, '__create__', NULL, @flag_solution_name, @timestamp)
-				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_budget, '__create__', NULL, @flag_budget_name, @timestamp)
-				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_attachment, '__create__', NULL, @flag_attachment_name, @timestamp)
-				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_ok_to_pay, '__create__', NULL, @flag_ok_to_pay_name, @timestamp)
-				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_is_paid, '__create__', NULL, @flag_is_paid_name, @timestamp)
+				(@creator_bz_id, 'Bugzilla::FlagType', @flag_next_step_id, '__create__', NULL, @flag_next_step_name, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_solution_id, '__create__', NULL, @flag_solution_name, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_budget_id, '__create__', NULL, @flag_budget_name, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_attachment_id, '__create__', NULL, @flag_attachment_name, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_ok_to_pay_id, '__create__', NULL, @flag_ok_to_pay_name, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_is_paid_id, '__create__', NULL, @flag_is_paid_name, @timestamp)
 				;
 				
 		# Cleanup:
@@ -12042,85 +13204,71 @@ BEGIN
 			
 	# We configure the group permissions:
 		# Data for the table `group_group_map`
-		# We use a temporary table to do this, this is to avoid duplicate in the group_group_map table
-		# DELETE the temp table if it exists
-		DROP TABLE IF EXISTS `ut_group_group_map_temp`;
-		
-		# Re-create the temp table
-		CREATE TABLE `ut_group_group_map_temp` (
-		  `member_id` MEDIUMINT(9) NOT NULL,
-		  `grantor_id` MEDIUMINT(9) NOT NULL,
-		  `grant_type` TINYINT(4) NOT NULL DEFAULT 0
-		) ENGINE=INNODB DEFAULT CHARSET=utf8;
-		# Add the records that exist in the table group_group_map
-		INSERT INTO `ut_group_group_map_temp`
-			SELECT *
-			FROM `group_group_map`;
-		
-		
-		# Add the new records
-		INSERT INTO `ut_group_group_map_temp`
-			(`member_id`
-			,`grantor_id`
-			,`grant_type`
-			) 
-		##########################################################
-		# Logic:
-		# If you are a member of group_id XXX (ex: 1 / Admin) 
-		# then you have the following permissions:
-		# 	- 0: You are automatically a member of group ZZZ
-		#	- 1: You can grant access to group ZZZ
-		#	- 2: You can see users in group ZZZ
-		##########################################################
-			VALUES 
-			# Admin group can grant membership to all
-			(1,@create_case_group_id,1)
-			,(1,@can_edit_case_group_id,1)
-			,(1,@can_see_cases_group_id,1)
-			,(1,@can_edit_all_field_case_group_id,1)
-			,(1,@can_edit_component_group_id,1)
-			,(1,@can_see_unit_in_search_group_id,1)
-			,(1,@all_g_flags_group_id,1)
-			,(1,@all_r_flags_group_id,1)
-			,(1,@list_visible_assignees_group_id,1)
-			,(1,@see_visible_assignees_group_id,1)
-			,(1,@active_stakeholder_group_id,1)
-			,(1,@unit_creator_group_id,1)
-			,(1,@group_id_show_to_tenant,1)
-			,(1,@group_id_are_users_tenant,1)
-			,(1,@group_id_see_users_tenant,1)
-			,(1,@group_id_show_to_landlord,1)
-			,(1,@group_id_are_users_landlord,1)
-			,(1,@group_id_see_users_landlord,1)
-			,(1,@group_id_show_to_agent,1)
-			,(1,@group_id_are_users_agent,1)
-			,(1,@group_id_see_users_agent,1)
-			,(1,@group_id_show_to_contractor,1)
-			,(1,@group_id_are_users_contractor,1)
-			,(1,@group_id_see_users_contractor,1)
-			,(1,@group_id_show_to_mgt_cny,1)
-			,(1,@group_id_are_users_mgt_cny,1)
-			,(1,@group_id_see_users_mgt_cny,1)
-			,(1,@group_id_show_to_occupant,1)
-			,(1,@group_id_are_users_occupant,1)
-			,(1,@group_id_see_users_occupant,1)
-			,(1,@group_id_are_users_invited_by,1)
-			,(1,@group_id_see_users_invited_by,1)
-			
-			# Admin MUST be a member of the mandatory group for this unit
-			# If not it is impossible to see this product in the BZFE backend.
-			,(1,@can_see_unit_in_search_group_id,0)
-			# Visibility groups:
-			,(@all_r_flags_group_id,@all_g_flags_group_id,2)
-			,(@see_visible_assignees_group_id,@list_visible_assignees_group_id,2)
-			,(@unit_creator_group_id,@unit_creator_group_id,2)
-			,(@group_id_see_users_tenant,@group_id_are_users_tenant,2)
-			,(@group_id_see_users_landlord,@group_id_are_users_landlord,2)
-			,(@group_id_see_users_agent,@group_id_are_users_contractor,2)
-			,(@group_id_see_users_mgt_cny,@group_id_are_users_mgt_cny,2)
-			,(@group_id_see_users_occupant,@group_id_are_users_occupant,2)
-			,(@group_id_see_users_invited_by,@group_id_are_users_invited_by,2)
-			;
+        # We first insert these in the table `ut_group_group_map_temp`
+
+            INSERT INTO `ut_group_group_map_temp`
+                (`member_id`
+                ,`grantor_id`
+                ,`grant_type`
+                ) 
+                ##########################################################
+                # Logic:
+                # If you are a member of group_id XXX (ex: 1 / Admin) 
+                # then you have the following permissions:
+                # 	- 0: You are automatically a member of group ZZZ
+                #	- 1: You can grant access to group ZZZ
+                #	- 2: You can see users in group ZZZ
+                ##########################################################
+                VALUES 
+                # Admin group can grant membership to all
+                (1,@create_case_group_id,1)
+                ,(1,@can_edit_case_group_id,1)
+                ,(1,@can_see_cases_group_id,1)
+                ,(1,@can_edit_all_field_case_group_id,1)
+                ,(1,@can_edit_component_group_id,1)
+                ,(1,@can_see_unit_in_search_group_id,1)
+                ,(1,@all_g_flags_group_id,1)
+                ,(1,@all_r_flags_group_id,1)
+                ,(1,@list_visible_assignees_group_id,1)
+                ,(1,@see_visible_assignees_group_id,1)
+                ,(1,@active_stakeholder_group_id,1)
+                ,(1,@unit_creator_group_id,1)
+                ,(1,@group_id_show_to_tenant,1)
+                ,(1,@group_id_are_users_tenant,1)
+                ,(1,@group_id_see_users_tenant,1)
+                ,(1,@group_id_show_to_landlord,1)
+                ,(1,@group_id_are_users_landlord,1)
+                ,(1,@group_id_see_users_landlord,1)
+                ,(1,@group_id_show_to_agent,1)
+                ,(1,@group_id_are_users_agent,1)
+                ,(1,@group_id_see_users_agent,1)
+                ,(1,@group_id_show_to_contractor,1)
+                ,(1,@group_id_are_users_contractor,1)
+                ,(1,@group_id_see_users_contractor,1)
+                ,(1,@group_id_show_to_mgt_cny,1)
+                ,(1,@group_id_are_users_mgt_cny,1)
+                ,(1,@group_id_see_users_mgt_cny,1)
+                ,(1,@group_id_show_to_occupant,1)
+                ,(1,@group_id_are_users_occupant,1)
+                ,(1,@group_id_see_users_occupant,1)
+                ,(1,@group_id_are_users_invited_by,1)
+                ,(1,@group_id_see_users_invited_by,1)
+                
+                # Admin MUST be a member of the mandatory group for this unit
+                # If not it is impossible to see this product in the BZFE backend.
+                ,(1,@can_see_unit_in_search_group_id,0)
+                # Visibility groups:
+                ,(@all_r_flags_group_id,@all_g_flags_group_id,2)
+                ,(@see_visible_assignees_group_id,@list_visible_assignees_group_id,2)
+                ,(@unit_creator_group_id,@unit_creator_group_id,2)
+                ,(@group_id_see_users_tenant,@group_id_are_users_tenant,2)
+                ,(@group_id_see_users_landlord,@group_id_are_users_landlord,2)
+                ,(@group_id_see_users_agent,@group_id_are_users_contractor,2)
+                ,(@group_id_see_users_mgt_cny,@group_id_are_users_mgt_cny,2)
+                ,(@group_id_see_users_occupant,@group_id_are_users_occupant,2)
+                ,(@group_id_see_users_invited_by,@group_id_are_users_invited_by,2)
+                ;
+
 	# We make sure that only user in certain groups can create, edit or see cases.
 		INSERT INTO `group_control_map`
 			(`group_id`
@@ -12147,6 +13295,7 @@ BEGIN
 			,(@group_id_show_to_mgt_cny,@product_id,0,2,0,0,0,0,0)
 			,(@group_id_show_to_occupant,@product_id,0,2,0,0,0,0,0)
 			;
+
 		# Log the actions of the script.
 			SET @script_log_message = CONCAT('We have updated the group control permissions for the product# '
 									, @product_id
@@ -12199,109 +13348,7 @@ BEGIN
 				;
 			
 			SET @script_log_message = NULL;
-		# We have eveything, we can create the components we need:
-			INSERT INTO `components`
-			(`id`
-			,`name`
-			,`product_id`
-			,`initialowner`
-			,`initialqacontact`
-			,`description`
-			,`isactive`
-			) 
-			VALUES
-			(@component_id_tenant,@role_user_g_description_tenant,@product_id,@bz_user_id_dummy_tenant,@bz_user_id_dummy_tenant,@user_role_desc_tenant,1)
-			, (@component_id_landlord, @role_user_g_description_landlord, @product_id, @bz_user_id_dummy_landlord, @bz_user_id_dummy_landlord, @user_role_desc_landlord, 1)
-			, (@component_id_agent, @role_user_g_description_agent, @product_id, @bz_user_id_dummy_agent, @bz_user_id_dummy_agent, @user_role_desc_agent, 1)
-			, (@component_id_contractor, @role_user_g_description_contractor, @product_id, @bz_user_id_dummy_contractor, @bz_user_id_dummy_contractor, @user_role_desc_contractor, 1)
-			, (@component_id_mgt_cny, @role_user_g_description_mgt_cny, @product_id, @bz_user_id_dummy_mgt_cny, @bz_user_id_dummy_mgt_cny, @user_role_desc_mgt_cny, 1)
-			;
-		# Log the actions of the script.
-			SET @script_log_message = CONCAT('The role created for that unit with temporary users were:'
-									, '\r\- '
-									, (SELECT IFNULL(@role_user_g_description_tenant, 'role_user_g_description is NULL'))
-									, ' (role_type_id #'
-									, '1'
-									, ') '
-									, '\r\The user associated to this role was bz user #'
-									, (SELECT IFNULL(@bz_user_id_dummy_tenant, 'bz_user_id is NULL'))
-									, ' (real name: '
-									, (SELECT IFNULL(@user_pub_name_tenant, 'user_pub_name is NULL'))
-									, '. This user is the default assignee for this role for that unit).' 
-									
-									, '\r\- '
-									, (SELECT IFNULL(@role_user_g_description_landlord, 'role_user_g_description is NULL'))
-									, ' (role_type_id #'
-									, '2'
-									, ') '
-									, '\r\The user associated to this role was bz user #'
-									, (SELECT IFNULL(@bz_user_id_dummy_landlord, 'bz_user_id is NULL'))
-									, ' (real name: '
-									, (SELECT IFNULL(@user_pub_name_landlord, 'user_pub_name is NULL'))
-									, '. This user is the default assignee for this role for that unit).'
-									
-									, '\r\- '
-									, (SELECT IFNULL(@role_user_g_description_agent, 'role_user_g_description is NULL'))
-									, ' (role_type_id #'
-									, '5'
-									, ') '
-									, '\r\The user associated to this role was bz user #'
-									, (SELECT IFNULL(@bz_user_id_dummy_agent, 'bz_user_id is NULL'))
-									, ' (real name: '
-									, (SELECT IFNULL(@user_pub_name_agent, 'user_pub_name is NULL'))
-									, '. This user is the default assignee for this role for that unit).'
-									
-									, '\r\- '
-									, (SELECT IFNULL(@role_user_g_description_contractor, 'role_user_g_description is NULL'))
-									, ' (role_type_id #'
-									, '3'
-									, ') '
-									, '\r\The user associated to this role was bz user #'
-									, (SELECT IFNULL(@bz_user_id_dummy_contractor, 'bz_user_id is NULL'))
-									, ' (real name: '
-									, (SELECT IFNULL(@user_pub_name_contractor, 'user_pub_name is NULL'))
-									, '. This user is the default assignee for this role for that unit).'
-									, '\r\- '
-									, (SELECT IFNULL(@role_user_g_description_mgt_cny, 'role_user_g_description is NULL'))
-									, ' (role_type_id #'
-									, '3'
-									, ') '
-									, '\r\The user associated to this role was bz user #'
-									, (SELECT IFNULL(@bz_user_id_dummy_mgt_cny, 'bz_user_id is NULL'))
-									, ' (real name: '
-									, (SELECT IFNULL(@user_pub_name_mgt_cny, 'user_pub_name is NULL'))
-									, '. This user is the default assignee for this role for that unit).'								
-									)
-									;
-			
-			INSERT INTO `ut_script_log`
-				(`datetime`
-				, `script`
-				, `log`
-				)
-				VALUES
-				(NOW(), @script, @script_log_message)
-				;
-			
-			SET @script_log_message = NULL;	
-				
-		# We update the BZ logs
-			INSERT INTO `audit_log`
-				(`user_id`
-				,`class`
-				,`object_id`
-				,`field`
-				,`removed`
-				,`added`
-				,`at_time`
-				) 
-				VALUES 
-				(@creator_bz_id, 'Bugzilla::Component', @component_id_tenant, '__create__', NULL, @role_user_g_description_tenant, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Component', @component_id_landlord, '__create__', NULL, @role_user_g_description_landlord, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Component', @component_id_agent, '__create__', NULL, @role_user_g_description_agent, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
-				;
+
 		# We insert the series categories that BZ needs...
 		
 			# What is the next available id for the series category?
@@ -12474,24 +13521,41 @@ BEGIN
 				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_agent,'All Open',1,@serie_search_all_open_agent,1)
 				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_agent,'All Closed',1,@serie_search_all_closed_agent,1)
 				;
-	# We now assign the permissions to the user associated to this role:		
-		
-		# We use a temporary table to make sure we do not have duplicates.
-			
-			# DELETE the temp table if it exists
-			DROP TABLE IF EXISTS `ut_user_group_map_temp`;
-			
-			# Re-create the temp table
-			CREATE TABLE `ut_user_group_map_temp` (
-			  `user_id` MEDIUMINT(9) NOT NULL,
-			  `group_id` MEDIUMINT(9) NOT NULL,
-			  `isbless` TINYINT(4) NOT NULL DEFAULT '0',
-			  `grant_type` TINYINT(4) NOT NULL DEFAULT '0'
-			) ENGINE=INNODB DEFAULT CHARSET=utf8;
-			# Add the records that exist in the table user_group_map
-			INSERT INTO `ut_user_group_map_temp`
-				SELECT *
-				FROM `user_group_map`;
+
+	# We now assign the permissions to each of the dummy user associated to each role:
+    #   - Tenant (1)
+    #     @bz_user_id_dummy_tenant
+    #   - Landlord (2)
+    #     @bz_user_id_dummy_landlord
+    #   - Contractor (3)
+    #     @bz_user_id_dummy_contractor
+    #   - Management company (4)
+    #     @bz_user_id_dummy_mgt_cny
+    #   - Agent (5)
+    #     @bz_user_id_dummy_agent
+    #
+    #
+    # For each of the dummy users, we use the following parameters:
+        SET @user_in_default_cc_for_cases = 1;
+        SET @replace_default_assignee = 1;
+
+        # Default permissions for dummy users:	
+            #User Permissions in the unit:
+                # Generic Permissions
+                    SET @can_see_time_tracking = 0;
+                    SET @can_create_shared_queries = 0;
+                    SET @can_tag_comment = 0;
+                # Product/Unit specific permissions
+                    SET @can_create_new_cases = 1;
+                    SET @can_edit_a_case = 1;
+                    SET @can_see_all_public_cases = 0;
+                    SET @can_edit_all_field_in_a_case_regardless_of_role = 1;
+                    SET @can_see_unit_in_search = 0;
+                    SET @user_is_publicly_visible = 0;
+                    SET @user_can_see_publicly_visible = 0;
+                    SET @can_ask_to_approve_flags = 0;
+                    SET @can_approve_all_flags = 0;
+ 
 	# We create the permissions for the dummy user to create a case for this unit.		
 	#	- can tag comments: ALL user need that	
 	#	- can_create_new_cases
@@ -12592,6 +13656,7 @@ BEGIN
 					, (@bz_user_id_dummy_contractor, @create_case_group_id, 0, 0)
 					, (@bz_user_id_dummy_mgt_cny, @create_case_group_id, 0, 0)
 					;
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('the dummy bz users for each component: '
 											, '(#'
@@ -12618,6 +13683,7 @@ BEGIN
 						VALUES
 						(NOW(), @script, @script_log_message)
 						;
+
 				# We log what we have just done into the `ut_audit_log` table
 					
 					SET @bzfe_table = 'ut_user_group_map_temp';
@@ -12658,7 +13724,8 @@ BEGIN
 					SET @script_log_message = NULL;
 					SET @bzfe_table = NULL;
 					SET @permission_granted = NULL;
-			# User can Edit a case and see this unit, this is needed so the API does not thrown an error see issue #60:
+
+			# User can Edit a case and see this unit, this is needed so the API does not throw an error see issue #60:
 				INSERT INTO `ut_user_group_map_temp`
 					(`user_id`
 					,`group_id`
@@ -12677,6 +13744,7 @@ BEGIN
 					, (@bz_user_id_dummy_contractor,@can_see_unit_in_search_group_id,0,0)
 					, (@bz_user_id_dummy_mgt_cny,@can_see_unit_in_search_group_id,0,0)
 					;
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('the dummy bz users for each component: '
 											, '(#'
@@ -12703,6 +13771,7 @@ BEGIN
 						VALUES
 						(NOW(), @script, @script_log_message)
 						;
+
 				# We log what we have just done into the `ut_audit_log` table
 					
 					SET @bzfe_table = 'ut_user_group_map_temp';
@@ -12745,42 +13814,65 @@ BEGIN
 					SET @permission_granted = NULL;
 			
 	# We give the user the permission they need.
-			
-		# First the `group_group_map` table
-		
-			# We truncate the table first (to avoid duplicates)
-			TRUNCATE TABLE `group_group_map`;
-			
-			# We insert the data we need
-			# Grouping like this makes sure that we have no dupes!
-			INSERT INTO `group_group_map`
-			SELECT `member_id`
-				, `grantor_id`
-				, `grant_type`
-			FROM
-				`ut_group_group_map_temp`
-			GROUP BY `member_id`
-				, `grantor_id`
-				, `grant_type`
-			;
-		# Then we update the `user_group_map` table
-			
-			# We truncate the table first (to avoid duplicates)
-				TRUNCATE TABLE `user_group_map`;
-				
-			# We insert the data we need
-				INSERT INTO `user_group_map`
-				SELECT `user_id`
-					, `group_id`
-					, `isbless`
-					, `grant_type`
-				FROM
-					`ut_user_group_map_temp`
-				GROUP BY `user_id`
-					, `group_id`
-					, `isbless`
-					, `grant_type`
-				;
+
+        # We update the `group_group_map` table first
+        #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
+        #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
+        #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
+
+            # We drop the deduplication table if it exists:
+                DROP TABLE IF EXISTS `ut_group_group_map_dedup`;
+
+            # We create a table `ut_group_group_map_dedup` to prepare the data we need to insert
+
+                CREATE TABLE `ut_group_group_map_dedup` (
+                    `member_id` mediumint(9) NOT NULL,
+                    `grantor_id` mediumint(9) NOT NULL,
+                    `grant_type` tinyint(4) NOT NULL DEFAULT '0',
+                    UNIQUE KEY `ut_group_group_map_dedup_member_id_idx` (`member_id`,`grantor_id`,`grant_type`),
+                    KEY `fk_group_group_map_dedup_grantor_id_groups_id` (`grantor_id`),
+                    KEY `group_group_map_dedup_grantor_id_grant_type_idx` (`grantor_id`,`grant_type`),
+                    KEY `group_group_map_dedup_member_id_grant_type_idx` (`member_id`,`grant_type`),
+                    CONSTRAINT `fk_group_group_map_dedup_grantor_id_groups_id` FOREIGN KEY (`grantor_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                    CONSTRAINT `fk_group_group_map_dedup_member_id_groups_id` FOREIGN KEY (`member_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+                    ) 
+                ;
+    
+            # We insert the de-duplicated record in the table `ut_group_group_map_dedup`
+
+                INSERT INTO `ut_group_group_map_dedup`
+                SELECT `member_id`
+                    , `grantor_id`
+                    , `grant_type`
+                FROM
+                    `ut_group_group_map_temp`
+                GROUP BY `member_id`
+                    , `grantor_id`
+                    , `grant_type`
+                ;
+                    
+            # We insert the data we need in the `group_group_map` table
+                INSERT INTO `group_group_map`
+                SELECT `member_id`
+                    , `grantor_id`
+                    , `grant_type`
+                FROM
+                    `ut_group_group_map_dedup`
+                # The below code is overkill in this context: 
+                # the Unique Key Constraint makes sure that all records are unique in the table `ut_group_group_map_dedup`
+                ON DUPLICATE KEY UPDATE
+                    `member_id` = `ut_group_group_map_dedup`.`member_id`
+                    , `grantor_id` = `ut_group_group_map_dedup`.`grantor_id`
+                    , `grant_type` = `ut_group_group_map_dedup`.`grant_type`
+                ;
+
+            # We drop the temp table as we do not need it anymore
+                DROP TABLE IF EXISTS `user_group_map_dedup`;
+
+        # We can now update the permissions table for the users
+        # This NEEDS the table 'ut_user_group_map_temp'
+            CALL `update_permissions_invited_user`;
+
 	# Update the table 'ut_data_to_create_units' so that we record that the unit has been created
 		UPDATE `ut_data_to_create_units`
 		SET 
@@ -12792,19 +13884,10 @@ BEGIN
 					)
 			, `product_id` = @product_id
 		WHERE `id_unit_to_create` = @unit_reference_for_import;
-	#Clean up
+
+	# Clean up
 		# We Delete the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `ut_group_group_map_temp`;
 			DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
-			
-		# We Delete the temp table as we do not need it anymore
-			DROP TABLE IF EXISTS `ut_user_group_map_temp`;
-	# We implement the FK checks again
-			
-	 SET SQL_MODE=@OLD_SQL_MODE ;
-	 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS ;
-	 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS ;
-	 SET SQL_NOTES=@OLD_SQL_NOTES ;
 	
 END */$$
 DELIMITER ;
@@ -13392,12 +14475,15 @@ DELIMITER $$
 /*!50003 CREATE PROCEDURE `update_permissions_invited_user`()
     SQL SECURITY INVOKER
 BEGIN
+
 	# We update the `user_group_map` table
     #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
     #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
     #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
+
 	# We drop the deduplication table if it exists:
 		DROP TABLE IF EXISTS `user_group_map_dedup`;
+
 	# We create a table `user_group_map_dedup` to prepare the data we need to insert
 		CREATE TABLE `user_group_map_dedup` (
 			`user_id` MEDIUMINT(9) NOT NULL,
@@ -13412,6 +14498,7 @@ BEGIN
 		;
 		
 	# We insert the de-duplicated record in the table `user_group_map_dedup`
+
 		INSERT INTO `user_group_map_dedup`
 		SELECT `user_id`
 			, `group_id`
@@ -13441,9 +14528,10 @@ BEGIN
 			, `isbless` = `user_group_map_dedup`.`isbless`
 			, `grant_type` = `user_group_map_dedup`.`grant_type`
 		;
+
 	# We drop the temp table as we do not need it anymore
-		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
 		DROP TABLE IF EXISTS `user_group_map_dedup`;
+
 END */$$
 DELIMITER ;
 
