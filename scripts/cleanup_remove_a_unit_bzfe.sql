@@ -1,17 +1,17 @@
 # For any question about this script, ask Franck
 #
 #################################################################
-#																#
-# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS			#
-#																#
+#
+# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS
+#
 #################################################################
 
 # The unit: What is the id of the unit in the table 'ut_data_to_create_units'
-	SET @product_id = 357;
+	SET @product_id = ???;
 
 ########################################################################
 #
-#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
+#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT
 #
 ########################################################################
 #
@@ -78,7 +78,7 @@
 #OK	- `ut_map_user_unit_details`
 #OK	- `ut_product_group`
 #OK	- `versions` (product/unit related)
-#WIP	- Log what has been done
+#OK	- Log what has been done
 #
 # Limits of this script:
 #	- This script does NOT remove the records related to notifications
