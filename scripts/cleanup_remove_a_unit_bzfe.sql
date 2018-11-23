@@ -1,9 +1,9 @@
 # For any question about this script, ask Franck
 #
 #################################################################
-#																#
-# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS			#
-#																#
+#
+# UPDATE THE BELOW VARIABLES ACCORDING TO YOUR NEEDS
+#
 #################################################################
 
 # The unit: What is the id of the unit in the table 'ut_data_to_create_units'
@@ -11,17 +11,17 @@
 
 ########################################################################
 #
-#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT #
+#	ALL THE VARIABLES WE NEED HAVE BEEN DEFINED, WE CAN RUN THE SCRIPT
 #
 ########################################################################
 #
 #############################################
-#											#
-# IMPORTANT INFORMATION ABOUT THIS SCRIPT	#
-#											#
+#
+# IMPORTANT INFORMATION ABOUT THIS SCRIPT
+#
 #############################################
 #
-# Built for BZFE database v2.18 to 3.0
+# Built for BZFE database v2.18 to v3.27+
 #
 # Use this script only if the Unit EXISTS in the BZFE
 #
@@ -71,20 +71,38 @@
 #OK	- `products` (product/unit related)
 #IGNORED (tricky as a tag can be associated to several product !!!)	- `tag`
 #OK	- `user_group_map`
+#OK	- `ut_invitation_api_data` 
 #OK	- `ut_data_to_add_user_to_a_case`
 #OK	- `ut_data_to_add_user_to_a_role`
 #OK	- `ut_data_to_replace_dummy_roles`
+#OK	- `ut_map_user_unit_details`
 #OK	- `ut_product_group`
 #OK	- `versions` (product/unit related)
-#WIP	- Log what has been done
+#OK	- Log what has been done
 #
 # Limits of this script:
-#	- n/a
+#	- This script does NOT remove the records related to notifications
+#	  (all the tables with the prefix `ut_notification_xxx`)
 #
+# Changelog:
+#	23/11/2018: make sure we delete the objects in the tables:
+#		- `ut_invitation_api_data`
+#		- `ut_map_user_unit_details`
 
 # Timestamp	
 	SET @timestamp = NOW();
 
+# Invitation information
+	DELETE
+	FROM `ut_invitation_api_data`
+	WHERE (`bz_unit_id` = @product_id)
+	;
+	
+# Information about the mapping user and unit
+	DELETE
+	FROM `ut_map_user_unit_details`
+	WHERE (`bz_unit_id` = @product_id)
+	;
 
 # Flags
 # Needs bugs information
