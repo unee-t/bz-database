@@ -47,8 +47,8 @@
 #       - `products`
 #       - `versions`
 #       - `milestones`
-#       - ``
-#       - ``
+#       - `components`
+#       - `groups`
 #       - ``
 #       - ``
 #       - ``
@@ -58,28 +58,35 @@
 #       - ``
 #       - ``
 #
-#   - Move the logging function outside the scripts in dedicated trigger when we
+#   - Move the audit log function outside the scripts in dedicated trigger when we
 #       - INSERT records in the tables
 #            - `user_group_map`
 #WIP            - `products`
 #WIP            - `versions`
 #WIP            - `milestones`
+#WIP            - `components`
+#WIP            - `groups`
 #            - ``
 #            - ``
 #            - ``
+
 #       - DELETE records in the tables
 #            - `user_group_map`
 #WIP            - `products`
 #WIP            - `versions`
 #WIP            - `milestones`
+#WIP            - `components`
+#WIP            - `groups`
 #            - ``
 #            - ``
 #            - ``
 #       - UPDATE records in the tables
+#WIP            - `user_group_map`
 #WIP            - `products`
 #WIP            - `versions`
 #WIP            - `milestones`
-#            - ``
+#WIP            - `components`
+#WIP            - `groups`
 #            - ``
 #            - ``
 #            - ``
@@ -90,23 +97,19 @@
 #         (use the MySQL command LAST_INSERT_ID() after the object was created)
 #           - `products`
 #           - `version`
-#WIP           - `milestones`
-
+#           - `milestones`
+#           - `components`
+#WIP            - `groups`
+#            - ``
+#            - ``
+#       - Insert one line for each component created in the table `ut_script_log`
+#         BEFORE: only 1 line for all the component (less precise)
 
 
 #
-#           - Use Temporary table to do the deduplication of records
+#WIP           - Use Temporary table to do the deduplication of records
 #             This is to avoid deleting the table for all the concurrent procedures which can create a race condition
 
-
-#
-#   - Improve logging when objects are created: use triggers when a new record is added to the tables:
-#       - ``
-#       - ``
-#       - ``
-#       - ``
-#       - ``
-#
 
 
 #
@@ -226,8 +229,8 @@ END $$
 DELIMITER ;
 
 # Update the procedure to invite a user to a role in a unit
+#   - Make sure we do NOT call the procedure `create_temp_table_to_update_permissions`
 #   - Minor improvements to the code
-#   - 
 
     DROP PROCEDURE IF EXISTS `add_user_to_role_in_unit`;
 
@@ -867,13 +870,6 @@ END
 $$
 DELIMITER ;
 
-
-
-
-
-
-
-
 # Create a procedure that will update the audit log each time a new record is created in the `user_group_map` table
 
     DROP PROCEDURE IF EXISTS `update_audit_log`;
@@ -1016,6 +1012,30 @@ DELIMITER ;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Update the procedure to create a unit with dummy users
 
     DROP PROCEDURE IF EXISTS `unit_create_with_dummy_users`;
@@ -1128,13 +1148,16 @@ BEGIN
 		# For the product
         
             # We are predicting the product id to avoid name duplicates
-   			SET @predicted_product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
+   			    SET @predicted_product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
 
             # We need a unique unit name
-			SET @unit_bz_name = CONCAT(@unit_name, '-', @predicted_product_id);
+			    SET @unit_bz_name = CONCAT(@unit_name, '-', @predicted_product_id);
 
-            # We also need a default milestone for that unit
-            SET @default_milestone = '---';
+            # We need a default milestone for that unit
+                SET @default_milestone = '---';
+
+            # We need a default version for that unit
+	    	    SET @default_version = '---';
 			
 	# We now create the unit we need.
 		INSERT INTO `products`
@@ -1242,8 +1265,6 @@ BEGIN
 		SET @unit_for_group = REPLACE(@unit_for_group,'----','-');
 		SET @unit_for_group = REPLACE(@unit_for_group,'---','-');
 		SET @unit_for_group = REPLACE(@unit_for_group,'--','-');
-		
-		SET @default_version = '---';
 
 		# We need a version for this product
 			
@@ -1283,21 +1304,20 @@ BEGIN
 							;
 					
 		# We now create the milestone for this product.
-		
-			# What is the next available milestone id:
-				SET @milestone_id = ((SELECT MAX(`id`) FROM `versions`) + 1);
-			
+
 			# We can now insert the milestone there
 			INSERT INTO `milestones`
-				(`id`
-				,`product_id`
+				(`product_id`
 				,`value`
 				,`sortkey`
 				,`isactive`
 				)
 				VALUES
-				(@milestone_id,@product_id,@default_milestone,0,1)
-				;			
+				(@product_id,@default_milestone,0,1)
+				;
+            
+            # We get the id for the milestone 
+                SET @milestone_id = (SELECT LAST_INSERT_ID());
 		
 			# We also log this in the `audit_log` table
 			
@@ -1372,14 +1392,11 @@ BEGIN
 				SET @user_role_desc_mgt_cny = @role_user_pub_info_mgt_cny;
 
 		# We have eveything, we can create the components we need:
-        # We insert the component 1 by 1 to minimize the risks of a race condition
+        # We insert the component 1 by 1 to get the id for each component easily
 
 			# Tenant (component_id_tenant)
-                SET @component_id_tenant = ((SELECT MAX(`id`) FROM `components`) + 1);
-
                 INSERT INTO `components`
-                    (`id`
-                    ,`name`
+                    (`name`
                     ,`product_id`
                     ,`initialowner`
                     ,`initialqacontact`
@@ -1387,12 +1404,50 @@ BEGIN
                     ,`isactive`
                     ) 
                     VALUES
-                    (@component_id_tenant,@role_user_g_description_tenant,@product_id,@bz_user_id_dummy_tenant,@bz_user_id_dummy_tenant,@user_role_desc_tenant,1)
+                    (@role_user_g_description_tenant
+                    , @product_id
+                    , @bz_user_id_dummy_tenant
+                    , @bz_user_id_dummy_tenant
+                    , @user_role_desc_tenant
+                    , 1
+                    )
                     ;
+
+                # We get the id for the component for the tenant 
+                    SET @component_id_tenant = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following component #'
+                                            , @component_id_tenant
+                                            , 'was created for the unit # '
+                                            , @product_id
+                                            , 'with temporary user as the '
+                                            , 'tenant:'
+                                            , '\r\- '
+                                            , (SELECT IFNULL(@role_user_g_description_tenant, 'role_user_g_description is NULL'))
+                                            , ' (role_type_id #'
+                                            , '1'
+                                            , ') '
+                                            , '\r\The user associated to this role was bz user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_tenant, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_tenant, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            )
+                                            ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
 
             # Landlord (component_id_landlord)
-                SET @component_id_landlord = ((SELECT MAX(`id`) FROM `components`) + 1);
-
                 INSERT INTO `components`
                     (`id`
                     ,`name`
@@ -1403,12 +1458,51 @@ BEGIN
                     ,`isactive`
                     ) 
                     VALUES
-                    (@component_id_landlord, @role_user_g_description_landlord, @product_id, @bz_user_id_dummy_landlord, @bz_user_id_dummy_landlord, @user_role_desc_landlord, 1)
+                    (@component_id_landlord
+                    , @role_user_g_description_landlord
+                    , @product_id
+                    , @bz_user_id_dummy_landlord
+                    , @bz_user_id_dummy_landlord
+                    , @user_role_desc_landlord
+                    , 1
+                    )
                     ;
+
+                # We get the id for the component for the Landlord
+                    SET @component_id_landlord = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following component #'
+                                            , @component_id_landlord
+                                            , 'was created for the unit # '
+                                            , @product_id
+                                            , 'with temporary user as the '
+                                            , 'Landlord:'
+                                            , '\r\- '
+                                            , (SELECT IFNULL(@role_user_g_description_landlord, 'role_user_g_description is NULL'))
+                                            , ' (role_type_id #'
+                                            , '2'
+                                            , ') '
+                                            , '\r\The user associated to this role was bz user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_landlord, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_landlord, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            )
+                                            ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
 
             # Agent (component_id_agent)
-                SET @component_id_agent = ((SELECT MAX(`id`) FROM `components`) + 1);
-
                 INSERT INTO `components`
                     (`id`
                     ,`name`
@@ -1419,28 +1513,51 @@ BEGIN
                     ,`isactive`
                     ) 
                     VALUES
-                    (@component_id_agent, @role_user_g_description_agent, @product_id, @bz_user_id_dummy_agent, @bz_user_id_dummy_agent, @user_role_desc_agent, 1)
-                    ;
-
-            # Contractor (component_id_contractor)
-                SET @component_id_contractor = ((SELECT MAX(`id`) FROM `components`) + 1);
-
-                INSERT INTO `components`
-                    (`id`
-                    ,`name`
-                    ,`product_id`
-                    ,`initialowner`
-                    ,`initialqacontact`
-                    ,`description`
-                    ,`isactive`
-                    ) 
-                    VALUES
-                    (@component_id_contractor, @role_user_g_description_contractor, @product_id, @bz_user_id_dummy_contractor, @bz_user_id_dummy_contractor, @user_role_desc_contractor, 1)
+                    (@component_id_agent
+                    , @role_user_g_description_agent
+                    , @product_id
+                    , @bz_user_id_dummy_agent
+                    , @bz_user_id_dummy_agent
+                    , @user_role_desc_agent
+                    , 1
+                    )
                     ;
             
-            # Management Company (component_id_mgt_cny)
-				SET @component_id_mgt_cny = ((SELECT MAX(`id`) FROM `components`) + 1);
+                # We get the id for the component for the Agent
+                    SET @component_id_agent = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following component #'
+                                            , @component_id_agent
+                                            , 'was created for the unit # '
+                                            , @product_id
+                                            , 'with temporary user as the '
+                                            , 'Agent:'
+                                            , '\r\- '
+                                            , (SELECT IFNULL(@role_user_g_description_agent, 'role_user_g_description is NULL'))
+                                            , ' (role_type_id #'
+                                            , '5'
+                                            , ') '
+                                            , '\r\The user associated to this role was bz user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_agent, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_agent, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            )
+                                            ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
+
+            # Contractor (component_id_contractor)
                 INSERT INTO `components`
                     (`id`
                     ,`name`
@@ -1451,77 +1568,104 @@ BEGIN
                     ,`isactive`
                     ) 
                     VALUES
-                    (@component_id_mgt_cny, @role_user_g_description_mgt_cny, @product_id, @bz_user_id_dummy_mgt_cny, @bz_user_id_dummy_mgt_cny, @user_role_desc_mgt_cny, 1)
-                    ;
-
-            # Log the actions of the script.
-                SET @script_log_message = CONCAT('The role created for that unit with temporary users were:'
-                                        , '\r\- '
-                                        , (SELECT IFNULL(@role_user_g_description_tenant, 'role_user_g_description is NULL'))
-                                        , ' (role_type_id #'
-                                        , '1'
-                                        , ') '
-                                        , '\r\The user associated to this role was bz user #'
-                                        , (SELECT IFNULL(@bz_user_id_dummy_tenant, 'bz_user_id is NULL'))
-                                        , ' (real name: '
-                                        , (SELECT IFNULL(@user_pub_name_tenant, 'user_pub_name is NULL'))
-                                        , '. This user is the default assignee for this role for that unit).' 
-                                        
-                                        , '\r\- '
-                                        , (SELECT IFNULL(@role_user_g_description_landlord, 'role_user_g_description is NULL'))
-                                        , ' (role_type_id #'
-                                        , '2'
-                                        , ') '
-                                        , '\r\The user associated to this role was bz user #'
-                                        , (SELECT IFNULL(@bz_user_id_dummy_landlord, 'bz_user_id is NULL'))
-                                        , ' (real name: '
-                                        , (SELECT IFNULL(@user_pub_name_landlord, 'user_pub_name is NULL'))
-                                        , '. This user is the default assignee for this role for that unit).'
-                                        
-                                        , '\r\- '
-                                        , (SELECT IFNULL(@role_user_g_description_agent, 'role_user_g_description is NULL'))
-                                        , ' (role_type_id #'
-                                        , '5'
-                                        , ') '
-                                        , '\r\The user associated to this role was bz user #'
-                                        , (SELECT IFNULL(@bz_user_id_dummy_agent, 'bz_user_id is NULL'))
-                                        , ' (real name: '
-                                        , (SELECT IFNULL(@user_pub_name_agent, 'user_pub_name is NULL'))
-                                        , '. This user is the default assignee for this role for that unit).'
-                                        
-                                        , '\r\- '
-                                        , (SELECT IFNULL(@role_user_g_description_contractor, 'role_user_g_description is NULL'))
-                                        , ' (role_type_id #'
-                                        , '3'
-                                        , ') '
-                                        , '\r\The user associated to this role was bz user #'
-                                        , (SELECT IFNULL(@bz_user_id_dummy_contractor, 'bz_user_id is NULL'))
-                                        , ' (real name: '
-                                        , (SELECT IFNULL(@user_pub_name_contractor, 'user_pub_name is NULL'))
-                                        , '. This user is the default assignee for this role for that unit).'
-                                        , '\r\- '
-                                        , (SELECT IFNULL(@role_user_g_description_mgt_cny, 'role_user_g_description is NULL'))
-                                        , ' (role_type_id #'
-                                        , '3'
-                                        , ') '
-                                        , '\r\The user associated to this role was bz user #'
-                                        , (SELECT IFNULL(@bz_user_id_dummy_mgt_cny, 'bz_user_id is NULL'))
-                                        , ' (real name: '
-                                        , (SELECT IFNULL(@user_pub_name_mgt_cny, 'user_pub_name is NULL'))
-                                        , '. This user is the default assignee for this role for that unit).'								
-                                        )
-                                        ;
-                
-                INSERT INTO `ut_script_log`
-                    (`datetime`
-                    , `script`
-                    , `log`
+                    (@component_id_contractor
+                    , @role_user_g_description_contractor
+                    , @product_id
+                    , @bz_user_id_dummy_contractor
+                    , @bz_user_id_dummy_contractor
+                    , @user_role_desc_contractor
+                    , 1
                     )
-                    VALUES
-                    (NOW(), @script, @script_log_message)
                     ;
-                
-                SET @script_log_message = NULL;	
+            
+                # We get the id for the component for the Contractor
+                    SET @component_id_contractor = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following component #'
+                                            , @component_id_contractor
+                                            , 'was created for the unit # '
+                                            , @product_id
+                                            , 'with temporary user as the '
+                                            , 'Contractor:'
+                                            , '\r\- '
+                                            , (SELECT IFNULL(@role_user_g_description_contractor, 'role_user_g_description is NULL'))
+                                            , ' (role_type_id #'
+                                            , '3'
+                                            , ') '
+                                            , '\r\The user associated to this role was bz user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_contractor, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_contractor, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            )
+                                            ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
+            
+            # Management Company (component_id_mgt_cny)
+                INSERT INTO `components`
+                    (`id`
+                    ,`name`
+                    ,`product_id`
+                    ,`initialowner`
+                    ,`initialqacontact`
+                    ,`description`
+                    ,`isactive`
+                    ) 
+                    VALUES
+                    (@component_id_mgt_cny
+                    , @role_user_g_description_mgt_cny
+                    , @product_id
+                    , @bz_user_id_dummy_mgt_cny
+                    , @bz_user_id_dummy_mgt_cny
+                    , @user_role_desc_mgt_cny
+                    , 1
+                    )
+                    ;
+            
+                # We get the id for the component for the Management Company 
+                    SET @component_id_mgt_cny = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following component #'
+                                            , @component_id_mgt_cny
+                                            , 'was created for the unit # '
+                                            , @product_id
+                                            , 'with temporary user as the '
+                                            , 'Management Company:'
+                                            , '\r\- '
+                                            , (SELECT IFNULL(@role_user_g_description_mgt_cny, 'role_user_g_description is NULL'))
+                                            , ' (role_type_id #'
+                                            , '4'
+                                            , ') '
+                                            , '\r\The user associated to this role was bz user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_mgt_cny, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_mgt_cny, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'								
+                                            )
+                                            ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;
                     
             # We update the BZ logs
                 INSERT INTO `audit_log`
