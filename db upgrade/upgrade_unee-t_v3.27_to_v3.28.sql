@@ -27,8 +27,16 @@
 #       - Use Temporary table to do the deduplication of records
 #         This is to avoid deleting the table for all the concurrent procedures which can create a race condition
 #
-#   - Move the logging function outside the scripts in dedicated procedures when we
+#   - Create a generic procedure `update_audit_log` that we use each time a record is updated
+#
+#   - Move the logging function outside the scripts in dedicated trigger when we
 #       - INSERT records in the tables
+#            - `user_group_map`
+#WIP            - ``
+#            - ``
+#            - ``
+#            - ``
+#       - DELETE records in the tables
 #            - `user_group_map`
 #WIP            - ``
 #            - ``
@@ -38,14 +46,6 @@
 #            - ``
 #            - ``
 #
-#   - Create a trigger to update the table `` when we
-#       - INSERT Record in the tables
-#           - `user_group_map`
-#WIP           - ``
-#           - ``
-#           - ``
-#
-
 #WIP   - Upgrade the procedure `unit_create_with_dummy_users`
 #       - Use Temporary table to do the deduplication of records
 #         This is to avoid deleting the table for all the concurrent procedures which can create a race condition
@@ -145,10 +145,10 @@ DELIMITER ;
 
 # Create a procedure that will update the audit log each time a new record is created in the `user_group_map` table
 
-    DROP PROCEDURE IF EXISTS `update_audit_log_new_record_added`;
+    DROP PROCEDURE IF EXISTS `update_audit_log`;
 
 DELIMITER $$
-CREATE PROCEDURE `update_audit_log_new_record_added`()
+CREATE PROCEDURE `update_audit_log`()
 SQL SECURITY INVOKER
 BEGIN
 
@@ -228,11 +228,60 @@ CREATE TRIGGER `trig_update_audit_log_new_record_user_group_map`
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
 
-        CALL `update_audit_log_new_record_added`;
+        CALL `update_audit_log`;
 
 END;
 $$
 DELIMITER ;
+            
+# Create a trigger that calls the relevant procedure each time a record is deleted in the table `user_group_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_user_group_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_user_group_map`
+    AFTER DELETE ON `user_group_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @old_user_id = old.user_id;
+        SET @old_group_id = old.group_id;
+        SET @old_isbless = old.isbless;
+        SET @old_grant_type = old.grant_type;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'user_group_map';
+        SET @bzfe_field = 'new_user_id, new_group_id, new_isbless, new_grant_type';
+        SET @previous_value = CONCAT (
+                @old_user_id
+                , ', '
+                , @old_group_id
+                , ', '
+                , @old_isbless
+                , ', '
+                , @old_grant_type
+            );
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_user_group_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+
 
 
 
