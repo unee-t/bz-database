@@ -27,6 +27,8 @@
 #       - Use Temporary table to do the deduplication of records
 #         This is to avoid deleting the table for all the concurrent procedures which can create a race condition
 #
+#   - Update the procedure to create the dummy environment table so it uses a temporary table
+#
 #   - Create a generic procedure `update_audit_log` that we use each time a record is updated
 #
 #   - Move the logging function outside the scripts in dedicated trigger when we
@@ -139,6 +141,43 @@ BEGIN
 
 	# We drop the temp table as we do not need it anymore
 		DROP TEMPORARY TABLE IF EXISTS `ut_temporary_user_group_map_dedup`;
+
+END $$
+DELIMITER ;
+ 
+# Update the procedure to create the dummy environment table so it is a temporary table
+
+    # Drop the permanent table
+    DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+    # Drop the procedure so we can re-create it
+    DROP PROCEDURE IF EXISTS `table_to_list_dummy_user_by_environment`;
+
+DELIMITER $$
+CREATE PROCEDURE `table_to_list_dummy_user_by_environment`()
+SQL SECURITY INVOKER
+BEGIN
+
+	# We create a temporary table to record the ids of the dummy users in each environments:
+		/*Table structure for table `ut_temp_dummy_users_for_roles` */
+			DROP TEMPORARY TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+			CREATE TEMPORARY TABLE `ut_temp_dummy_users_for_roles` (
+			  `environment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
+			  `environment_name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+			  `tenant_id` int(11) NOT NULL,
+			  `landlord_id` int(11) NOT NULL,
+			  `contractor_id` int(11) NOT NULL,
+			  `mgt_cny_id` int(11) NOT NULL,
+			  `agent_id` int(11) DEFAULT NULL,
+			  PRIMARY KEY (`environment_id`)
+			) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+		/*Data for the table `ut_temp_dummy_users_for_roles` */
+			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) values 
+				(1,'DEV/Staging',96,94,93,95,92),
+				(2,'Prod',93,91,90,92,89),
+				(3,'demo/dev',4,3,5,6,2);
 
 END $$
 DELIMITER ;
@@ -285,8 +324,6 @@ DELIMITER ;
 
 
 
-
-
 # Update the procedure to create a unit with dummy users
 
     DROP PROCEDURE IF EXISTS `unit_create_with_dummy_users`;
@@ -398,10 +435,67 @@ BEGIN
 	# We populate the additional variables that we will need for this script to work
 		# For the product
         
-   			SET @product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
+            # We are predicting the product id to avoid name duplicates
+   			SET @predicted_product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
 
-			SET @unit = CONCAT(@unit_name, '-', @product_id);
+            # We need a unique unit name
+			SET @unit_bz_name = CONCAT(@unit_name, '-', @predicted_product_id);
+
+            # We also need a default milestone for that unit
+            SET @default_milestone = '---';
 			
+	# We now create the unit we need.
+		INSERT INTO `products`
+			(`name`
+			,`classification_id`
+			,`description`
+			,`isactive`
+			,`defaultmilestone`
+			,`allows_unconfirmed`
+			)
+			VALUES
+			(@unit_bz_name,@classification_id,@unit_description,1,@default_milestone,1);
+	
+        # Get the actual id that was created for that unit
+
+            SET @product_id = (SELECT LAST_INSERT_ID());
+
+    	# Log the actions of the script.
+			SET @script_log_message = CONCAT('A new unit #'
+									, (SELECT IFNULL(@product_id, 'product_id is NULL'))
+									, ' ('
+									, (SELECT IFNULL(@unit_bz_name, 'unit is NULL'))
+									, ') '
+									, ' has been created in the classification: '
+									, (SELECT IFNULL(@classification_id, 'classification_id is NULL'))
+									, '\r\The bz user #'
+									, (SELECT IFNULL(@creator_bz_id, 'creator_bz_id is NULL'))
+									, ' (real name: '
+									, (SELECT IFNULL(@creator_pub_name, 'creator_pub_name is NULL'))
+									, ') '
+									, 'is the CREATOR of that unit.'
+									)
+									;
+			
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(NOW(), @script, @script_log_message)
+				;
+			
+			SET @script_log_message = NULL;
+
+
+
+    # We can now get the real id of the unit
+
+        SET @unit = CONCAT(@unit_bz_name, '-', @product_id);
+
+    # We prepare all the names we'll need
+
 			SET @unit_for_query = REPLACE(@unit,' ','%');
 			
 			SET @unit_for_flag = REPLACE(@unit_for_query,'%','_');
@@ -437,48 +531,11 @@ BEGIN
 			
 			SET @default_milestone = '---';
 			SET @default_version = '---';
-			
-	# We now create the unit we need.
-		INSERT INTO `products`
-			(`id`
-			,`name`
-			,`classification_id`
-			,`description`
-			,`isactive`
-			,`defaultmilestone`
-			,`allows_unconfirmed`
-			)
-			VALUES
-			(@product_id,@unit,@classification_id,@unit_description,1,@default_milestone,1);
-	
-    	# Log the actions of the script.
-			SET @script_log_message = CONCAT('A new unit #'
-									, (SELECT IFNULL(@product_id, 'product_id is NULL'))
-									, ' ('
-									, (SELECT IFNULL(@unit, 'unit is NULL'))
-									, ') '
-									, ' has been created in the classification: '
-									, (SELECT IFNULL(@classification_id, 'classification_id is NULL'))
-									, '\r\The bz user #'
-									, (SELECT IFNULL(@creator_bz_id, 'creator_bz_id is NULL'))
-									, ' (real name: '
-									, (SELECT IFNULL(@creator_pub_name, 'creator_pub_name is NULL'))
-									, ') '
-									, 'is the CREATOR of that unit.'
-									)
-									;
-			
-			INSERT INTO `ut_script_log`
-				(`datetime`
-				, `script`
-				, `log`
-				)
-				VALUES
-				(NOW(), @script, @script_log_message)
-				;
-			
-			SET @script_log_message = NULL;
-	
+
+
+
+
+
     	# We also log this in the `audit_log` table
 		
 			INSERT INTO `audit_log` 
