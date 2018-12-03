@@ -34,26 +34,32 @@
 #   - Move the logging function outside the scripts in dedicated trigger when we
 #       - INSERT records in the tables
 #            - `user_group_map`
-#WIP            - ``
+#WIP            - `products`
 #            - ``
 #            - ``
 #            - ``
 #       - DELETE records in the tables
 #            - `user_group_map`
-#WIP            - ``
+#WIP            - `products`
 #            - ``
 #            - ``
 #            - ``
 #       - UPDATE records in the tables
+#WIP            - `products`
+#            - ``
+#            - ``
 #            - ``
 #            - ``
 #
-#WIP   - Upgrade the procedure `unit_create_with_dummy_users`
-#       - Use Temporary table to do the deduplication of records
-#         This is to avoid deleting the table for all the concurrent procedures which can create a race condition
-#       - Use a variable to predict the next available id for a record
-#       - Make sure we record the actual id of each inserted record
-#         use the MySQL command LAST_INSERT_ID() after the object was created
+#   - Upgrade the procedure `unit_create_with_dummy_users`
+#       - In the `products` table, we start by trying to predict the next available id for a record
+#           - Make sure we record the actual id of each inserted record
+#             (use the MySQL command LAST_INSERT_ID() after the object was created)
+#
+#WIP
+#
+#           - Use Temporary table to do the deduplication of records
+#             This is to avoid deleting the table for all the concurrent procedures which can create a race condition
 
 
 #
@@ -463,6 +469,8 @@ BEGIN
     	# Log the actions of the script.
 			SET @script_log_message = CONCAT('A new unit #'
 									, (SELECT IFNULL(@product_id, 'product_id is NULL'))
+                                    , ' with the predicted product_id # '
+                                    , @predicted_product_id
 									, ' ('
 									, (SELECT IFNULL(@unit_bz_name, 'unit is NULL'))
 									, ') '
@@ -488,11 +496,31 @@ BEGIN
 			
 			SET @script_log_message = NULL;
 
-
-
     # We can now get the real id of the unit
 
         SET @unit = CONCAT(@unit_bz_name, '-', @product_id);
+
+    # We log this in the `audit_log` table
+		
+		INSERT INTO `audit_log` 
+			(`user_id`
+			, `class`
+			, `object_id`
+			, `field`
+			, `removed`
+			, `added`
+			, `at_time`
+			)
+			VALUES
+			(@creator_bz_id
+			, 'Bugzilla::Product'
+			, @product_id
+			, '__create__'
+			, NULL
+			, @unit
+			, @timestamp
+			)
+			;
 
     # We prepare all the names we'll need
 
@@ -532,31 +560,6 @@ BEGIN
 			SET @default_milestone = '---';
 			SET @default_version = '---';
 
-
-
-
-
-    	# We also log this in the `audit_log` table
-		
-			INSERT INTO `audit_log` 
-				(`user_id`
-				, `class`
-				, `object_id`
-				, `field`
-				, `removed`
-				, `added`
-				, `at_time`
-				)
-				VALUES
-				(@creator_bz_id
-				, 'Bugzilla::Product'
-				, @product_id
-				, '__create__'
-				, NULL
-				, @unit
-				, @timestamp
-				)
-				;
 		# We need a version for this product
 		
 			# What is the next available version id:
