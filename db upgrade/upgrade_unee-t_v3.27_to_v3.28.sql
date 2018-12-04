@@ -5040,22 +5040,6 @@ BEGIN
                     
                     SET @script_log_message = NULL;		
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-					
 		# We record the groups we have just created:
 		#	We NEED the component_id for that
 			INSERT INTO `ut_product_group`
@@ -5165,15 +5149,11 @@ BEGIN
 			SET @flag_ok_to_pay_name = CONCAT('OK_to_pay_',@unit_for_flag);
 			SET @flag_is_paid_name = CONCAT('is_paid_',@unit_for_flag);
 	
-        # We insert the flagtypes 1 by 1 to minimize the risk of a race condition
+        # We insert the flagtypes 1 by 1 to get the id for each component easily
 
-		# We need to get the flagype id for next_step
-			SET @flag_next_step_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
-
-		# We can now create the flagtypes for next_step
+		# Flagtype for next_step
 			INSERT INTO `flagtypes`
-				(`id`
-				,`name`
+				(`name`
 				,`description`
 				,`cc_list`
 				,`target_type`
@@ -5186,16 +5166,46 @@ BEGIN
 				,`request_group_id`
 				) 
 				VALUES 
-				(@flag_next_step_id,@flag_next_step_name ,'Approval for the Next Step of the case.','','b',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
+				(@flag_next_step_name 
+                , 'Approval for the Next Step of the case.'
+                , ''
+                , 'b'
+                , 1
+                , 1
+                , 1
+                , 1
+                , 10
+                , @all_g_flags_group_id
+                , @all_r_flags_group_id
+                )
                 ;
 
-		# We need to get the flagype id for solution
-			SET @flag_solution_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+                # We get the id for that flag
+                    SET @flag_next_step_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following flag Next Step (#'
+                                        , (SELECT IFNULL(@flag_next_step_id, 'flag_next_step is NULL'))
+                                        , ').'
+                                        , 'was created for the unit #'
+                                        , @product_id
+                                        )
+                                        ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
 
 		# We can now create the flagtypes for solution
 			INSERT INTO `flagtypes`
-				(`id`
-				,`name`
+				(`name`
 				,`description`
 				,`cc_list`
 				,`target_type`
@@ -5208,16 +5218,46 @@ BEGIN
 				,`request_group_id`
 				) 
 				VALUES 
-				(@flag_solution_id,@flag_solution_name ,'Approval for the Solution of this case.','','b',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
+				(@flag_solution_name 
+                , 'Approval for the Solution of this case.'
+                , ''
+                , 'b'
+                , 1
+                , 1
+                , 1
+                , 1
+                , 20
+                , @all_g_flags_group_id
+                , @all_r_flags_group_id
+                )
                 ;
 
-		# We need to get the flagype id for budget
-			SET @flag_budget_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+                # We get the id for that flag
+                    SET @flag_solution_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following flag Solution (#'
+                                        , (SELECT IFNULL(@flag_solution_id, 'flag_solution is NULL'))
+                                        , ').'
+                                        , 'was created for the unit #'
+                                        , @product_id
+                                        )
+                                        ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
 
 		# We can now create the flagtypes for budget
 			INSERT INTO `flagtypes`
-				(`id`
-				,`name`
+				(`name`
 				,`description`
 				,`cc_list`
 				,`target_type`
@@ -5230,16 +5270,46 @@ BEGIN
 				,`request_group_id`
 				) 
 				VALUES 
-				(@flag_budget_id,@flag_budget_name ,'Approval for the Budget for this case.','','b',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
+				(@flag_budget_name 
+                , 'Approval for the Budget for this case.'
+                , ''
+                , 'b'
+                , 1
+                , 1
+                , 1
+                , 1
+                , 30
+                , @all_g_flags_group_id
+                , @all_r_flags_group_id
+                )
                 ;
 
-		# We need to get the flagype id for attachment
-			SET @flag_attachment_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+                # We get the id for that flag
+                    SET @flag_budget_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following flag Budget (#'
+                                        , (SELECT IFNULL(@flag_budget_id, 'flag_budget is NULL'))
+                                        , ').'
+                                        , 'was created for the unit #'
+                                        , @product_id
+                                        )
+                                        ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
 
 		# We can now create the flagtypes for attachment
 			INSERT INTO `flagtypes`
-				(`id`
-				,`name`
+				(`name`
 				,`description`
 				,`cc_list`
 				,`target_type`
@@ -5252,16 +5322,46 @@ BEGIN
 				,`request_group_id`
 				) 
 				VALUES                 
-                (@flag_attachment_id,@flag_attachment_name ,'Approval for this Attachment.','','a',1,1,1,1,10,@all_g_flags_group_id,@all_r_flags_group_id)
+                (@flag_attachment_name 
+                , 'Approval for this Attachment.'
+                , ''
+                , 'a'
+                , 1
+                , 1
+                , 1
+                , 1
+                , 10
+                , @all_g_flags_group_id
+                , @all_r_flags_group_id
+                )
                 ;
 
-		# We need to get the flagype id for ok_to_pay
-			SET @flag_ok_to_pay_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+                # We get the id for that flag
+                    SET @flag_attachment_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following flag Attachment (#'
+                                        , (SELECT IFNULL(@flag_attachment_id, 'flag_attachment is NULL'))
+                                        , ').'
+                                        , 'was created for the unit #'
+                                        , @product_id
+                                        )
+                                        ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
 
 		# We can now create the flagtypes for ok_to_pay
 			INSERT INTO `flagtypes`
-				(`id`
-				,`name`
+				(`name`
 				,`description`
 				,`cc_list`
 				,`target_type`
@@ -5274,16 +5374,46 @@ BEGIN
 				,`request_group_id`
 				) 
 				VALUES 
-                (@flag_ok_to_pay_id,@flag_ok_to_pay_name ,'Approval to pay this bill.','','a',1,1,1,1,20,@all_g_flags_group_id,@all_r_flags_group_id)
+                (@flag_ok_to_pay_name 
+                , 'Approval to pay this bill.'
+                , ''
+                , 'a'
+                , 1
+                , 1
+                , 1
+                , 1
+                , 20
+                , @all_g_flags_group_id
+                , @all_r_flags_group_id
+                )
                 ;
 
-		# We need to get the flagype id for is_paid
-			SET @flag_is_paid_id = ((SELECT MAX(`id`) FROM `flagtypes`) + 1);
+                # We get the id for that flag
+                    SET @flag_ok_to_pay_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following flag OK to pay (#'
+                                        , (SELECT IFNULL(@flag_ok_to_pay_id, 'flag_ok_to_pay is NULL'))
+                                        , ').'
+                                        , 'was created for the unit #'
+                                        , @product_id
+                                        )
+                                        ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
 
 		# We can now create the flagtypes for is_paid
 			INSERT INTO `flagtypes`
-				(`id`
-				,`name`
+				(`name`
 				,`description`
 				,`cc_list`
 				,`target_type`
@@ -5296,8 +5426,42 @@ BEGIN
 				,`request_group_id`
 				) 
 				VALUES 
-                (@flag_is_paid_id,@flag_is_paid_name ,'Confirm if this bill has been paid.','','a',1,1,1,1,30,@all_g_flags_group_id,@all_r_flags_group_id)
+                (@flag_is_paid_name
+                , 'Confirm if this bill has been paid.'
+                , ''
+                , 'a'
+                , 1
+                , 1
+                , 1
+                , 1
+                , 30
+                , @all_g_flags_group_id
+                , @all_r_flags_group_id
+                )
                 ;
+
+                # We get the id for that flag
+                    SET @flag_is_paid_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('The following flag Is paid (#'
+                                        , (SELECT IFNULL(@flag_is_paid_id, 'flag_is_paid is NULL'))
+                                        , ').'
+                                        , 'was created for the unit #'
+                                        , @product_id
+                                        )
+                                        ;
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;	
 
 		# We also define the flag inclusion
 			INSERT INTO `flaginclusions`
@@ -5312,37 +5476,6 @@ BEGIN
 				,(@flag_attachment_id,@product_id,NULL)
 				,(@flag_ok_to_pay_id,@product_id,NULL)
 				,(@flag_is_paid_id,@product_id,NULL)
-				;
-
-		# Log the actions of the script.
-			SET @script_log_message = CONCAT('We have created the following flags which are restricted to that unit: '
-									, '\r\ - Next Step (#'
-									, (SELECT IFNULL(@flag_next_step_id, 'flag_next_step is NULL'))
-									, ').'
-									, '\r\ - Solution (#'
-									, (SELECT IFNULL(@flag_solution_id, 'flag_solution is NULL'))
-									, ').'
-									, '\r\ - Budget (#'
-									, (SELECT IFNULL(@flag_budget_id, 'flag_budget is NULL'))
-									, ').'
-									, '\r\ - Attachment (#'
-									, (SELECT IFNULL(@flag_attachment_id, 'flag_attachment is NULL'))
-									, ').'
-									, '\r\ - OK to pay (#'
-									, (SELECT IFNULL(@flag_ok_to_pay_id, 'flag_ok_to_pay is NULL'))
-									, ').'
-									, '\r\ - Is paid (#'
-									, (SELECT IFNULL(@flag_is_paid_id, 'flag_is_paid is NULL'))
-									, ').'
-									);
-			
-			INSERT INTO `ut_script_log`
-				(`datetime`
-				, `script`
-				, `log`
-				)
-				VALUES
-				(NOW(), @script, @script_log_message)
 				;
 
 		# We update the BZ logs
