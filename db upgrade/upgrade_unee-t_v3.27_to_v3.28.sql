@@ -3522,6 +3522,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @create_case_group_id = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'case creation'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # can_edit_case_group_id
             	INSERT INTO `groups`
                     (`name`
@@ -3543,6 +3563,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @can_edit_case_group_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'Edit case'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # can_see_cases_group_id
             	INSERT INTO `groups`
@@ -3566,6 +3606,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @can_see_cases_group_id = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'See cases'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # can_edit_all_field_case_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -3587,6 +3647,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @can_edit_all_field_case_group_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'Edit all field regardless of role'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # can_edit_component_group_id
                 INSERT INTO `groups`
@@ -3610,6 +3690,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @can_edit_component_group_id = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'Edit Component/roles'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # can_see_unit_in_search_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -3631,6 +3731,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @can_see_unit_in_search_group_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'See unit in the Search panel'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@can_see_unit_in_search_group_id, 'can_see_unit_in_search_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # all_g_flags_group_id
                 INSERT INTO `groups`
@@ -3654,6 +3774,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @all_g_flags_group_id = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'Approve all flags'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # all_r_flags_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -3675,6 +3815,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @all_r_flags_group_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'Request all flags'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # list_visible_assignees_group_id
                 INSERT INTO `groups`
@@ -3698,6 +3858,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @list_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'User is publicly visible'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # see_visible_assignees_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -3719,6 +3899,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @see_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'User can see publicly visible'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # active_stakeholder_group_id
                 INSERT INTO `groups`
@@ -3742,6 +3942,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @active_stakeholder_group_id = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'User is active Stakeholder'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # unit_creator_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -3763,6 +3983,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @unit_creator_group_id = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - To grant '
+                                            , 'User is the unit creator'
+                                            , ' privileges. Group_id: '
+                                            , (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_show_to_tenant
                 INSERT INTO `groups`
@@ -3786,6 +4026,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_tenant = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Restrict permission to '
+                                            , 'tenant'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_are_users_tenant
                 INSERT INTO `groups`
                     (`name`
@@ -3807,6 +4067,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_tenant = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group for the '
+                                            , 'tenant'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_are_users_tenant, 'group_id_are_users_tenant is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_see_users_tenant
                 INSERT INTO `groups`
@@ -3830,6 +4110,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_tenant = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group to see the users '
+                                            , 'tenant'
+                                            , '. Group_id: '
+                                            , (SELECT IFNULL(@group_id_see_users_tenant, 'group_id_see_users_tenant is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_show_to_landlord
                INSERT INTO `groups`
                     (`name`
@@ -3851,6 +4151,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_landlord = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Restrict permission to '
+                                            , 'landlord'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_are_users_landlord
                INSERT INTO `groups`
@@ -3874,6 +4194,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_landlord = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group for the '
+                                            , 'landlord'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_see_users_landlord
                 INSERT INTO `groups`
                     (`name`
@@ -3895,6 +4235,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_landlord = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group to see the users'
+                                            , 'landlord'
+                                            , '. Group_id: '
+                                            , (SELECT IFNULL(@group_id_see_users_landlord, 'group_id_see_users_landlord is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_show_to_agent
                INSERT INTO `groups`
@@ -3918,6 +4278,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_agent = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Restrict permission to '
+                                            , 'agent'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_show_to_agent, 'group_id_show_to_agent is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_are_users_agent
                 INSERT INTO `groups`
                     (`name`
@@ -3939,6 +4319,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_agent = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group for the '
+                                            , 'agent'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_are_users_agent, 'group_id_are_users_agent is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_see_users_agent
                 INSERT INTO `groups`
@@ -3962,6 +4362,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_agent = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group to see the users'
+                                            , 'agent'
+                                            , '. Group_id: '
+                                            , (SELECT IFNULL(@group_id_see_users_agent, 'group_id_see_users_agent is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_show_to_contractor
                 INSERT INTO `groups`
                     (`name`
@@ -3983,6 +4403,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_contractor = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Restrict permission to '
+                                            , 'Contractor'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_show_to_contractor, 'group_id_show_to_contractor is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_are_users_contractor
                 INSERT INTO `groups`
@@ -4006,6 +4446,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_contractor = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group for the '
+                                            , 'Contractor'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_are_users_contractor, 'group_id_are_users_contractor is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_see_users_contractor
                 INSERT INTO `groups`
                     (`name`
@@ -4016,7 +4476,7 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@@group_name_see_users_contractor
+                    (@group_name_see_users_contractor
                     , @group_description_see_users_contractor
                     , 1
                     , ''
@@ -4027,6 +4487,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_contractor = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group to see the users'
+                                            , 'Contractor'
+                                            , '. Group_id: '
+                                            , (SELECT IFNULL(@group_id_see_users_contractor, 'group_id_see_users_contractor is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_show_to_mgt_cny
                 INSERT INTO `groups`
@@ -4050,6 +4530,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_mgt_cny = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Restrict permission to '
+                                            , 'Management Company'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_show_to_mgt_cny, 'group_id_show_to_mgt_cny is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_are_users_mgt_cny
                 INSERT INTO `groups`
                     (`name`
@@ -4071,6 +4571,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_mgt_cny = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group for the users in the '
+                                            , 'Management Company'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_are_users_mgt_cny, 'group_id_are_users_mgt_cny is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_see_users_mgt_cny
                 INSERT INTO `groups`
@@ -4094,6 +4614,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_mgt_cny = (SELECT LAST_INSERT_ID());   
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group to see the users in the '
+                                            , 'Management Company'
+                                            , '. Group_id: '
+                                            , (SELECT IFNULL(@group_id_see_users_mgt_cny, 'group_id_see_users_mgt_cny is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_show_to_occupant
                 INSERT INTO `groups`
                     (`name`
@@ -4115,6 +4655,26 @@ BEGIN
 
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_occupant = (SELECT LAST_INSERT_ID());   
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Restrict permission to '
+                                            , 'occupant'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_show_to_occupant, 'group_id_show_to_occupant is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_are_users_occupant
                 INSERT INTO `groups`
@@ -4138,6 +4698,26 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_occupant = (SELECT LAST_INSERT_ID());  
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group for the '
+                                            , 'occupant'
+                                            , ' only. Group_id: '
+                                            , (SELECT IFNULL(@group_id_are_users_occupant, 'group_id_are_users_occupant is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_see_users_occupant
                 INSERT INTO `groups`
                     (`name`
@@ -4159,6 +4739,26 @@ BEGIN
                     
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_occupant = (SELECT LAST_INSERT_ID());
+
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group to see the users '
+                                            , 'occupant'
+                                            , '. Group_id: '
+                                            , (SELECT IFNULL(@group_id_see_users_occupant, 'group_id_see_users_occupant is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
 
             # group_id_are_users_invited_by
                 INSERT INTO `groups`
@@ -4182,6 +4782,25 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_invited_by = (SELECT LAST_INSERT_ID());
 
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - group of users invited by the same user'
+                                            , ' . Group_id: '
+                                            , (SELECT IFNULL(@group_id_are_users_invited_by, 'group_id_are_users_invited_by is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
             # group_id_see_users_invited_by
                 INSERT INTO `groups`
                     (`name`
@@ -4204,146 +4823,41 @@ BEGIN
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_invited_by = (SELECT LAST_INSERT_ID());
 
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('We have created the groups that we will need for that unit #'
-										, @product_id
-										, '\r\ - To grant '
-										, 'case creation'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@create_case_group_id, 'create_case_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'Edit case'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@can_edit_case_group_id, 'can_edit_case_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'Edit all field regardless of role'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@can_edit_all_field_case_group_id, 'can_edit_all_field_case_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'Edit Component/roles'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@can_edit_component_group_id, 'can_edit_component_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'See unit in the Search panel'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@can_see_unit_in_search_group_id, 'can_see_unit_in_search_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'See cases'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@can_see_cases_group_id, 'can_see_cases_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'Request all flags'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@all_r_flags_group_id, 'all_r_flags_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'Approve all flags'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@all_g_flags_group_id, 'all_g_flags_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'User is publicly visible'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@list_visible_assignees_group_id, 'list_visible_assignees_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'User can see publicly visible'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@see_visible_assignees_group_id, 'see_visible_assignees_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'User is active Stakeholder'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@active_stakeholder_group_id, 'active_stakeholder_group_id is NULL'))
-										, '\r\ - To grant '
-										, 'User is the unit creator'
-										, ' privileges. Group_id: '
-										, (SELECT IFNULL(@unit_creator_group_id, 'unit_creator_group_id is NULL'))
-										, '\r\ - Restrict permission to '
-										, 'tenant'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_show_to_tenant, 'group_id_show_to_tenant is NULL'))
-										, '\r\ - Group for the '
-										, 'tenant'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_are_users_tenant, 'group_id_are_users_tenant is NULL'))
-										, '\r\ - Group to see the users '
-										, 'tenant'
-										, '. Group_id: '
-										, (SELECT IFNULL(@group_id_see_users_tenant, 'group_id_see_users_tenant is NULL'))
-										
-										, '\r\ - Restrict permission to '
-										, 'landlord'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_show_to_landlord, 'group_id_show_to_landlord is NULL'))
-										, '\r\ - Group for the '
-										, 'landlord'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_are_users_landlord, 'group_id_are_users_landlord is NULL'))
-										, '\r\ - Group to see the users'
-										, 'landlord'
-										, '. Group_id: '
-										, (SELECT IFNULL(@group_id_see_users_landlord, 'group_id_see_users_landlord is NULL'))
-										
-										, '\r\ - Restrict permission to '
-										, 'agent'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_show_to_agent, 'group_id_show_to_agent is NULL'))
-										, '\r\ - Group for the '
-										, 'agent'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_are_users_agent, 'group_id_are_users_agent is NULL'))
-										, '\r\ - Group to see the users'
-										, 'agent'
-										, '. Group_id: '
-										, (SELECT IFNULL(@group_id_see_users_agent, 'group_id_see_users_agent is NULL'))
-										
-										, '\r\ - Restrict permission to '
-										, 'Contractor'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_show_to_contractor, 'group_id_show_to_contractor is NULL'))
-										, '\r\ - Group for the '
-										, 'Contractor'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_are_users_contractor, 'group_id_are_users_contractor is NULL'))
-										, '\r\ - Group to see the users'
-										, 'Contractor'
-										, '. Group_id: '
-										, (SELECT IFNULL(@group_id_see_users_contractor, 'group_id_see_users_contractor is NULL'))
-										
-										, '\r\ - Restrict permission to '
-										, 'Management Company'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_show_to_mgt_cny, 'group_id_show_to_mgt_cny is NULL'))
-										, '\r\ - Group for the users in the '
-										, 'Management Company'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_are_users_mgt_cny, 'group_id_are_users_mgt_cny is NULL'))
-										, '\r\ - Group to see the users in the '
-										, 'Management Company'
-										, '. Group_id: '
-										, (SELECT IFNULL(@group_id_see_users_mgt_cny, 'group_id_see_users_mgt_cny is NULL'))
-										
-										, '\r\ - Restrict permission to '
-										, 'occupant'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_show_to_occupant, 'group_id_show_to_occupant is NULL'))
-										, '\r\ - Group for the '
-										, 'occupant'
-										, ' only. Group_id: '
-										, (SELECT IFNULL(@group_id_are_users_occupant, 'group_id_are_users_occupant is NULL'))
-										, '\r\ - Group to see the users '
-										, 'occupant'
-										, '. Group_id: '
-										, (SELECT IFNULL(@group_id_see_users_occupant, 'group_id_see_users_occupant is NULL'))
-										);
-				
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(NOW(), @script, @script_log_message)
-					;
-				
-				SET @script_log_message = NULL;				
+                # Log the actions of the script.
+                    SET @script_log_message = CONCAT('Unit #'
+                                            , @product_id
+                                            , ' - Group to see the users '
+                                            , 'invited by the same user'
+                                            , '. Group_id: '
+                                            , (SELECT IFNULL(@group_id_see_users_invited_by, 'group_id_see_users_invited_by is NULL'))
+                                            );
+                    
+                    INSERT INTO `ut_script_log`
+                        (`datetime`
+                        , `script`
+                        , `log`
+                        )
+                        VALUES
+                        (NOW(), @script, @script_log_message)
+                        ;
+                    
+                    SET @script_log_message = NULL;		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 					
 		# We record the groups we have just created:
 		#	We NEED the component_id for that
