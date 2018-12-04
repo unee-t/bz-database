@@ -1874,6 +1874,204 @@ END;
 $$
 DELIMITER ;
 
+# The `ut_product_group` table
+
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `ut_product_group`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_ut_product_group`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_ut_product_group`
+    AFTER INSERT ON `ut_product_group`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_product_id = new.product_id;
+        SET @new_component_id = new.component_id;
+        SET @new_group_id = new.group_id;
+        SET @new_group_type_id = new.group_type_id;
+        SET @new_role_type_id = new.role_type_id;
+        SET @new_created_by_id = new.created_by_id;
+        SET @new_created = new.created;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_product_group';
+        SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_product_id
+                , ', '
+                , IFNULL(@new_component_id, '(NULL)')
+                , ', '
+                , @new_group_id
+                , ', '
+                , @new_group_type_id
+                , ', '
+                , IFNULL(@new_role_type_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_created_by_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_created, '(NULL)')
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_product_group';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `ut_product_group`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_ut_product_group`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_ut_product_group`
+    AFTER DELETE ON `ut_product_group`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_product_id = old.product_id;
+        SET @old_component_id = old.component_id;
+        SET @old_group_id = old.group_id;
+        SET @old_group_type_id = old.group_type_id;
+        SET @old_role_type_id = old.role_type_id;
+        SET @old_created_by_id = old.created_by_id;
+        SET @old_created = old.created;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_product_group';
+        SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
+        SET @previous_value = CONCAT (
+                @old_product_id
+                , ', '
+                , IFNULL(@old_component_id, '(NULL)')
+                , ', '
+                , @old_group_id
+                , ', '
+                , @old_group_type_id
+                , ', '
+                , IFNULL(@old_role_type_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_created_by_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_created, '(NULL)')
+            )
+           ;
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_product_group';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `ut_product_group`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_ut_product_group`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_ut_product_group`
+    AFTER UPDATE ON `ut_product_group`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_product_id = new.product_id;
+        SET @new_component_id = new.component_id;
+        SET @new_group_id = new.group_id;
+        SET @new_group_type_id = new.group_type_id;
+        SET @new_role_type_id = new.role_type_id;
+        SET @new_created_by_id = new.created_by_id;
+        SET @new_created = new.created;
+        
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_product_id = old.product_id;
+        SET @old_component_id = old.component_id;
+        SET @old_group_id = old.group_id;
+        SET @old_group_type_id = old.group_type_id;
+        SET @old_role_type_id = old.role_type_id;
+        SET @old_created_by_id = old.created_by_id;
+        SET @old_created = old.created;
+        
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_product_group';
+        SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
+        SET @previous_value = CONCAT (
+                @old_product_id
+                , ', '
+                , IFNULL(@old_component_id, '(NULL)')
+                , ', '
+                , @old_group_id
+                , ', '
+                , @old_group_type_id
+                , ', '
+                , IFNULL(@old_role_type_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_created_by_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_created, '(NULL)')
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_product_id
+                , ', '
+                , IFNULL(@new_component_id, '(NULL)')
+                , ', '
+                , @new_group_id
+                , ', '
+                , @new_group_type_id
+                , ', '
+                , IFNULL(@new_role_type_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_created_by_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_created, '(NULL)')
+            )
+           ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_product_group';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+
+
 
 #   - Move the audit log function outside the scripts in dedicated trigger when we
 #       - INSERT records in the tables
@@ -1886,11 +2084,11 @@ DELIMITER ;
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
+#           - `ut_product_group`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
 #WIP       - `ut_invitation_api_data`
-#WIP       - `ut_product_group`
 #
 #       - DELETE records in the tables
 #           - `user_group_map`
@@ -1902,11 +2100,11 @@ DELIMITER ;
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
+#           - `ut_product_group`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
 #WIP       - `ut_invitation_api_data`
-#WIP       - `ut_product_group`
 #
 #       - UPDATE records in the tables
 #           - `user_group_map`
@@ -1918,18 +2116,11 @@ DELIMITER ;
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
+#           - `ut_product_group`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
 #WIP       - `ut_invitation_api_data`
-#WIP       - `ut_product_group`
-#            - ``
-#            - ``
-#            - ``
-
-
-
-
 
 
 
