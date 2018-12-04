@@ -35,7 +35,6 @@
 #            - `remove_user_from_role`
 #            - ``
 #            - ``
-#TODO   - Check how the table `ut_group_group_map_temp` is created?
 
 #   - Create a generic procedure `update_audit_log` that we use each time a record is updated for the tables
 #       - `products`
@@ -5503,6 +5502,7 @@ BEGIN
 	# We configure the group permissions:
 		# Data for the table `group_group_map`
         # We first insert these in the table `ut_group_group_map_temp`
+        # If you need to re-create the table `ut_group_group_map_temp`, use the procedure `create_temp_table_to_update_group_permissions`
 
             INSERT INTO `ut_group_group_map_temp`
                 (`member_id`
@@ -5648,14 +5648,6 @@ BEGIN
 			SET @script_log_message = NULL;
 
 		# We insert the series categories that BZ needs...
-		
-			# What is the next available id for the series category?
-				SET @series_category_product = ((SELECT MAX(`id`) FROM `series_categories`) + 1);
-				SET @series_category_component_tenant = @series_category_product + 1;
-				SET @series_category_component_landlord = @series_category_component_tenant + 1;
-				SET @series_category_component_contractor = @series_category_component_landlord + 1;
-				SET @series_category_component_mgtcny = @series_category_component_contractor + 1;
-				SET @series_category_component_agent = @series_category_component_mgtcny + 1;
 				
 			# What are the name for the categories
 				SET @series_category_product_name = @unit_for_group;
@@ -5749,20 +5741,95 @@ BEGIN
 							,'&component='
 							,@component_name_for_serie_agent)
 							);
-		
-		# We can now insert the series category
+
+		# We have eveything, we can create the series_categories we need:
+        # We insert the series_categories 1 by 1 to get the id for each series_categories easily
+
+		# We can now insert the series category product
 			INSERT INTO `series_categories`
-				(`id`
-				,`name`
+				(`name`
 				) 
 				VALUES 
-				(@series_category_product, @series_category_product_name)
-				, (@series_category_component_tenant, @series_category_component_tenant_name)
-				, (@series_category_component_landlord, @series_category_component_landlord_name)
-				, (@series_category_component_contractor, @series_category_component_contractor_name)
-				, (@series_category_component_mgtcny, @series_category_component_mgtcny_name)
-				, (@series_category_component_agent, @series_category_component_agent_name)
+				(@series_category_product_name)
 				;
+
+            # We get the id for the series_category 
+                SET @series_category_product = (SELECT LAST_INSERT_ID());
+
+		# We can now insert the series category component_tenant
+			INSERT INTO `series_categories`
+				(`name`
+				) 
+				VALUES 
+				(@series_category_component_tenant_name)
+				;
+
+            # We get the id for the series_category 
+                SET @series_category_component_tenant = (SELECT LAST_INSERT_ID());
+
+		# We can now insert the series category component_landlord
+			INSERT INTO `series_categories`
+				(`name`
+				) 
+				VALUES 
+				(@series_category_component_landlord_name)
+				;
+
+            # We get the id for the series_category 
+                SET @series_category_component_landlord = (SELECT LAST_INSERT_ID());
+
+		# We can now insert the series category component_contractor
+			INSERT INTO `series_categories`
+				(`name`
+				) 
+				VALUES 
+				(@series_category_component_contractor_name)
+				;
+
+            # We get the id for the series_category 
+                SET @series_category_component_contractor = (SELECT LAST_INSERT_ID());
+
+		# We can now insert the series category component_mgtcny
+			INSERT INTO `series_categories`
+				(`name`
+				) 
+				VALUES 
+				(@series_category_component_mgtcny_name)
+				;
+
+            # We get the id for the series_category 
+                SET @series_category_component_mgtcny = (SELECT LAST_INSERT_ID());
+
+		# We can now insert the series category component_agent
+			INSERT INTO `series_categories`
+				(`name`
+				) 
+				VALUES 
+				(@series_category_component_agent_name)
+				;
+
+            # We get the id for the series_category 
+                SET @series_category_component_agent = (SELECT LAST_INSERT_ID());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		# Insert the series related to the product/unit
 			INSERT INTO `series`
 				(`series_id`
