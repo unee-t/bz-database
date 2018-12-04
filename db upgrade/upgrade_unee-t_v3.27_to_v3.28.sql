@@ -33,20 +33,7 @@
 #            - ``
 #            - ``
 #TODO   - Check how the table `ut_group_group_map_temp` is created?
-#TODO   - for this db upgrade, do we need to drop the tables 
-#           - `ut_group_group_map_dedup`?
-#           - `ut_temp_dummy_users_for_roles`
 
-#   - Upgrade the procedure `update_permissions_invited_user`
-#       - Use Temporary table to do the deduplication of records
-#         This is to avoid deleting the table for all the concurrent procedures which can create a race condition
-#
-#   - Update the procedure `table_to_list_dummy_user_by_environment` to create the dummy environment table so it uses a temporary table
-#
-#   - Update the procedure `add_user_to_role_in_unit` 
-#       - Make sure we do NOT call the procedure `create_temp_table_to_update_permissions`
-#       - Minor improvements to the code
-#
 #   - Create a generic procedure `update_audit_log` that we use each time a record is updated for the tables
 #       - `products`
 #       - `versions`
@@ -107,6 +94,21 @@
 #            - ``
 #            - ``
 #
+#   - Cleanup drop the following tables (will be replaced by temp tables)
+#           - `ut_group_group_map_dedup`
+#           - `ut_temp_dummy_users_for_roles`
+#           - `user_group_map_dedup`
+#
+#   - Upgrade the procedure `update_permissions_invited_user`
+#       - Use Temporary table to do the deduplication of records
+#         This is to avoid deleting the table for all the concurrent procedures which can create a race condition
+#
+#   - Update the procedure `table_to_list_dummy_user_by_environment` to create the dummy environment table so it uses a temporary table
+#
+#   - Update the procedure `add_user_to_role_in_unit` 
+#       - Make sure we do NOT call the procedure `create_temp_table_to_update_permissions`
+#       - Minor improvements to the code
+#
 #   - Upgrade the procedure `unit_create_with_dummy_users`
 #       - In the `products` table, we start by trying to predict the next available id for a record
 #       - Make sure we record the actual id of each inserted record
@@ -123,12 +125,10 @@
 #WIP       - `series`
 #       - Insert one line for each component created in the table `ut_script_log`
 #         BEFORE: only 1 line for all the component (less precise)
-#          - Use Temporary table to do the deduplication of records:
-#               - `ut_group_group_map_dedup`
+#       - Use Temporary table to do the deduplication of records:
+#           - `ut_group_group_map_dedup`
 #             This is to avoid deleting the table for all the concurrent procedures which can create a race condition
-
-
-
+#
 #
 #####################
 #
@@ -139,11 +139,469 @@
 # When are we doing this?
 	SET @the_timestamp = NOW();
 
-# Update the procedure `update_permissions_invited_user`
-# When we update the permissions, make sure we do not delete the table `ut_user_group_map_temp`
+# Create a procedure that will update the audit log each time a new record is created in the `user_group_map` table
 
+    DROP PROCEDURE IF EXISTS `update_audit_log`;
+
+DELIMITER $$
+CREATE PROCEDURE `update_audit_log`()
+SQL SECURITY INVOKER
+BEGIN
+
+    # This procedure need the following variables
+    #   - @bzfe_table: the table that was updated
+    #   - @bzfe_field: The fields that were updated
+    #   - @previous_value: The previouso value for the field
+    #   - @new_value: the values captured by the trigger when the new value is inserted.
+    #   - @script: the script that is calling this procedure
+    #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+ 
+	# When are we doing this?
+        SET @timestamp = NOW(); 
+
+    # We update the audit_log table
+        INSERT INTO `ut_audit_log`
+            (`datetime`
+            , `bzfe_table`
+            , `bzfe_field`
+            , `previous_value`
+            , `new_value`
+            , `script`
+            , `comment`
+            )
+            VALUES
+            (@timestamp
+            , @bzfe_table
+            , @bzfe_field
+            , @previous_value
+            , @new_value
+            , @script
+            , @comment
+            )
+        ;
+
+END $$
+DELIMITER ;
+
+# The `user_group_map` table
+
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `user_group_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_user_group_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_user_group_map`
+    AFTER INSERT ON `user_group_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_user_id = new.user_id;
+        SET @new_group_id = new.group_id;
+        SET @new_isbless = new.isbless;
+        SET @new_grant_type = new.grant_type;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'user_group_map';
+        SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_user_id
+                , ', '
+                , @new_group_id
+                , ', '
+                , @new_isbless
+                , ', '
+                , @new_grant_type
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_user_group_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `user_group_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_user_group_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_user_group_map`
+    AFTER DELETE ON `user_group_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @old_user_id = old.user_id;
+        SET @old_group_id = old.group_id;
+        SET @old_isbless = old.isbless;
+        SET @old_grant_type = old.grant_type;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'user_group_map';
+        SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
+        SET @previous_value = CONCAT (
+                @old_user_id
+                , ', '
+                , @old_group_id
+                , ', '
+                , @old_isbless
+                , ', '
+                , @old_grant_type
+            );
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_user_group_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `user_group_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_user_group_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_user_group_map`
+    AFTER UPDATE ON `user_group_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_user_id = new.user_id;
+        SET @new_group_id = new.group_id;
+        SET @new_isbless = new.isbless;
+        SET @new_grant_type = new.grant_type;
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @old_user_id = old.user_id;
+        SET @old_group_id = old.group_id;
+        SET @old_isbless = old.isbless;
+        SET @old_grant_type = old.grant_type;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'user_group_map';
+        SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
+        SET @previous_value = CONCAT (
+                @old_user_id
+                , ', '
+                , @old_group_id
+                , ', '
+                , @old_isbless
+                , ', '
+                , @old_grant_type
+                )
+                ;
+        SET @new_value = CONCAT (
+                @new_user_id
+                , ', '
+                , @new_group_id
+                , ', '
+                , @new_isbless
+                , ', '
+                , @new_grant_type
+                )
+                ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_user_group_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+# The `products` table
+
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `products`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_products`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_products`
+    AFTER INSERT ON `products`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_name = new.name;
+        SET @new_classification_id = new.classification_id;
+        SET @new_description = new.description;
+        SET @new_isactive = new.isactive;
+        SET @new_defaultmilestone = new.defaultmilestone;
+        SET @new_allows_unconfirmed = new.allows_unconfirmed;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'products';
+        SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_name
+                , ', '
+                , @new_classification_id
+                , ', '
+                , @new_description
+                , ', '
+                , @new_isactive
+                , ', '
+                , @new_defaultmilestone
+                , ', '
+                , @new_allows_unconfirmed
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_products';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `products`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_products`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_products`
+    AFTER DELETE ON `products`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @old_name = old.name;
+        SET @old_classification_id = old.classification_id;
+        SET @old_description = old.description;
+        SET @old_isactive = old.isactive;
+        SET @old_defaultmilestone = old.defaultmilestone;
+        SET @old_allows_unconfirmed = old.allows_unconfirmed;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'products';
+        SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
+        SET @previous_value = CONCAT (
+                @old_name
+                , ', '
+                , @old_classification_id
+                , ', '
+                , @old_description
+                , ', '
+                , @old_isactive
+                , ', '
+                , @old_defaultmilestone
+                , ', '
+                , @old_allows_unconfirmed
+            )
+           ;
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_products';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `products`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_products`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_products`
+    AFTER UPDATE ON `products`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_name = new.name;
+        SET @new_classification_id = new.classification_id;
+        SET @new_description = new.description;
+        SET @new_isactive = new.isactive;
+        SET @new_defaultmilestone = new.defaultmilestone;
+        SET @new_allows_unconfirmed = new.allows_unconfirmed;
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @old_name = old.name;
+        SET @old_classification_id = old.classification_id;
+        SET @old_description = old.description;
+        SET @old_isactive = old.isactive;
+        SET @old_defaultmilestone = old.defaultmilestone;
+        SET @old_allows_unconfirmed = old.allows_unconfirmed;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'products';
+        SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
+        SET @previous_value = CONCAT (
+                @old_name
+                , ', '
+                , @old_classification_id
+                , ', '
+                , @old_description
+                , ', '
+                , @old_isactive
+                , ', '
+                , @old_defaultmilestone
+                , ', '
+                , @old_allows_unconfirmed
+            )
+           ;
+        SET @new_value = CONCAT (
+                 @new_name
+                , ', '
+                , @new_classification_id
+                , ', '
+                , @new_description
+                , ', '
+                , @new_isactive
+                , ', '
+                , @new_defaultmilestone
+                , ', '
+                , @new_allows_unconfirmed
+            )
+           ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_products';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+#   - Move the audit log function outside the scripts in dedicated trigger when we
+#       - INSERT records in the tables
+#            - `user_group_map`
+#WIP            - `products`
+#WIP            - `versions`
+#WIP            - `milestones`
+#WIP            - `components`
+#WIP            - `groups`
+#WIP       - `groups`
+#WIP       - `flagtypes`
+#WIP       - `flaginclusions`
+#WIP       - `group_control_map`
+#WIP       - `series_categories`
+#WIP       - `series`
+
+#       - DELETE records in the tables
+#            - `user_group_map`
+#WIP            - `products`
+#WIP            - `versions`
+#WIP            - `milestones`
+#WIP            - `components`
+#WIP            - `groups`
+#WIP       - `groups`
+#WIP       - `flagtypes`
+#WIP       - `flaginclusions`
+#WIP       - `group_control_map`
+#WIP       - `series_categories`
+#WIP       - `series`
+
+
+#       - UPDATE records in the tables
+#WIP            - `user_group_map`
+#WIP            - `products`
+#WIP            - `versions`
+#WIP            - `milestones`
+#WIP            - `components`
+#WIP       - `groups`
+#WIP       - `flagtypes`
+#WIP       - `flaginclusions`
+#WIP       - `group_control_map`
+#WIP       - `series_categories`
+#WIP       - `series`
+#            - ``
+#            - ``
+#            - ``
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Clean up
     # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
 	DROP TABLE IF EXISTS `user_group_map_dedup`;
+
+    # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
+	DROP TABLE IF EXISTS `ut_group_group_map_dedup`;
+
+    # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
+	DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+# Update the procedure `update_permissions_invited_user`
+# When we update the permissions, make sure we do not delete the table `ut_user_group_map_temp`
 
     # Delete the procedure so we can re-create it
 	DROP PROCEDURE IF EXISTS `update_permissions_invited_user`;
@@ -886,172 +1344,6 @@ BEGIN
 END
 $$
 DELIMITER ;
-
-# Create a procedure that will update the audit log each time a new record is created in the `user_group_map` table
-
-    DROP PROCEDURE IF EXISTS `update_audit_log`;
-
-DELIMITER $$
-CREATE PROCEDURE `update_audit_log`()
-SQL SECURITY INVOKER
-BEGIN
-
-    # This procedure need the following variables
-    #   - @bzfe_table: the table that was updated
-    #   - @bzfe_field: The fields that were updated
-    #   - @previous_value: The previouso value for the field
-    #   - @new_value: the values captured by the trigger when the new value is inserted.
-    #   - @script: the script that is calling this procedure
-    #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
- 
-	# When are we doing this?
-        SET @timestamp = NOW(); 
-
-    # We update the audit_log table
-        INSERT INTO `ut_audit_log`
-            (`datetime`
-            , `bzfe_table`
-            , `bzfe_field`
-            , `previous_value`
-            , `new_value`
-            , `script`
-            , `comment`
-            )
-            VALUES
-            (@timestamp
-            , @bzfe_table
-            , @bzfe_field
-            , @previous_value
-            , @new_value
-            , @script
-            , @comment
-            )
-        ;
-
-END $$
-DELIMITER ;
-
-# Create a trigger that calls the relevant procedure each time a record is added to the table `user_group_map`
-
-    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_user_group_map`;
-
-DELIMITER $$
-CREATE TRIGGER `trig_update_audit_log_new_record_user_group_map`
-    AFTER INSERT ON `user_group_map`
-    FOR EACH ROW
-  BEGIN
-
-    # We capture the new values of each fields in dedicated variables:
-        SET @new_user_id = new.user_id;
-        SET @new_group_id = new.group_id;
-        SET @new_isbless = new.isbless;
-        SET @new_grant_type = new.grant_type;
-
-    # We set the variable we need to update the log with relevant information:
-        SET @bzfe_table = 'user_group_map';
-        SET @bzfe_field = 'new_user_id, new_group_id, new_isbless, new_grant_type';
-        SET @previous_value = NULL;
-        SET @new_value = CONCAT (
-                @new_user_id
-                , ', '
-                , @new_group_id
-                , ', '
-                , @new_isbless
-                , ', '
-                , @new_grant_type
-            )
-           ;
-        # The @script variable is defined by the highest level script we have - we do NOT change that
-        SET @comment = 'called via the trigger trig_update_audit_log_new_record_user_group_map';
-
-    # We have all the variables:
-        #   - @bzfe_table: the table that was updated
-        #   - @bzfe_field: The fields that were updated
-        #   - @previous_value: The previouso value for the field
-        #   - @new_value: the values captured by the trigger when the new value is inserted.
-        #   - @script: the script that is calling this procedure
-        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
-        CALL `update_audit_log`;
-
-END;
-$$
-DELIMITER ;
-            
-# Create a trigger that calls the relevant procedure each time a record is deleted in the table `user_group_map`
-
-    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_user_group_map`;
-
-DELIMITER $$
-CREATE TRIGGER `trig_update_audit_log_delete_record_user_group_map`
-    AFTER DELETE ON `user_group_map`
-    FOR EACH ROW
-  BEGIN
-
-    # We capture the new values of each fields in dedicated variables:
-        SET @old_user_id = old.user_id;
-        SET @old_group_id = old.group_id;
-        SET @old_isbless = old.isbless;
-        SET @old_grant_type = old.grant_type;
-
-    # We set the variable we need to update the log with relevant information:
-        SET @bzfe_table = 'user_group_map';
-        SET @bzfe_field = 'new_user_id, new_group_id, new_isbless, new_grant_type';
-        SET @previous_value = CONCAT (
-                @old_user_id
-                , ', '
-                , @old_group_id
-                , ', '
-                , @old_isbless
-                , ', '
-                , @old_grant_type
-            );
-        SET @new_value = NULL;
-
-        # The @script variable is defined by the highest level script we have - we do NOT change that
-        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_user_group_map';
-
-    # We have all the variables:
-        #   - @bzfe_table: the table that was updated
-        #   - @bzfe_field: The fields that were updated
-        #   - @previous_value: The previouso value for the field
-        #   - @new_value: the values captured by the trigger when the new value is inserted.
-        #   - @script: the script that is calling this procedure
-        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
-        CALL `update_audit_log`;
-
-END;
-$$
-DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Update the procedure to create a unit with dummy users
 
