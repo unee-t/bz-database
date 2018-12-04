@@ -23,8 +23,11 @@
 ###############################
 # This update
 #
-#TODO   - check the following procedures to make sure we do not delete and re-create the whole table
+#TODO   - check the following procedures to
+#   - make sure we do not delete and re-create any permanent table
+#   - make sure we do not use the `ut_audit_log` anymore
 #            - `remove_user_from_default_cc`
+#           - `remove_user_from_role`
 #            - `revoke_all_permission_for_this_user_in_this_unit`
 #            - `update_assignee_if_dummy_user`
 #            - `user_in_default_cc_for_cases`
@@ -50,49 +53,52 @@
 #
 #   - Move the audit log function outside the scripts in dedicated trigger when we
 #       - INSERT records in the tables
-#            - `user_group_map`
-#WIP            - `products`
-#WIP            - `versions`
-#WIP            - `milestones`
-#WIP            - `components`
-#WIP            - `groups`
-#WIP       - `groups`
-#WIP       - `flagtypes`
-#WIP       - `flaginclusions`
-#WIP       - `group_control_map`
+#           - `user_group_map`
+#           - `products`
+#           - `versions`
+#           - `milestones`
+#           - `components`
+#           - `groups`
+#           - `flagtypes`
+#           - `flaginclusions`
+#           - `group_control_map`
+#           - `ut_product_group`
 #WIP       - `series_categories`
 #WIP       - `series`
-
+#WIP       - `ut_data_to_create_units`
+#WIP       - `ut_invitation_api_data`
+#
 #       - DELETE records in the tables
-#            - `user_group_map`
-#WIP            - `products`
-#WIP            - `versions`
-#WIP            - `milestones`
-#WIP            - `components`
-#WIP            - `groups`
-#WIP       - `groups`
-#WIP       - `flagtypes`
-#WIP       - `flaginclusions`
-#WIP       - `group_control_map`
+#           - `user_group_map`
+#           - `products`
+#           - `versions`
+#           - `milestones`
+#           - `components`
+#           - `groups`
+#           - `flagtypes`
+#           - `flaginclusions`
+#           - `group_control_map`
+#           - `ut_product_group`
 #WIP       - `series_categories`
 #WIP       - `series`
-
-
+#WIP       - `ut_data_to_create_units`
+#WIP       - `ut_invitation_api_data`
+#
 #       - UPDATE records in the tables
-#WIP            - `user_group_map`
-#WIP            - `products`
-#WIP            - `versions`
-#WIP            - `milestones`
-#WIP            - `components`
-#WIP       - `groups`
-#WIP       - `flagtypes`
-#WIP       - `flaginclusions`
-#WIP       - `group_control_map`
+#           - `user_group_map`
+#           - `products`
+#           - `versions`
+#           - `milestones`
+#           - `components`
+#           - `groups`
+#           - `flagtypes`
+#           - `flaginclusions`
+#           - `group_control_map`
+#           - `ut_product_group`
 #WIP       - `series_categories`
 #WIP       - `series`
-#            - ``
-#            - ``
-#            - ``
+#WIP       - `ut_data_to_create_units`
+#WIP       - `ut_invitation_api_data`
 #
 #   - Cleanup drop the following tables (will be replaced by temp tables)
 #           - `ut_group_group_map_dedup`
