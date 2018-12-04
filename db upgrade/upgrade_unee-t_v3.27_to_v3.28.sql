@@ -1506,6 +1506,375 @@ END;
 $$
 DELIMITER ;
 
+# The `flaginclusions` table
+
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `flaginclusions`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_flaginclusions`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_flaginclusions`
+    AFTER INSERT ON `flaginclusions`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_type_id = new.type_id;
+        SET @new_product_id = new.product_id;
+        SET @new_component_id = new.component_id;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'flaginclusions';
+        SET @bzfe_field = 'type_id, product_id, component_id';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_type_id
+                , ', '
+                , IFNULL(@new_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_component_id, '(NULL)')  
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_flaginclusions';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `flaginclusions`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_flaginclusions`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_flaginclusions`
+    AFTER DELETE ON `flaginclusions`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_type_id = old.type_id;
+        SET @old_product_id = old.product_id;
+        SET @old_component_id = old.component_id;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'flaginclusions';
+        SET @bzfe_field = 'type_id, product_id, component_id';
+        SET @previous_value = CONCAT (
+                @old_type_id
+                , ', '
+                , IFNULL(@old_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_component_id, '(NULL)') 
+            )
+           ;
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_flaginclusions';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `flaginclusions`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_flaginclusions`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_flaginclusions`
+    AFTER UPDATE ON `flaginclusions`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_type_id = new.type_id;
+        SET @new_product_id = new.product_id;
+        SET @new_component_id = new.component_id;
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_type_id = old.type_id;
+        SET @old_product_id = old.product_id;
+        SET @old_component_id = old.component_id;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'flaginclusions';
+        SET @bzfe_field = 'type_id, product_id, component_id';
+        SET @previous_value = CONCAT (
+                @old_type_id
+                , ', '
+                , IFNULL(@old_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_component_id, '(NULL)') 
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_type_id
+                , ', '
+                , IFNULL(@new_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_component_id, '(NULL)')     
+            )
+           ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_flaginclusions';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+# The `group_control_map` table
+
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `group_control_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_group_control_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_group_control_map`
+    AFTER INSERT ON `group_control_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_group_id = new.group_id;
+        SET @new_product_id = new.product_id;
+        SET @new_entry = new.entry;
+        SET @new_membercontrol = new.membercontrol;
+        SET @new_othercontrol = new.othercontrol;
+        SET @new_canedit = new.canedit;
+        SET @new_editcomponents = new.editcomponents;
+        SET @new_editbugs = new.editbugs;
+        SET @new_canconfirm = new.canconfirm;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_control_map';
+        SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_group_id
+                , ', '
+                , @new_product_id
+                , ', '
+                , @new_entry
+                , ', '
+                , @new_membercontrol
+                , ', '
+                , @new_othercontrol
+                , ', '
+                , @new_canedit
+                , ', '
+                , @new_editcomponents
+                , ', '
+                , @new_editbugs
+                , ', '
+                , @new_canconfirm
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_group_control_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `group_control_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_group_control_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_group_control_map`
+    AFTER DELETE ON `group_control_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_group_id = old.group_id;
+        SET @old_product_id = old.product_id;
+        SET @old_entry = old.entry;
+        SET @old_membercontrol = old.membercontrol;
+        SET @old_othercontrol = old.othercontrol;
+        SET @old_canedit = old.canedit;
+        SET @old_editcomponents = old.editcomponents;
+        SET @old_editbugs = old.editbugs;
+        SET @old_canconfirm = old.canconfirm;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_control_map';
+        SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
+        SET @previous_value = CONCAT (
+                @old_group_id
+                , ', '
+                , @old_product_id
+                , ', '
+                , @old_entry
+                , ', '
+                , @old_membercontrol
+                , ', '
+                , @old_othercontrol
+                , ', '
+                , @old_canedit
+                , ', '
+                , @old_editcomponents
+                , ', '
+                , @old_editbugs
+                , ', '
+                , @old_canconfirm
+            )
+           ;
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_group_control_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `group_control_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_group_control_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_group_control_map`
+    AFTER UPDATE ON `group_control_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_group_id = new.group_id;
+        SET @new_product_id = new.product_id;
+        SET @new_entry = new.entry;
+        SET @new_membercontrol = new.membercontrol;
+        SET @new_othercontrol = new.othercontrol;
+        SET @new_canedit = new.canedit;
+        SET @new_editcomponents = new.editcomponents;
+        SET @new_editbugs = new.editbugs;
+        SET @new_canconfirm = new.canconfirm;
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_group_id = old.group_id;
+        SET @old_product_id = old.product_id;
+        SET @old_entry = old.entry;
+        SET @old_membercontrol = old.membercontrol;
+        SET @old_othercontrol = old.othercontrol;
+        SET @old_canedit = old.canedit;
+        SET @old_editcomponents = old.editcomponents;
+        SET @old_editbugs = old.editbugs;
+        SET @old_canconfirm = old.canconfirm;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_control_map';
+        SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
+        SET @previous_value = CONCAT (
+                @old_group_id
+                , ', '
+                , @old_product_id
+                , ', '
+                , @old_entry
+                , ', '
+                , @old_membercontrol
+                , ', '
+                , @old_othercontrol
+                , ', '
+                , @old_canedit
+                , ', '
+                , @old_editcomponents
+                , ', '
+                , @old_editbugs
+                , ', '
+                , @old_canconfirm
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_group_id
+                , ', '
+                , @new_product_id
+                , ', '
+                , @new_entry
+                , ', '
+                , @new_membercontrol
+                , ', '
+                , @new_othercontrol
+                , ', '
+                , @new_canedit
+                , ', '
+                , @new_editcomponents
+                , ', '
+                , @new_editbugs
+                , ', '
+                , @new_canconfirm
+            )
+           ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_group_control_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+
 #   - Move the audit log function outside the scripts in dedicated trigger when we
 #       - INSERT records in the tables
 #           - `user_group_map`
@@ -1514,12 +1883,15 @@ DELIMITER ;
 #           - `milestones`
 #           - `components`
 #           - `groups`
-#WIP       - `flagtypes`
-#WIP       - `flaginclusions`
-#WIP       - `group_control_map`
+#           - `flagtypes`
+#           - `flaginclusions`
+#           - `group_control_map`
 #WIP       - `series_categories`
 #WIP       - `series`
-
+#WIP       - `ut_data_to_create_units`
+#WIP       - `ut_invitation_api_data`
+#WIP       - `ut_product_group`
+#
 #       - DELETE records in the tables
 #           - `user_group_map`
 #           - `products`
@@ -1527,13 +1899,15 @@ DELIMITER ;
 #           - `milestones`
 #           - `components`
 #           - `groups`
-#WIP       - `flagtypes`
-#WIP       - `flaginclusions`
-#WIP       - `group_control_map`
+#           - `flagtypes`
+#           - `flaginclusions`
+#           - `group_control_map`
 #WIP       - `series_categories`
 #WIP       - `series`
-
-
+#WIP       - `ut_data_to_create_units`
+#WIP       - `ut_invitation_api_data`
+#WIP       - `ut_product_group`
+#
 #       - UPDATE records in the tables
 #           - `user_group_map`
 #           - `products`
@@ -1541,11 +1915,14 @@ DELIMITER ;
 #           - `milestones`
 #           - `components`
 #           - `groups`
-#WIP       - `flagtypes`
-#WIP       - `flaginclusions`
-#WIP       - `group_control_map`
+#           - `flagtypes`
+#           - `flaginclusions`
+#           - `group_control_map`
 #WIP       - `series_categories`
 #WIP       - `series`
+#WIP       - `ut_data_to_create_units`
+#WIP       - `ut_invitation_api_data`
+#WIP       - `ut_product_group`
 #            - ``
 #            - ``
 #            - ``
