@@ -32,7 +32,8 @@
 #            - `remove_user_from_role`
 #            - ``
 #            - ``
-#
+#TODO   - Check how the table `ut_group_group_map_temp` is created?
+
 #   - Upgrade the procedure `update_permissions_invited_user`
 #       - Use Temporary table to do the deduplication of records
 #         This is to avoid deleting the table for all the concurrent procedures which can create a race condition
@@ -107,7 +108,9 @@
 
 
 #
-#WIP           - Use Temporary table to do the deduplication of records
+#           - Use Temporary table to do the deduplication of records:
+#               - `ut_group_group_map_dedup`
+#               - ``
 #             This is to avoid deleting the table for all the concurrent procedures which can create a race condition
 
 
@@ -142,10 +145,10 @@ BEGIN
     #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
 
 	# We drop the deduplication table if it exists:
-		DROP TEMPORARY TABLE IF EXISTS `ut_temporary_user_group_map_dedup`;
+		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
 
-	# We create a table `ut_temporary_user_group_map_dedup` to prepare the data we need to insert
-		CREATE TEMPORARY TABLE `ut_temporary_user_group_map_dedup` (
+	# We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
+		CREATE TEMPORARY TABLE `ut_user_group_map_dedup` (
 			`user_id` MEDIUMINT(9) NOT NULL,
 			`group_id` MEDIUMINT(9) NOT NULL,
 			`isbless` TINYINT(4) NOT NULL DEFAULT '0',
@@ -155,7 +158,7 @@ BEGIN
 		;
 		
 	# We insert the de-duplicated record in the table `user_group_map_dedup`
-		INSERT INTO `ut_temporary_user_group_map_dedup`
+		INSERT INTO `ut_user_group_map_dedup`
 		SELECT `user_id`
 			, `group_id`
 			, `isbless`
@@ -175,18 +178,18 @@ BEGIN
 			, `isbless`
 			, `grant_type`
 		FROM
-			`ut_temporary_user_group_map_dedup`
+			`ut_user_group_map_dedup`
 		# The below code is overkill in this context: 
 		# the Unique Key Constraint makes sure that all records are unique in the table `user_group_map`
 		ON DUPLICATE KEY UPDATE
-			`user_id` = `ut_temporary_user_group_map_dedup`.`user_id`
-			, `group_id` = `ut_temporary_user_group_map_dedup`.`group_id`
-			, `isbless` = `ut_temporary_user_group_map_dedup`.`isbless`
-			, `grant_type` = `ut_temporary_user_group_map_dedup`.`grant_type`
+			`user_id` = `ut_user_group_map_dedup`.`user_id`
+			, `group_id` = `ut_user_group_map_dedup`.`group_id`
+			, `isbless` = `ut_user_group_map_dedup`.`isbless`
+			, `grant_type` = `ut_user_group_map_dedup`.`grant_type`
 		;
 
 	# We drop the temp table as we do not need it anymore
-		DROP TEMPORARY TABLE IF EXISTS `ut_temporary_user_group_map_dedup`;
+		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
 
 END $$
 DELIMITER ;
@@ -1044,11 +1047,13 @@ DELIMITER $$
 CREATE PROCEDURE `unit_create_with_dummy_users`()
 SQL SECURITY INVOKER
 BEGIN
-	# This procedure needs the following variables:
-	#	- @mefe_unit_id
-	#	- @environment
-    #
-    # This procedure needs the table `ut_user_group_map_temp`
+	# This procedure needs the following objects:
+    #   - variables:
+	#	    - @mefe_unit_id
+	#	    - @environment
+    #   - Tables:
+    #       - `ut_group_group_map_temp`
+    #       - `ut_user_group_map_temp`
     #
     # This procedure needs the following info in the table `ut_data_to_create_units`
     #   - id_unit_to_create
@@ -1684,6 +1689,31 @@ BEGIN
                     ,(@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
                     ,(@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
                     ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	# We create the goups we need
 		# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
@@ -2967,7 +2997,7 @@ BEGIN
 			# What are the SQL queries for these series:
 				
 				# We need a sanitized unit name:
-					SET @unit_name_for_serie_query = REPLACE(@unit,' ','%20');
+					SET @unit_name_for_serie_query = REPLACE(@unit, ' ', '%20');
 				
 				# Product
 					SET @serie_search_unconfirmed = CONCAT('bug_status=UNCONFIRMED&product=',@unit_name_for_serie_query);
@@ -2990,11 +3020,11 @@ BEGIN
 					# We need several variables to build this
 						SET @serie_search_prefix_component_open = 'field0-0-0=resolution&type0-0-0=notregexp&value0-0-0=.&product='; 
 						SET @serie_search_prefix_component_closed = 'field0-0-0=resolution&type0-0-0=regexp&value0-0-0=.&product=';
-					SET @component_name_for_serie_tenant = REPLACE(@role_user_g_description_tenant,' ','%20');
-						SET @component_name_for_serie_landlord = REPLACE(@role_user_g_description_landlord,' ','%20');
-						SET @component_name_for_serie_contractor = REPLACE(@role_user_g_description_contractor,' ','%20');
-						SET @component_name_for_serie_mgtcny = REPLACE(@role_user_g_description_mgt_cny,' ','%20');
-						SET @component_name_for_serie_agent = REPLACE(@role_user_g_description_agent,' ','%20');
+					SET @component_name_for_serie_tenant = REPLACE(@role_user_g_description_tenant, ' ', '%20');
+						SET @component_name_for_serie_landlord = REPLACE(@role_user_g_description_landlord, ' ', '%20');
+						SET @component_name_for_serie_contractor = REPLACE(@role_user_g_description_contractor, ' ', '%20');
+						SET @component_name_for_serie_mgtcny = REPLACE(@role_user_g_description_mgt_cny, ' ', '%20');
+						SET @component_name_for_serie_agent = REPLACE(@role_user_g_description_agent, ' ', '%20');
 						
 					# We can now derive the query needed to build these series
 					
@@ -3074,20 +3104,20 @@ BEGIN
 				,`is_public`
 				) 
 				VALUES 
-				(NULL,@creator_bz_id,@series_category_product,2,'UNCONFIRMED',1,@serie_search_unconfirmed,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'CONFIRMED',1,@serie_search_confirmed,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'IN_PROGRESS',1,@serie_search_in_progress,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'REOPENED',1,@serie_search_reopened,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'STAND BY',1,@serie_search_standby,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'RESOLVED',1,@serie_search_resolved,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'VERIFIED',1,@serie_search_verified,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'CLOSED',1,@serie_search_closed,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'FIXED',1,@serie_search_fixed,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'INVALID',1,@serie_search_invalid,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'WONTFIX',1,@serie_search_wontfix,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'DUPLICATE',1,@serie_search_duplicate,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'WORKSFORME',1,@serie_search_worksforme,1)
-				,(NULL,@creator_bz_id,@series_category_product,2,'All Open',1,@serie_search_all_open,1)
+				(NULL, @creator_bz_id, @series_category_product, 2, 'UNCONFIRMED', 1, @serie_search_unconfirmed, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'CONFIRMED', 1, @serie_search_confirmed, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'IN_PROGRESS', 1, @serie_search_in_progress, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'REOPENED', 1, @serie_search_reopened, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'STAND BY', 1, @serie_search_standby, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'RESOLVED', 1, @serie_search_resolved, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'VERIFIED', 1, @serie_search_verified, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'CLOSED', 1, @serie_search_closed, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'FIXED', 1, @serie_search_fixed, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'INVALID', 1, @serie_search_invalid, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'WONTFIX', 1, @serie_search_wontfix, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'DUPLICATE', 1, @serie_search_duplicate, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'WORKSFORME', 1, @serie_search_worksforme, 1)
+				,(NULL, @creator_bz_id, @series_category_product, 2, 'All Open', 1, @serie_search_all_open, 1)
 				;
 				
 		# Insert the series related to the Components/roles
@@ -3103,20 +3133,20 @@ BEGIN
 				) 
 				VALUES
 				# Tenant
-				(NULL,@creator_bz_id,@series_category_product,@series_category_component_tenant,'All Open',1,@serie_search_all_open_tenant,1)
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_tenant,'All Closed',1,@serie_search_all_closed_tenant,1)
+				(NULL, @creator_bz_id, @series_category_product, @series_category_component_tenant, 'All Open', 1, @serie_search_all_open_tenant, 1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_tenant, 'All Closed' , 1, @serie_search_all_closed_tenant, 1)
 				# Landlord
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_landlord,'All Open',1,@serie_search_all_open_landlord,1)
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_landlord,'All Closed',1,@serie_search_all_closed_landlord,1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_landlord, 'All Open', 1, @serie_search_all_open_landlord, 1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_landlord, 'All Closed', 1, @serie_search_all_closed_landlord, 1)
 				# Contractor
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_contractor,'All Open',1,@serie_search_all_open_contractor,1)
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_contractor,'All Closed',1,@serie_search_all_closed_contractor,1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_contractor, 'All Open', 1, @serie_search_all_open_contractor, 1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_contractor, 'All Closed', 1, @serie_search_all_closed_contractor, 1)
 				# Management Company
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_mgtcny,'All Open',1,@serie_search_all_open_mgtcny,1)
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_mgtcny,'All Closed',1,@serie_search_all_closed_mgtcny,1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_mgtcny, 'All Open', 1, @serie_search_all_open_mgtcny, 1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_mgtcny, 'All Closed', 1, @serie_search_all_closed_mgtcny, 1)
 				# Agent
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_agent,'All Open',1,@serie_search_all_open_agent,1)
-				,(NULL,@creator_bz_id,@series_category_product,@series_category_component_agent,'All Closed',1,@serie_search_all_closed_agent,1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_agent, 'All Open', 1, @serie_search_all_open_agent, 1)
+				,(NULL, @creator_bz_id, @series_category_product, @series_category_component_agent, 'All Closed', 1, @serie_search_all_closed_agent, 1)
 				;
 
 	# We now assign the permissions to each of the dummy user associated to each role:
@@ -3413,16 +3443,16 @@ BEGIN
 	# We give the user the permission they need.
 
         # We update the `group_group_map` table first
-        #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
-        #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
-        #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
+        #   - Create an intermediary table to deduplicate the records in the table `ut_group_group_map_temp`
+        #   - If the record does NOT exists in the table then INSERT new records in the table `group_group_map`
+        #   - If the record DOES exist in the table then update the new records in the table `group_group_map`
 
             # We drop the deduplication table if it exists:
-                DROP TABLE IF EXISTS `ut_group_group_map_dedup`;
+                DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
 
             # We create a table `ut_group_group_map_dedup` to prepare the data we need to insert
 
-                CREATE TABLE `ut_group_group_map_dedup` (
+                CREATE TEMPORARY TABLE `ut_group_group_map_dedup` (
                     `member_id` mediumint(9) NOT NULL,
                     `grantor_id` mediumint(9) NOT NULL,
                     `grant_type` tinyint(4) NOT NULL DEFAULT '0',
@@ -3430,9 +3460,7 @@ BEGIN
                     KEY `fk_group_group_map_dedup_grantor_id_groups_id` (`grantor_id`),
                     KEY `group_group_map_dedup_grantor_id_grant_type_idx` (`grantor_id`,`grant_type`),
                     KEY `group_group_map_dedup_member_id_grant_type_idx` (`member_id`,`grant_type`),
-                    CONSTRAINT `fk_group_group_map_dedup_grantor_id_groups_id` FOREIGN KEY (`grantor_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-                    CONSTRAINT `fk_group_group_map_dedup_member_id_groups_id` FOREIGN KEY (`member_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-                    ) 
+                   ) 
                 ;
     
             # We insert the de-duplicated record in the table `ut_group_group_map_dedup`
@@ -3464,7 +3492,7 @@ BEGIN
                 ;
 
             # We drop the temp table as we do not need it anymore
-                DROP TABLE IF EXISTS `user_group_map_dedup`;
+                DROP TEMPORARY TABLE IF EXISTS `user_group_map_dedup`;
 
         # We can now update the permissions table for the users
         # This NEEDS the table 'ut_user_group_map_temp'
