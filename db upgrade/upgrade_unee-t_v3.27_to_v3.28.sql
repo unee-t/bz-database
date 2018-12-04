@@ -2838,7 +2838,6 @@ BEGIN
 			(@unit_bz_name,@classification_id,@unit_description,1,@default_milestone,1);
 	
         # Get the actual id that was created for that unit
-
             SET @product_id = (SELECT LAST_INSERT_ID());
 
     	# Log the actions of the script.
@@ -3351,31 +3350,6 @@ BEGIN
                     ,(@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
                     ;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	# We create the goups we need
 		# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
 		# This will avoid a scenario where we need to grant permission to see occupants for instances but the group for occupants does not exist yet...
@@ -3524,14 +3498,11 @@ BEGIN
 					SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
 
 		# We can populate the 'groups' table now.
-        # We insert the groups 1 by 1 to minimize the risk of a race conditions when we get the group_id
+        # We insert the groups 1 by 1 so we can get the id for each of these groups.
 
             # create_case_group_id
-				SET @create_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
             	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3539,15 +3510,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@create_case_group_id,@group_name_create_case_group,@group_description_create_case_group,1,'',1,NULL)
+                    (@group_name_create_case_group
+                    , @group_description_create_case_group
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @create_case_group_id = (SELECT LAST_INSERT_ID());
 
             # can_edit_case_group_id
-                SET @can_edit_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
             	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3555,15 +3532,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@can_edit_case_group_id,@group_name_can_edit_case_group,@group_description_can_edit_case_group,1,'',1,NULL)
+                    (@group_name_can_edit_case_group
+                    , @group_description_can_edit_case_group
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;            
+
+                # Get the actual id that was created for that group
+                    SET @can_edit_case_group_id = (SELECT LAST_INSERT_ID());
 
             # can_see_cases_group_id
-                SET @can_see_cases_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
             	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3571,15 +3554,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@can_see_cases_group_id,@group_name_can_see_cases_group,@group_description_can_see_cases_group,1,'',1,NULL)
+                    (@group_name_can_see_cases_group
+                    , @group_description_can_see_cases_group
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @can_see_cases_group_id = (SELECT LAST_INSERT_ID());
 
             # can_edit_all_field_case_group_id
-                SET @can_edit_all_field_case_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3587,15 +3576,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@can_edit_all_field_case_group_id,@group_name_can_edit_all_field_case_group,@group_description_can_edit_all_field_case_group,1,'',1,NULL)
+                    (@group_name_can_edit_all_field_case_group
+                    , @group_description_can_edit_all_field_case_group
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @can_edit_all_field_case_group_id = (SELECT LAST_INSERT_ID());
 
             # can_edit_component_group_id
-                SET @can_edit_component_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3603,15 +3598,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@can_edit_component_group_id,@group_name_can_edit_component_group,@group_description_can_edit_component_group,1,'',1,NULL)
+                    (@group_name_can_edit_component_group
+                    , @group_description_can_edit_component_group
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @can_edit_component_group_id = (SELECT LAST_INSERT_ID());
 
             # can_see_unit_in_search_group_id
-                SET @can_see_unit_in_search_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3619,15 +3620,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@can_see_unit_in_search_group_id,@group_name_can_see_unit_in_search_group,@group_description_can_see_unit_in_search_group,1,'',1,NULL)
+                    (@group_name_can_see_unit_in_search_group
+                    , @group_description_can_see_unit_in_search_group
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @can_see_unit_in_search_group_id = (SELECT LAST_INSERT_ID());
 
             # all_g_flags_group_id
-                SET @all_g_flags_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3635,15 +3642,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@all_g_flags_group_id,@group_name_all_g_flags_group,@group_description_all_g_flags_group,1,'',0,NULL)
+                    (@group_name_all_g_flags_group
+                    , @group_description_all_g_flags_group
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @all_g_flags_group_id = (SELECT LAST_INSERT_ID());
 
             # all_r_flags_group_id
-                SET @all_r_flags_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3651,15 +3664,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@all_r_flags_group_id,@group_name_all_r_flags_group,@group_description_all_r_flags_group,1,'',0,NULL)
+                    (@group_name_all_r_flags_group
+                    , @group_description_all_r_flags_group
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @all_r_flags_group_id = (SELECT LAST_INSERT_ID());
 
             # list_visible_assignees_group_id
-                SET @list_visible_assignees_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3667,15 +3686,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@list_visible_assignees_group_id,@group_name_list_visible_assignees_group,@group_description_list_visible_assignees_group,1,'',0,NULL)
+                    (@group_name_list_visible_assignees_group
+                    , @group_description_list_visible_assignees_group
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @list_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
 
             # see_visible_assignees_group_id
-                SET @see_visible_assignees_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3683,15 +3708,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@see_visible_assignees_group_id,@group_name_see_visible_assignees_group,@group_description_see_visible_assignees_group,1,'',0,NULL)
+                    (@group_name_see_visible_assignees_group
+                    , @group_description_see_visible_assignees_group
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @see_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
 
             # active_stakeholder_group_id
-                SET @active_stakeholder_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3699,15 +3730,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@active_stakeholder_group_id,@group_name_active_stakeholder_group,@group_description_active_stakeholder_group,1,'',1,NULL)
+                    (@group_name_active_stakeholder_group
+                    , @group_description_active_stakeholder_group
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+                
+                # Get the actual id that was created for that group
+                    SET @active_stakeholder_group_id = (SELECT LAST_INSERT_ID());
 
             # unit_creator_group_id
-                SET @unit_creator_group_id = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3715,15 +3752,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@unit_creator_group_id,@group_name_unit_creator_group,@group_description_unit_creator_group,1,'',0,NULL)
+                    (@group_name_unit_creator_group
+                    , @group_description_unit_creator_group
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @unit_creator_group_id = (SELECT LAST_INSERT_ID());
 
             # group_id_show_to_tenant
-                SET @group_id_show_to_tenant = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3731,15 +3774,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_show_to_tenant,@group_name_show_to_tenant,@group_description_tenant,1,'',1,NULL)
+                    (@group_name_show_to_tenant
+                    , @group_description_tenant
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_show_to_tenant = (SELECT LAST_INSERT_ID());
 
             # group_id_are_users_tenant
-                SET @group_id_are_users_tenant = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3747,15 +3796,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_are_users_tenant,@group_name_are_users_tenant,@group_description_are_users_tenant,1,'',0,NULL)
+                    (@group_name_are_users_tenant
+                    , @group_description_are_users_tenant
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_are_users_tenant = (SELECT LAST_INSERT_ID());
 
             # group_id_see_users_tenant
-                SET @group_id_see_users_tenant = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3763,15 +3818,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_see_users_tenant,@group_name_see_users_tenant,@group_description_see_users_tenant,1,'',0,NULL)
+                    (@group_name_see_users_tenant
+                    , @group_description_see_users_tenant
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_see_users_tenant = (SELECT LAST_INSERT_ID());
 
             # group_id_show_to_landlord
-                SET @group_id_show_to_landlord = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+               INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3779,15 +3840,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_show_to_landlord,@group_name_show_to_landlord,@group_description_show_to_landlord,1,'',1,NULL)
+                    (@group_name_show_to_landlord
+                    , @group_description_show_to_landlord
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_show_to_landlord = (SELECT LAST_INSERT_ID());
 
             # group_id_are_users_landlord
-                SET @group_id_are_users_landlord = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+               INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3795,15 +3862,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_are_users_landlord,@group_name_are_users_landlord,@group_description_are_users_landlord,1,'',0,NULL)
+                    (@group_name_are_users_landlord
+                    , @group_description_are_users_landlord
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_are_users_landlord = (SELECT LAST_INSERT_ID());
 
             # group_id_see_users_landlord
-                SET @group_id_see_users_landlord = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3811,15 +3884,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_see_users_landlord,@group_name_see_users_landlord,@group_description_see_users_landlord,1,'',0,NULL)
+                    (@group_name_see_users_landlord
+                    , @group_description_see_users_landlord
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_see_users_landlord = (SELECT LAST_INSERT_ID());
 
             # group_id_show_to_agent
-                SET @group_id_show_to_agent = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+               INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3827,15 +3906,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_show_to_agent,@group_name_show_to_agent,@group_description_show_to_agent,1,'',1,NULL)
+                    (@group_name_show_to_agent
+                    , @group_description_show_to_agent
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_show_to_agent = (SELECT LAST_INSERT_ID());
 
             # group_id_are_users_agent
-                SET @group_id_are_users_agent = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3843,15 +3928,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_are_users_agent,@group_name_are_users_agent,@group_description_are_users_agent,1,'',0,NULL)
+                    (@group_name_are_users_agent
+                    , @group_description_are_users_agent
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_are_users_agent = (SELECT LAST_INSERT_ID());
 
             # group_id_see_users_agent
-                SET @group_id_see_users_agent = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3859,15 +3950,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_see_users_agent,@group_name_see_users_agent,@group_description_see_users_agent,1,'',0,NULL)
+                    (@group_name_see_users_agent
+                    , @group_description_see_users_agent
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_see_users_agent = (SELECT LAST_INSERT_ID());
 
             # group_id_show_to_contractor
-                SET @group_id_show_to_contractor = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3875,15 +3972,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_show_to_contractor,@group_name_show_to_contractor,@group_description_show_to_contractor,1,'',1,NULL)
+                    (@group_name_show_to_contractor
+                    , @group_description_show_to_contractor
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_show_to_contractor = (SELECT LAST_INSERT_ID());
 
             # group_id_are_users_contractor
-                SET @group_id_are_users_contractor = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3891,15 +3994,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_are_users_contractor,@group_name_are_users_contractor,@group_description_are_users_contractor,1,'',0,NULL)
+                    (@group_name_are_users_contractor
+                    , @group_description_are_users_contractor
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_are_users_contractor = (SELECT LAST_INSERT_ID());
 
             # group_id_see_users_contractor
-                SET @group_id_see_users_contractor = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3907,15 +4016,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_see_users_contractor,@group_name_see_users_contractor,@group_description_see_users_contractor,1,'',0,NULL)
+                    (@@group_name_see_users_contractor
+                    , @group_description_see_users_contractor
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_see_users_contractor = (SELECT LAST_INSERT_ID());
 
             # group_id_show_to_mgt_cny
-                SET @group_id_show_to_mgt_cny = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3923,15 +4038,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_show_to_mgt_cny,@group_name_show_to_mgt_cny,@group_description_show_to_mgt_cny,1,'',1,NULL)
+                    (@group_name_show_to_mgt_cny
+                    , @group_description_show_to_mgt_cny
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_show_to_mgt_cny = (SELECT LAST_INSERT_ID());
 
             # group_id_are_users_mgt_cny
-                SET @group_id_are_users_mgt_cny = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3939,15 +4060,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_are_users_mgt_cny,@group_name_are_users_mgt_cny,@group_description_are_users_mgt_cny,1,'',0,NULL)
+                    (@group_name_are_users_mgt_cny
+                    , @group_description_are_users_mgt_cny
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_are_users_mgt_cny = (SELECT LAST_INSERT_ID());
 
             # group_id_see_users_mgt_cny
-                SET @group_id_see_users_mgt_cny = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3955,15 +4082,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_see_users_mgt_cny,@group_name_see_users_mgt_cny,@group_description_see_users_mgt_cny,1,'',0,NULL)
-                    ;            
+                    (@group_name_see_users_mgt_cny
+                    , @group_description_see_users_mgt_cny
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
+                    ;         
+
+                # Get the actual id that was created for that group
+                    SET @group_id_see_users_mgt_cny = (SELECT LAST_INSERT_ID());   
 
             # group_id_show_to_occupant
-                SET @group_id_show_to_occupant = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3971,15 +4104,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_show_to_occupant,@group_name_show_to_occupant,@group_description_show_to_occupant,1,'',1,NULL)
-                    ;            
+                    (@group_name_show_to_occupant
+                    , @group_description_show_to_occupant
+                    , 1
+                    , ''
+                    , 1
+                    , NULL
+                    )
+                    ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_show_to_occupant = (SELECT LAST_INSERT_ID());   
 
             # group_id_are_users_occupant
-                SET @group_id_are_users_occupant = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -3987,15 +4126,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_are_users_occupant,@group_name_are_users_occupant,@group_description_are_users_occupant,1,'',0,NULL)
-                    ;            
+                    (@group_name_are_users_occupant
+                    , @group_description_are_users_occupant
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
+                    ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_are_users_occupant = (SELECT LAST_INSERT_ID());  
 
             # group_id_see_users_occupant
-                SET @group_id_see_users_occupant = ((SELECT MAX(`id`) FROM `groups`) + 1);
-           
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -4003,15 +4148,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_see_users_occupant,@group_name_see_users_occupant,@group_description_see_users_occupant,1,'',0,NULL)
-                    ;            
+                    (@group_name_see_users_occupant
+                    , @group_description_see_users_occupant
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
+                    ;
+                    
+                # Get the actual id that was created for that group
+                    SET @group_id_see_users_occupant = (SELECT LAST_INSERT_ID());
 
             # group_id_are_users_invited_by
-                SET @group_id_are_users_invited_by = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
-            	INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                INSERT INTO `groups`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -4019,15 +4170,21 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_are_users_invited_by,@group_name_are_users_invited_by,@group_description_are_users_invited_by,1,'',0,NULL)
+                    (@group_name_are_users_invited_by
+                    , @group_description_are_users_invited_by
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_are_users_invited_by = (SELECT LAST_INSERT_ID());
 
             # group_id_see_users_invited_by
-                SET @group_id_see_users_invited_by = ((SELECT MAX(`id`) FROM `groups`) + 1);
-
                 INSERT INTO `groups`
-                    (`id`
-                    ,`name`
+                    (`name`
                     ,`description`
                     ,`isbuggroup`
                     ,`userregexp`
@@ -4035,8 +4192,17 @@ BEGIN
                     ,`icon_url`
                     ) 
                     VALUES 
-                    (@group_id_see_users_invited_by,@group_name_see_users_invited_by,@group_description_see_users_invited_by,1,'',0,NULL)
+                    (@group_name_see_users_invited_by
+                    , @group_description_see_users_invited_by
+                    , 1
+                    , ''
+                    , 0
+                    , NULL
+                    )
                     ;
+
+                # Get the actual id that was created for that group
+                    SET @group_id_see_users_invited_by = (SELECT LAST_INSERT_ID());
 
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('We have created the groups that we will need for that unit #'
