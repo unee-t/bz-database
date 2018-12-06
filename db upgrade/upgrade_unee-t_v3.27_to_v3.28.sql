@@ -26,16 +26,16 @@
 #TODO   - check the following procedures to
 #   - make sure we do not delete and re-create any permanent table
 #   - make sure we do not use the `ut_audit_log` anymore
-#            - `remove_user_from_default_cc`
+#           - `remove_user_from_default_cc`
 #           - `remove_user_from_role`
-#            - `revoke_all_permission_for_this_user_in_this_unit`
-#            - `update_assignee_if_dummy_user`
-#            - `user_in_default_cc_for_cases`
-#            - `user_is_default_assignee_for_cases`
-#            - `remove_user_from_role`
-#            - ``
-#            - ``
-
+#           - `revoke_all_permission_for_this_user_in_this_unit`
+#           - `update_assignee_if_dummy_user`
+#           - `user_in_default_cc_for_cases`
+#           - `user_is_default_assignee_for_cases`
+#           - `remove_user_from_role`
+#           - ``
+#           - ``
+#
 #   - Create a generic procedure `update_audit_log` that we use each time a record is updated for the tables
 #       - `products`
 #       - `versions`
@@ -2954,7 +2954,6 @@ BEGIN
     # This procedure depends on the following procedures:
     #   - `table_to_list_dummy_user_by_environment`
     
-	
 	# What is the record that we need to use to create the objects in BZ?
 		SET @unit_reference_for_import = (SELECT `id_unit_to_create` FROM `ut_data_to_create_units` WHERE `mefe_unit_id` = @mefe_unit_id);
 	
@@ -5501,9 +5500,6 @@ BEGIN
 				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_ok_to_pay_id, '__create__', NULL, @flag_ok_to_pay_name, @timestamp)
 				, (@creator_bz_id, 'Bugzilla::FlagType', @flag_is_paid_id, '__create__', NULL, @flag_is_paid_name, @timestamp)
 				;
-				
-		# Cleanup:
-			SET @script_log_message = NULL;
 			
 	# We configure the group permissions:
 		# Data for the table `group_group_map`
@@ -5957,7 +5953,6 @@ BEGIN
 		 
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
-					SET @bzfe_table = NULL;
 		
 		# Then the permissions at the unit/product level:
 					
@@ -6005,8 +6000,6 @@ BEGIN
  
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
-					SET @bzfe_table = NULL;
-					SET @permission_granted = NULL;
 
 			# User can Edit a case and see this unit, this is needed so the API does not throw an error see issue #60:
 				INSERT INTO `ut_user_group_map_temp`
@@ -6057,8 +6050,6 @@ BEGIN
 				 
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
-					SET @bzfe_table = NULL;
-					SET @permission_granted = NULL;
 			
 	# We give the user the permission they need.
 
