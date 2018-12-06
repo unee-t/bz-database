@@ -26,11 +26,6 @@
 #TODO   - check the following procedures to
 #   - make sure we do not delete and re-create any permanent table
 #   - make sure we do not use the `ut_audit_log` anymore
-#           - `remove_user_from_default_cc`
-#           - `remove_user_from_role`
-#           - `revoke_all_permission_for_this_user_in_this_unit`
-#           - `update_assignee_if_dummy_user`
-#           - `user_in_default_cc_for_cases`
 #           - `user_is_default_assignee_for_cases`
 #           - `remove_user_from_role`
 #           - ``
@@ -146,9 +141,23 @@
 #
 #   - Update the procedure `remove_user_from_default_cc` to remove a user in Default CC from a given role
 #       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#   - Update the procedure `remove_user_from_role`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#   - Update the procedure `revoke_all_permission_for_this_user_in_this_unit`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#   - Update the procedure `user_in_default_cc_for_cases`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#       - Use a temporary table
+#       - Create a dedicated dedup table so we do not have to truncate the table when we add records
+#
+#   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
 #       - Use a temporary table
 #
-# 
+#   - Update the procedure ``
 #       - Do not write in the table `ut_audit_log` (this is done with triggers)
 #       - Use a temporary table
 # 
@@ -2169,6 +2178,9 @@ DELIMITER ;
 
     # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
 	DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+    # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
+    DROP TABLE IF EXISTS `ut_component_cc_temp`;
 
 # Update the procedure `update_permissions_invited_user`
 # When we update the permissions, make sure we do not delete the table `ut_user_group_map_temp`
@@ -6190,12 +6202,621 @@ BEGIN
 END $$
 DELIMITER ;
 
+# Update the procedure `remove_user_from_role`
+	
+	DROP PROCEDURE IF EXISTS `remove_user_from_role`;
 
+DELIMITER $$
+CREATE PROCEDURE `remove_user_from_role`()
+SQL SECURITY INVOKER
+BEGIN
+	# This procedure needs the following objects
+	#	- Variables:
+	#		- @remove_user_from_role
+	#		- @component_id_this_role
+	#		- @product_id
+	#		- @bz_user_id
+	#		- @bz_user_id_dummy_user_this_role
+	#		- @id_role_type
+	# 		- @this_script
+	#		- @creator_bz_id
 
+	# We only do this if this is needed:
+	IF (@remove_user_from_role = 1)
+	THEN
+		# The script `invite_a_user_to_a_role_in_a_unit.sql` which call this procedure, already calls: 
+		# 	- `table_to_list_dummy_user_by_environment`;
+		# 	- `remove_user_from_default_cc`
+		# There is no need to do this again
+		#
+		# The script also reset the permissions for this user for this role for this unit to the default permissions.
+		# We need to remove ALL the permissions for this user.
+		
+			# Create the table to prepare the permissions
+				CALL `create_temp_table_to_update_permissions`;
+				
+			# Revoke all permissions for this user in this unit
+				# This procedure needs the following objects:
+				#	- Variables:
+				#		- @product_id
+				#		- @bz_user_id
+				CALL `revoke_all_permission_for_this_user_in_this_unit`;
+			
+			# All the permission have been prepared, we can now update the permissions table
+			#		- This NEEDS the table 'ut_user_group_map_temp'
+				CALL `update_permissions_invited_user`;
 
+		# Who are the initial owner and initialqa contact for this role?
+												
+			# Get the old values so we can 
+			#	- Check if these are default user for this environment
+			#	- log those
+				SET @old_component_initialowner = (SELECT `initialowner`
+					FROM `components` 
+					WHERE `id` = @component_id_this_role)
+					;
+					
+				SET @old_component_initialqacontact = (SELECT `initialqacontact` 
+					FROM `components` 
+					WHERE `id` = @component_id_this_role)
+					;
+					
+				SET @old_component_description = (SELECT `description` 
+					FROM `components` 
+					WHERE `id` = @component_id_this_role)
+					;
+		
+		# We need to check if the user we are removing is the current default user for this role for this unit.
+			SET @is_user_default_assignee = IF(@old_component_initialowner = @bz_user_id
+				, '1'
+				, '0'
+				)
+				;
 
+		# We need to check if the user we are removing is the current qa user for this role for this unit.
+			SET @is_user_qa = IF(@old_component_initialqacontact = @bz_user_id
+				, '1'
+				, '0'
+				)
+				;
+										
+		# We record the name of this procedure for future debugging and audit_log`
+			SET @script = 'PROCEDURE - remove_user_from_role';
+			SET @timestamp = NOW();
 
+		IF @is_user_default_assignee = 1
+		THEN
+		# We need to replace this with the default dummy user
+		# The variables needed for this are
+		#	- @bz_user_id_dummy_user_this_role
+		# 	- @component_id_this_role
+		#	- @id_role_type
+		# 	- @this_script
+		#	- @product_id
+		#	- @creator_bz_id
+		
+			# We define the dummy user role description based on the variable @id_role_type
+				SET @dummy_user_role_desc = IF(@id_role_type = 1
+					, CONCAT('Generic '
+						, (SELECT`role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+						, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+						, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+						, ' TO THIS UNIT'
+						)
+					, IF(@id_role_type = 2
+						, CONCAT('Generic '
+							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+							, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+							, ' TO THIS UNIT'
+							)
+						, IF(@id_role_type = 3
+							, CONCAT('Generic '
+								, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+								, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+								, (SELECT`role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+								, ' TO THIS UNIT'
+								)
+							, IF(@id_role_type = 4
+								, CONCAT('Generic '
+									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+									, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+									, ' TO THIS UNIT'
+									)
+								, IF(@id_role_type = 5
+									, CONCAT('Generic '
+										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, ' TO THIS UNIT'
+										)
+									, CONCAT('error in script'
+										, @this_script
+										, 'line 170'
+										)
+									)
+								)
+							)
+						)
+					)
+					;
+					
+			# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
+				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
+			
+			# Update the default assignee
+				UPDATE `components`
+				SET `initialowner` = @bz_user_id_dummy_user_this_role
+					,`description` = @dummy_user_role_desc
+					WHERE 
+					`id` = @component_id_this_role
+					;
 
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('The component: '
+					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
+					, ' (for the role_type_id #'
+					, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
+					, ') has been updated.'
+					, '\r\The default user now associated to this role is the dummy bz user #'
+					, (SELECT IFNULL(@bz_user_id_dummy_user_this_role, 'bz_user_id is NULL'))
+					, ' (real name: '
+					, (SELECT IFNULL(@dummy_user_pub_name, 'user_pub_name is NULL'))
+					, ') for the unit #' 
+					, @product_id
+					);
+					
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+						
+			# We update the BZ logs
+				INSERT  INTO `audit_log`
+					(`user_id`
+					,`class`
+					,`object_id`
+					,`field`
+					,`removed`
+					,`added`
+					,`at_time`
+					) 
+					VALUES 
+					(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id_dummy_user_this_role,@timestamp)
+					, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@dummy_user_role_desc,@timestamp)
+					;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+		END IF;
+
+		IF @is_user_qa = 1
+		THEN
+		# IF the user is the current qa contact: We need to replace this with the default dummy user
+		# The variables needed for this are
+		#	- @bz_user_id_dummy_user_this_role
+		# 	- @component_id_this_role
+		#	- @id_role_type
+		# 	- @this_script
+		#	- @product_id
+		#	- @creator_bz_id
+
+			# We define the dummy user role description based on the variable @id_role_type
+				SET @dummy_user_role_desc = IF(@id_role_type = 1
+					, CONCAT('Generic '
+						, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+						, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+						, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+						, ' TO THIS UNIT'
+						)
+					, IF(@id_role_type = 2
+						, CONCAT('Generic '
+							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+							, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+							, ' TO THIS UNIT'
+							)
+						, IF(@id_role_type = 3
+							, CONCAT('Generic '
+								, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+								, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+								, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+								, ' TO THIS UNIT'
+								)
+							, IF(@id_role_type = 4
+								, CONCAT('Generic '
+									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+									, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+									, ' TO THIS UNIT'
+									)
+								, IF(@id_role_type = 5
+									, CONCAT('Generic '
+										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, ' TO THIS UNIT'
+										)
+									, CONCAT('error in script'
+										, @this_script
+										, 'line 298'
+										)
+									)
+								)
+							)
+						)
+					)
+					;
+					
+			# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
+				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
+		
+			# Update the default assignee and qa contact
+				UPDATE `components`
+				SET 
+					`initialqacontact` = @bz_user_id_dummy_user_this_role
+					WHERE 
+					`id` = @component_id_this_role
+					;	
+
+			# Log the actions of the script.
+				SET @script_log_message = CONCAT('The component: '
+					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
+					, ' (for the role_type_id #'
+					, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
+					, ') has been updated.'
+					, '\r\The QA contact now associated to this role is the dummy bz user #'
+					, (SELECT IFNULL(@bz_user_id_dummy_user_this_role, 'bz_user_id is NULL'))
+					, ' (real name: '
+					, (SELECT IFNULL(@dummy_user_pub_name, 'user_pub_name is NULL'))
+					, ') for the unit #' 
+					, @product_id
+					);
+					
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+						)
+					VALUES
+					(@timestamp, @script, @script_log_message)
+					;
+						
+			# We update the BZ logs
+				INSERT  INTO `audit_log`
+					(`user_id`
+					,`class`
+					,`object_id`
+					,`field`
+					,`removed`
+					,`added`
+					,`at_time`
+					) 
+					VALUES 
+					(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id_dummy_user_this_role,@timestamp)
+					;
+				 
+				# Cleanup the variables for the log messages
+					SET @script_log_message = NULL;
+		END IF;
+		
+		# Clean up the variable for the script and timestamp
+			SET @script = NULL;
+			SET @timestamp = NULL;
+	END IF;
+END $$
+DELIMITER ;
+
+# Update the procedure to revoke the permission for a given user
+
+	DROP PROCEDURE IF EXISTS `revoke_all_permission_for_this_user_in_this_unit`;
+
+DELIMITER $$
+CREATE PROCEDURE `revoke_all_permission_for_this_user_in_this_unit`()
+SQL SECURITY INVOKER
+BEGIN
+
+    # this procedure needs the following variables:
+    #   - @product_id
+    #   - @bz_user_id
+
+	# We record the name of this procedure for future debugging and audit_log
+		SET @script = 'PROCEDURE - revoke_all_permission_for_this_user_in_this_unit';
+		SET @timestamp = NOW();
+
+	# We need to get the group_id for this unit
+
+		SET @can_see_time_tracking_group_id = 16;
+		SET @can_create_shared_queries_group_id = 17;
+		SET @can_tag_comment_group_id = 18;	
+	
+		SET @create_case_group_id =  (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 20));
+		SET @can_edit_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 25));
+		SET @can_see_cases_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 28));
+	
+		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
+		
+		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
+
+		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
+		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
+
+		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
+		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
+
+		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
+		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
+		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
+
+		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
+		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
+		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
+
+		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
+		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
+		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
+
+		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
+		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
+		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
+
+		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
+		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
+		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
+
+		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
+		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
+		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
+
+	# We can now remove all the permissions for this unit.
+
+		DELETE FROM `user_group_map`
+			WHERE (
+				(`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_create_shared_queries_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_tag_comment_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @create_case_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_case_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_see_cases_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_all_field_case_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @can_see_unit_in_search_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @list_visible_assignees_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @see_visible_assignees_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @all_r_flags_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @all_g_flags_group_id)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_occupant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_occupant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_occupant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_tenant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_tenant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_tenant)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_landlord)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_landlord)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_landlord)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_agent)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_agent)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_agent)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_contractor)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_contractor)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_contractor)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_mgt_cny)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_mgt_cny)
+				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
+				)
+				;
+
+        # We also delete from the table `ut_user_group_map_temp`
+        # This is needed so we do not re-create the permissions when we invite a new user or create a new unit.
+
+            DELETE FROM `ut_user_group_map_temp`
+                WHERE (
+                    (`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_create_shared_queries_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_tag_comment_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @create_case_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_case_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_see_cases_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_edit_all_field_case_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @can_see_unit_in_search_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @list_visible_assignees_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @see_visible_assignees_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @all_r_flags_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @all_g_flags_group_id)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_occupant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_occupant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_occupant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_tenant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_tenant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_tenant)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_landlord)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_landlord)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_landlord)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_agent)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_agent)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_agent)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_contractor)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_contractor)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_contractor)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_show_to_mgt_cny)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_are_users_mgt_cny)
+                    OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
+                    )
+                    ;
+
+			# Log the actions of the script.
+
+				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user #'
+										, @bz_user_id
+										, '\r\- can_see_time_tracking: 0'
+										, '\r\- can_create_shared_queries: 0'
+										, '\r\- can_tag_comment: 0'
+										, '\r\- can_create_case: 0'
+										, '\r\- can_edit_a_case: 0'
+										, '\r\- can_see_cases: 0'
+										, '\r\- can_edit_all_field_in_a_case_regardless_of_role: 0'
+										, '\r\- can_see_unit_in_search: 0'
+										, '\r\- user_can_see_publicly_visible: 0'
+										, '\r\- user_is_publicly_visible: 0'
+										, '\r\- can_ask_to_approve: 0'
+										, '\r\- can_approve: 0'
+										, '\r\- show_to_occupant: 0'
+										, '\r\- are_users_occupant: 0'
+										, '\r\- see_users_occupant: 0'
+										, '\r\- show_to_tenant: 0'
+										, '\r\- are_users_tenant: 0'
+										, '\r\- see_users_tenant: 0'
+										, '\r\- show_to_landlord: 0'
+										, '\r\- are_users_landlord: 0'
+										, '\r\- see_users_landlord: 0'
+										, '\r\- show_to_agent: 0'
+										, '\r\- are_users_agent: 0'
+										, '\r\- see_users_agent: 0'
+										, '\r\- show_to_contractor: 0'
+										, '\r\- are_users_contractor: 0'
+										, '\r\- see_users_contractor: 0'
+										, '\r\- show_to_mgt_cny: 0'
+										, '\r\- are_users_mgt_cny: 0'
+										, '\r\- see_users_mgt_cny: 0'
+										, '\r\For the product #'
+										, @product_id										
+										);
+			
+				INSERT INTO `ut_script_log`
+					(`datetime`
+					, `script`
+					, `log`
+					)
+					VALUES
+					(NOW(), @script, @script_log_message)
+					;
+				 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @script = NULL;
+
+END $$
+DELIMITER ;
+
+# Update the procedure `user_in_default_cc_for_cases`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#       - Use a temporary table
+#       - Create a dedicated dedup table so we do not have to truncate the table when we add records
+
+    DROP PROCEDURE IF EXISTS `user_in_default_cc_for_cases`;
+
+DELIMITER $$
+CREATE PROCEDURE `user_in_default_cc_for_cases`()
+BEGIN
+	IF (@user_in_default_cc_for_cases = 1)
+	THEN 
+
+		# We record the name of this procedure for future debugging and audit_log`
+			SET @script = 'PROCEDURE - user_in_default_cc_for_cases';
+			SET @timestamp = NOW();
+
+		# We use a temporary table to make sure we do not have duplicates.
+		
+		# DELETE the temp table if it exists
+		DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc`;
+		
+		# Re-create the temp table
+		CREATE TEMPORARY TABLE `ut_temp_component_cc` (
+            `user_id` MEDIUMINT(9) NOT NULL
+            , `component_id` MEDIUMINT(9) NOT NULL
+		    )
+            ;
+
+		# Add the records that exist in the table component_cc
+		INSERT INTO `ut_temp_component_cc`
+			SELECT *
+			FROM `component_cc`;
+
+		# Add the new user rights for the product
+			INSERT INTO `ut_temp_component_cc`
+				(user_id
+				, component_id
+				)
+				VALUES
+				(@bz_user_id, @component_id)
+				;
+
+        # We drop the deduplication table if it exists:
+            DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
+
+        # We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
+            CREATE TEMPORARY TABLE `ut_temp_component_cc_dedup` (
+                `user_id` MEDIUMINT(9) NOT NULL
+                , `component_id` MEDIUMINT(9) NOT NULL
+                , UNIQUE KEY `ut_temp_component_cc_dedup_userid_componentid` (`user_id`, `component_id`)
+                )
+            ;
+            
+        # We insert the de-duplicated record in the table `ut_temp_component_cc_dedup`
+            INSERT INTO `ut_temp_component_cc_dedup`
+            SELECT `user_id`
+                , `component_id`
+            FROM
+                `ut_temp_component_cc`
+            GROUP BY `user_id`
+                , `component_id`
+            ;
+
+		# We insert the new records in the table `component_cc`
+			INSERT INTO `component_cc`
+			SELECT `user_id`
+				, `component_id`
+			FROM
+				`ut_temp_component_cc_dedup`
+			GROUP BY `user_id`
+				, `component_id`
+            # The below code is overkill in this context: 
+            # the Unique Key Constraint makes sure that all records are unique in the table `user_group_map`
+            ON DUPLICATE KEY UPDATE
+                `user_id` = `ut_temp_component_cc_dedup`.`user_id`
+				, `component_id` = `ut_temp_component_cc_dedup`.`component_id`
+			;
+
+        # Clean up:
+            # We drop the deduplication table if it exists:
+                DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
+            
+            # We Delete the temp table as we do not need it anymore
+                DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc`;
+		
+		# Log the actions of the script.
+			SET @script_log_message = CONCAT('the bz user #'
+									, @bz_user_id
+									, ' is one of the copied assignee for the unit #'
+									, @product_id
+									, ' when the role '
+									, @role_user_g_description
+									, ' (the component #'
+									, @component_id
+									, ')'
+									, ' is chosen'
+									);
+			
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(NOW(), @script, @script_log_message)
+				;
+			 
+			# Cleanup the variables for the log messages
+				SET @script_log_message = NULL;
+				SET @script = NULL;
+
+END IF ;
+END $$
+DELIMITER ;
 
 
 
