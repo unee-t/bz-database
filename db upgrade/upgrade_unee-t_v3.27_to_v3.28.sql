@@ -3142,7 +3142,7 @@ BEGIN
 					, `isactive`
 					)
 					VALUES
-					(@default_version , @product_id ,1)
+					(@default_version , @product_id , 1)
 					;
 
             # We get the id for the version 
@@ -3180,7 +3180,7 @@ BEGIN
 				, `isactive`
 				)
 				VALUES
-				(@product_id , @default_milestone ,0 ,1)
+				(@product_id , @default_milestone ,0 , 1)
 				;
             
             # We get the id for the milestone 
@@ -5064,16 +5064,16 @@ BEGIN
 				,(@product_id, NULL, @can_edit_component_group_id, 27, NULL, @creator_bz_id, @timestamp)
 				,(@product_id, NULL, @can_see_cases_group_id, 28, NULL, @creator_bz_id, @timestamp)
 				,(@product_id, NULL, @can_see_unit_in_search_group_id, 38, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @all_r_flags_group_id,18, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @all_g_flags_group_id,19, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @all_r_flags_group_id, 18, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @all_g_flags_group_id, 19, NULL, @creator_bz_id, @timestamp)
 				,(@product_id, NULL, @list_visible_assignees_group_id, 4, NULL, @creator_bz_id, @timestamp)
 				,(@product_id, NULL, @see_visible_assignees_group_id,5, NULL, @creator_bz_id, @timestamp)
 				,(@product_id, NULL, @active_stakeholder_group_id, 29, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @unit_creator_group_id,1, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @unit_creator_group_id, 1, NULL, @creator_bz_id, @timestamp)
 				# Tenant (1)
-				,(@product_id, @component_id_tenant, @group_id_show_to_tenant, 2,1, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_tenant, @group_id_are_users_tenant, 22,1, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_tenant, @group_id_see_users_tenant, 37,1, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_tenant, @group_id_show_to_tenant, 2, 1, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_tenant, @group_id_are_users_tenant, 22, 1, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_tenant, @group_id_see_users_tenant, 37, 1, @creator_bz_id, @timestamp)
 				# Landlord (2)
 				,(@product_id, @component_id_landlord, @group_id_show_to_landlord, 2, 2, @creator_bz_id, @timestamp)
 				,(@product_id, @component_id_landlord, @group_id_are_users_landlord, 22, 2, @creator_bz_id, @timestamp)
