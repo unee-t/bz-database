@@ -2182,7 +2182,7 @@ BEGIN
 			`group_id` MEDIUMINT(9) NOT NULL,
 			`isbless` TINYINT(4) NOT NULL DEFAULT '0',
 			`grant_type` TINYINT(4) NOT NULL DEFAULT '0',
-			UNIQUE KEY `user_group_map_dedup_user_id_idx` (`user_id`,`group_id`,`grant_type`,`isbless`)
+			UNIQUE KEY `user_group_map_dedup_user_id_idx` (`user_id`, `group_id`, `grant_type`, `isbless`)
 			)
 		;
 		
@@ -2252,10 +2252,10 @@ BEGIN
 			) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 		/*Data for the table `ut_temp_dummy_users_for_roles` */
-			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`,`environment_name`,`tenant_id`,`landlord_id`,`contractor_id`,`mgt_cny_id`,`agent_id`) values 
-				(1,'DEV/Staging',96,94,93,95,92),
-				(2,'Prod',93,91,90,92,89),
-				(3,'demo/dev',4,3,5,6,2);
+			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`, `environment_name`, `tenant_id`, `landlord_id`, `contractor_id`, `mgt_cny_id`, `agent_id`) values 
+				(1,'DEV/Staging', 96, 94, 93, 95, 92),
+				(2,'Prod', 93, 91, 90, 92, 89),
+				(3,'demo/dev', 4, 3, 5, 6, 2);
 
 END $$
 DELIMITER ;
@@ -2476,7 +2476,7 @@ BEGIN
                                     , IF (@role_user_more = '', '', @role_user_more)
                                     )
                                     ;
-            SET @user_role_desc = (CONCAT(@role_user_g_description, ' - ',@role_user_pub_info));
+            SET @user_role_desc = (CONCAT(@role_user_g_description, ' - ', @role_user_pub_info));
         
         SET @user_role_type_description = (SELECT `bz_description` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type);
         SET @user_role_type_name = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type);
@@ -3030,14 +3030,14 @@ BEGIN
 	# We now create the unit we need.
 		INSERT INTO `products`
 			(`name`
-			,`classification_id`
-			,`description`
-			,`isactive`
-			,`defaultmilestone`
-			,`allows_unconfirmed`
+			, `classification_id`
+			, `description`
+			, `isactive`
+			, `defaultmilestone`
+			, `allows_unconfirmed`
 			)
 			VALUES
-			(@unit_bz_name,@classification_id,@unit_description,1,@default_milestone,1);
+			(@unit_bz_name, @classification_id, @unit_description, 1, @default_milestone, 1);
 	
         # Get the actual id that was created for that unit
             SET @product_id = (SELECT LAST_INSERT_ID());
@@ -3098,51 +3098,51 @@ BEGIN
 			)
 			;
 
-    # We prepare all the names we'll need
+    # We prepare all the names we will need
 
-		SET @unit_for_query = REPLACE(@unit,' ','%');
+		SET @unit_for_query = REPLACE(@unit, ' ', '%');
 		
-		SET @unit_for_flag = REPLACE(@unit_for_query,'%','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'-','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'!','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'@','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'#','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'$','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'%','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'^','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'&','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'*','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'(','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,')','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'+','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'=','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'<','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'>','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,':','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,';','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'"','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,',','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'.','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'?','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'/','_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag,'\\','_');
+		SET @unit_for_flag = REPLACE(@unit_for_query, '%', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '-', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '!', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'@' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'#' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'$' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'%' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'^' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'&' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'*' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'(' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,')' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'+' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'=' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'<' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'>' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,':' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,';' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'"' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,' ,' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'.' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'?' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'/' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag ,'\\' ,'_');
 		
-		SET @unit_for_group = REPLACE(@unit_for_flag,'_','-');
-		SET @unit_for_group = REPLACE(@unit_for_group,'----','-');
-		SET @unit_for_group = REPLACE(@unit_for_group,'---','-');
-		SET @unit_for_group = REPLACE(@unit_for_group,'--','-');
+		SET @unit_for_group = REPLACE(@unit_for_flag ,'_' ,'-');
+		SET @unit_for_group = REPLACE(@unit_for_group ,'----' ,'-');
+		SET @unit_for_group = REPLACE(@unit_for_group ,'---' ,'-');
+		SET @unit_for_group = REPLACE(@unit_for_group ,'--' ,'-');
 
 		# We need a version for this product
 			
 			# We can now insert the version there
 				INSERT INTO `versions`
 					(`value`
-					,`product_id`
-					,`isactive`
+					, `product_id`
+					, `isactive`
 					)
 					VALUES
-					(@default_version,@product_id,1)
+					(@default_version , @product_id ,1)
 					;
 
             # We get the id for the version 
@@ -3175,12 +3175,12 @@ BEGIN
 			# We can now insert the milestone there
 			INSERT INTO `milestones`
 				(`product_id`
-				,`value`
-				,`sortkey`
-				,`isactive`
+				, `value`
+				, `sortkey`
+				, `isactive`
 				)
 				VALUES
-				(@product_id,@default_milestone,0,1)
+				(@product_id , @default_milestone ,0 ,1)
 				;
             
             # We get the id for the milestone 
@@ -3264,11 +3264,11 @@ BEGIN
 			# Tenant (component_id_tenant)
                 INSERT INTO `components`
                     (`name`
-                    ,`product_id`
-                    ,`initialowner`
-                    ,`initialqacontact`
-                    ,`description`
-                    ,`isactive`
+                    , `product_id`
+                    , `initialowner`
+                    , `initialqacontact`
+                    , `description`
+                    , `isactive`
                     ) 
                     VALUES
                     (@role_user_g_description_tenant
@@ -3317,12 +3317,12 @@ BEGIN
             # Landlord (component_id_landlord)
                 INSERT INTO `components`
                     (`id`
-                    ,`name`
-                    ,`product_id`
-                    ,`initialowner`
-                    ,`initialqacontact`
-                    ,`description`
-                    ,`isactive`
+                    , `name`
+                    , `product_id`
+                    , `initialowner`
+                    , `initialqacontact`
+                    , `description`
+                    , `isactive`
                     ) 
                     VALUES
                     (@component_id_landlord
@@ -3372,12 +3372,12 @@ BEGIN
             # Agent (component_id_agent)
                 INSERT INTO `components`
                     (`id`
-                    ,`name`
-                    ,`product_id`
-                    ,`initialowner`
-                    ,`initialqacontact`
-                    ,`description`
-                    ,`isactive`
+                    , `name`
+                    , `product_id`
+                    , `initialowner`
+                    , `initialqacontact`
+                    , `description`
+                    , `isactive`
                     ) 
                     VALUES
                     (@component_id_agent
@@ -3427,12 +3427,12 @@ BEGIN
             # Contractor (component_id_contractor)
                 INSERT INTO `components`
                     (`id`
-                    ,`name`
-                    ,`product_id`
-                    ,`initialowner`
-                    ,`initialqacontact`
-                    ,`description`
-                    ,`isactive`
+                    , `name`
+                    , `product_id`
+                    , `initialowner`
+                    , `initialqacontact`
+                    , `description`
+                    , `isactive`
                     ) 
                     VALUES
                     (@component_id_contractor
@@ -3482,12 +3482,12 @@ BEGIN
             # Management Company (component_id_mgt_cny)
                 INSERT INTO `components`
                     (`id`
-                    ,`name`
-                    ,`product_id`
-                    ,`initialowner`
-                    ,`initialqacontact`
-                    ,`description`
-                    ,`isactive`
+                    , `name`
+                    , `product_id`
+                    , `initialowner`
+                    , `initialqacontact`
+                    , `description`
+                    , `isactive`
                     ) 
                     VALUES
                     (@component_id_mgt_cny
@@ -3537,12 +3537,12 @@ BEGIN
             # We update the BZ logs
                 INSERT INTO `audit_log`
                     (`user_id`
-                    ,`class`
-                    ,`object_id`
-                    ,`field`
-                    ,`removed`
-                    ,`added`
-                    ,`at_time`
+                    , `class`
+                    , `object_id`
+                    , `field`
+                    , `removed`
+                    , `added`
+                    , `at_time`
                     ) 
                     VALUES 
                     (@creator_bz_id, 'Bugzilla::Component', @component_id_tenant, '__create__', NULL, @role_user_g_description_tenant, @timestamp)
@@ -3615,7 +3615,7 @@ BEGIN
 				# For the tenant
 					# Visibility group
 					SET @group_name_show_to_tenant = (CONCAT(@unit_for_group,'-02-Limit-to-Tenant'));
-					SET @group_description_tenant = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1),@visibility_explanation_2));
+					SET @group_description_tenant = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 1), @visibility_explanation_2));
 				
 					# Is in tenant user Group
 					SET @group_name_are_users_tenant = (CONCAT(@unit_for_group,'-06-List-Tenant'));
@@ -3628,7 +3628,7 @@ BEGIN
 				# For the Landlord
 					# Visibility group 
 					SET @group_name_show_to_landlord = (CONCAT(@unit_for_group,'-02-Limit-to-Landlord'));
-					SET @group_description_show_to_landlord = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2),@visibility_explanation_2));
+					SET @group_description_show_to_landlord = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 2), @visibility_explanation_2));
 					
 					# Is in landlord user Group
 					SET @group_name_are_users_landlord = (CONCAT(@unit_for_group,'-06-List-landlord'));
@@ -3641,7 +3641,7 @@ BEGIN
 				# For the agent
 					# Visibility group 
 					SET @group_name_show_to_agent = (CONCAT(@unit_for_group,'-02-Limit-to-Agent'));
-					SET @group_description_show_to_agent = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5),@visibility_explanation_2));
+					SET @group_description_show_to_agent = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 5), @visibility_explanation_2));
 					
 					# Is in Agent user Group
 					SET @group_name_are_users_agent = (CONCAT(@unit_for_group,'-06-List-agent'));
@@ -3654,7 +3654,7 @@ BEGIN
 				# For the contractor
 					# Visibility group 
 					SET @group_name_show_to_contractor = (CONCAT(@unit_for_group,'-02-Limit-to-Contractor-Employee'));
-					SET @group_description_show_to_contractor = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3),@visibility_explanation_2));
+					SET @group_description_show_to_contractor = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 3), @visibility_explanation_2));
 					
 					# Is in contractor user Group
 					SET @group_name_are_users_contractor = (CONCAT(@unit_for_group,'-06-List-contractor-employee'));
@@ -3667,7 +3667,7 @@ BEGIN
 				# For the Mgt Cny
 					# Visibility group
 					SET @group_name_show_to_mgt_cny = (CONCAT(@unit_for_group,'-02-Limit-to-Mgt-Cny-Employee'));
-					SET @group_description_show_to_mgt_cny = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4),@visibility_explanation_2));
+					SET @group_description_show_to_mgt_cny = (CONCAT(@visibility_explanation_1,(SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = 4), @visibility_explanation_2));
 					
 					# Is in mgt cny user Group
 					SET @group_name_are_users_mgt_cny = (CONCAT(@unit_for_group,'-06-List-Mgt-Cny-Employee'));
@@ -3705,11 +3705,11 @@ BEGIN
             # create_case_group_id
             	INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_create_case_group
@@ -3747,11 +3747,11 @@ BEGIN
             # can_edit_case_group_id
             	INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_can_edit_case_group
@@ -3789,11 +3789,11 @@ BEGIN
             # can_see_cases_group_id
             	INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_can_see_cases_group
@@ -3831,11 +3831,11 @@ BEGIN
             # can_edit_all_field_case_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_can_edit_all_field_case_group
@@ -3873,11 +3873,11 @@ BEGIN
             # can_edit_component_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_can_edit_component_group
@@ -3915,11 +3915,11 @@ BEGIN
             # can_see_unit_in_search_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_can_see_unit_in_search_group
@@ -3957,11 +3957,11 @@ BEGIN
             # all_g_flags_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_all_g_flags_group
@@ -3999,11 +3999,11 @@ BEGIN
             # all_r_flags_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_all_r_flags_group
@@ -4041,11 +4041,11 @@ BEGIN
             # list_visible_assignees_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_list_visible_assignees_group
@@ -4083,11 +4083,11 @@ BEGIN
             # see_visible_assignees_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_see_visible_assignees_group
@@ -4125,11 +4125,11 @@ BEGIN
             # active_stakeholder_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_active_stakeholder_group
@@ -4167,11 +4167,11 @@ BEGIN
             # unit_creator_group_id
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_unit_creator_group
@@ -4209,11 +4209,11 @@ BEGIN
             # group_id_show_to_tenant
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_show_to_tenant
@@ -4251,11 +4251,11 @@ BEGIN
             # group_id_are_users_tenant
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_are_users_tenant
@@ -4293,11 +4293,11 @@ BEGIN
             # group_id_see_users_tenant
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_see_users_tenant
@@ -4335,11 +4335,11 @@ BEGIN
             # group_id_show_to_landlord
                INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_show_to_landlord
@@ -4377,11 +4377,11 @@ BEGIN
             # group_id_are_users_landlord
                INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_are_users_landlord
@@ -4419,11 +4419,11 @@ BEGIN
             # group_id_see_users_landlord
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_see_users_landlord
@@ -4461,11 +4461,11 @@ BEGIN
             # group_id_show_to_agent
                INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_show_to_agent
@@ -4503,11 +4503,11 @@ BEGIN
             # group_id_are_users_agent
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_are_users_agent
@@ -4545,11 +4545,11 @@ BEGIN
             # group_id_see_users_agent
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_see_users_agent
@@ -4587,11 +4587,11 @@ BEGIN
             # group_id_show_to_contractor
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_show_to_contractor
@@ -4629,11 +4629,11 @@ BEGIN
             # group_id_are_users_contractor
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_are_users_contractor
@@ -4671,11 +4671,11 @@ BEGIN
             # group_id_see_users_contractor
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_see_users_contractor
@@ -4713,11 +4713,11 @@ BEGIN
             # group_id_show_to_mgt_cny
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_show_to_mgt_cny
@@ -4755,11 +4755,11 @@ BEGIN
             # group_id_are_users_mgt_cny
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_are_users_mgt_cny
@@ -4797,11 +4797,11 @@ BEGIN
             # group_id_see_users_mgt_cny
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_see_users_mgt_cny
@@ -4839,11 +4839,11 @@ BEGIN
             # group_id_show_to_occupant
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_show_to_occupant
@@ -4881,11 +4881,11 @@ BEGIN
             # group_id_are_users_occupant
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_are_users_occupant
@@ -4923,11 +4923,11 @@ BEGIN
             # group_id_see_users_occupant
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_see_users_occupant
@@ -4965,11 +4965,11 @@ BEGIN
             # group_id_are_users_invited_by
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_are_users_invited_by
@@ -5006,11 +5006,11 @@ BEGIN
             # group_id_see_users_invited_by
                 INSERT INTO `groups`
                     (`name`
-                    ,`description`
-                    ,`isbuggroup`
-                    ,`userregexp`
-                    ,`isactive`
-                    ,`icon_url`
+                    , `description`
+                    , `isbuggroup`
+                    , `userregexp`
+                    , `isactive`
+                    , `icon_url`
                     ) 
                     VALUES 
                     (@group_name_see_users_invited_by
@@ -5058,56 +5058,56 @@ BEGIN
 				,created
 				)
 				VALUES
-				(@product_id,NULL,@create_case_group_id,20,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@can_edit_case_group_id,25,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@can_edit_all_field_case_group_id,26,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@can_edit_component_group_id,27,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@can_see_cases_group_id,28,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@can_see_unit_in_search_group_id,38,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@all_r_flags_group_id,18,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@all_g_flags_group_id,19,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@list_visible_assignees_group_id,4,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@see_visible_assignees_group_id,5,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@active_stakeholder_group_id,29,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@unit_creator_group_id,1,NULL,@creator_bz_id,@timestamp)
+				(@product_id, NULL, @create_case_group_id, 20, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @can_edit_case_group_id, 25, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @can_edit_all_field_case_group_id, 26, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @can_edit_component_group_id, 27, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @can_see_cases_group_id, 28, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @can_see_unit_in_search_group_id, 38, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @all_r_flags_group_id,18, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @all_g_flags_group_id,19, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @list_visible_assignees_group_id, 4, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @see_visible_assignees_group_id,5, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @active_stakeholder_group_id, 29, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @unit_creator_group_id,1, NULL, @creator_bz_id, @timestamp)
 				# Tenant (1)
-				,(@product_id,@component_id_tenant,@group_id_show_to_tenant,2,1,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_tenant,@group_id_are_users_tenant,22,1,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_tenant,@group_id_see_users_tenant,37,1,@creator_bz_id,@timestamp)
+				,(@product_id, @component_id_tenant, @group_id_show_to_tenant, 2,1, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_tenant, @group_id_are_users_tenant, 22,1, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_tenant, @group_id_see_users_tenant, 37,1, @creator_bz_id, @timestamp)
 				# Landlord (2)
-				,(@product_id,@component_id_landlord,@group_id_show_to_landlord,2,2,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_landlord,@group_id_are_users_landlord,22,2,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_landlord,@group_id_see_users_landlord,37,2,@creator_bz_id,@timestamp)
+				,(@product_id, @component_id_landlord, @group_id_show_to_landlord, 2, 2, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_landlord, @group_id_are_users_landlord, 22, 2, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_landlord, @group_id_see_users_landlord, 37, 2, @creator_bz_id, @timestamp)
 				# Agent (5)
-				,(@product_id,@component_id_agent,@group_id_show_to_agent,2,5,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_agent,@group_id_are_users_agent,22,5,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_agent,@group_id_see_users_agent,37,5,@creator_bz_id,@timestamp)
+				,(@product_id, @component_id_agent, @group_id_show_to_agent, 2,5, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_agent, @group_id_are_users_agent, 22,5, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_agent, @group_id_see_users_agent, 37,5, @creator_bz_id, @timestamp)
 				# contractor (3)
-				,(@product_id,@component_id_contractor,@group_id_show_to_contractor,2,3,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_contractor,@group_id_are_users_contractor,22,3,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_contractor,@group_id_see_users_contractor,37,3,@creator_bz_id,@timestamp)
+				,(@product_id, @component_id_contractor, @group_id_show_to_contractor, 2, 3, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_contractor, @group_id_are_users_contractor, 22, 3, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_contractor, @group_id_see_users_contractor, 37, 3, @creator_bz_id, @timestamp)
 				# mgt_cny (4)
-				,(@product_id,@component_id_mgt_cny,@group_id_show_to_mgt_cny,2,4,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_mgt_cny,@group_id_are_users_mgt_cny,22,4,@creator_bz_id,@timestamp)
-				,(@product_id,@component_id_mgt_cny,@group_id_see_users_mgt_cny,37,4,@creator_bz_id,@timestamp)
+				,(@product_id, @component_id_mgt_cny, @group_id_show_to_mgt_cny, 2, 4, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_mgt_cny, @group_id_are_users_mgt_cny, 22, 4, @creator_bz_id, @timestamp)
+				,(@product_id, @component_id_mgt_cny, @group_id_see_users_mgt_cny, 37, 4, @creator_bz_id, @timestamp)
 				# occupant (#)
-				,(@product_id,NULL,@group_id_show_to_occupant,24,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@group_id_are_users_occupant,3,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@group_id_see_users_occupant,36,NULL,@creator_bz_id,@timestamp)
+				,(@product_id, NULL, @group_id_show_to_occupant, 24, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @group_id_are_users_occupant, 3, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @group_id_see_users_occupant, 36, NULL, @creator_bz_id, @timestamp)
 				# invited_by
-				,(@product_id,NULL,@group_id_are_users_invited_by,31,NULL,@creator_bz_id,@timestamp)
-				,(@product_id,NULL,@group_id_see_users_invited_by,32,NULL,@creator_bz_id,@timestamp)
+				,(@product_id, NULL, @group_id_are_users_invited_by, 31, NULL, @creator_bz_id, @timestamp)
+				,(@product_id, NULL, @group_id_see_users_invited_by, 32, NULL, @creator_bz_id, @timestamp)
 				;
 				
 		# We update the BZ logs
 			INSERT INTO `audit_log`
 				(`user_id`
-				,`class`
-				,`object_id`
-				,`field`
-				,`removed`
-				,`added`
-				,`at_time`
+				, `class`
+				, `object_id`
+				, `field`
+				, `removed`
+				, `added`
+				, `at_time`
 				) 
 				VALUES 
 				(@creator_bz_id, 'Bugzilla::Group', @create_case_group_id, '__create__', NULL, @group_name_create_case_group, @timestamp)
@@ -5147,28 +5147,28 @@ BEGIN
 	# We now Create the flagtypes and flags for this new unit (we NEEDED the group ids for that!):
 		
 		# We need to define the data we need for each flag
-			SET @flag_next_step_name = CONCAT('Next_Step_',@unit_for_flag);
-			SET @flag_solution_name = CONCAT('Solution_',@unit_for_flag);
-			SET @flag_budget_name = CONCAT('Budget_',@unit_for_flag);
-			SET @flag_attachment_name = CONCAT('Attachment_',@unit_for_flag);
-			SET @flag_ok_to_pay_name = CONCAT('OK_to_pay_',@unit_for_flag);
-			SET @flag_is_paid_name = CONCAT('is_paid_',@unit_for_flag);
+			SET @flag_next_step_name = CONCAT('Next_Step_', @unit_for_flag);
+			SET @flag_solution_name = CONCAT('Solution_', @unit_for_flag);
+			SET @flag_budget_name = CONCAT('Budget_', @unit_for_flag);
+			SET @flag_attachment_name = CONCAT('Attachment_', @unit_for_flag);
+			SET @flag_ok_to_pay_name = CONCAT('OK_to_pay_', @unit_for_flag);
+			SET @flag_is_paid_name = CONCAT('is_paid_', @unit_for_flag);
 	
         # We insert the flagtypes 1 by 1 to get the id for each component easily
 
 		# Flagtype for next_step
 			INSERT INTO `flagtypes`
 				(`name`
-				,`description`
-				,`cc_list`
-				,`target_type`
-				,`is_active`
-				,`is_requestable`
-				,`is_requesteeble`
-				,`is_multiplicable`
-				,`sortkey`
-				,`grant_group_id`
-				,`request_group_id`
+				, `description`
+				, `cc_list`
+				, `target_type`
+				, `is_active`
+				, `is_requestable`
+				, `is_requesteeble`
+				, `is_multiplicable`
+				, `sortkey`
+				, `grant_group_id`
+				, `request_group_id`
 				) 
 				VALUES 
 				(@flag_next_step_name 
@@ -5211,16 +5211,16 @@ BEGIN
 		# We can now create the flagtypes for solution
 			INSERT INTO `flagtypes`
 				(`name`
-				,`description`
-				,`cc_list`
-				,`target_type`
-				,`is_active`
-				,`is_requestable`
-				,`is_requesteeble`
-				,`is_multiplicable`
-				,`sortkey`
-				,`grant_group_id`
-				,`request_group_id`
+				, `description`
+				, `cc_list`
+				, `target_type`
+				, `is_active`
+				, `is_requestable`
+				, `is_requesteeble`
+				, `is_multiplicable`
+				, `sortkey`
+				, `grant_group_id`
+				, `request_group_id`
 				) 
 				VALUES 
 				(@flag_solution_name 
@@ -5263,16 +5263,16 @@ BEGIN
 		# We can now create the flagtypes for budget
 			INSERT INTO `flagtypes`
 				(`name`
-				,`description`
-				,`cc_list`
-				,`target_type`
-				,`is_active`
-				,`is_requestable`
-				,`is_requesteeble`
-				,`is_multiplicable`
-				,`sortkey`
-				,`grant_group_id`
-				,`request_group_id`
+				, `description`
+				, `cc_list`
+				, `target_type`
+				, `is_active`
+				, `is_requestable`
+				, `is_requesteeble`
+				, `is_multiplicable`
+				, `sortkey`
+				, `grant_group_id`
+				, `request_group_id`
 				) 
 				VALUES 
 				(@flag_budget_name 
@@ -5315,16 +5315,16 @@ BEGIN
 		# We can now create the flagtypes for attachment
 			INSERT INTO `flagtypes`
 				(`name`
-				,`description`
-				,`cc_list`
-				,`target_type`
-				,`is_active`
-				,`is_requestable`
-				,`is_requesteeble`
-				,`is_multiplicable`
-				,`sortkey`
-				,`grant_group_id`
-				,`request_group_id`
+				, `description`
+				, `cc_list`
+				, `target_type`
+				, `is_active`
+				, `is_requestable`
+				, `is_requesteeble`
+				, `is_multiplicable`
+				, `sortkey`
+				, `grant_group_id`
+				, `request_group_id`
 				) 
 				VALUES                 
                 (@flag_attachment_name 
@@ -5367,16 +5367,16 @@ BEGIN
 		# We can now create the flagtypes for ok_to_pay
 			INSERT INTO `flagtypes`
 				(`name`
-				,`description`
-				,`cc_list`
-				,`target_type`
-				,`is_active`
-				,`is_requestable`
-				,`is_requesteeble`
-				,`is_multiplicable`
-				,`sortkey`
-				,`grant_group_id`
-				,`request_group_id`
+				, `description`
+				, `cc_list`
+				, `target_type`
+				, `is_active`
+				, `is_requestable`
+				, `is_requesteeble`
+				, `is_multiplicable`
+				, `sortkey`
+				, `grant_group_id`
+				, `request_group_id`
 				) 
 				VALUES 
                 (@flag_ok_to_pay_name 
@@ -5419,16 +5419,16 @@ BEGIN
 		# We can now create the flagtypes for is_paid
 			INSERT INTO `flagtypes`
 				(`name`
-				,`description`
-				,`cc_list`
-				,`target_type`
-				,`is_active`
-				,`is_requestable`
-				,`is_requesteeble`
-				,`is_multiplicable`
-				,`sortkey`
-				,`grant_group_id`
-				,`request_group_id`
+				, `description`
+				, `cc_list`
+				, `target_type`
+				, `is_active`
+				, `is_requestable`
+				, `is_requesteeble`
+				, `is_multiplicable`
+				, `sortkey`
+				, `grant_group_id`
+				, `request_group_id`
 				) 
 				VALUES 
                 (@flag_is_paid_name
@@ -5471,27 +5471,27 @@ BEGIN
 		# We also define the flag inclusion
 			INSERT INTO `flaginclusions`
 				(`type_id`
-				,`product_id`
-				,`component_id`
+				, `product_id`
+				, `component_id`
 				) 
 				VALUES
-				(@flag_next_step_id,@product_id,NULL)
-				,(@flag_solution_id,@product_id,NULL)
-				,(@flag_budget_id,@product_id,NULL)
-				,(@flag_attachment_id,@product_id,NULL)
-				,(@flag_ok_to_pay_id,@product_id,NULL)
-				,(@flag_is_paid_id,@product_id,NULL)
+				(@flag_next_step_id, @product_id, NULL)
+				,(@flag_solution_id, @product_id, NULL)
+				,(@flag_budget_id, @product_id, NULL)
+				,(@flag_attachment_id, @product_id, NULL)
+				,(@flag_ok_to_pay_id, @product_id, NULL)
+				,(@flag_is_paid_id, @product_id, NULL)
 				;
 
 		# We update the BZ logs
 			INSERT INTO `audit_log`
 				(`user_id`
-				,`class`
-				,`object_id`
-				,`field`
-				,`removed`
-				,`added`
-				,`at_time`
+				, `class`
+				, `object_id`
+				, `field`
+				, `removed`
+				, `added`
+				, `at_time`
 				) 
 				VALUES 
 				(@creator_bz_id, 'Bugzilla::FlagType', @flag_next_step_id, '__create__', NULL, @flag_next_step_name, @timestamp)
@@ -5512,8 +5512,8 @@ BEGIN
 
             INSERT INTO `ut_group_group_map_temp`
                 (`member_id`
-                ,`grantor_id`
-                ,`grant_type`
+                , `grantor_id`
+                , `grant_type`
                 ) 
                 ##########################################################
                 # Logic:
@@ -5525,79 +5525,79 @@ BEGIN
                 ##########################################################
                 VALUES 
                 # Admin group can grant membership to all
-                (1,@create_case_group_id,1)
-                ,(1,@can_edit_case_group_id,1)
-                ,(1,@can_see_cases_group_id,1)
-                ,(1,@can_edit_all_field_case_group_id,1)
-                ,(1,@can_edit_component_group_id,1)
-                ,(1,@can_see_unit_in_search_group_id,1)
-                ,(1,@all_g_flags_group_id,1)
-                ,(1,@all_r_flags_group_id,1)
-                ,(1,@list_visible_assignees_group_id,1)
-                ,(1,@see_visible_assignees_group_id,1)
-                ,(1,@active_stakeholder_group_id,1)
-                ,(1,@unit_creator_group_id,1)
-                ,(1,@group_id_show_to_tenant,1)
-                ,(1,@group_id_are_users_tenant,1)
-                ,(1,@group_id_see_users_tenant,1)
-                ,(1,@group_id_show_to_landlord,1)
-                ,(1,@group_id_are_users_landlord,1)
-                ,(1,@group_id_see_users_landlord,1)
-                ,(1,@group_id_show_to_agent,1)
-                ,(1,@group_id_are_users_agent,1)
-                ,(1,@group_id_see_users_agent,1)
-                ,(1,@group_id_show_to_contractor,1)
-                ,(1,@group_id_are_users_contractor,1)
-                ,(1,@group_id_see_users_contractor,1)
-                ,(1,@group_id_show_to_mgt_cny,1)
-                ,(1,@group_id_are_users_mgt_cny,1)
-                ,(1,@group_id_see_users_mgt_cny,1)
-                ,(1,@group_id_show_to_occupant,1)
-                ,(1,@group_id_are_users_occupant,1)
-                ,(1,@group_id_see_users_occupant,1)
-                ,(1,@group_id_are_users_invited_by,1)
-                ,(1,@group_id_see_users_invited_by,1)
+                (1, @create_case_group_id, 1)
+                ,(1, @can_edit_case_group_id, 1)
+                ,(1, @can_see_cases_group_id, 1)
+                ,(1, @can_edit_all_field_case_group_id, 1)
+                ,(1, @can_edit_component_group_id, 1)
+                ,(1, @can_see_unit_in_search_group_id, 1)
+                ,(1, @all_g_flags_group_id, 1)
+                ,(1, @all_r_flags_group_id, 1)
+                ,(1, @list_visible_assignees_group_id, 1)
+                ,(1, @see_visible_assignees_group_id, 1)
+                ,(1, @active_stakeholder_group_id, 1)
+                ,(1, @unit_creator_group_id, 1)
+                ,(1, @group_id_show_to_tenant, 1)
+                ,(1, @group_id_are_users_tenant, 1)
+                ,(1, @group_id_see_users_tenant, 1)
+                ,(1, @group_id_show_to_landlord, 1)
+                ,(1, @group_id_are_users_landlord, 1)
+                ,(1, @group_id_see_users_landlord, 1)
+                ,(1, @group_id_show_to_agent, 1)
+                ,(1, @group_id_are_users_agent, 1)
+                ,(1, @group_id_see_users_agent, 1)
+                ,(1, @group_id_show_to_contractor, 1)
+                ,(1, @group_id_are_users_contractor, 1)
+                ,(1, @group_id_see_users_contractor, 1)
+                ,(1, @group_id_show_to_mgt_cny, 1)
+                ,(1, @group_id_are_users_mgt_cny, 1)
+                ,(1, @group_id_see_users_mgt_cny, 1)
+                ,(1, @group_id_show_to_occupant, 1)
+                ,(1, @group_id_are_users_occupant, 1)
+                ,(1, @group_id_see_users_occupant, 1)
+                ,(1, @group_id_are_users_invited_by, 1)
+                ,(1, @group_id_see_users_invited_by, 1)
                 
                 # Admin MUST be a member of the mandatory group for this unit
                 # If not it is impossible to see this product in the BZFE backend.
-                ,(1,@can_see_unit_in_search_group_id,0)
+                ,(1, @can_see_unit_in_search_group_id,0)
                 # Visibility groups:
-                ,(@all_r_flags_group_id,@all_g_flags_group_id,2)
-                ,(@see_visible_assignees_group_id,@list_visible_assignees_group_id,2)
-                ,(@unit_creator_group_id,@unit_creator_group_id,2)
-                ,(@group_id_see_users_tenant,@group_id_are_users_tenant,2)
-                ,(@group_id_see_users_landlord,@group_id_are_users_landlord,2)
-                ,(@group_id_see_users_agent,@group_id_are_users_contractor,2)
-                ,(@group_id_see_users_mgt_cny,@group_id_are_users_mgt_cny,2)
-                ,(@group_id_see_users_occupant,@group_id_are_users_occupant,2)
-                ,(@group_id_see_users_invited_by,@group_id_are_users_invited_by,2)
+                ,(@all_r_flags_group_id, @all_g_flags_group_id, 2)
+                ,(@see_visible_assignees_group_id, @list_visible_assignees_group_id, 2)
+                ,(@unit_creator_group_id, @unit_creator_group_id, 2)
+                ,(@group_id_see_users_tenant, @group_id_are_users_tenant, 2)
+                ,(@group_id_see_users_landlord, @group_id_are_users_landlord, 2)
+                ,(@group_id_see_users_agent, @group_id_are_users_contractor, 2)
+                ,(@group_id_see_users_mgt_cny, @group_id_are_users_mgt_cny, 2)
+                ,(@group_id_see_users_occupant, @group_id_are_users_occupant, 2)
+                ,(@group_id_see_users_invited_by, @group_id_are_users_invited_by, 2)
                 ;
 
 	# We make sure that only user in certain groups can create, edit or see cases.
 		INSERT INTO `group_control_map`
 			(`group_id`
-			,`product_id`
-			,`entry`
-			,`membercontrol`
-			,`othercontrol`
-			,`canedit`
-			,`editcomponents`
-			,`editbugs`
-			,`canconfirm`
+			, `product_id`
+			, `entry`
+			, `membercontrol`
+			, `othercontrol`
+			, `canedit`
+			, `editcomponents`
+			, `editbugs`
+			, `canconfirm`
 			) 
 			VALUES 
-			(@create_case_group_id,@product_id,1,0,0,0,0,0,0)
-			,(@can_edit_case_group_id,@product_id,1,0,0,1,0,0,1)
-			,(@can_edit_all_field_case_group_id,@product_id,1,0,0,1,0,1,1)
-			,(@can_edit_component_group_id,@product_id,0,0,0,0,1,0,0)
-			,(@can_see_cases_group_id,@product_id,0,2,0,0,0,0,0)
-			,(@can_see_unit_in_search_group_id,@product_id,0,3,3,0,0,0,0)
-			,(@group_id_show_to_tenant,@product_id,0,2,0,0,0,0,0)
-			,(@group_id_show_to_landlord,@product_id,0,2,0,0,0,0,0)
-			,(@group_id_show_to_agent,@product_id,0,2,0,0,0,0,0)
-			,(@group_id_show_to_contractor,@product_id,0,2,0,0,0,0,0)
-			,(@group_id_show_to_mgt_cny,@product_id,0,2,0,0,0,0,0)
-			,(@group_id_show_to_occupant,@product_id,0,2,0,0,0,0,0)
+			(@create_case_group_id, @product_id, 1, 0, 0, 0, 0, 0, 0)
+			,(@can_edit_case_group_id, @product_id, 1, 0, 0, 1, 0, 0, 1)
+			,(@can_edit_all_field_case_group_id, @product_id, 1, 0, 0, 1, 0, 1, 1)
+			,(@can_edit_component_group_id, @product_id, 0, 0, 0, 0, 1, 0, 0)
+			,(@can_see_cases_group_id, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			,(@can_see_unit_in_search_group_id, @product_id, 0, 3, 3, 0, 0, 0, 0)
+			,(@group_id_show_to_tenant, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			,(@group_id_show_to_landlord, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			,(@group_id_show_to_agent, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			,(@group_id_show_to_contractor, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			,(@group_id_show_to_mgt_cny, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			,(@group_id_show_to_occupant, @product_id, 0, 2, 0, 0, 0, 0, 0)
 			;
 
 		# Log the actions of the script.
@@ -5657,11 +5657,11 @@ BEGIN
 				
 			# What are the name for the categories
 				SET @series_category_product_name = @unit_for_group;
-				SET @series_category_component_tenant_name = CONCAT('Tenant - ', @product_id,'_#',@component_id_tenant);
-				SET @series_category_component_landlord_name = CONCAT('Landlord - ', @product_id,'_#',@component_id_landlord);
-				SET @series_category_component_contractor_name = CONCAT('Contractor - ', @product_id,'_#',@component_id_contractor);
-				SET @series_category_component_mgtcny_name = CONCAT('Mgt Cny - ', @product_id,'_#',@component_id_mgt_cny);
-				SET @series_category_component_agent_name = CONCAT('Agent - ', @product_id,'_#',@component_id_agent);
+				SET @series_category_component_tenant_name = CONCAT('Tenant - ', @product_id,'_#', @component_id_tenant);
+				SET @series_category_component_landlord_name = CONCAT('Landlord - ', @product_id,'_#', @component_id_landlord);
+				SET @series_category_component_contractor_name = CONCAT('Contractor - ', @product_id,'_#', @component_id_contractor);
+				SET @series_category_component_mgtcny_name = CONCAT('Mgt Cny - ', @product_id,'_#', @component_id_mgt_cny);
+				SET @series_category_component_agent_name = CONCAT('Agent - ', @product_id,'_#', @component_id_agent);
 				
 			# What are the SQL queries for these series:
 				
@@ -5669,20 +5669,20 @@ BEGIN
 					SET @unit_name_for_serie_query = REPLACE(@unit, ' ', '%20');
 				
 				# Product
-					SET @serie_search_unconfirmed = CONCAT('bug_status=UNCONFIRMED&product=',@unit_name_for_serie_query);
-					SET @serie_search_confirmed = CONCAT('bug_status=CONFIRMED&product=',@unit_name_for_serie_query);
-					SET @serie_search_in_progress = CONCAT('bug_status=IN_PROGRESS&product=',@unit_name_for_serie_query);
-					SET @serie_search_reopened = CONCAT('bug_status=REOPENED&product=',@unit_name_for_serie_query);
-					SET @serie_search_standby = CONCAT('bug_status=STAND%20BY&product=',@unit_name_for_serie_query);
-					SET @serie_search_resolved = CONCAT('bug_status=RESOLVED&product=',@unit_name_for_serie_query);
-					SET @serie_search_verified = CONCAT('bug_status=VERIFIED&product=',@unit_name_for_serie_query);
-					SET @serie_search_closed = CONCAT('bug_status=CLOSED&product=',@unit_name_for_serie_query);
-					SET @serie_search_fixed = CONCAT('resolution=FIXED&product=',@unit_name_for_serie_query);
-					SET @serie_search_invalid = CONCAT('resolution=INVALID&product=',@unit_name_for_serie_query);
-					SET @serie_search_wontfix = CONCAT('resolution=WONTFIX&product=',@unit_name_for_serie_query);
-					SET @serie_search_duplicate = CONCAT('resolution=DUPLICATE&product=',@unit_name_for_serie_query);
-					SET @serie_search_worksforme = CONCAT('resolution=WORKSFORME&product=',@unit_name_for_serie_query);
-					SET @serie_search_all_open = CONCAT('bug_status=UNCONFIRMED&bug_status=CONFIRMED&bug_status=IN_PROGRESS&bug_status=REOPENED&bug_status=STAND%20BY&product=',@unit_name_for_serie_query);
+					SET @serie_search_unconfirmed = CONCAT('bug_status=UNCONFIRMED&product=', @unit_name_for_serie_query);
+					SET @serie_search_confirmed = CONCAT('bug_status=CONFIRMED&product=', @unit_name_for_serie_query);
+					SET @serie_search_in_progress = CONCAT('bug_status=IN_PROGRESS&product=', @unit_name_for_serie_query);
+					SET @serie_search_reopened = CONCAT('bug_status=REOPENED&product=', @unit_name_for_serie_query);
+					SET @serie_search_standby = CONCAT('bug_status=STAND%20BY&product=', @unit_name_for_serie_query);
+					SET @serie_search_resolved = CONCAT('bug_status=RESOLVED&product=', @unit_name_for_serie_query);
+					SET @serie_search_verified = CONCAT('bug_status=VERIFIED&product=', @unit_name_for_serie_query);
+					SET @serie_search_closed = CONCAT('bug_status=CLOSED&product=', @unit_name_for_serie_query);
+					SET @serie_search_fixed = CONCAT('resolution=FIXED&product=', @unit_name_for_serie_query);
+					SET @serie_search_invalid = CONCAT('resolution=INVALID&product=', @unit_name_for_serie_query);
+					SET @serie_search_wontfix = CONCAT('resolution=WONTFIX&product=', @unit_name_for_serie_query);
+					SET @serie_search_duplicate = CONCAT('resolution=DUPLICATE&product=', @unit_name_for_serie_query);
+					SET @serie_search_worksforme = CONCAT('resolution=WORKSFORME&product=', @unit_name_for_serie_query);
+					SET @serie_search_all_open = CONCAT('bug_status=UNCONFIRMED&bug_status=CONFIRMED&bug_status=IN_PROGRESS&bug_status=REOPENED&bug_status=STAND%20BY&product=', @unit_name_for_serie_query);
 					
 				# Component
 				
@@ -5698,54 +5698,54 @@ BEGIN
 					# We can now derive the query needed to build these series
 					
 						SET @serie_search_all_open_tenant = (CONCAT (@serie_search_prefix_component_open
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_tenant)
+							, @component_name_for_serie_tenant)
 							);
 						SET @serie_search_all_closed_tenant = (CONCAT (@serie_search_prefix_component_closed
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_tenant)
+							, @component_name_for_serie_tenant)
 							);
 						SET @serie_search_all_open_landlord = (CONCAT (@serie_search_prefix_component_open
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_landlord)
+							, @component_name_for_serie_landlord)
 							);
 						SET @serie_search_all_closed_landlord = (CONCAT (@serie_search_prefix_component_closed
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_landlord)
+							, @component_name_for_serie_landlord)
 							);
 						SET @serie_search_all_open_contractor = (CONCAT (@serie_search_prefix_component_open
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_contractor)
+							, @component_name_for_serie_contractor)
 							);
 						SET @serie_search_all_closed_contractor = (CONCAT (@serie_search_prefix_component_closed
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_contractor)
+							, @component_name_for_serie_contractor)
 							);
 						SET @serie_search_all_open_mgtcny = (CONCAT (@serie_search_prefix_component_open
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_mgtcny)
+							, @component_name_for_serie_mgtcny)
 							);
 						SET @serie_search_all_closed_mgtcny = (CONCAT (@serie_search_prefix_component_closed
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_mgtcny)
+							, @component_name_for_serie_mgtcny)
 							);
 						SET @serie_search_all_open_agent = (CONCAT (@serie_search_prefix_component_open
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_agent)
+							, @component_name_for_serie_agent)
 							);
 						SET @serie_search_all_closed_agent = (CONCAT (@serie_search_prefix_component_closed
-							,@unit_name_for_serie_query
+							, @unit_name_for_serie_query
 							,'&component='
-							,@component_name_for_serie_agent)
+							, @component_name_for_serie_agent)
 							);
 
 		# We have eveything, we can create the series_categories we need:
@@ -5821,13 +5821,13 @@ BEGIN
             # Insert the series related to the product/unit
                 INSERT INTO `series`
                     (`series_id`
-                    ,`creator`
-                    ,`category`
-                    ,`subcategory`
-                    ,`name`
-                    ,`frequency`
-                    ,`query`
-                    ,`is_public`
+                    , `creator`
+                    , `category`
+                    , `subcategory`
+                    , `name`
+                    , `frequency`
+                    , `query`
+                    , `is_public`
                     ) 
                     VALUES 
                     (NULL, @creator_bz_id, @series_category_product, 2, 'UNCONFIRMED', 1, @serie_search_unconfirmed, 1)
@@ -5849,13 +5849,13 @@ BEGIN
             # Insert the series related to the Components/roles
                 INSERT INTO `series`
                     (`series_id`
-                    ,`creator`
-                    ,`category`
-                    ,`subcategory`
-                    ,`name`
-                    ,`frequency`
-                    ,`query`
-                    ,`is_public`
+                    , `creator`
+                    , `category`
+                    , `subcategory`
+                    , `name`
+                    , `frequency`
+                    , `query`
+                    , `is_public`
                     ) 
                     VALUES
                     # Tenant
@@ -5918,16 +5918,16 @@ BEGIN
 			# Can tag comments
 				INSERT INTO `ut_user_group_map_temp`
 					(`user_id`
-					,`group_id`
-					,`isbless`
-					,`grant_type`
+					, `group_id`
+					, `isbless`
+					, `grant_type`
 					) 
 					VALUES 
-					(@bz_user_id_dummy_tenant,@can_tag_comment_group_id,0,0)
-					, (@bz_user_id_dummy_landlord,@can_tag_comment_group_id,0,0)
-					, (@bz_user_id_dummy_agent,@can_tag_comment_group_id,0,0)
-					, (@bz_user_id_dummy_contractor,@can_tag_comment_group_id,0,0)
-					, (@bz_user_id_dummy_mgt_cny,@can_tag_comment_group_id,0,0)
+					(@bz_user_id_dummy_tenant, @can_tag_comment_group_id, 0, 0)
+					, (@bz_user_id_dummy_landlord, @can_tag_comment_group_id, 0, 0)
+					, (@bz_user_id_dummy_agent, @can_tag_comment_group_id, 0, 0)
+					, (@bz_user_id_dummy_contractor, @can_tag_comment_group_id, 0, 0)
+					, (@bz_user_id_dummy_mgt_cny, @can_tag_comment_group_id, 0, 0)
 					;
 					
 				# Log the actions of the script.
@@ -5964,9 +5964,9 @@ BEGIN
 			# User can create a case:
 				INSERT INTO `ut_user_group_map_temp`
 					(`user_id`
-					,`group_id`
-					,`isbless`
-					,`grant_type`
+					, `group_id`
+					, `isbless`
+					, `grant_type`
 					) 
 					VALUES 
 					(@bz_user_id_dummy_tenant, @create_case_group_id, 0, 0)
@@ -6011,21 +6011,21 @@ BEGIN
 			# User can Edit a case and see this unit, this is needed so the API does not throw an error see issue #60:
 				INSERT INTO `ut_user_group_map_temp`
 					(`user_id`
-					,`group_id`
-					,`isbless`
-					,`grant_type`
+					, `group_id`
+					, `isbless`
+					, `grant_type`
 					) 
 					VALUES 
-					(@bz_user_id_dummy_tenant,@can_edit_case_group_id,0,0)
-					, (@bz_user_id_dummy_landlord,@can_edit_case_group_id,0,0)
-					, (@bz_user_id_dummy_agent,@can_edit_case_group_id,0,0)
-					, (@bz_user_id_dummy_contractor,@can_edit_case_group_id,0,0)
-					, (@bz_user_id_dummy_mgt_cny,@can_edit_case_group_id,0,0)
-					, (@bz_user_id_dummy_tenant,@can_see_unit_in_search_group_id,0,0)
-					, (@bz_user_id_dummy_landlord,@can_see_unit_in_search_group_id,0,0)
-					, (@bz_user_id_dummy_agent,@can_see_unit_in_search_group_id,0,0)
-					, (@bz_user_id_dummy_contractor,@can_see_unit_in_search_group_id,0,0)
-					, (@bz_user_id_dummy_mgt_cny,@can_see_unit_in_search_group_id,0,0)
+					(@bz_user_id_dummy_tenant, @can_edit_case_group_id, 0, 0)
+					, (@bz_user_id_dummy_landlord, @can_edit_case_group_id, 0, 0)
+					, (@bz_user_id_dummy_agent, @can_edit_case_group_id, 0, 0)
+					, (@bz_user_id_dummy_contractor, @can_edit_case_group_id, 0, 0)
+					, (@bz_user_id_dummy_mgt_cny, @can_edit_case_group_id, 0, 0)
+					, (@bz_user_id_dummy_tenant, @can_see_unit_in_search_group_id, 0, 0)
+					, (@bz_user_id_dummy_landlord, @can_see_unit_in_search_group_id, 0, 0)
+					, (@bz_user_id_dummy_agent, @can_see_unit_in_search_group_id, 0, 0)
+					, (@bz_user_id_dummy_contractor, @can_see_unit_in_search_group_id, 0, 0)
+					, (@bz_user_id_dummy_mgt_cny, @can_see_unit_in_search_group_id, 0, 0)
 					;
 
 				# Log the actions of the script.
@@ -6076,10 +6076,10 @@ BEGIN
                     `member_id` mediumint(9) NOT NULL,
                     `grantor_id` mediumint(9) NOT NULL,
                     `grant_type` tinyint(4) NOT NULL DEFAULT '0',
-                    UNIQUE KEY `ut_group_group_map_dedup_member_id_idx` (`member_id`,`grantor_id`,`grant_type`),
+                    UNIQUE KEY `ut_group_group_map_dedup_member_id_idx` (`member_id`, `grantor_id`, `grant_type`),
                     KEY `fk_group_group_map_dedup_grantor_id_groups_id` (`grantor_id`),
-                    KEY `group_group_map_dedup_grantor_id_grant_type_idx` (`grantor_id`,`grant_type`),
-                    KEY `group_group_map_dedup_member_id_grant_type_idx` (`member_id`,`grant_type`)
+                    KEY `group_group_map_dedup_grantor_id_grant_type_idx` (`grantor_id`, `grant_type`),
+                    KEY `group_group_map_dedup_member_id_grant_type_idx` (`member_id`, `grant_type`)
                    ) 
                 ;
     
