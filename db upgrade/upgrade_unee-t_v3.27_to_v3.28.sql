@@ -23,28 +23,22 @@
 ###############################
 # This update
 #
-#TODO   - check the following procedures to
-#   - make sure we do not delete and re-create any permanent table
-#   - make sure we do not use the `ut_audit_log` anymore
-#           - `user_is_default_assignee_for_cases`
-#           - `remove_user_from_role`
-#           - ``
-#           - ``
-#
 #   - Create a generic procedure `update_audit_log` that we use each time a record is updated for the tables
+#       - `user_group_map`
 #       - `products`
 #       - `versions`
 #       - `milestones`
 #       - `components`
-#WIP       - `components_cc`
+#       - `component_cc`
 #       - `groups`
 #       - `flagtypes`
 #       - `flaginclusions`
 #       - `group_control_map`
+#       - `ut_product_group`
 #       - `series_categories`
 #       - `series`
+#       - `ut_data_to_create_units`
 #       - `ut_invitation_api_data`
-#       - `ut_product_group`
 #
 #   - Move the audit log function outside the scripts in dedicated trigger when we
 #       - INSERT records in the tables
@@ -53,7 +47,7 @@
 #           - `versions`
 #           - `milestones`
 #           - `components`
-#WIP       - `components_cc`
+#           - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -70,7 +64,7 @@
 #           - `versions`
 #           - `milestones`
 #           - `components`
-#WIP       - `components_cc`
+#           - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -87,7 +81,7 @@
 #           - `versions`
 #           - `milestones`
 #           - `components`
-#WIP       - `components_cc`
+#           - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -153,13 +147,8 @@
 #       - Use a temporary table
 #       - Create a dedicated dedup table so we do not have to truncate the table when we add records
 #
-#WIP   - Update the procedure `user_is_default_assignee_for_cases`
+#   - Update the procedure `user_is_default_assignee_for_cases`
 #       - Do not write in the table `ut_audit_log` (this is done with triggers)
-#
-#   - Update the procedure ``
-#       - Do not write in the table `ut_audit_log` (this is done with triggers)
-#       - Use a temporary table
-# 
 #
 
 #####################
@@ -1071,6 +1060,142 @@ CREATE TRIGGER `trig_update_audit_log_update_record_components`
 
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_components';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+# The `component_cc` table
+
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `component_cc`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_component_cc`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_component_cc`
+    AFTER INSERT ON `component_cc`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_user_id = new.user_id;
+        SET @new_component_id = new.component_id;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'component_cc';
+        SET @bzfe_field = 'user_id, component_id';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_user_id
+                , ', '
+                , @new_component_id
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_component_cc';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `component_cc`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_component_cc`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_component_cc`
+    AFTER DELETE ON `component_cc`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_user_id = old.user_id;
+        SET @old_component_id = old.component_id;
+        
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'component_cc';
+        SET @bzfe_field = 'user_id, component_id';
+        SET @previous_value = CONCAT (
+                 @old_user_id
+                , ', '
+                , @old_component_id
+            )
+           ;
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_component_cc';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `component_cc`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_component_cc`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_component_cc`
+    AFTER UPDATE ON `component_cc`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_user_id = new.user_id;
+        SET @new_component_id = new.component_id;
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_user_id = old.user_id;
+        SET @old_component_id = old.component_id;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'component_cc';
+        SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
+        SET @previous_value = CONCAT (
+                @old_user_id
+                , ', '
+                , @old_component_id
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_user_id
+                , ', '
+                , @new_component_id
+            )
+           ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_component_cc';
 
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
@@ -2112,6 +2237,7 @@ DELIMITER ;
 #           - `versions`
 #           - `milestones`
 #           - `components`
+#WIP       - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -2128,6 +2254,7 @@ DELIMITER ;
 #           - `versions`
 #           - `milestones`
 #           - `components`
+#WIP       - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -2144,6 +2271,7 @@ DELIMITER ;
 #           - `versions`
 #           - `milestones`
 #           - `components`
+#WIP       - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -6917,18 +7045,6 @@ BEGIN
 	END IF;
 END $$
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-
-
 
 # We also make sure that we use the correct definition for the Unee-T fields:
 
