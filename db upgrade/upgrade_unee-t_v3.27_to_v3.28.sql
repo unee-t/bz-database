@@ -41,6 +41,7 @@
 #       - `versions`
 #       - `milestones`
 #       - `components`
+#WIP       - `components_cc`
 #       - `groups`
 #       - `flagtypes`
 #       - `flaginclusions`
@@ -57,6 +58,7 @@
 #           - `versions`
 #           - `milestones`
 #           - `components`
+#WIP       - `components_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -73,6 +75,7 @@
 #           - `versions`
 #           - `milestones`
 #           - `components`
+#WIP       - `components_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -89,6 +92,7 @@
 #           - `versions`
 #           - `milestones`
 #           - `components`
+#WIP       - `components_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
@@ -140,7 +144,16 @@
 #           - `ut_group_group_map_dedup`
 #             This is to avoid deleting the table for all the concurrent procedures which can create a race condition
 #
+#   - Update the procedure `remove_user_from_default_cc` to remove a user in Default CC from a given role
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#       - Use a temporary table
 #
+# 
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#       - Use a temporary table
+# 
+#
+
 #####################
 #
 # Do it!
@@ -6124,6 +6137,78 @@ BEGIN
 END 
 $$
 DELIMITER ;
+
+# Update the procedure `remove_user_from_default_cc` to remove a user in Default CC from a given role
+	
+	DROP PROCEDURE IF EXISTS `remove_user_from_default_cc`;
+
+DELIMITER $$
+CREATE PROCEDURE `remove_user_from_default_cc`()
+SQL SECURITY INVOKER
+BEGIN
+	# This procedure needs the following objects
+	#	- Variables:
+	#		- @bz_user_id : the BZ user id of the user
+	#		- @component_id_this_role: The id of the role in the bz table `components`
+	#
+	# We delete the record in the table that store default CC information
+		DELETE
+		FROM `component_cc`
+			WHERE `user_id` = @bz_user_id
+				AND `component_id` = @component_id_this_role
+		;
+
+	# We get the product id so we can log this properly
+		SET @product_id_for_this_procedure = (SELECT `product_id` FROM `components` WHERE `id` = @component_id_this_role);
+
+	# We record the name of this procedure for future debugging and audit_log`
+			SET @script = 'PROCEDURE - remove_user_from_default_cc';
+			SET @timestamp = NOW();
+				
+	# Log the actions of the script.
+		SET @script_log_message = CONCAT('the bz user #'
+								, @bz_user_id
+								, ' is NOT in Default CC for the component/role '
+								, @component_id_this_role
+								, ' for the product/unit '
+								, @product_id_for_this_procedure
+								);
+				
+		INSERT INTO `ut_script_log`
+			(`datetime`
+			, `script`
+			, `log`
+				)
+			VALUES
+			(@timestamp, @script, @script_log_message)
+			;
+
+	# Cleanup the variables for the log messages
+		SET @script_log_message = NULL;
+		SET @script = NULL;
+		SET @product_id_for_this_procedure = NULL;
+END $$
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # We also make sure that we use the correct definition for the Unee-T fields:
 
