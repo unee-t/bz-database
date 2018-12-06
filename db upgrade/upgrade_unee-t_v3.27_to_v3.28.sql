@@ -3105,33 +3105,33 @@ BEGIN
 		SET @unit_for_flag = REPLACE(@unit_for_query, '%', '_');
 		SET @unit_for_flag = REPLACE(@unit_for_flag, '-', '_');
 		SET @unit_for_flag = REPLACE(@unit_for_flag, '!', '_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'@' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'#' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'$' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'%' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'^' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'&' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'*' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'(' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,')' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'+' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'=' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'<' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'>' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,':' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,';' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'"' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,' ,' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'.' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'?' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'/' ,'_');
-		SET @unit_for_flag = REPLACE(@unit_for_flag ,'\\' ,'_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '@', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '#', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '$', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '%', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '^', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '' , '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '&', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '*', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '(', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, ')', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '+', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '=', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '<', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '>', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, ':', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, ';', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '"', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, ',', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '.', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '?', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '/', '_');
+		SET @unit_for_flag = REPLACE(@unit_for_flag, '\\','_');
 		
-		SET @unit_for_group = REPLACE(@unit_for_flag ,'_' ,'-');
-		SET @unit_for_group = REPLACE(@unit_for_group ,'----' ,'-');
-		SET @unit_for_group = REPLACE(@unit_for_group ,'---' ,'-');
-		SET @unit_for_group = REPLACE(@unit_for_group ,'--' ,'-');
+		SET @unit_for_group = REPLACE(@unit_for_flag, '_', '-');
+		SET @unit_for_group = REPLACE(@unit_for_group, '----', '-');
+		SET @unit_for_group = REPLACE(@unit_for_group, '---', '-');
+		SET @unit_for_group = REPLACE(@unit_for_group, '--', '-');
 
 		# We need a version for this product
 			
@@ -3142,7 +3142,7 @@ BEGIN
 					, `isactive`
 					)
 					VALUES
-					(@default_version , @product_id , 1)
+					(@default_version, @product_id, 1)
 					;
 
             # We get the id for the version 
@@ -3180,7 +3180,7 @@ BEGIN
 				, `isactive`
 				)
 				VALUES
-				(@product_id , @default_milestone ,0 , 1)
+				(@product_id, @default_milestone, 0 , 1)
 				;
             
             # We get the id for the milestone 
@@ -3546,10 +3546,10 @@ BEGIN
                     ) 
                     VALUES 
                     (@creator_bz_id, 'Bugzilla::Component', @component_id_tenant, '__create__', NULL, @role_user_g_description_tenant, @timestamp)
-                    ,(@creator_bz_id, 'Bugzilla::Component', @component_id_landlord, '__create__', NULL, @role_user_g_description_landlord, @timestamp)
-                    ,(@creator_bz_id, 'Bugzilla::Component', @component_id_agent, '__create__', NULL, @role_user_g_description_agent, @timestamp)
-                    ,(@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
-                    ,(@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
+                    , (@creator_bz_id, 'Bugzilla::Component', @component_id_landlord, '__create__', NULL, @role_user_g_description_landlord, @timestamp)
+                    , (@creator_bz_id, 'Bugzilla::Component', @component_id_agent, '__create__', NULL, @role_user_g_description_agent, @timestamp)
+                    , (@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
+                    , (@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
                     ;
 
 	# We create the goups we need
@@ -5059,44 +5059,44 @@ BEGIN
 				)
 				VALUES
 				(@product_id, NULL, @create_case_group_id, 20, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @can_edit_case_group_id, 25, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @can_edit_all_field_case_group_id, 26, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @can_edit_component_group_id, 27, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @can_see_cases_group_id, 28, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @can_see_unit_in_search_group_id, 38, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @all_r_flags_group_id, 18, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @all_g_flags_group_id, 19, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @list_visible_assignees_group_id, 4, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @see_visible_assignees_group_id,5, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @active_stakeholder_group_id, 29, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @unit_creator_group_id, 1, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @can_edit_case_group_id, 25, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @can_edit_all_field_case_group_id, 26, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @can_edit_component_group_id, 27, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @can_see_cases_group_id, 28, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @can_see_unit_in_search_group_id, 38, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @all_r_flags_group_id, 18, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @all_g_flags_group_id, 19, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @list_visible_assignees_group_id, 4, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @see_visible_assignees_group_id,5, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @active_stakeholder_group_id, 29, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @unit_creator_group_id, 1, NULL, @creator_bz_id, @timestamp)
 				# Tenant (1)
-				,(@product_id, @component_id_tenant, @group_id_show_to_tenant, 2, 1, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_tenant, @group_id_are_users_tenant, 22, 1, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_tenant, @group_id_see_users_tenant, 37, 1, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_tenant, @group_id_show_to_tenant, 2, 1, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_tenant, @group_id_are_users_tenant, 22, 1, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_tenant, @group_id_see_users_tenant, 37, 1, @creator_bz_id, @timestamp)
 				# Landlord (2)
-				,(@product_id, @component_id_landlord, @group_id_show_to_landlord, 2, 2, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_landlord, @group_id_are_users_landlord, 22, 2, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_landlord, @group_id_see_users_landlord, 37, 2, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_landlord, @group_id_show_to_landlord, 2, 2, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_landlord, @group_id_are_users_landlord, 22, 2, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_landlord, @group_id_see_users_landlord, 37, 2, @creator_bz_id, @timestamp)
 				# Agent (5)
-				,(@product_id, @component_id_agent, @group_id_show_to_agent, 2,5, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_agent, @group_id_are_users_agent, 22,5, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_agent, @group_id_see_users_agent, 37,5, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_agent, @group_id_show_to_agent, 2,5, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_agent, @group_id_are_users_agent, 22,5, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_agent, @group_id_see_users_agent, 37,5, @creator_bz_id, @timestamp)
 				# contractor (3)
-				,(@product_id, @component_id_contractor, @group_id_show_to_contractor, 2, 3, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_contractor, @group_id_are_users_contractor, 22, 3, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_contractor, @group_id_see_users_contractor, 37, 3, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_contractor, @group_id_show_to_contractor, 2, 3, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_contractor, @group_id_are_users_contractor, 22, 3, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_contractor, @group_id_see_users_contractor, 37, 3, @creator_bz_id, @timestamp)
 				# mgt_cny (4)
-				,(@product_id, @component_id_mgt_cny, @group_id_show_to_mgt_cny, 2, 4, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_mgt_cny, @group_id_are_users_mgt_cny, 22, 4, @creator_bz_id, @timestamp)
-				,(@product_id, @component_id_mgt_cny, @group_id_see_users_mgt_cny, 37, 4, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_mgt_cny, @group_id_show_to_mgt_cny, 2, 4, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_mgt_cny, @group_id_are_users_mgt_cny, 22, 4, @creator_bz_id, @timestamp)
+				, (@product_id, @component_id_mgt_cny, @group_id_see_users_mgt_cny, 37, 4, @creator_bz_id, @timestamp)
 				# occupant (#)
-				,(@product_id, NULL, @group_id_show_to_occupant, 24, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @group_id_are_users_occupant, 3, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @group_id_see_users_occupant, 36, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @group_id_show_to_occupant, 24, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @group_id_are_users_occupant, 3, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @group_id_see_users_occupant, 36, NULL, @creator_bz_id, @timestamp)
 				# invited_by
-				,(@product_id, NULL, @group_id_are_users_invited_by, 31, NULL, @creator_bz_id, @timestamp)
-				,(@product_id, NULL, @group_id_see_users_invited_by, 32, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @group_id_are_users_invited_by, 31, NULL, @creator_bz_id, @timestamp)
+				, (@product_id, NULL, @group_id_see_users_invited_by, 32, NULL, @creator_bz_id, @timestamp)
 				;
 				
 		# We update the BZ logs
@@ -5111,37 +5111,37 @@ BEGIN
 				) 
 				VALUES 
 				(@creator_bz_id, 'Bugzilla::Group', @create_case_group_id, '__create__', NULL, @group_name_create_case_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @can_edit_case_group_id, '__create__', NULL, @group_name_can_edit_case_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @can_edit_all_field_case_group_id, '__create__', NULL, @group_name_can_edit_all_field_case_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @can_edit_component_group_id, '__create__', NULL, @group_name_can_edit_component_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @can_see_cases_group_id, '__create__', NULL, @group_name_can_see_cases_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @can_see_unit_in_search_group_id, '__create__', NULL, @group_name_can_see_unit_in_search_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @all_g_flags_group_id, '__create__', NULL, @group_name_all_g_flags_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @all_r_flags_group_id, '__create__', NULL, @group_name_all_r_flags_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @list_visible_assignees_group_id, '__create__', NULL, @group_name_list_visible_assignees_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @see_visible_assignees_group_id, '__create__', NULL, @group_name_see_visible_assignees_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @active_stakeholder_group_id, '__create__', NULL, @group_name_active_stakeholder_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @unit_creator_group_id, '__create__', NULL, @group_name_unit_creator_group, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_tenant, '__create__', NULL, @group_name_show_to_tenant, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_tenant, '__create__', NULL, @group_name_are_users_tenant, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_tenant, '__create__', NULL, @group_name_see_users_tenant, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_landlord, '__create__', NULL, @group_name_show_to_landlord, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_landlord, '__create__', NULL, @group_name_are_users_landlord, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_landlord, '__create__', NULL, @group_name_see_users_landlord, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_agent, '__create__', NULL, @group_name_show_to_agent, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_agent, '__create__', NULL, @group_name_are_users_agent, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_agent, '__create__', NULL, @group_name_see_users_agent, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_contractor, '__create__', NULL, @group_name_show_to_contractor, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_contractor, '__create__', NULL, @group_name_are_users_contractor, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_contractor, '__create__', NULL, @group_name_see_users_contractor, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_mgt_cny, '__create__', NULL, @group_name_show_to_mgt_cny, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_mgt_cny, '__create__', NULL, @group_name_are_users_mgt_cny, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_mgt_cny, '__create__', NULL, @group_name_see_users_mgt_cny, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_occupant, '__create__', NULL, @group_name_show_to_occupant, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_occupant, '__create__', NULL, @group_name_are_users_occupant, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_occupant, '__create__', NULL, @group_name_see_users_occupant, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_invited_by, '__create__', NULL, @group_name_are_users_invited_by, @timestamp)
-				,(@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_invited_by, '__create__', NULL, @group_name_see_users_invited_by, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @can_edit_case_group_id, '__create__', NULL, @group_name_can_edit_case_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @can_edit_all_field_case_group_id, '__create__', NULL, @group_name_can_edit_all_field_case_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @can_edit_component_group_id, '__create__', NULL, @group_name_can_edit_component_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @can_see_cases_group_id, '__create__', NULL, @group_name_can_see_cases_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @can_see_unit_in_search_group_id, '__create__', NULL, @group_name_can_see_unit_in_search_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @all_g_flags_group_id, '__create__', NULL, @group_name_all_g_flags_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @all_r_flags_group_id, '__create__', NULL, @group_name_all_r_flags_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @list_visible_assignees_group_id, '__create__', NULL, @group_name_list_visible_assignees_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @see_visible_assignees_group_id, '__create__', NULL, @group_name_see_visible_assignees_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @active_stakeholder_group_id, '__create__', NULL, @group_name_active_stakeholder_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @unit_creator_group_id, '__create__', NULL, @group_name_unit_creator_group, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_tenant, '__create__', NULL, @group_name_show_to_tenant, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_tenant, '__create__', NULL, @group_name_are_users_tenant, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_tenant, '__create__', NULL, @group_name_see_users_tenant, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_landlord, '__create__', NULL, @group_name_show_to_landlord, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_landlord, '__create__', NULL, @group_name_are_users_landlord, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_landlord, '__create__', NULL, @group_name_see_users_landlord, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_agent, '__create__', NULL, @group_name_show_to_agent, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_agent, '__create__', NULL, @group_name_are_users_agent, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_agent, '__create__', NULL, @group_name_see_users_agent, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_contractor, '__create__', NULL, @group_name_show_to_contractor, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_contractor, '__create__', NULL, @group_name_are_users_contractor, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_contractor, '__create__', NULL, @group_name_see_users_contractor, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_mgt_cny, '__create__', NULL, @group_name_show_to_mgt_cny, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_mgt_cny, '__create__', NULL, @group_name_are_users_mgt_cny, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_mgt_cny, '__create__', NULL, @group_name_see_users_mgt_cny, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_show_to_occupant, '__create__', NULL, @group_name_show_to_occupant, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_occupant, '__create__', NULL, @group_name_are_users_occupant, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_occupant, '__create__', NULL, @group_name_see_users_occupant, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_are_users_invited_by, '__create__', NULL, @group_name_are_users_invited_by, @timestamp)
+				, (@creator_bz_id, 'Bugzilla::Group', @group_id_see_users_invited_by, '__create__', NULL, @group_name_see_users_invited_by, @timestamp)
 				;
 			
 	# We now Create the flagtypes and flags for this new unit (we NEEDED the group ids for that!):
@@ -5476,11 +5476,11 @@ BEGIN
 				) 
 				VALUES
 				(@flag_next_step_id, @product_id, NULL)
-				,(@flag_solution_id, @product_id, NULL)
-				,(@flag_budget_id, @product_id, NULL)
-				,(@flag_attachment_id, @product_id, NULL)
-				,(@flag_ok_to_pay_id, @product_id, NULL)
-				,(@flag_is_paid_id, @product_id, NULL)
+				, (@flag_solution_id, @product_id, NULL)
+				, (@flag_budget_id, @product_id, NULL)
+				, (@flag_attachment_id, @product_id, NULL)
+				, (@flag_ok_to_pay_id, @product_id, NULL)
+				, (@flag_is_paid_id, @product_id, NULL)
 				;
 
 		# We update the BZ logs
@@ -5562,15 +5562,15 @@ BEGIN
                 # If not it is impossible to see this product in the BZFE backend.
                 ,(1, @can_see_unit_in_search_group_id,0)
                 # Visibility groups:
-                ,(@all_r_flags_group_id, @all_g_flags_group_id, 2)
-                ,(@see_visible_assignees_group_id, @list_visible_assignees_group_id, 2)
-                ,(@unit_creator_group_id, @unit_creator_group_id, 2)
-                ,(@group_id_see_users_tenant, @group_id_are_users_tenant, 2)
-                ,(@group_id_see_users_landlord, @group_id_are_users_landlord, 2)
-                ,(@group_id_see_users_agent, @group_id_are_users_contractor, 2)
-                ,(@group_id_see_users_mgt_cny, @group_id_are_users_mgt_cny, 2)
-                ,(@group_id_see_users_occupant, @group_id_are_users_occupant, 2)
-                ,(@group_id_see_users_invited_by, @group_id_are_users_invited_by, 2)
+                , (@all_r_flags_group_id, @all_g_flags_group_id, 2)
+                , (@see_visible_assignees_group_id, @list_visible_assignees_group_id, 2)
+                , (@unit_creator_group_id, @unit_creator_group_id, 2)
+                , (@group_id_see_users_tenant, @group_id_are_users_tenant, 2)
+                , (@group_id_see_users_landlord, @group_id_are_users_landlord, 2)
+                , (@group_id_see_users_agent, @group_id_are_users_contractor, 2)
+                , (@group_id_see_users_mgt_cny, @group_id_are_users_mgt_cny, 2)
+                , (@group_id_see_users_occupant, @group_id_are_users_occupant, 2)
+                , (@group_id_see_users_invited_by, @group_id_are_users_invited_by, 2)
                 ;
 
 	# We make sure that only user in certain groups can create, edit or see cases.
@@ -5587,17 +5587,17 @@ BEGIN
 			) 
 			VALUES 
 			(@create_case_group_id, @product_id, 1, 0, 0, 0, 0, 0, 0)
-			,(@can_edit_case_group_id, @product_id, 1, 0, 0, 1, 0, 0, 1)
-			,(@can_edit_all_field_case_group_id, @product_id, 1, 0, 0, 1, 0, 1, 1)
-			,(@can_edit_component_group_id, @product_id, 0, 0, 0, 0, 1, 0, 0)
-			,(@can_see_cases_group_id, @product_id, 0, 2, 0, 0, 0, 0, 0)
-			,(@can_see_unit_in_search_group_id, @product_id, 0, 3, 3, 0, 0, 0, 0)
-			,(@group_id_show_to_tenant, @product_id, 0, 2, 0, 0, 0, 0, 0)
-			,(@group_id_show_to_landlord, @product_id, 0, 2, 0, 0, 0, 0, 0)
-			,(@group_id_show_to_agent, @product_id, 0, 2, 0, 0, 0, 0, 0)
-			,(@group_id_show_to_contractor, @product_id, 0, 2, 0, 0, 0, 0, 0)
-			,(@group_id_show_to_mgt_cny, @product_id, 0, 2, 0, 0, 0, 0, 0)
-			,(@group_id_show_to_occupant, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			, (@can_edit_case_group_id, @product_id, 1, 0, 0, 1, 0, 0, 1)
+			, (@can_edit_all_field_case_group_id, @product_id, 1, 0, 0, 1, 0, 1, 1)
+			, (@can_edit_component_group_id, @product_id, 0, 0, 0, 0, 1, 0, 0)
+			, (@can_see_cases_group_id, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			, (@can_see_unit_in_search_group_id, @product_id, 0, 3, 3, 0, 0, 0, 0)
+			, (@group_id_show_to_tenant, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			, (@group_id_show_to_landlord, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			, (@group_id_show_to_agent, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			, (@group_id_show_to_contractor, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			, (@group_id_show_to_mgt_cny, @product_id, 0, 2, 0, 0, 0, 0, 0)
+			, (@group_id_show_to_occupant, @product_id, 0, 2, 0, 0, 0, 0, 0)
 			;
 
 		# Log the actions of the script.
@@ -5689,7 +5689,7 @@ BEGIN
 					# We need several variables to build this
 						SET @serie_search_prefix_component_open = 'field0-0-0=resolution&type0-0-0=notregexp&value0-0-0=.&product='; 
 						SET @serie_search_prefix_component_closed = 'field0-0-0=resolution&type0-0-0=regexp&value0-0-0=.&product=';
-					SET @component_name_for_serie_tenant = REPLACE(@role_user_g_description_tenant, ' ', '%20');
+				    	SET @component_name_for_serie_tenant = REPLACE(@role_user_g_description_tenant, ' ', '%20');
 						SET @component_name_for_serie_landlord = REPLACE(@role_user_g_description_landlord, ' ', '%20');
 						SET @component_name_for_serie_contractor = REPLACE(@role_user_g_description_contractor, ' ', '%20');
 						SET @component_name_for_serie_mgtcny = REPLACE(@role_user_g_description_mgt_cny, ' ', '%20');
@@ -5699,52 +5699,52 @@ BEGIN
 					
 						SET @serie_search_all_open_tenant = (CONCAT (@serie_search_prefix_component_open
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_tenant)
 							);
 						SET @serie_search_all_closed_tenant = (CONCAT (@serie_search_prefix_component_closed
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_tenant)
 							);
 						SET @serie_search_all_open_landlord = (CONCAT (@serie_search_prefix_component_open
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_landlord)
 							);
 						SET @serie_search_all_closed_landlord = (CONCAT (@serie_search_prefix_component_closed
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_landlord)
 							);
 						SET @serie_search_all_open_contractor = (CONCAT (@serie_search_prefix_component_open
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_contractor)
 							);
 						SET @serie_search_all_closed_contractor = (CONCAT (@serie_search_prefix_component_closed
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_contractor)
 							);
 						SET @serie_search_all_open_mgtcny = (CONCAT (@serie_search_prefix_component_open
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_mgtcny)
 							);
 						SET @serie_search_all_closed_mgtcny = (CONCAT (@serie_search_prefix_component_closed
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_mgtcny)
 							);
 						SET @serie_search_all_open_agent = (CONCAT (@serie_search_prefix_component_open
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_agent)
 							);
 						SET @serie_search_all_closed_agent = (CONCAT (@serie_search_prefix_component_closed
 							, @unit_name_for_serie_query
-							,'&component='
+							, '&component='
 							, @component_name_for_serie_agent)
 							);
 
