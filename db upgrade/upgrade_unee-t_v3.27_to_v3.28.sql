@@ -3796,7 +3796,7 @@ BEGIN
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_tenant
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
                                             , 'with temporary user as the '
                                             , 'tenant:'
@@ -3849,7 +3849,7 @@ BEGIN
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_landlord
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
                                             , 'with temporary user as the '
                                             , 'Landlord:'
@@ -3902,7 +3902,7 @@ BEGIN
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_agent
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
                                             , 'with temporary user as the '
                                             , 'Agent:'
@@ -3955,7 +3955,7 @@ BEGIN
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_contractor
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
                                             , 'with temporary user as the '
                                             , 'Contractor:'
@@ -4008,7 +4008,7 @@ BEGIN
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_mgt_cny
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
                                             , 'with temporary user as the '
                                             , 'Management Company:'
@@ -5694,7 +5694,7 @@ BEGIN
                     SET @script_log_message = CONCAT('The following flag Next Step (#'
                                         , (SELECT IFNULL(@flag_next_step_id, 'flag_next_step is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -5746,7 +5746,7 @@ BEGIN
                     SET @script_log_message = CONCAT('The following flag Solution (#'
                                         , (SELECT IFNULL(@flag_solution_id, 'flag_solution is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -5798,7 +5798,7 @@ BEGIN
                     SET @script_log_message = CONCAT('The following flag Budget (#'
                                         , (SELECT IFNULL(@flag_budget_id, 'flag_budget is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -5850,7 +5850,7 @@ BEGIN
                     SET @script_log_message = CONCAT('The following flag Attachment (#'
                                         , (SELECT IFNULL(@flag_attachment_id, 'flag_attachment is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -5902,7 +5902,7 @@ BEGIN
                     SET @script_log_message = CONCAT('The following flag OK to pay (#'
                                         , (SELECT IFNULL(@flag_ok_to_pay_id, 'flag_ok_to_pay is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -5954,7 +5954,7 @@ BEGIN
                     SET @script_log_message = CONCAT('The following flag Is paid (#'
                                         , (SELECT IFNULL(@flag_is_paid_id, 'flag_is_paid is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
