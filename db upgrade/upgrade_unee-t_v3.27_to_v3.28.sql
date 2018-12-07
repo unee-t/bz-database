@@ -3357,7 +3357,7 @@ SQL SECURITY INVOKER
 BEGIN
 
 	# DELETE the temp table if it exists
-	    DROP TABLE IF EXISTS `ut_group_group_map_temp`;
+	    DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_temp`;
 
 	# Re-create the temp table
         CREATE TEMPORARY TABLE `ut_group_group_map_temp` (
@@ -3826,8 +3826,7 @@ BEGIN
 
             # Landlord (component_id_landlord)
                 INSERT INTO `components`
-                    (`id`
-                    , `name`
+                    (`name`
                     , `product_id`
                     , `initialowner`
                     , `initialqacontact`
@@ -3835,8 +3834,7 @@ BEGIN
                     , `isactive`
                     ) 
                     VALUES
-                    (@component_id_landlord
-                    , @role_user_g_description_landlord
+                    (@role_user_g_description_landlord
                     , @product_id
                     , @bz_user_id_dummy_landlord
                     , @bz_user_id_dummy_landlord
@@ -3881,8 +3879,7 @@ BEGIN
 
             # Agent (component_id_agent)
                 INSERT INTO `components`
-                    (`id`
-                    , `name`
+                    (`name`
                     , `product_id`
                     , `initialowner`
                     , `initialqacontact`
@@ -3890,8 +3887,7 @@ BEGIN
                     , `isactive`
                     ) 
                     VALUES
-                    (@component_id_agent
-                    , @role_user_g_description_agent
+                    (@role_user_g_description_agent
                     , @product_id
                     , @bz_user_id_dummy_agent
                     , @bz_user_id_dummy_agent
@@ -3936,8 +3932,7 @@ BEGIN
 
             # Contractor (component_id_contractor)
                 INSERT INTO `components`
-                    (`id`
-                    , `name`
+                    (`name`
                     , `product_id`
                     , `initialowner`
                     , `initialqacontact`
@@ -3945,8 +3940,7 @@ BEGIN
                     , `isactive`
                     ) 
                     VALUES
-                    (@component_id_contractor
-                    , @role_user_g_description_contractor
+                    (@role_user_g_description_contractor
                     , @product_id
                     , @bz_user_id_dummy_contractor
                     , @bz_user_id_dummy_contractor
@@ -3991,8 +3985,7 @@ BEGIN
             
             # Management Company (component_id_mgt_cny)
                 INSERT INTO `components`
-                    (`id`
-                    , `name`
+                    (`name`
                     , `product_id`
                     , `initialowner`
                     , `initialqacontact`
@@ -4000,8 +3993,7 @@ BEGIN
                     , `isactive`
                     ) 
                     VALUES
-                    (@component_id_mgt_cny
-                    , @role_user_g_description_mgt_cny
+                    (@role_user_g_description_mgt_cny
                     , @product_id
                     , @bz_user_id_dummy_mgt_cny
                     , @bz_user_id_dummy_mgt_cny
