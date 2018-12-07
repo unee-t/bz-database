@@ -96,6 +96,8 @@
 #           - `ut_group_group_map_dedup`
 #           - `ut_temp_dummy_users_for_roles`
 #           - `user_group_map_dedup`
+#           - `ut_group_group_map_temp`
+#           - `ut_user_group_map_temp`
 #
 #   - Upgrade the procedure `update_permissions_invited_user`
 #       - Use Temporary table to do the deduplication of records
@@ -106,6 +108,12 @@
 #   - Update the procedure `add_user_to_role_in_unit` 
 #       - Make sure we do NOT call the procedure `create_temp_table_to_update_permissions`
 #       - Minor improvements to the code
+#
+#WIP   - Upgrade the procedure `create_temp_table_to_update_group_permissions`
+#     Make sure we use tenporary SQL tables.
+#
+#WIP   - Upgrade the procedure `create_temp_table_to_update_permissions`
+#     Make sure we use tenporary SQL tables.
 #
 #   - Upgrade the procedure `unit_create_with_dummy_users`
 #       - In the `products` table, we start by trying to predict the next available id for a record
@@ -2566,16 +2574,22 @@ DELIMITER ;
 
 # Clean up
     # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
-	DROP TABLE IF EXISTS `user_group_map_dedup`;
+	    DROP TABLE IF EXISTS `user_group_map_dedup`;
 
     # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
-	DROP TABLE IF EXISTS `ut_group_group_map_dedup`;
+	    DROP TABLE IF EXISTS `ut_group_group_map_dedup`;
 
     # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
-	DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+	    DROP TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
 
     # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
-    DROP TABLE IF EXISTS `ut_component_cc_temp`;
+        DROP TABLE IF EXISTS `ut_component_cc_temp`;
+
+    # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
+        DROP TABLE IF EXISTS `ut_user_group_map_temp`;
+
+    # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
+        DROP TABLE IF EXISTS `ut_group_group_map_temp`;
 
 # Update the procedure `update_permissions_invited_user`
 # When we update the permissions, make sure we do not delete the table `ut_user_group_map_temp`
@@ -2592,6 +2606,10 @@ BEGIN
     #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
     #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
     #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
+    					
+    # We need the table `ut_user_group_map_temp`
+        CALL `create_temp_table_to_update_permissions`;
+
 
 	# We drop the deduplication table if it exists:
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
@@ -2618,6 +2636,8 @@ BEGIN
 			, `group_id`
 			, `isbless`
 			, `grant_type`
+        ORDER BY `user_id` ASC
+            , `group_id` ASC
 		;
 			
 	# We insert the data we need in the `user_group_map` table
@@ -2681,7 +2701,7 @@ END $$
 DELIMITER ;
 
 # Update the procedure `add_user_to_role_in_unit` to invite a user to a role in a unit
-#   - Make sure we do NOT call the procedure `create_temp_table_to_update_permissions`
+#   - Make sure we DO call the procedure `create_temp_table_to_update_permissions`
 #   - Minor improvements to the code
 
     DROP PROCEDURE IF EXISTS `add_user_to_role_in_unit`;
@@ -2780,9 +2800,14 @@ BEGIN
     # Limits of this script:
     #	- Unit must have all roles created with Dummy user roles.
     #
+    #    
+					
+    # We need the table `ut_user_group_map_temp`
+        CALL `create_temp_table_to_update_permissions`;
+    
     #####################################################
     #					
-    # First we need to define all the variables we need
+    # We need to define all the variables we need
     #					
     #####################################################
 
@@ -3322,6 +3347,66 @@ END
 $$
 DELIMITER ;
 
+# Update the procedure to create a temp table to assign group permissions
+
+    DROP PROCEDURE IF EXISTS `create_temp_table_to_update_group_permissions`;
+
+DELIMITER $$
+CREATE PROCEDURE `create_temp_table_to_update_group_permissions`()
+SQL SECURITY INVOKER
+BEGIN
+
+	# DELETE the temp table if it exists
+	    DROP TABLE IF EXISTS `ut_group_group_map_temp`;
+
+	# Re-create the temp table
+        CREATE TEMPORARY TABLE `ut_group_group_map_temp` (
+        `member_id` MEDIUMINT(9) NOT NULL
+        , `grantor_id` MEDIUMINT(9) NOT NULL
+        , `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+        )
+        ;
+    # Add the records that exist in the table group_group_map
+        INSERT INTO `ut_group_group_map_temp`
+            SELECT *
+            FROM `group_group_map`
+        ;
+
+END
+$$
+DELIMITER ;
+
+# Update the procedure to create a temp table to assign user permissions
+
+    DROP PROCEDURE IF EXISTS `create_temp_table_to_update_permissions`;
+
+DELIMITER $$
+CREATE PROCEDURE `create_temp_table_to_update_permissions`()
+SQL SECURITY INVOKER
+BEGIN
+    # We use a temporary table to make sure we do not have duplicates.
+		
+		# DELETE the temp table if it exists
+		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_temp`;
+		
+		# Re-create the temp table
+		CREATE TEMPORARY TABLE `ut_user_group_map_temp` (
+		  `user_id` MEDIUMINT(9) NOT NULL
+		  , `group_id` MEDIUMINT(9) NOT NULL
+		  , `isbless` TINYINT(4) NOT NULL DEFAULT 0
+          , `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+		)
+        ;
+
+		# Add all the records that exists in the table user_group_map
+		INSERT INTO `ut_user_group_map_temp`
+			SELECT *
+			FROM `user_group_map`;
+
+END
+$$
+DELIMITER ;
+
 # Update the procedure to create a unit with dummy users
 
     DROP PROCEDURE IF EXISTS `unit_create_with_dummy_users`;
@@ -3384,6 +3469,12 @@ BEGIN
 	# We create a temporary table to record the ids of the dummy users in each environments:
 
         CALL `table_to_list_dummy_user_by_environment`;
+
+    # We create the temporary tables to update the group permissions
+        CALL `create_temp_table_to_update_group_permissions`;
+    
+    # We create the temporary tables to update the user permissions
+        CALL `create_temp_table_to_update_permissions`;
 			
 	# Get the BZ profile id of the dummy users based on the environment variable
 		# Tenant 1
@@ -6470,7 +6561,7 @@ BEGIN
 				 
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
-			
+
 	# We give the user the permission they need.
 
         # We update the `group_group_map` table first
@@ -6482,7 +6573,6 @@ BEGIN
                 DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
 
             # We create a table `ut_group_group_map_dedup` to prepare the data we need to insert
-
                 CREATE TEMPORARY TABLE `ut_group_group_map_dedup` (
                     `member_id` mediumint(9) NOT NULL,
                     `grantor_id` mediumint(9) NOT NULL,
@@ -6495,7 +6585,6 @@ BEGIN
                 ;
     
             # We insert the de-duplicated record in the table `ut_group_group_map_dedup`
-
                 INSERT INTO `ut_group_group_map_dedup`
                 SELECT `member_id`
                     , `grantor_id`
@@ -6505,8 +6594,10 @@ BEGIN
                 GROUP BY `member_id`
                     , `grantor_id`
                     , `grant_type`
+                ORDER BY `member_id` ASC
+                    , `grantor_id` ASC
                 ;
-                    
+
             # We insert the data we need in the `group_group_map` table
                 INSERT INTO `group_group_map`
                 SELECT `member_id`
