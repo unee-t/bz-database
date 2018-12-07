@@ -53,9 +53,9 @@
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
+#           - `ut_data_to_create_units`
 #WIP       - `series_categories`
 #WIP       - `series`
-#WIP       - `ut_data_to_create_units`
 #WIP       - `ut_invitation_api_data`
 #
 #       - DELETE records in the tables
@@ -70,9 +70,9 @@
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
+#           - `ut_data_to_create_units`
 #WIP       - `series_categories`
 #WIP       - `series`
-#WIP       - `ut_data_to_create_units`
 #WIP       - `ut_invitation_api_data`
 #
 #       - UPDATE records in the tables
@@ -87,9 +87,9 @@
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
+#           - `ut_data_to_create_units`
 #WIP       - `series_categories`
 #WIP       - `series`
-#WIP       - `ut_data_to_create_units`
 #WIP       - `ut_invitation_api_data`
 #
 #   - Cleanup drop the following tables (will be replaced by temp tables)
@@ -2226,6 +2226,274 @@ CREATE TRIGGER `trig_update_audit_log_update_record_ut_product_group`
 END;
 $$
 DELIMITER ;
+
+# The `ut_data_to_create_units` table
+
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `ut_data_to_create_units`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_ut_data_to_create_units`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_ut_data_to_create_units`
+    AFTER INSERT ON `ut_data_to_create_units`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_id_unit_to_create = new.id_unit_to_create;
+        SET @new_mefe_unit_id = new.mefe_unit_id;
+        SET @new_mefe_creator_user_id = new.mefe_creator_user_id;
+        SET @new_bzfe_creator_user_id = new.bzfe_creator_user_id;
+        SET @new_classification_id = new.classification_id;
+        SET @new_unit_name = new.unit_name;
+        SET @new_unit_description_details = new.unit_description_details;
+        SET @new_bz_created_date = new.bz_created_date;
+        SET @new_comment = new.comment;
+        SET @new_product_id = new.product_id;
+        SET @new_deleted_datetime = new.deleted_datetime;
+        SET @new_deletion_script = new.deletion_script;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_data_to_create_units';
+        SET @bzfe_field = 'id_unit_to_create, mefe_unit_id, mefe_creator_user_id, bzfe_creator_user_id, classification_id, unit_name, unit_description_details, bz_created_date, comment, product_id, deleted_datetime, deletion_script';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_id_unit_to_create
+                , ', '
+                , IFNULL(@new_mefe_unit_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_mefe_creator_user_id, '(NULL)')
+                , ', '
+                , @new_bzfe_creator_user_id
+                , ', '
+                , @new_classification_id
+                , ', '
+                , @new_unit_name
+                , ', '
+                , IFNULL(@new_unit_description_details, '(NULL)')
+                , ', '
+                , IFNULL(@new_bz_created_date, '(NULL)')
+                , ', '
+                , IFNULL(@new_comment, '(NULL)')
+                , ', '
+                , IFNULL(@new_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_deleted_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@new_deletion_script, '(NULL)')
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_data_to_create_units';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `ut_data_to_create_units`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_ut_data_to_create_units`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_ut_data_to_create_units`
+    AFTER DELETE ON `ut_data_to_create_units`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_id_unit_to_create = old.id_unit_to_create;
+        SET @old_mefe_unit_id = old.mefe_unit_id;
+        SET @old_mefe_creator_user_id = old.mefe_creator_user_id;
+        SET @old_bzfe_creator_user_id = old.bzfe_creator_user_id;
+        SET @old_classification_id = old.classification_id;
+        SET @old_unit_name = old.unit_name;
+        SET @old_unit_description_details = old.unit_description_details;
+        SET @old_bz_created_date = old.bz_created_date;
+        SET @old_comment = old.comment;
+        SET @old_product_id = old.product_id;
+        SET @old_deleted_datetime = old.deleted_datetime;
+        SET @old_deletion_script = old.deletion_script;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_data_to_create_units';
+        SET @bzfe_field = 'id_unit_to_create, mefe_unit_id, mefe_creator_user_id, bzfe_creator_user_id, classification_id, unit_name, unit_description_details, bz_created_date, comment, product_id, deleted_datetime, deletion_script';
+        SET @previous_value = CONCAT (
+                @old_id_unit_to_create
+                , ', '
+                , IFNULL(@old_mefe_unit_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_mefe_creator_user_id, '(NULL)')
+                , ', '
+                , @old_bzfe_creator_user_id
+                , ', '
+                , @old_classification_id
+                , ', '
+                , @old_unit_name
+                , ', '
+                , IFNULL(@old_unit_description_details, '(NULL)')
+                , ', '
+                , IFNULL(@old_bz_created_date, '(NULL)')
+                , ', '
+                , IFNULL(@old_comment, '(NULL)')
+                , ', '
+                , IFNULL(@old_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_deleted_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@old_deletion_script, '(NULL)')
+            )
+           ;
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_data_to_create_units';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `ut_data_to_create_units`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_ut_data_to_create_units`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_ut_data_to_create_units`
+    AFTER UPDATE ON `ut_data_to_create_units`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_id_unit_to_create = new.id_unit_to_create;
+        SET @new_mefe_unit_id = new.mefe_unit_id;
+        SET @new_mefe_creator_user_id = new.mefe_creator_user_id;
+        SET @new_bzfe_creator_user_id = new.bzfe_creator_user_id;
+        SET @new_classification_id = new.classification_id;
+        SET @new_unit_name = new.unit_name;
+        SET @new_unit_description_details = new.unit_description_details;
+        SET @new_bz_created_date = new.bz_created_date;
+        SET @new_comment = new.comment;
+        SET @new_product_id = new.product_id;
+        SET @new_deleted_datetime = new.deleted_datetime;
+        SET @new_deletion_script = new.deletion_script;
+        
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_id_unit_to_create = old.id_unit_to_create;
+        SET @old_mefe_unit_id = old.mefe_unit_id;
+        SET @old_mefe_creator_user_id = old.mefe_creator_user_id;
+        SET @old_bzfe_creator_user_id = old.bzfe_creator_user_id;
+        SET @old_classification_id = old.classification_id;
+        SET @old_unit_name = old.unit_name;
+        SET @old_unit_description_details = old.unit_description_details;
+        SET @old_bz_created_date = old.bz_created_date;
+        SET @old_comment = old.comment;
+        SET @old_product_id = old.product_id;
+        SET @old_deleted_datetime = old.deleted_datetime;
+        SET @old_deletion_script = old.deletion_script;
+        
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_data_to_create_units';
+        SET @bzfe_field = 'id_unit_to_create, mefe_unit_id, mefe_creator_user_id, bzfe_creator_user_id, classification_id, unit_name, unit_description_details, bz_created_date, comment, product_id, deleted_datetime, deletion_script';
+        SET @previous_value = CONCAT (
+                @old_id_unit_to_create
+                , ', '
+                , IFNULL(@old_mefe_unit_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_mefe_creator_user_id, '(NULL)')
+                , ', '
+                , @old_bzfe_creator_user_id
+                , ', '
+                , @old_classification_id
+                , ', '
+                , @old_unit_name
+                , ', '
+                , IFNULL(@old_unit_description_details, '(NULL)')
+                , ', '
+                , IFNULL(@old_bz_created_date, '(NULL)')
+                , ', '
+                , IFNULL(@old_comment, '(NULL)')
+                , ', '
+                , IFNULL(@old_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_deleted_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@old_deletion_script, '(NULL)')
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_id_unit_to_create
+                , ', '
+                , IFNULL(@new_mefe_unit_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_mefe_creator_user_id, '(NULL)')
+                , ', '
+                , @new_bzfe_creator_user_id
+                , ', '
+                , @new_classification_id
+                , ', '
+                , @new_unit_name
+                , ', '
+                , IFNULL(@new_unit_description_details, '(NULL)')
+                , ', '
+                , IFNULL(@new_bz_created_date, '(NULL)')
+                , ', '
+                , IFNULL(@new_comment, '(NULL)')
+                , ', '
+                , IFNULL(@new_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_deleted_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@new_deletion_script, '(NULL)')
+            )
+           ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_data_to_create_units';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
