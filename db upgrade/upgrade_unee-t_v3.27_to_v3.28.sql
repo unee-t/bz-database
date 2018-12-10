@@ -34,6 +34,7 @@
 #       - `flagtypes`
 #       - `flaginclusions`
 #       - `group_control_map`
+#       - `group_group_map`
 #       - `ut_product_group`
 #       - `series_categories`
 #       - `series`
@@ -54,6 +55,7 @@
 #           - `group_control_map`
 #           - `ut_product_group`
 #           - `ut_data_to_create_units`
+#           - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_invitation_api_data`
@@ -71,6 +73,7 @@
 #           - `group_control_map`
 #           - `ut_product_group`
 #           - `ut_data_to_create_units`
+#           - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_invitation_api_data`
@@ -88,6 +91,7 @@
 #           - `group_control_map`
 #           - `ut_product_group`
 #           - `ut_data_to_create_units`
+#           - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_invitation_api_data`
@@ -156,6 +160,79 @@
 #       - Create a dedicated dedup table so we do not have to truncate the table when we add records
 #
 #   - Update the procedure `user_is_default_assignee_for_cases`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `default_contractor_see_users_contractor`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `default_agent_see_users_agent`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `are_users_agent`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `show_to_agent`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `are_users_contractor`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `show_to_contractor`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `default_landlord_see_users_landlord`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `are_users_landlord`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `show_to_landlord`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `default_mgt_cny_see_users_mgt_cny`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `are_users_mgt_cny`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `show_to_mgt_cny`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `default_tenant_see_users_tenant`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `are_users_tenant`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure `show_to_tenant`
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+##
+#
+#WIP   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure ``
+#       - Do not write in the table `ut_audit_log` (this is done with triggers)
+#
+#WIP   - Update the procedure ``
 #       - Do not write in the table `ut_audit_log` (this is done with triggers)
 #
 
@@ -2039,6 +2116,154 @@ END;
 $$
 DELIMITER ;
 
+# The `group_group_map` table
+
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `group_group_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_group_group_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_group_group_map`
+    AFTER INSERT ON `group_group_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_member_id = new.member_id;
+        SET @new_grantor_id = new.grantor_id;
+        SET @new_grant_type = new.grant_type;
+
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_group_map';
+        SET @bzfe_field = 'member_id, grantor_id, grant_type';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_member_id
+                , ', '
+                , @new_grantor_id
+                , ', '
+                , @new_grant_type
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_group_group_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `group_group_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_group_group_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_group_group_map`
+    AFTER DELETE ON `group_group_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_member_id = old.member_id;
+        SET @old_grantor_id = old.grantor_id;
+        SET @old_grant_type = old.grant_type;
+        
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_group_map';
+        SET @bzfe_field = 'member_id, grantor_id, grant_type';
+        SET @previous_value = CONCAT (
+                @old_member_id
+                , ', '
+                , @old_grantor_id
+                , ', '
+                , @old_grant_type 
+            )
+           ;
+        SET @new_value = NULL;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_group_group_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `group_group_map`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_group_group_map`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_group_group_map`
+    AFTER UPDATE ON `group_group_map`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_member_id = new.member_id;
+        SET @new_grantor_id = new.grantor_id;
+        SET @new_grant_type = new.grant_type;
+        
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_member_id = old.member_id;
+        SET @old_grantor_id = old.grantor_id;
+        SET @old_grant_type = old.grant_type;
+        
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_group_map';
+        SET @bzfe_field = 'member_id, grantor_id, grant_type';
+        SET @previous_value = CONCAT (
+                @old_member_id
+                , ', '
+                , @old_grantor_id
+                , ', '
+                , @old_grant_type
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_member_id
+                , ', '
+                , @new_grantor_id
+                , ', '
+                , @new_grant_type
+            )
+           ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_group_group_map';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
 # The `ut_product_group` table
 
     # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `ut_product_group`
@@ -2513,12 +2738,13 @@ DELIMITER ;
 #           - `versions`
 #           - `milestones`
 #           - `components`
-#WIP       - `component_cc`
+#           - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
+#WIP       - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
@@ -2530,12 +2756,13 @@ DELIMITER ;
 #           - `versions`
 #           - `milestones`
 #           - `components`
-#WIP       - `component_cc`
+#           - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
+#WIP       - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
@@ -2547,12 +2774,13 @@ DELIMITER ;
 #           - `versions`
 #           - `milestones`
 #           - `components`
-#WIP       - `component_cc`
+#           - `component_cc`
 #           - `groups`
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
+#WIP       - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
