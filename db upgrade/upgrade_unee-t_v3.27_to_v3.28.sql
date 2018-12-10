@@ -2834,9 +2834,8 @@ BEGIN
     #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
     #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
     #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
-    					
-    # We need the table `ut_user_group_map_temp`
-        CALL `create_temp_table_to_update_permissions`;
+    #
+    # We NEED the table `ut_user_group_map_temp` BUT this table should already exist. DO NO re-create it here!!!
 
 	# We drop the deduplication table if it exists:
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
@@ -3028,9 +3027,6 @@ BEGIN
     #	- Unit must have all roles created with Dummy user roles.
     #
     #    
-					
-    # We need the table `ut_user_group_map_temp`
-        CALL `create_temp_table_to_update_permissions`;
     
     #####################################################
     #					
@@ -3284,10 +3280,13 @@ BEGIN
                 )
             )
             ;
-                                    
+
+    # We need to create the table to prepare the permissions for the users:
+        CALL `create_temp_table_to_update_permissions`;
+    
     #################################################################
     #
-    # All the variables have been set - we can call the procedures
+    # All the variables and tables have been set - we can call the procedures
     #
     #################################################################
         
@@ -3426,6 +3425,8 @@ BEGIN
             #	- Variables:
             #		- @product_id
             #		- @bz_user_id
+            #	- table 
+            #       - 'ut_user_group_map_temp'
             CALL `revoke_all_permission_for_this_user_in_this_unit`;
             
         # Prepare the permissions - configure these to default:
@@ -6922,6 +6923,9 @@ BEGIN
 	#		- @id_role_type
 	# 		- @this_script
 	#		- @creator_bz_id
+    #
+    #   - Tables:
+    #       - `ut_user_group_map_temp`
 
 	# We only do this if this is needed:
 	IF (@remove_user_from_role = 1)
@@ -6933,9 +6937,6 @@ BEGIN
 		#
 		# The script also reset the permissions for this user for this role for this unit to the default permissions.
 		# We need to remove ALL the permissions for this user.
-		
-			# Create the table to prepare the permissions
-				CALL `create_temp_table_to_update_permissions`;
 				
 			# Revoke all permissions for this user in this unit
 				# This procedure needs the following objects:
