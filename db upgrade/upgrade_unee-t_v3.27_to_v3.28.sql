@@ -53,12 +53,12 @@
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
+#           - `group_group_map`
 #           - `ut_product_group`
 #           - `ut_data_to_create_units`
-#           - `group_group_map`
+#           - `ut_invitation_api_data`
 #WIP       - `series_categories`
 #WIP       - `series`
-#WIP       - `ut_invitation_api_data`
 #
 #       - DELETE records in the tables
 #           - `user_group_map`
@@ -71,12 +71,12 @@
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
+#           - `group_group_map`
 #           - `ut_product_group`
 #           - `ut_data_to_create_units`
-#           - `group_group_map`
+#           - `ut_invitation_api_data`
 #WIP       - `series_categories`
 #WIP       - `series`
-#WIP       - `ut_invitation_api_data`
 #
 #       - UPDATE records in the tables
 #           - `user_group_map`
@@ -89,12 +89,12 @@
 #           - `flagtypes`
 #           - `flaginclusions`
 #           - `group_control_map`
+#           - `group_group_map`
 #           - `ut_product_group`
 #           - `ut_data_to_create_units`
-#           - `group_group_map`
+#           - `ut_invitation_api_data`
 #WIP       - `series_categories`
 #WIP       - `series`
-#WIP       - `ut_invitation_api_data`
 #
 #   - Cleanup drop the following tables (will be replaced by temp tables)
 #           - `ut_group_group_map_dedup`
@@ -2716,89 +2716,304 @@ END;
 $$
 DELIMITER ;
 
+# The `ut_invitation_api_data` table
 
+    # INSERT TRIGGER Create a trigger that calls the relevant procedure each time a record is added to the table `ut_invitation_api_data`
 
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_new_record_ut_invitation_api_data`;
 
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_new_record_ut_invitation_api_data`
+    AFTER INSERT ON `ut_invitation_api_data`
+    FOR EACH ROW
+  BEGIN
 
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_id = new.id;
+        SET @new_mefe_invitation_id = new.mefe_invitation_id;
+        SET @new_bzfe_invitor_user_id = new.bzfe_invitor_user_id;
+        SET @new_bz_user_id = new.bz_user_id;
+        SET @new_user_role_type_id = new.user_role_type_id;
+        SET @new_is_occupant = new.is_occupant;
+        SET @new_bz_case_id = new.bz_case_id;
+        SET @new_bz_unit_id = new.bz_unit_id;
+        SET @new_invitation_type = new.invitation_type;
+        SET @new_is_mefe_only_user = new.is_mefe_only_user;
+        SET @new_user_more = new.user_more;
+        SET @new_mefe_invitor_user_id = new.mefe_invitor_user_id;
+        SET @new_processed_datetime = new.processed_datetime;
+        SET @new_script = new.script;
+        SET @new_api_post_datetime = new.api_post_datetime;
 
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_invitation_api_data';
+        SET @bzfe_field = 'id, mefe_invitation_id, bzfe_invitor_user_id, bz_user_id, user_role_type_id, is_occupant, bz_case_id, bz_unit_id, invitation_type, is_mefe_only_user, user_more, mefe_invitor_user_id, processed_datetime, script, api_post_datetime';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_id
+                , ', '
+                , IFNULL(@new_mefe_invitation_id, '(NULL)')
+                , ', '
+                , @new_bzfe_invitor_user_id
+                , ', '
+                , @new_bz_user_id
+                , ', '
+                , @new_user_role_type_id
+                , ', '
+                , IFNULL(@new_is_occupant, '(NULL)')
+                , ', '
+                , IFNULL(@new_bz_case_id, '(NULL)')
+                , ', '
+                , @new_bz_unit_id
+                , ', '
+                , @new_invitation_type
+                , ', '
+                , IFNULL(@new_is_mefe_only_user, '(NULL)')
+                , ', '
+                , IFNULL(@new_user_more, '(NULL)')
+                , ', '
+                , IFNULL(@new_mefe_invitor_user_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_processed_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@new_script, '(NULL)')
+                , ', '
+                , IFNULL(@new_api_post_datetime, '(NULL)')
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_invitation_api_data';
 
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
 
+        CALL `update_audit_log`;
 
+END;
+$$
+DELIMITER ;
+            
+    # DELETE TRIGGER Create a trigger that calls the relevant procedure each time a record is deleted in the table `ut_invitation_api_data`
 
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_delete_record_ut_invitation_api_data`;
 
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_delete_record_ut_invitation_api_data`
+    AFTER DELETE ON `ut_invitation_api_data`
+    FOR EACH ROW
+  BEGIN
 
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_id = old.id;
+        SET @old_mefe_invitation_id = old.mefe_invitation_id;
+        SET @old_bzfe_invitor_user_id = old.bzfe_invitor_user_id;
+        SET @old_bz_user_id = old.bz_user_id;
+        SET @old_user_role_type_id = old.user_role_type_id;
+        SET @old_is_occupant = old.is_occupant;
+        SET @old_bz_case_id = old.bz_case_id;
+        SET @old_bz_unit_id = old.bz_unit_id;
+        SET @old_invitation_type = old.invitation_type;
+        SET @old_is_mefe_only_user = old.is_mefe_only_user;
+        SET @old_user_more = old.user_more;
+        SET @old_mefe_invitor_user_id = old.mefe_invitor_user_id;
+        SET @old_processed_datetime = old.processed_datetime;
+        SET @old_script = old.script;
+        SET @old_api_post_datetime = old.api_post_datetime;
 
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_invitation_api_data';
+        SET @bzfe_field = 'id, mefe_invitation_id, bzfe_invitor_user_id, bz_user_id, user_role_type_id, is_occupant, bz_case_id, bz_unit_id, invitation_type, is_mefe_only_user, user_more, mefe_invitor_user_id, processed_datetime, script, api_post_datetime';
+        SET @previous_value = CONCAT (
+                @old_id
+                , ', '
+                , IFNULL(@old_mefe_invitation_id, '(NULL)')
+                , ', '
+                , @old_bzfe_invitor_user_id
+                , ', '
+                , @old_bz_user_id
+                , ', '
+                , @old_user_role_type_id
+                , ', '
+                , IFNULL(@old_is_occupant, '(NULL)')
+                , ', '
+                , IFNULL(@old_bz_case_id, '(NULL)')
+                , ', '
+                , @old_bz_unit_id
+                , ', '
+                , @old_invitation_type
+                , ', '
+                , IFNULL(@old_is_mefe_only_user, '(NULL)')
+                , ', '
+                , IFNULL(@old_user_more, '(NULL)')
+                , ', '
+                , IFNULL(@old_mefe_invitor_user_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_processed_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@old_script, '(NULL)')
+                , ', '
+                , IFNULL(@old_api_post_datetime, '(NULL)')
+            )
+           ;
+        SET @new_value = NULL;
 
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_invitation_api_data';
 
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
 
-#   - Move the audit log function outside the scripts in dedicated trigger when we
-#       - INSERT records in the tables
-#           - `user_group_map`
-#           - `products`
-#           - `versions`
-#           - `milestones`
-#           - `components`
-#           - `component_cc`
-#           - `groups`
-#           - `flagtypes`
-#           - `flaginclusions`
-#           - `group_control_map`
-#           - `ut_product_group`
-#           - `group_group_map`
-#WIP       - `series_categories`
-#WIP       - `series`
-#WIP       - `ut_data_to_create_units`
-#WIP       - `ut_invitation_api_data`
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+    # UPDATE TRIGGER Create a trigger that calls the relevant procedure each time a record is updated in the table `ut_invitation_api_data`
+
+    DROP TRIGGER IF EXISTS `trig_update_audit_log_update_record_ut_invitation_api_data`;
+
+DELIMITER $$
+CREATE TRIGGER `trig_update_audit_log_update_record_ut_invitation_api_data`
+    AFTER UPDATE ON `ut_invitation_api_data`
+    FOR EACH ROW
+  BEGIN
+
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_id = new.id;
+        SET @new_mefe_invitation_id = new.mefe_invitation_id;
+        SET @new_bzfe_invitor_user_id = new.bzfe_invitor_user_id;
+        SET @new_bz_user_id = new.bz_user_id;
+        SET @new_user_role_type_id = new.user_role_type_id;
+        SET @new_is_occupant = new.is_occupant;
+        SET @new_bz_case_id = new.bz_case_id;
+        SET @new_bz_unit_id = new.bz_unit_id;
+        SET @new_invitation_type = new.invitation_type;
+        SET @new_is_mefe_only_user = new.is_mefe_only_user;
+        SET @new_user_more = new.user_more;
+        SET @new_mefe_invitor_user_id = new.mefe_invitor_user_id;
+        SET @new_processed_datetime = new.processed_datetime;
+        SET @new_script = new.script;
+        SET @new_api_post_datetime = new.api_post_datetime;
+        
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_id = old.id;
+        SET @old_mefe_invitation_id = old.mefe_invitation_id;
+        SET @old_bzfe_invitor_user_id = old.bzfe_invitor_user_id;
+        SET @old_bz_user_id = old.bz_user_id;
+        SET @old_user_role_type_id = old.user_role_type_id;
+        SET @old_is_occupant = old.is_occupant;
+        SET @old_bz_case_id = old.bz_case_id;
+        SET @old_bz_unit_id = old.bz_unit_id;
+        SET @old_invitation_type = old.invitation_type;
+        SET @old_is_mefe_only_user = old.is_mefe_only_user;
+        SET @old_user_more = old.user_more;
+        SET @old_mefe_invitor_user_id = old.mefe_invitor_user_id;
+        SET @old_processed_datetime = old.processed_datetime;
+        SET @old_script = old.script;
+        SET @old_api_post_datetime = old.api_post_datetime;
+                
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_invitation_api_data';
+        SET @bzfe_field = 'id, mefe_invitation_id, bzfe_invitor_user_id, bz_user_id, user_role_type_id, is_occupant, bz_case_id, bz_unit_id, invitation_type, is_mefe_only_user, user_more, mefe_invitor_user_id, processed_datetime, script, api_post_datetime';
+        SET @previous_value = CONCAT (
+                @old_id
+                , ', '
+                , IFNULL(@old_mefe_invitation_id, '(NULL)')
+                , ', '
+                , @old_bzfe_invitor_user_id
+                , ', '
+                , @old_bz_user_id
+                , ', '
+                , @old_user_role_type_id
+                , ', '
+                , IFNULL(@old_is_occupant, '(NULL)')
+                , ', '
+                , IFNULL(@old_bz_case_id, '(NULL)')
+                , ', '
+                , @old_bz_unit_id
+                , ', '
+                , @old_invitation_type
+                , ', '
+                , IFNULL(@old_is_mefe_only_user, '(NULL)')
+                , ', '
+                , IFNULL(@old_user_more, '(NULL)')
+                , ', '
+                , IFNULL(@old_mefe_invitor_user_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_processed_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@old_script, '(NULL)')
+                , ', '
+                , IFNULL(@old_api_post_datetime, '(NULL)')
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_id
+                , ', '
+                , IFNULL(@new_mefe_invitation_id, '(NULL)')
+                , ', '
+                , @new_bzfe_invitor_user_id
+                , ', '
+                , @new_bz_user_id
+                , ', '
+                , @new_user_role_type_id
+                , ', '
+                , IFNULL(@new_is_occupant, '(NULL)')
+                , ', '
+                , IFNULL(@new_bz_case_id, '(NULL)')
+                , ', '
+                , @new_bz_unit_id
+                , ', '
+                , @new_invitation_type
+                , ', '
+                , IFNULL(@new_is_mefe_only_user, '(NULL)')
+                , ', '
+                , IFNULL(@new_user_more, '(NULL)')
+                , ', '
+                , IFNULL(@new_mefe_invitor_user_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_processed_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@new_script, '(NULL)')
+                , ', '
+                , IFNULL(@new_api_post_datetime, '(NULL)')
+            )
+           ;
+
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_invitation_api_data';
+
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+
+        CALL `update_audit_log`;
+
+END;
+$$
+DELIMITER ;
+
+#######################
 #
-#       - DELETE records in the tables
-#           - `user_group_map`
-#           - `products`
-#           - `versions`
-#           - `milestones`
-#           - `components`
-#           - `component_cc`
-#           - `groups`
-#           - `flagtypes`
-#           - `flaginclusions`
-#           - `group_control_map`
-#           - `ut_product_group`
-#          - `group_group_map`
-#WIP       - `series_categories`
-#WIP       - `series`
-#WIP       - `ut_data_to_create_units`
-#WIP       - `ut_invitation_api_data`
+# End of the creation of the triggers
+# Begin updating procedures
 #
-#       - UPDATE records in the tables
-#           - `user_group_map`
-#           - `products`
-#           - `versions`
-#           - `milestones`
-#           - `components`
-#           - `component_cc`
-#           - `groups`
-#           - `flagtypes`
-#           - `flaginclusions`
-#           - `group_control_map`
-#           - `ut_product_group`
-#           - `group_group_map`
-#WIP       - `series_categories`
-#WIP       - `series`
-#WIP       - `ut_data_to_create_units`
-#WIP       - `ut_invitation_api_data`
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#######################
 
 # Clean up
     # We drop the table in case in exist in the DB (we want to replace it with a temporary table)
