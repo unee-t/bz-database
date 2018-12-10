@@ -245,7 +245,7 @@
 # When are we doing this?
 	SET @the_timestamp = NOW();
 
-# Create a procedure that will update the audit log each time a new record is created in the `user_group_map` table
+# Create a procedure that will update the audit log each time a new record is created in some tables
 
     DROP PROCEDURE IF EXISTS `update_audit_log`;
 
@@ -2744,7 +2744,7 @@ DELIMITER ;
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
-#WIP       - `group_group_map`
+#           - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
@@ -2762,7 +2762,7 @@ DELIMITER ;
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
-#WIP       - `group_group_map`
+#          - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
@@ -2780,7 +2780,7 @@ DELIMITER ;
 #           - `flaginclusions`
 #           - `group_control_map`
 #           - `ut_product_group`
-#WIP       - `group_group_map`
+#           - `group_group_map`
 #WIP       - `series_categories`
 #WIP       - `series`
 #WIP       - `ut_data_to_create_units`
@@ -2837,7 +2837,6 @@ BEGIN
     					
     # We need the table `ut_user_group_map_temp`
         CALL `create_temp_table_to_update_permissions`;
-
 
 	# We drop the deduplication table if it exists:
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
@@ -3647,9 +3646,6 @@ BEGIN
     #   - variables:
 	#	    - @mefe_unit_id
 	#	    - @environment
-    #   - Tables:
-    #       - `ut_group_group_map_temp`
-    #       - `ut_user_group_map_temp`
     #
     # This procedure needs the following info in the table `ut_data_to_create_units`
     #   - id_unit_to_create
@@ -4026,18 +4022,18 @@ BEGIN
                                             , @component_id_tenant
                                             , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_tenant, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_tenant, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'tenant:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_tenant, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '1'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_tenant, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_tenant, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'
                                             )
                                             ;
                     
@@ -4079,18 +4075,18 @@ BEGIN
                                             , @component_id_landlord
                                             , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_landlord, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_landlord, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'Landlord:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_landlord, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '2'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_landlord, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_landlord, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'
                                             )
                                             ;
                     
@@ -4132,18 +4128,18 @@ BEGIN
                                             , @component_id_agent
                                             , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_agent, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_agent, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'Agent:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_agent, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '5'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_agent, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_agent, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'
                                             )
                                             ;
                     
@@ -4185,18 +4181,18 @@ BEGIN
                                             , @component_id_contractor
                                             , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_contractor, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_contractor, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'Contractor:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_contractor, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '3'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_contractor, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_contractor, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'
                                             )
                                             ;
                     
@@ -4238,18 +4234,18 @@ BEGIN
                                             , @component_id_mgt_cny
                                             , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_mgt_cny, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_mgt_cny, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'Management Company:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_mgt_cny, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '4'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_mgt_cny, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_mgt_cny, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'								
                                             )
                                             ;
                     
