@@ -3778,6 +3778,9 @@ BEGIN
 
         # Timestamp	
             SET @timestamp = NOW();
+
+        # Make sure we have the correct value for the name of this script
+            SET @script = 'PROCEDURE add_user_to_role_in_unit';
             
         # We do the update to record that we have reached the end of the script...
             UPDATE `ut_invitation_api_data`
@@ -3978,16 +3981,21 @@ BEGIN
 	    	    SET @default_version = '---';
 			
 	# We now create the unit we need.
-		INSERT INTO `products`
-			(`name`
-			, `classification_id`
-			, `description`
-			, `isactive`
-			, `defaultmilestone`
-			, `allows_unconfirmed`
-			)
-			VALUES
-			(@unit_bz_name, @classification_id, @unit_description, 1, @default_milestone, 1);
+
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
+        # Insert the new product into the `products table`
+            INSERT INTO `products`
+                (`name`
+                , `classification_id`
+                , `description`
+                , `isactive`
+                , `defaultmilestone`
+                , `allows_unconfirmed`
+                )
+                VALUES
+                (@unit_bz_name, @classification_id, @unit_description, 1, @default_milestone, 1);
 	
         # Get the actual id that was created for that unit
             SET @product_id = (SELECT LAST_INSERT_ID());
@@ -4084,7 +4092,10 @@ BEGIN
 		SET @unit_for_group = REPLACE(@unit_for_group, '--', '-');
 
 		# We need a version for this product
-			
+
+            # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                SET @script = 'PROCEDURE unit_create_with_dummy_users';
+	
 			# We can now insert the version there
 				INSERT INTO `versions`
 					(`value`
@@ -4122,22 +4133,24 @@ BEGIN
 					
 		# We now create the milestone for this product.
 
+            # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 			# We can now insert the milestone there
-			INSERT INTO `milestones`
-				(`product_id`
-				, `value`
-				, `sortkey`
-				, `isactive`
-				)
-				VALUES
-				(@product_id, @default_milestone, 0 , 1)
-				;
-            
+                INSERT INTO `milestones`
+                    (`product_id`
+                    , `value`
+                    , `sortkey`
+                    , `isactive`
+                    )
+                    VALUES
+                    (@product_id, @default_milestone, 0 , 1)
+                    ;
+                
             # We get the id for the milestone 
                 SET @milestone_id = (SELECT LAST_INSERT_ID());
-		
+
 			# We also log this in the `audit_log` table
-			
 				INSERT INTO `audit_log` 
 					(`user_id`
 					, `class`
@@ -4210,6 +4223,9 @@ BEGIN
 
 		# We have eveything, we can create the components we need:
         # We insert the component 1 by 1 to get the id for each component easily
+
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
 
 			# Tenant (component_id_tenant)
                 INSERT INTO `components`
@@ -4643,6 +4659,9 @@ BEGIN
 
 		# We can populate the 'groups' table now.
         # We insert the groups 1 by 1 so we can get the id for each of these groups.
+
+            # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                SET @script = 'PROCEDURE unit_create_with_dummy_users';
 
             # create_case_group_id
             	INSERT INTO `groups`
@@ -5989,6 +6008,11 @@ BEGIN
 
 		# We record the groups we have just created:
 		#	We NEED the component_id for that
+
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
+        # We can now insert in the table
 			INSERT INTO `ut_product_group`
 				(
 				product_id
@@ -6097,6 +6121,9 @@ BEGIN
 			SET @flag_is_paid_name = CONCAT('is_paid_', @unit_for_flag);
 	
         # We insert the flagtypes 1 by 1 to get the id for each component easily
+
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
 
 		# Flagtype for next_step
 			INSERT INTO `flagtypes`
@@ -6411,6 +6438,11 @@ BEGIN
                     SET @script_log_message = NULL;	
 
 		# We also define the flag inclusion
+
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
+        # We can now do the insert
 			INSERT INTO `flaginclusions`
 				(`type_id`
 				, `product_id`
@@ -6513,6 +6545,11 @@ BEGIN
                 ;
 
 	# We make sure that only user in certain groups can create, edit or see cases.
+
+    # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+        SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
+    # We can now do the insert
 		INSERT INTO `group_control_map`
 			(`group_id`
 			, `product_id`
@@ -6690,6 +6727,9 @@ BEGIN
 		# We have eveything, we can create the series_categories we need:
         # We insert the series_categories 1 by 1 to get the id for each series_categories easily
 
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 		# We can now insert the series category product
 			INSERT INTO `series_categories`
 				(`name`
@@ -6757,6 +6797,10 @@ BEGIN
                 SET @series_category_component_agent = (SELECT LAST_INSERT_ID());
 
         # We do not need the series_id - we can insert in bulk here
+
+            # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
             # Insert the series related to the product/unit
                 INSERT INTO `series`
                     (`series_id`
@@ -7031,19 +7075,24 @@ BEGIN
                 ;
 
             # We insert the data we need in the `group_group_map` table
-                INSERT INTO `group_group_map`
-                SELECT `member_id`
-                    , `grantor_id`
-                    , `grant_type`
-                FROM
-                    `ut_group_group_map_dedup`
-                # The below code is overkill in this context: 
-                # the Unique Key Constraint makes sure that all records are unique in the table `ut_group_group_map_dedup`
-                ON DUPLICATE KEY UPDATE
-                    `member_id` = `ut_group_group_map_dedup`.`member_id`
-                    , `grantor_id` = `ut_group_group_map_dedup`.`grantor_id`
-                    , `grant_type` = `ut_group_group_map_dedup`.`grant_type`
-                ;
+
+                # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                    SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
+                # We can now do the insert
+                    INSERT INTO `group_group_map`
+                    SELECT `member_id`
+                        , `grantor_id`
+                        , `grant_type`
+                    FROM
+                        `ut_group_group_map_dedup`
+                    # The below code is overkill in this context: 
+                    # the Unique Key Constraint makes sure that all records are unique in the table `ut_group_group_map_dedup`
+                    ON DUPLICATE KEY UPDATE
+                        `member_id` = `ut_group_group_map_dedup`.`member_id`
+                        , `grantor_id` = `ut_group_group_map_dedup`.`grantor_id`
+                        , `grant_type` = `ut_group_group_map_dedup`.`grant_type`
+                    ;
 
             # We drop the temp table as we do not need it anymore
                 DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
@@ -7053,17 +7102,22 @@ BEGIN
             CALL `update_permissions_invited_user`;
 
 	# Update the table 'ut_data_to_create_units' so that we record that the unit has been created
-		UPDATE `ut_data_to_create_units`
-		SET 
-			`bz_created_date` = @timestamp
-			, `comment` = CONCAT ('inserted in BZ with the script \''
-					, @script
-					, '\'\r\ '
-					, IFNULL(`comment`, '')
-					)
-			, `product_id` = @product_id
-		WHERE `id_unit_to_create` = @unit_reference_for_import;
-	
+
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
+        # We can now do the uppdate
+            UPDATE `ut_data_to_create_units`
+            SET 
+                `bz_created_date` = @timestamp
+                , `comment` = CONCAT ('inserted in BZ with the script \''
+                        , @script
+                        , '\'\r\ '
+                        , IFNULL(`comment`, '')
+                        )
+                , `product_id` = @product_id
+            WHERE `id_unit_to_create` = @unit_reference_for_import;
+        
 END 
 $$
 DELIMITER ;
@@ -7082,6 +7136,11 @@ BEGIN
 	#		- @component_id_this_role: The id of the role in the bz table `components`
 	#
 	# We delete the record in the table that store default CC information
+
+    # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+        SET @script = 'PROCEDURE remove_user_from_default_cc';
+
+    # We can now do the deletion
 		DELETE
 		FROM `component_cc`
 			WHERE `user_id` = @bz_user_id
@@ -7091,8 +7150,7 @@ BEGIN
 	# We get the product id so we can log this properly
 		SET @product_id_for_this_procedure = (SELECT `product_id` FROM `components` WHERE `id` = @component_id_this_role);
 
-	# We record the name of this procedure for future debugging and audit_log`
-			SET @script = 'PROCEDURE - remove_user_from_default_cc';
+	# We record the time when  this was done for future debugging and audit_log`
 			SET @timestamp = NOW();
 				
 	# Log the actions of the script.
@@ -7264,12 +7322,17 @@ BEGIN
 				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
 			
 			# Update the default assignee
-				UPDATE `components`
-				SET `initialowner` = @bz_user_id_dummy_user_this_role
-					,`description` = @dummy_user_role_desc
-					WHERE 
-					`id` = @component_id_this_role
-					;
+
+                # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                    SET @script = 'PROCEDURE remove_user_from_role';
+
+                # We can now do the update
+                    UPDATE `components`
+                    SET `initialowner` = @bz_user_id_dummy_user_this_role
+                        ,`description` = @dummy_user_role_desc
+                        WHERE 
+                        `id` = @component_id_this_role
+                        ;
 
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('The component: '
@@ -7375,12 +7438,17 @@ BEGIN
 				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
 		
 			# Update the default assignee and qa contact
-				UPDATE `components`
-				SET 
-					`initialqacontact` = @bz_user_id_dummy_user_this_role
-					WHERE 
-					`id` = @component_id_this_role
-					;	
+
+                # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                    SET @script = 'PROCEDURE remove_user_from_role';
+
+                # We can now do the update
+                    UPDATE `components`
+                    SET 
+                        `initialqacontact` = @bz_user_id_dummy_user_this_role
+                        WHERE 
+                        `id` = @component_id_this_role
+                        ;	
 
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('The component: '
@@ -7640,19 +7708,19 @@ BEGIN
 		# We use a temporary table to make sure we do not have duplicates.
 		
 		# DELETE the temp table if it exists
-		DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc`;
+	    	DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc`;
 		
 		# Re-create the temp table
-		CREATE TEMPORARY TABLE `ut_temp_component_cc` (
-            `user_id` MEDIUMINT(9) NOT NULL
-            , `component_id` MEDIUMINT(9) NOT NULL
-		    )
-            ;
+            CREATE TEMPORARY TABLE `ut_temp_component_cc` (
+                `user_id` MEDIUMINT(9) NOT NULL
+                , `component_id` MEDIUMINT(9) NOT NULL
+                )
+                ;
 
 		# Add the records that exist in the table component_cc
-		INSERT INTO `ut_temp_component_cc`
-			SELECT *
-			FROM `component_cc`;
+            INSERT INTO `ut_temp_component_cc`
+                SELECT *
+                FROM `component_cc`;
 
 		# Add the new user rights for the product
 			INSERT INTO `ut_temp_component_cc`
