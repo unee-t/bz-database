@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.28
+MySQL - 5.7.12 : Database - unee_t_v3.29
 *********************************************************************
 */
 
@@ -2297,12 +2297,6 @@ CREATE TABLE `logincookies` (
 
 /*Data for the table `logincookies` */
 
-insert  into `logincookies`(`cookie`,`userid`,`ipaddr`,`lastused`) values 
-('db9hO4H56s',1,'172.56.16.54','2018-02-02 01:15:27'),
-('lopEuu60bW',1,'67.169.76.147','2018-02-02 01:12:38'),
-('RqGl4m3Qf8',1,NULL,'2018-01-14 10:01:00'),
-('TT91x5XMAg',1,'172.56.16.54','2018-02-02 01:15:20');
-
 /*Table structure for table `longdescs` */
 
 DROP TABLE IF EXISTS `longdescs`;
@@ -3365,291 +3359,9 @@ CREATE TABLE `ut_all_units` (
   `id_record` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` smallint(6) NOT NULL COMMENT 'The id in the `products` table',
   PRIMARY KEY (`id_record`)
-) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `ut_all_units` */
-
-insert  into `ut_all_units`(`id_record`,`product_id`) values 
-(1,283),
-(2,284),
-(3,285),
-(4,286),
-(5,2),
-(6,3),
-(7,4),
-(8,5),
-(9,6),
-(10,7),
-(11,8),
-(12,9),
-(13,10),
-(14,11),
-(15,12),
-(16,13),
-(17,14),
-(18,15),
-(19,16),
-(20,17),
-(21,18),
-(22,19),
-(23,20),
-(24,21),
-(25,22),
-(26,23),
-(27,24),
-(28,25),
-(29,26),
-(30,27),
-(31,28),
-(32,29),
-(33,81),
-(34,84),
-(35,86),
-(36,87),
-(37,90),
-(38,91),
-(39,97),
-(40,99),
-(41,100),
-(42,103),
-(43,112),
-(44,117),
-(45,123),
-(46,125),
-(47,133),
-(48,30),
-(49,31),
-(50,32),
-(51,33),
-(52,34),
-(53,35),
-(54,36),
-(55,37),
-(56,38),
-(57,39),
-(58,40),
-(59,41),
-(60,42),
-(61,43),
-(62,44),
-(63,45),
-(64,46),
-(65,47),
-(66,48),
-(67,49),
-(68,50),
-(69,51),
-(70,52),
-(71,53),
-(72,54),
-(73,55),
-(74,56),
-(75,57),
-(76,58),
-(77,59),
-(78,60),
-(79,61),
-(80,62),
-(81,63),
-(82,74),
-(83,78),
-(84,79),
-(85,82),
-(86,83),
-(87,85),
-(88,88),
-(89,89),
-(90,102),
-(91,104),
-(92,108),
-(93,110),
-(94,118),
-(95,119),
-(96,120),
-(97,121),
-(98,122),
-(99,124),
-(100,131),
-(101,134),
-(102,138),
-(103,146),
-(104,147),
-(105,156),
-(106,168),
-(107,176),
-(108,181),
-(109,200),
-(110,211),
-(111,212),
-(112,213),
-(113,216),
-(114,217),
-(115,243),
-(116,246),
-(117,254),
-(118,255),
-(119,256),
-(120,64),
-(121,65),
-(122,66),
-(123,67),
-(124,68),
-(125,69),
-(126,70),
-(127,71),
-(128,72),
-(129,105),
-(130,135),
-(131,148),
-(132,149),
-(133,164),
-(134,169),
-(135,182),
-(136,73),
-(137,75),
-(138,76),
-(139,77),
-(140,95),
-(141,96),
-(142,98),
-(143,101),
-(144,106),
-(145,109),
-(146,111),
-(147,113),
-(148,115),
-(149,136),
-(150,140),
-(151,141),
-(152,142),
-(153,145),
-(154,191),
-(155,195),
-(156,204),
-(157,206),
-(158,208),
-(159,209),
-(160,214),
-(161,245),
-(162,247),
-(163,250),
-(164,258),
-(165,80),
-(166,184),
-(167,215),
-(168,218),
-(169,221),
-(170,222),
-(171,223),
-(172,224),
-(173,226),
-(174,92),
-(175,93),
-(176,94),
-(177,107),
-(178,116),
-(179,126),
-(180,127),
-(181,128),
-(182,129),
-(183,130),
-(184,137),
-(185,139),
-(186,143),
-(187,144),
-(188,150),
-(189,151),
-(190,152),
-(191,165),
-(192,166),
-(193,167),
-(194,248),
-(195,114),
-(196,132),
-(197,153),
-(198,154),
-(199,155),
-(200,157),
-(201,158),
-(202,159),
-(203,160),
-(204,161),
-(205,162),
-(206,163),
-(207,172),
-(208,175),
-(209,177),
-(210,178),
-(211,179),
-(212,180),
-(213,183),
-(214,185),
-(215,186),
-(216,188),
-(217,189),
-(218,190),
-(219,192),
-(220,193),
-(221,194),
-(222,201),
-(223,210),
-(224,219),
-(225,220),
-(226,225),
-(227,244),
-(228,252),
-(229,259),
-(230,260),
-(231,261),
-(232,263),
-(233,170),
-(234,171),
-(235,173),
-(236,174),
-(237,187),
-(238,251),
-(239,257),
-(240,196),
-(241,197),
-(242,198),
-(243,199),
-(244,202),
-(245,203),
-(246,205),
-(247,207),
-(248,227),
-(249,228),
-(250,231),
-(251,232),
-(252,233),
-(253,229),
-(254,234),
-(255,230),
-(256,235),
-(257,236),
-(258,237),
-(259,238),
-(260,239),
-(261,253),
-(262,240),
-(263,241),
-(264,242),
-(265,249),
-(266,262),
-(267,264),
-(268,265),
-(269,266),
-(270,267),
-(271,268),
-(272,269),
-(273,270),
-(274,271),
-(275,272),
-(276,273),
-(277,274),
-(278,275),
-(279,276),
-(280,277);
 
 /*Table structure for table `ut_audit_log` */
 
@@ -3665,935 +3377,9 @@ CREATE TABLE `ut_audit_log` (
   `script` mediumtext COMMENT 'The script that was used to create the record',
   `comment` text COMMENT 'More information about what we intended to do',
   PRIMARY KEY (`id_ut_log`)
-) ENGINE=InnoDB AUTO_INCREMENT=925 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_audit_log` */
-
-insert  into `ut_audit_log`(`id_ut_log`,`datetime`,`bzfe_table`,`bzfe_field`,`previous_value`,`new_value`,`script`,`comment`) values 
-(1,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(2,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(3,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(4,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(5,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(6,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(7,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(8,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(9,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(10,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(11,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(12,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(13,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(14,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(15,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(16,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(17,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(18,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(19,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(20,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(21,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #1'),
-(22,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #1'),
-(23,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #1'),
-(24,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #1'),
-(25,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #1'),
-(26,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #1'),
-(27,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #1'),
-(28,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #1'),
-(29,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #1'),
-(30,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #1'),
-(31,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #1'),
-(32,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #1'),
-(33,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #1'),
-(34,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #1'),
-(35,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case.for the product #1'),
-(36,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #1'),
-(37,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #1'),
-(38,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #1'),
-(39,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case.for the product #1'),
-(40,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #1'),
-(41,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #1'),
-(42,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #1'),
-(43,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #1'),
-(44,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #1'),
-(45,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #1'),
-(46,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #1'),
-(47,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #1'),
-(48,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #1'),
-(49,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #1'),
-(50,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #1'),
-(51,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #1'),
-(52,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #1'),
-(53,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #1'),
-(54,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #1'),
-(55,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit.for the product #1'),
-(56,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #1'),
-(57,'2018-06-20 11:09:27','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #1'),
-(58,'2018-06-20 11:09:27','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #1'),
-(59,'2018-06-20 11:09:27','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit.for the product #1'),
-(60,'2018-06-20 11:09:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #1'),
-(61,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(62,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(63,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(64,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(65,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(66,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(67,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(68,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(69,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(70,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(71,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(72,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(73,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(74,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(75,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(76,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(77,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(78,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(79,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(80,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(81,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #2'),
-(82,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #2'),
-(83,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #2'),
-(84,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #2'),
-(85,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #2'),
-(86,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #2'),
-(87,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #2'),
-(88,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #2'),
-(89,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #2'),
-(90,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #2'),
-(91,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #2'),
-(92,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #2'),
-(93,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #2'),
-(94,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #2'),
-(95,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case.for the product #2'),
-(96,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #2'),
-(97,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #2'),
-(98,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #2'),
-(99,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case.for the product #2'),
-(100,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #2'),
-(101,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #2'),
-(102,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #2'),
-(103,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #2'),
-(104,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #2'),
-(105,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #2'),
-(106,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #2'),
-(107,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #2'),
-(108,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #2'),
-(109,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #2'),
-(110,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #2'),
-(111,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #2'),
-(112,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #2'),
-(113,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #2'),
-(114,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #2'),
-(115,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit.for the product #2'),
-(116,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #2'),
-(117,'2018-06-20 11:09:34','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #2'),
-(118,'2018-06-20 11:09:34','ut_user_group_map_temp','group_id','UNKNOWN','52','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #2'),
-(119,'2018-06-20 11:09:34','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit.for the product #2'),
-(120,'2018-06-20 11:09:34','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #2'),
-(121,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(122,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(123,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(124,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(125,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(126,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(127,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(128,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(129,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(130,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(131,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(132,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(133,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(134,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(135,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(136,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(137,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(138,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(139,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(140,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(141,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #3'),
-(142,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #3'),
-(143,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #3'),
-(144,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #3'),
-(145,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #3'),
-(146,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #3'),
-(147,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #3'),
-(148,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #3'),
-(149,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #3'),
-(150,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #3'),
-(151,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permissionfor the product #3'),
-(152,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #3'),
-(153,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #3'),
-(154,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #3'),
-(155,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case.for the product #3'),
-(156,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #3'),
-(157,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.for the product #3'),
-(158,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.for the product #3'),
-(159,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case.for the product #3'),
-(160,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.for the product #3'),
-(161,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','4','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #3'),
-(162,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #3'),
-(163,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #3'),
-(164,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #3'),
-(165,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','3','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #3'),
-(166,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #3'),
-(167,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #3'),
-(168,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #3'),
-(169,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','2','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #3'),
-(170,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #3'),
-(171,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit. permissionfor the product #3'),
-(172,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #3'),
-(173,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','5','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #3'),
-(174,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #3'),
-(175,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit.for the product #3'),
-(176,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #3'),
-(177,'2018-06-20 11:09:41','ut_user_group_map_temp','user_id','UNKNOWN','6','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case and see this unit.for the product #3'),
-(178,'2018-06-20 11:09:41','ut_user_group_map_temp','group_id','UNKNOWN','84','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case and see this unit.for the product #3'),
-(179,'2018-06-20 11:09:41','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case and see this unit.for the product #3'),
-(180,'2018-06-20 11:09:41','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case and see this unit.for the product #3'),
-(181,'2018-06-20 11:09:45','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to see time tracking'),
-(182,'2018-06-20 11:09:45','ut_user_group_map_temp','group_id','UNKNOWN','16','demo_environment_clean.sql','Add the BZ group id when we grant the permission to see time tracking'),
-(183,'2018-06-20 11:09:45','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant see time tracking permission'),
-(184,'2018-06-20 11:09:45','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group see time tracking'),
-(185,'2018-06-20 11:09:45','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create shared queries'),
-(186,'2018-06-20 11:09:45','ut_user_group_map_temp','group_id','UNKNOWN','17','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create shared queries'),
-(187,'2018-06-20 11:09:45','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create shared queries permission'),
-(188,'2018-06-20 11:09:45','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group create shared queries'),
-(189,'2018-06-20 11:09:45','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to tag comments'),
-(190,'2018-06-20 11:09:45','ut_user_group_map_temp','group_id','UNKNOWN','18','demo_environment_clean.sql','Add the BZ group id when we grant the permission to tag comments'),
-(191,'2018-06-20 11:09:45','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant tag comments permission'),
-(192,'2018-06-20 11:09:45','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group tag comments'),
-(193,'2018-06-20 11:09:45','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to create a new case.'),
-(194,'2018-06-20 11:09:45','ut_user_group_map_temp','group_id','UNKNOWN','20','demo_environment_clean.sql','Add the BZ group id when we grant the permission to create a new case.'),
-(195,'2018-06-20 11:09:45','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant create a new case. permission'),
-(196,'2018-06-20 11:09:45','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupcreate a new case.'),
-(197,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(198,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','21','demo_environment_clean.sql','Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(199,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant edit a case in this unit. permission'),
-(200,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupedit a case in this unit.'),
-(201,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(202,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','22','demo_environment_clean.sql','Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(203,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant see all public case in this unit. permission'),
-(204,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupsee all public case in this unit.'),
-(205,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(206,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','23','demo_environment_clean.sql','Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(207,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(208,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(209,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(210,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','25','demo_environment_clean.sql','Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(211,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant Can see the unit in the Search panel. permission'),
-(212,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupCan see the unit in the Search panel.'),
-(213,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(214,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','28','demo_environment_clean.sql','Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(215,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(216,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(217,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(218,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','29','demo_environment_clean.sql','Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(219,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(220,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(221,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(222,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','27','demo_environment_clean.sql','Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(223,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant  CAN ask for approval for all flags. permission'),
-(224,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group CAN ask for approval for all flags.'),
-(225,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','demo_environment_clean.sql','Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(226,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','26','demo_environment_clean.sql','Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(227,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','demo_environment_clean.sql','user does NOT grant  CAN approve for all flags. permission'),
-(228,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','demo_environment_clean.sql','user is a member of the group CAN approve for all flags.'),
-(229,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','PROCEDURE - show_to_agent','Add the BZ user id when we grant the permission to CAN see case that are limited to agents.'),
-(230,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','38','PROCEDURE - show_to_agent','Add the BZ group id when we grant the permission to CAN see case that are limited to agents.'),
-(231,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_agent','user does NOT grant CAN see case that are limited to agents. permission'),
-(232,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_agent','user is a member of the groupCAN see case that are limited to agents.'),
-(233,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','PROCEDURE - are_users_agent','Add the BZ user id when we grant the permission to is an agent.'),
-(234,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','39','PROCEDURE - are_users_agent','Add the BZ group id when we grant the permission to is an agent.'),
-(235,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_agent','user does NOT grant is an agent. permission'),
-(236,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_agent','user is a member of the groupis an agent.'),
-(237,'2018-06-20 11:09:46','ut_user_group_map_temp','user_id','UNKNOWN','7','PROCEDURE - default_agent_see_users_agent','Add the BZ user id when we grant the permission to can see agents for the unit.'),
-(238,'2018-06-20 11:09:46','ut_user_group_map_temp','group_id','UNKNOWN','40','PROCEDURE - default_agent_see_users_agent','Add the BZ group id when we grant the permission to can see agents for the unit.'),
-(239,'2018-06-20 11:09:46','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_agent_see_users_agent','user does NOT grant can see agents for the unit. permission'),
-(240,'2018-06-20 11:09:46','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_agent_see_users_agent','user is a member of the groupcan see agents for the unit.'),
-(241,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(242,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(243,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(244,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(245,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(246,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(247,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(248,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(249,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(250,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(251,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(252,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(253,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(254,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','52',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(255,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(256,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(257,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(258,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','53',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(259,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(260,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(261,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(262,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','54',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(263,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(264,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(265,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(266,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','55',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(267,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(268,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(269,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(270,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','57',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(271,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(272,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(273,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(274,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','60',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(275,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(276,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(277,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(278,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','61',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(279,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(280,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(281,'2018-06-20 11:09:50','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(282,'2018-06-20 11:09:50','ut_user_group_map_temp','group_id','UNKNOWN','59',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(283,'2018-06-20 11:09:50','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(284,'2018-06-20 11:09:50','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(285,'2018-06-20 11:09:51','ut_user_group_map_temp','user_id','UNKNOWN','7',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(286,'2018-06-20 11:09:51','ut_user_group_map_temp','group_id','UNKNOWN','58',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(287,'2018-06-20 11:09:51','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(288,'2018-06-20 11:09:51','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(289,'2018-06-20 11:09:51','ut_user_group_map_temp','user_id','UNKNOWN','7','PROCEDURE - show_to_agent','Add the BZ user id when we grant the permission to CAN see case that are limited to agents.'),
-(290,'2018-06-20 11:09:51','ut_user_group_map_temp','group_id','UNKNOWN','70','PROCEDURE - show_to_agent','Add the BZ group id when we grant the permission to CAN see case that are limited to agents.'),
-(291,'2018-06-20 11:09:51','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_agent','user does NOT grant CAN see case that are limited to agents. permission'),
-(292,'2018-06-20 11:09:51','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_agent','user is a member of the groupCAN see case that are limited to agents.'),
-(293,'2018-06-20 11:09:51','ut_user_group_map_temp','user_id','UNKNOWN','7','PROCEDURE - are_users_agent','Add the BZ user id when we grant the permission to is an agent.'),
-(294,'2018-06-20 11:09:51','ut_user_group_map_temp','group_id','UNKNOWN','71','PROCEDURE - are_users_agent','Add the BZ group id when we grant the permission to is an agent.'),
-(295,'2018-06-20 11:09:51','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_agent','user does NOT grant is an agent. permission'),
-(296,'2018-06-20 11:09:51','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_agent','user is a member of the groupis an agent.'),
-(297,'2018-06-20 11:09:51','ut_user_group_map_temp','user_id','UNKNOWN','7','PROCEDURE - default_agent_see_users_agent','Add the BZ user id when we grant the permission to can see agents for the unit.'),
-(298,'2018-06-20 11:09:51','ut_user_group_map_temp','group_id','UNKNOWN','72','PROCEDURE - default_agent_see_users_agent','Add the BZ group id when we grant the permission to can see agents for the unit.'),
-(299,'2018-06-20 11:09:51','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_agent_see_users_agent','user does NOT grant can see agents for the unit. permission'),
-(300,'2018-06-20 11:09:51','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_agent_see_users_agent','user is a member of the groupcan see agents for the unit.'),
-(301,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(302,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(303,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(304,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(305,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(306,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(307,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(308,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(309,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(310,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(311,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(312,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(313,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(314,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','20',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(315,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(316,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(317,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(318,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','21',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(319,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(320,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(321,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(322,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','22',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(323,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(324,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(325,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(326,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','23',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(327,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(328,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(329,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(330,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','25',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(331,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(332,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(333,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(334,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','28',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(335,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(336,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(337,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(338,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','29',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(339,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(340,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(341,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(342,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','27',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(343,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(344,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(345,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(346,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','26',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(347,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(348,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(349,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - show_to_landlord','Add the BZ user id when we grant the permission to CAN see case that are limited to landlords.'),
-(350,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','35','PROCEDURE - show_to_landlord','Add the BZ group id when we grant the permission to CAN see case that are limited to landlords.'),
-(351,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_landlord','user does NOT grant CAN see case that are limited to landlords. permission'),
-(352,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_landlord','user is a member of the groupCAN see case that are limited to landlords.'),
-(353,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - are_users_landlord','Add the BZ user id when we grant the permission to is an landlord.'),
-(354,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','36','PROCEDURE - are_users_landlord','Add the BZ group id when we grant the permission to is an landlord.'),
-(355,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_landlord','user does NOT grant is an landlord. permission'),
-(356,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_landlord','user is a member of the groupis an landlord.'),
-(357,'2018-06-20 11:09:55','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - default_landlord_see_users_landlord','Add the BZ user id when we grant the permission to can see landlord in the unit.'),
-(358,'2018-06-20 11:09:55','ut_user_group_map_temp','group_id','UNKNOWN','37','PROCEDURE - default_landlord_see_users_landlord','Add the BZ group id when we grant the permission to can see landlord in the unit.'),
-(359,'2018-06-20 11:09:55','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_landlord_see_users_landlord','user does NOT grant can see landlord in the unit. permission'),
-(360,'2018-06-20 11:09:55','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_landlord_see_users_landlord','user is a member of the groupcan see landlord in the unit.'),
-(361,'2018-06-20 11:09:59','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(362,'2018-06-20 11:09:59','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(363,'2018-06-20 11:09:59','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(364,'2018-06-20 11:09:59','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(365,'2018-06-20 11:09:59','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(366,'2018-06-20 11:09:59','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(367,'2018-06-20 11:09:59','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(368,'2018-06-20 11:09:59','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(369,'2018-06-20 11:09:59','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(370,'2018-06-20 11:09:59','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(371,'2018-06-20 11:09:59','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(372,'2018-06-20 11:09:59','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(373,'2018-06-20 11:09:59','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(374,'2018-06-20 11:09:59','ut_user_group_map_temp','group_id','UNKNOWN','84',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(375,'2018-06-20 11:09:59','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(376,'2018-06-20 11:09:59','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(377,'2018-06-20 11:09:59','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(378,'2018-06-20 11:09:59','ut_user_group_map_temp','group_id','UNKNOWN','85',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(379,'2018-06-20 11:09:59','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(380,'2018-06-20 11:09:59','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(381,'2018-06-20 11:09:59','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(382,'2018-06-20 11:09:59','ut_user_group_map_temp','group_id','UNKNOWN','86',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(383,'2018-06-20 11:09:59','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(384,'2018-06-20 11:09:59','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(385,'2018-06-20 11:09:59','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(386,'2018-06-20 11:09:59','ut_user_group_map_temp','group_id','UNKNOWN','87',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(387,'2018-06-20 11:09:59','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(388,'2018-06-20 11:09:59','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(389,'2018-06-20 11:09:59','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(390,'2018-06-20 11:09:59','ut_user_group_map_temp','group_id','UNKNOWN','89',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(391,'2018-06-20 11:09:59','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(392,'2018-06-20 11:09:59','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(393,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(394,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','92',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(395,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(396,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(397,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(398,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','93',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(399,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(400,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(401,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(402,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','91',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(403,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(404,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(405,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(406,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','90',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(407,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(408,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(409,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - show_to_landlord','Add the BZ user id when we grant the permission to CAN see case that are limited to landlords.'),
-(410,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','99','PROCEDURE - show_to_landlord','Add the BZ group id when we grant the permission to CAN see case that are limited to landlords.'),
-(411,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_landlord','user does NOT grant CAN see case that are limited to landlords. permission'),
-(412,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_landlord','user is a member of the groupCAN see case that are limited to landlords.'),
-(413,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - are_users_landlord','Add the BZ user id when we grant the permission to is an landlord.'),
-(414,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','100','PROCEDURE - are_users_landlord','Add the BZ group id when we grant the permission to is an landlord.'),
-(415,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_landlord','user does NOT grant is an landlord. permission'),
-(416,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_landlord','user is a member of the groupis an landlord.'),
-(417,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - default_landlord_see_users_landlord','Add the BZ user id when we grant the permission to can see landlord in the unit.'),
-(418,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','101','PROCEDURE - default_landlord_see_users_landlord','Add the BZ group id when we grant the permission to can see landlord in the unit.'),
-(419,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_landlord_see_users_landlord','user does NOT grant can see landlord in the unit. permission'),
-(420,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_landlord_see_users_landlord','user is a member of the groupcan see landlord in the unit.'),
-(421,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - show_to_occupant','Add the BZ user id when we grant the permission to CAN see case that are limited to occupants.'),
-(422,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','111','PROCEDURE - show_to_occupant','Add the BZ group id when we grant the permission to CAN see case that are limited to occupants.'),
-(423,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_occupant','user does NOT grant CAN see case that are limited to occupants. permission'),
-(424,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_occupant','user is a member of the groupCAN see case that are limited to occupants.'),
-(425,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - is_occupant','Add the BZ user id when we grant the permission to is an occupant.'),
-(426,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','112','PROCEDURE - is_occupant','Add the BZ group id when we grant the permission to is an occupant.'),
-(427,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - is_occupant','user does NOT grant is an occupant. permission'),
-(428,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - is_occupant','user is a member of the groupis an occupant.'),
-(429,'2018-06-20 11:10:00','ut_user_group_map_temp','user_id','UNKNOWN','8','PROCEDURE - default_occupant_can_see_occupant','Add the BZ user id when we grant the permission to can see occupant in the unit.'),
-(430,'2018-06-20 11:10:00','ut_user_group_map_temp','group_id','UNKNOWN','113','PROCEDURE - default_occupant_can_see_occupant','Add the BZ group id when we grant the permission to can see occupant in the unit.'),
-(431,'2018-06-20 11:10:00','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_occupant_can_see_occupant','user does NOT grant can see occupant in the unit. permission'),
-(432,'2018-06-20 11:10:00','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_occupant_can_see_occupant','user is a member of the groupcan see occupant in the unit.'),
-(433,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(434,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(435,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(436,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(437,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(438,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(439,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(440,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(441,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(442,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(443,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(444,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(445,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(446,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','20',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(447,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(448,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(449,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(450,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','21',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(451,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(452,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(453,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(454,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','22',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(455,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(456,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(457,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(458,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','23',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(459,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(460,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(461,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(462,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','25',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(463,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(464,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(465,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(466,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','28',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(467,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(468,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(469,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(470,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','29',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(471,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(472,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(473,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(474,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','27',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(475,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(476,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(477,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(478,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','26',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(479,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(480,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(481,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9','PROCEDURE - show_to_mgt_cny','Add the BZ user id when we grant the permission to CAN see case that are limited to Mgt Cny.'),
-(482,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','44','PROCEDURE - show_to_mgt_cny','Add the BZ group id when we grant the permission to CAN see case that are limited to Mgt Cny.'),
-(483,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_mgt_cny','user does NOT grant CAN see case that are limited to Mgt Cny. permission'),
-(484,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_mgt_cny','user is a member of the groupCAN see case that are limited to Mgt Cny.'),
-(485,'2018-06-20 11:10:04','ut_user_group_map_temp','user_id','UNKNOWN','9','PROCEDURE - are_users_mgt_cny','Add the BZ user id when we grant the permission to is a Mgt Cny.'),
-(486,'2018-06-20 11:10:04','ut_user_group_map_temp','group_id','UNKNOWN','45','PROCEDURE - are_users_mgt_cny','Add the BZ group id when we grant the permission to is a Mgt Cny.'),
-(487,'2018-06-20 11:10:04','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_mgt_cny','user does NOT grant is a Mgt Cny. permission'),
-(488,'2018-06-20 11:10:04','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_mgt_cny','user is a member of the groupis a Mgt Cny.'),
-(489,'2018-06-20 11:10:05','ut_user_group_map_temp','user_id','UNKNOWN','9','PROCEDURE - default_mgt_cny_see_users_mgt_cny','Add the BZ user id when we grant the permission to can see Mgt Cny for the unit.'),
-(490,'2018-06-20 11:10:05','ut_user_group_map_temp','group_id','UNKNOWN','46','PROCEDURE - default_mgt_cny_see_users_mgt_cny','Add the BZ group id when we grant the permission to can see Mgt Cny for the unit.'),
-(491,'2018-06-20 11:10:05','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_mgt_cny_see_users_mgt_cny','user does NOT grant can see Mgt Cny for the unit. permission'),
-(492,'2018-06-20 11:10:05','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_mgt_cny_see_users_mgt_cny','user is a member of the groupcan see Mgt Cny for the unit.'),
-(493,'2018-06-20 11:10:08','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(494,'2018-06-20 11:10:08','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(495,'2018-06-20 11:10:08','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(496,'2018-06-20 11:10:08','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(497,'2018-06-20 11:10:08','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(498,'2018-06-20 11:10:08','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(499,'2018-06-20 11:10:08','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(500,'2018-06-20 11:10:08','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(501,'2018-06-20 11:10:08','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(502,'2018-06-20 11:10:08','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(503,'2018-06-20 11:10:08','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(504,'2018-06-20 11:10:08','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(505,'2018-06-20 11:10:08','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(506,'2018-06-20 11:10:08','ut_user_group_map_temp','group_id','UNKNOWN','84',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(507,'2018-06-20 11:10:08','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(508,'2018-06-20 11:10:08','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(509,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(510,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','85',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(511,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(512,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(513,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(514,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','86',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(515,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(516,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(517,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(518,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','87',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(519,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(520,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(521,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(522,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','89',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(523,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(524,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(525,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(526,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','92',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(527,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(528,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(529,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(530,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','93',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(531,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(532,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(533,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(534,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','91',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(535,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(536,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(537,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(538,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','90',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(539,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(540,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(541,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9','PROCEDURE - show_to_mgt_cny','Add the BZ user id when we grant the permission to CAN see case that are limited to Mgt Cny.'),
-(542,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','108','PROCEDURE - show_to_mgt_cny','Add the BZ group id when we grant the permission to CAN see case that are limited to Mgt Cny.'),
-(543,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_mgt_cny','user does NOT grant CAN see case that are limited to Mgt Cny. permission'),
-(544,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_mgt_cny','user is a member of the groupCAN see case that are limited to Mgt Cny.'),
-(545,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9','PROCEDURE - are_users_mgt_cny','Add the BZ user id when we grant the permission to is a Mgt Cny.'),
-(546,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','109','PROCEDURE - are_users_mgt_cny','Add the BZ group id when we grant the permission to is a Mgt Cny.'),
-(547,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_mgt_cny','user does NOT grant is a Mgt Cny. permission'),
-(548,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_mgt_cny','user is a member of the groupis a Mgt Cny.'),
-(549,'2018-06-20 11:10:09','ut_user_group_map_temp','user_id','UNKNOWN','9','PROCEDURE - default_mgt_cny_see_users_mgt_cny','Add the BZ user id when we grant the permission to can see Mgt Cny for the unit.'),
-(550,'2018-06-20 11:10:09','ut_user_group_map_temp','group_id','UNKNOWN','110','PROCEDURE - default_mgt_cny_see_users_mgt_cny','Add the BZ group id when we grant the permission to can see Mgt Cny for the unit.'),
-(551,'2018-06-20 11:10:09','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_mgt_cny_see_users_mgt_cny','user does NOT grant can see Mgt Cny for the unit. permission'),
-(552,'2018-06-20 11:10:09','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_mgt_cny_see_users_mgt_cny','user is a member of the groupcan see Mgt Cny for the unit.'),
-(553,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(554,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(555,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(556,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(557,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(558,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(559,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(560,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(561,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(562,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(563,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(564,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(565,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(566,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','52',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(567,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(568,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(569,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(570,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','53',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(571,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(572,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(573,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(574,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','54',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(575,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(576,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(577,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(578,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','55',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(579,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(580,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(581,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(582,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','57',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(583,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(584,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(585,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(586,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','60',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(587,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(588,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(589,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(590,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','61',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(591,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(592,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(593,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(594,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','59',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(595,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(596,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(597,'2018-06-20 11:10:13','ut_user_group_map_temp','user_id','UNKNOWN','11',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(598,'2018-06-20 11:10:13','ut_user_group_map_temp','group_id','UNKNOWN','58',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(599,'2018-06-20 11:10:13','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(600,'2018-06-20 11:10:13','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(601,'2018-06-20 11:10:14','ut_user_group_map_temp','user_id','UNKNOWN','11','PROCEDURE - show_to_mgt_cny','Add the BZ user id when we grant the permission to CAN see case that are limited to Mgt Cny.'),
-(602,'2018-06-20 11:10:14','ut_user_group_map_temp','group_id','UNKNOWN','76','PROCEDURE - show_to_mgt_cny','Add the BZ group id when we grant the permission to CAN see case that are limited to Mgt Cny.'),
-(603,'2018-06-20 11:10:14','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_mgt_cny','user does NOT grant CAN see case that are limited to Mgt Cny. permission'),
-(604,'2018-06-20 11:10:14','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_mgt_cny','user is a member of the groupCAN see case that are limited to Mgt Cny.'),
-(605,'2018-06-20 11:10:14','ut_user_group_map_temp','user_id','UNKNOWN','11','PROCEDURE - are_users_mgt_cny','Add the BZ user id when we grant the permission to is a Mgt Cny.'),
-(606,'2018-06-20 11:10:14','ut_user_group_map_temp','group_id','UNKNOWN','77','PROCEDURE - are_users_mgt_cny','Add the BZ group id when we grant the permission to is a Mgt Cny.'),
-(607,'2018-06-20 11:10:14','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_mgt_cny','user does NOT grant is a Mgt Cny. permission'),
-(608,'2018-06-20 11:10:14','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_mgt_cny','user is a member of the groupis a Mgt Cny.'),
-(609,'2018-06-20 11:10:14','ut_user_group_map_temp','user_id','UNKNOWN','11','PROCEDURE - default_mgt_cny_see_users_mgt_cny','Add the BZ user id when we grant the permission to can see Mgt Cny for the unit.'),
-(610,'2018-06-20 11:10:14','ut_user_group_map_temp','group_id','UNKNOWN','78','PROCEDURE - default_mgt_cny_see_users_mgt_cny','Add the BZ group id when we grant the permission to can see Mgt Cny for the unit.'),
-(611,'2018-06-20 11:10:14','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_mgt_cny_see_users_mgt_cny','user does NOT grant can see Mgt Cny for the unit. permission'),
-(612,'2018-06-20 11:10:14','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_mgt_cny_see_users_mgt_cny','user is a member of the groupcan see Mgt Cny for the unit.'),
-(613,'2018-06-20 11:10:17','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(614,'2018-06-20 11:10:17','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(615,'2018-06-20 11:10:17','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(616,'2018-06-20 11:10:17','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(617,'2018-06-20 11:10:17','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(618,'2018-06-20 11:10:17','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(619,'2018-06-20 11:10:17','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(620,'2018-06-20 11:10:17','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(621,'2018-06-20 11:10:17','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(622,'2018-06-20 11:10:17','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(623,'2018-06-20 11:10:17','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(624,'2018-06-20 11:10:17','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(625,'2018-06-20 11:10:17','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(626,'2018-06-20 11:10:17','ut_user_group_map_temp','group_id','UNKNOWN','20',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(627,'2018-06-20 11:10:17','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(628,'2018-06-20 11:10:17','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(629,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(630,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','21',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(631,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(632,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(633,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(634,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','22',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(635,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(636,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(637,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(638,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','23',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(639,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(640,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(641,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(642,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','25',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(643,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(644,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(645,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(646,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','28',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(647,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(648,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(649,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(650,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','29',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(651,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(652,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(653,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(654,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','27',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(655,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(656,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(657,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(658,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','26',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(659,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(660,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(661,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12','PROCEDURE - show_to_tenant','Add the BZ user id when we grant the permission to CAN see case that are limited to tenants.'),
-(662,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','32','PROCEDURE - show_to_tenant','Add the BZ group id when we grant the permission to CAN see case that are limited to tenants.'),
-(663,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_tenant','user does NOT grant CAN see case that are limited to tenants. permission'),
-(664,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_tenant','user is a member of the groupCAN see case that are limited to tenants.'),
-(665,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12','PROCEDURE - is_tenant','Add the BZ user id when we grant the permission to is an tenant.'),
-(666,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','33','PROCEDURE - is_tenant','Add the BZ group id when we grant the permission to is an tenant.'),
-(667,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - is_tenant','user does NOT grant is an tenant. permission'),
-(668,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - is_tenant','user is a member of the groupis an tenant.'),
-(669,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12','PROCEDURE - default_tenant_can_see_tenant','Add the BZ user id when we grant the permission to can see tenant in the unit.'),
-(670,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','34','PROCEDURE - default_tenant_can_see_tenant','Add the BZ group id when we grant the permission to can see tenant in the unit.'),
-(671,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_tenant_can_see_tenant','user does NOT grant can see tenant in the unit. permission'),
-(672,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_tenant_can_see_tenant','user is a member of the groupcan see tenant in the unit.'),
-(673,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12','PROCEDURE - show_to_occupant','Add the BZ user id when we grant the permission to CAN see case that are limited to occupants.'),
-(674,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','47','PROCEDURE - show_to_occupant','Add the BZ group id when we grant the permission to CAN see case that are limited to occupants.'),
-(675,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_occupant','user does NOT grant CAN see case that are limited to occupants. permission'),
-(676,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_occupant','user is a member of the groupCAN see case that are limited to occupants.'),
-(677,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12','PROCEDURE - is_occupant','Add the BZ user id when we grant the permission to is an occupant.'),
-(678,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','48','PROCEDURE - is_occupant','Add the BZ group id when we grant the permission to is an occupant.'),
-(679,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - is_occupant','user does NOT grant is an occupant. permission'),
-(680,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - is_occupant','user is a member of the groupis an occupant.'),
-(681,'2018-06-20 11:10:18','ut_user_group_map_temp','user_id','UNKNOWN','12','PROCEDURE - default_occupant_can_see_occupant','Add the BZ user id when we grant the permission to can see occupant in the unit.'),
-(682,'2018-06-20 11:10:18','ut_user_group_map_temp','group_id','UNKNOWN','49','PROCEDURE - default_occupant_can_see_occupant','Add the BZ group id when we grant the permission to can see occupant in the unit.'),
-(683,'2018-06-20 11:10:18','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_occupant_can_see_occupant','user does NOT grant can see occupant in the unit. permission'),
-(684,'2018-06-20 11:10:18','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_occupant_can_see_occupant','user is a member of the groupcan see occupant in the unit.'),
-(685,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(686,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(687,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(688,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(689,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(690,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(691,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(692,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(693,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(694,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(695,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(696,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(697,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(698,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','52',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(699,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(700,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(701,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(702,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','53',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(703,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(704,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(705,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(706,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','54',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(707,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(708,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(709,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(710,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','55',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(711,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(712,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(713,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(714,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','57',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(715,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(716,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(717,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(718,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','60',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(719,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(720,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(721,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(722,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','61',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(723,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(724,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(725,'2018-06-20 11:10:22','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(726,'2018-06-20 11:10:22','ut_user_group_map_temp','group_id','UNKNOWN','59',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(727,'2018-06-20 11:10:22','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(728,'2018-06-20 11:10:22','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(729,'2018-06-20 11:10:23','ut_user_group_map_temp','user_id','UNKNOWN','14',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(730,'2018-06-20 11:10:23','ut_user_group_map_temp','group_id','UNKNOWN','58',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(731,'2018-06-20 11:10:23','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(732,'2018-06-20 11:10:23','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(733,'2018-06-20 11:10:23','ut_user_group_map_temp','user_id','UNKNOWN','14','PROCEDURE - show_to_landlord','Add the BZ user id when we grant the permission to CAN see case that are limited to landlords.'),
-(734,'2018-06-20 11:10:23','ut_user_group_map_temp','group_id','UNKNOWN','67','PROCEDURE - show_to_landlord','Add the BZ group id when we grant the permission to CAN see case that are limited to landlords.'),
-(735,'2018-06-20 11:10:23','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_landlord','user does NOT grant CAN see case that are limited to landlords. permission'),
-(736,'2018-06-20 11:10:23','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_landlord','user is a member of the groupCAN see case that are limited to landlords.'),
-(737,'2018-06-20 11:10:23','ut_user_group_map_temp','user_id','UNKNOWN','14','PROCEDURE - are_users_landlord','Add the BZ user id when we grant the permission to is an landlord.'),
-(738,'2018-06-20 11:10:23','ut_user_group_map_temp','group_id','UNKNOWN','68','PROCEDURE - are_users_landlord','Add the BZ group id when we grant the permission to is an landlord.'),
-(739,'2018-06-20 11:10:23','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_landlord','user does NOT grant is an landlord. permission'),
-(740,'2018-06-20 11:10:23','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_landlord','user is a member of the groupis an landlord.'),
-(741,'2018-06-20 11:10:23','ut_user_group_map_temp','user_id','UNKNOWN','14','PROCEDURE - default_landlord_see_users_landlord','Add the BZ user id when we grant the permission to can see landlord in the unit.'),
-(742,'2018-06-20 11:10:23','ut_user_group_map_temp','group_id','UNKNOWN','69','PROCEDURE - default_landlord_see_users_landlord','Add the BZ group id when we grant the permission to can see landlord in the unit.'),
-(743,'2018-06-20 11:10:23','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_landlord_see_users_landlord','user does NOT grant can see landlord in the unit. permission'),
-(744,'2018-06-20 11:10:23','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_landlord_see_users_landlord','user is a member of the groupcan see landlord in the unit.'),
-(745,'2018-06-20 11:10:26','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(746,'2018-06-20 11:10:26','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(747,'2018-06-20 11:10:26','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(748,'2018-06-20 11:10:26','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(749,'2018-06-20 11:10:26','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(750,'2018-06-20 11:10:26','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(751,'2018-06-20 11:10:26','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(752,'2018-06-20 11:10:26','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(753,'2018-06-20 11:10:26','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(754,'2018-06-20 11:10:26','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(755,'2018-06-20 11:10:26','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(756,'2018-06-20 11:10:26','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(757,'2018-06-20 11:10:26','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(758,'2018-06-20 11:10:26','ut_user_group_map_temp','group_id','UNKNOWN','20',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(759,'2018-06-20 11:10:26','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(760,'2018-06-20 11:10:26','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(761,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(762,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','21',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(763,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(764,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(765,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(766,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','22',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(767,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(768,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(769,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(770,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','23',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(771,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(772,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(773,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(774,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','25',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(775,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(776,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(777,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(778,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','28',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(779,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(780,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(781,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(782,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','29',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(783,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(784,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(785,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(786,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','27',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(787,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(788,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(789,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(790,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','26',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(791,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(792,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(793,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15','PROCEDURE - show_to_contractor','Add the BZ user id when we grant the permission to CAN see case that are limited to contractors.'),
-(794,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','41','PROCEDURE - show_to_contractor','Add the BZ group id when we grant the permission to CAN see case that are limited to contractors.'),
-(795,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_contractor','user does NOT grant CAN see case that are limited to contractors. permission'),
-(796,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_contractor','user is a member of the groupCAN see case that are limited to contractors.'),
-(797,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15','PROCEDURE - are_users_contractor','Add the BZ user id when we grant the permission to is a contractor.'),
-(798,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','42','PROCEDURE - are_users_contractor','Add the BZ group id when we grant the permission to is a contractor.'),
-(799,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_contractor','user does NOT grant is a contractor. permission'),
-(800,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_contractor','user is a member of the groupis a contractor.'),
-(801,'2018-06-20 11:10:27','ut_user_group_map_temp','user_id','UNKNOWN','15','PROCEDURE - default_contractor_see_users_contractor','Add the BZ user id when we grant the permission to can see employee of Contractor for the unit.'),
-(802,'2018-06-20 11:10:27','ut_user_group_map_temp','group_id','UNKNOWN','43','PROCEDURE - default_contractor_see_users_contractor','Add the BZ group id when we grant the permission to can see employee of Contractor for the unit.'),
-(803,'2018-06-20 11:10:27','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_contractor_see_users_contractor','user does NOT grant can see employee of Contractor for the unit. permission'),
-(804,'2018-06-20 11:10:27','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_contractor_see_users_contractor','user is a member of the groupcan see employee of Contractor for the unit.'),
-(805,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(806,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(807,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(808,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(809,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(810,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(811,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(812,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(813,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(814,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(815,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(816,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(817,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(818,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','84',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(819,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(820,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(821,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(822,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','85',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(823,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(824,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(825,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(826,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','86',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(827,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(828,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(829,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(830,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','87',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(831,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(832,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(833,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(834,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','89',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(835,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(836,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(837,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(838,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','92',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(839,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(840,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(841,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(842,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','93',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(843,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(844,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(845,'2018-06-20 11:10:31','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(846,'2018-06-20 11:10:31','ut_user_group_map_temp','group_id','UNKNOWN','91',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(847,'2018-06-20 11:10:31','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(848,'2018-06-20 11:10:31','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(849,'2018-06-20 11:10:32','ut_user_group_map_temp','user_id','UNKNOWN','15',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(850,'2018-06-20 11:10:32','ut_user_group_map_temp','group_id','UNKNOWN','90',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(851,'2018-06-20 11:10:32','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(852,'2018-06-20 11:10:32','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(853,'2018-06-20 11:10:32','ut_user_group_map_temp','user_id','UNKNOWN','15','PROCEDURE - show_to_contractor','Add the BZ user id when we grant the permission to CAN see case that are limited to contractors.'),
-(854,'2018-06-20 11:10:32','ut_user_group_map_temp','group_id','UNKNOWN','105','PROCEDURE - show_to_contractor','Add the BZ group id when we grant the permission to CAN see case that are limited to contractors.'),
-(855,'2018-06-20 11:10:32','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_contractor','user does NOT grant CAN see case that are limited to contractors. permission'),
-(856,'2018-06-20 11:10:32','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_contractor','user is a member of the groupCAN see case that are limited to contractors.'),
-(857,'2018-06-20 11:10:32','ut_user_group_map_temp','user_id','UNKNOWN','15','PROCEDURE - are_users_contractor','Add the BZ user id when we grant the permission to is a contractor.'),
-(858,'2018-06-20 11:10:32','ut_user_group_map_temp','group_id','UNKNOWN','106','PROCEDURE - are_users_contractor','Add the BZ group id when we grant the permission to is a contractor.'),
-(859,'2018-06-20 11:10:32','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_contractor','user does NOT grant is a contractor. permission'),
-(860,'2018-06-20 11:10:32','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_contractor','user is a member of the groupis a contractor.'),
-(861,'2018-06-20 11:10:32','ut_user_group_map_temp','user_id','UNKNOWN','15','PROCEDURE - default_contractor_see_users_contractor','Add the BZ user id when we grant the permission to can see employee of Contractor for the unit.'),
-(862,'2018-06-20 11:10:32','ut_user_group_map_temp','group_id','UNKNOWN','107','PROCEDURE - default_contractor_see_users_contractor','Add the BZ group id when we grant the permission to can see employee of Contractor for the unit.'),
-(863,'2018-06-20 11:10:32','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_contractor_see_users_contractor','user does NOT grant can see employee of Contractor for the unit. permission'),
-(864,'2018-06-20 11:10:32','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_contractor_see_users_contractor','user is a member of the groupcan see employee of Contractor for the unit.'),
-(865,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to see time tracking'),
-(866,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','16',NULL,'Add the BZ group id when we grant the permission to see time tracking'),
-(867,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see time tracking permission'),
-(868,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group see time tracking'),
-(869,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to create shared queries'),
-(870,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','17',NULL,'Add the BZ group id when we grant the permission to create shared queries'),
-(871,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create shared queries permission'),
-(872,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group create shared queries'),
-(873,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to tag comments'),
-(874,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','18',NULL,'Add the BZ group id when we grant the permission to tag comments'),
-(875,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant tag comments permission'),
-(876,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group tag comments'),
-(877,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to create a new case.'),
-(878,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','52',NULL,'Add the BZ group id when we grant the permission to create a new case.'),
-(879,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant create a new case. permission'),
-(880,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupcreate a new case.'),
-(881,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to edit a case in this unit.'),
-(882,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','53',NULL,'Add the BZ group id when we grant the permission to edit a case in this unit.'),
-(883,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant edit a case in this unit. permission'),
-(884,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupedit a case in this unit.'),
-(885,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to see all public case in this unit.'),
-(886,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','54',NULL,'Add the BZ group id when we grant the permission to see all public case in this unit.'),
-(887,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant see all public case in this unit. permission'),
-(888,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupsee all public case in this unit.'),
-(889,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(890,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','55',NULL,'Add the BZ group id when we grant the permission to Can edit all fields in the case regardless of his/her role.'),
-(891,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can edit all fields in the case regardless of his/her role. permission'),
-(892,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan edit all fields in the case regardless of his/her role.'),
-(893,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to Can see the unit in the Search panel.'),
-(894,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','57',NULL,'Add the BZ group id when we grant the permission to Can see the unit in the Search panel.'),
-(895,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant Can see the unit in the Search panel. permission'),
-(896,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupCan see the unit in the Search panel.'),
-(897,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(898,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','60',NULL,'Add the BZ group id when we grant the permission to is one of the visible assignee for cases for this unit.'),
-(899,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant is one of the visible assignee for cases for this unit. permission'),
-(900,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the groupis one of the visible assignee for cases for this unit.'),
-(901,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(902,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','61',NULL,'Add the BZ group id when we grant the permission to  CAN see the publicly visible users for the case for this unit.'),
-(903,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN see the publicly visible users for the case for this unit. permission'),
-(904,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN see the publicly visible users for the case for this unit.'),
-(905,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to  CAN ask for approval for all flags.'),
-(906,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','59',NULL,'Add the BZ group id when we grant the permission to  CAN ask for approval for all flags.'),
-(907,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN ask for approval for all flags. permission'),
-(908,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN ask for approval for all flags.'),
-(909,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17',NULL,'Add the BZ user id when we grant the permission to  CAN approve for all flags.'),
-(910,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','58',NULL,'Add the BZ group id when we grant the permission to  CAN approve for all flags.'),
-(911,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0',NULL,'user does NOT grant  CAN approve for all flags. permission'),
-(912,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0',NULL,'user is a member of the group CAN approve for all flags.'),
-(913,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17','PROCEDURE - show_to_contractor','Add the BZ user id when we grant the permission to CAN see case that are limited to contractors.'),
-(914,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','73','PROCEDURE - show_to_contractor','Add the BZ group id when we grant the permission to CAN see case that are limited to contractors.'),
-(915,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - show_to_contractor','user does NOT grant CAN see case that are limited to contractors. permission'),
-(916,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - show_to_contractor','user is a member of the groupCAN see case that are limited to contractors.'),
-(917,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17','PROCEDURE - are_users_contractor','Add the BZ user id when we grant the permission to is a contractor.'),
-(918,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','74','PROCEDURE - are_users_contractor','Add the BZ group id when we grant the permission to is a contractor.'),
-(919,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - are_users_contractor','user does NOT grant is a contractor. permission'),
-(920,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - are_users_contractor','user is a member of the groupis a contractor.'),
-(921,'2018-06-20 11:10:35','ut_user_group_map_temp','user_id','UNKNOWN','17','PROCEDURE - default_contractor_see_users_contractor','Add the BZ user id when we grant the permission to can see employee of Contractor for the unit.'),
-(922,'2018-06-20 11:10:35','ut_user_group_map_temp','group_id','UNKNOWN','75','PROCEDURE - default_contractor_see_users_contractor','Add the BZ group id when we grant the permission to can see employee of Contractor for the unit.'),
-(923,'2018-06-20 11:10:35','ut_user_group_map_temp','isbless','UNKNOWN','0','PROCEDURE - default_contractor_see_users_contractor','user does NOT grant can see employee of Contractor for the unit. permission'),
-(924,'2018-06-20 11:10:35','ut_user_group_map_temp','grant_type','UNKNOWN','0','PROCEDURE - default_contractor_see_users_contractor','user is a member of the groupcan see employee of Contractor for the unit.');
 
 /*Table structure for table `ut_contractor_types` */
 
@@ -4803,7 +3589,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -4836,7 +3622,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (26,'v3.25','2018-10-24 10:58:49','upgrade_unee-t_v3.24_to_v3.25.sql','Database updated from v3.24 to v3.25'),
 (27,'v3.26','2018-10-25 03:29:15','upgrade_unee-t_v3.25_to_v3.26.sql','Database updated from v3.25 to v3.26'),
 (28,'v3.27','2018-11-09 00:42:50','upgrade_unee-t_v3.26_to_v3.27.sql','Database updated from v3.26 to v3.27'),
-(29,'v3.28','2018-12-06 16:16:59','upgrade_unee-t_v3.27_to_v3.28.sql','Database updated from v3.27 to v3.28');
+(29,'v3.28','2018-12-06 16:16:59','upgrade_unee-t_v3.27_to_v3.28.sql','Database updated from v3.27 to v3.28'),
+(30,'v3.29','2018-12-15 10:30:33','upgrade_unee-t_v3.28_to_v3.29.sql','Database updated from v3.28 to v3.29');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -5457,216 +4244,9 @@ CREATE TABLE `ut_notification_messages_cases` (
   `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who needs to be notified - a FK to the BZ table ''profiles''',
   `update_what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The field that was updated',
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `ut_notification_messages_cases` */
-
-insert  into `ut_notification_messages_cases`(`notification_id`,`created_datetime`,`processed_datetime`,`unit_id`,`case_id`,`user_id`,`update_what`) values 
-(1,'2018-05-04 14:48:41',NULL,283,61914,99,'CC'),
-(2,'2018-05-04 14:49:09',NULL,283,61914,99,'CC'),
-(3,'2018-05-04 14:52:30',NULL,283,61914,99,'CC'),
-(4,'2018-05-04 14:53:16',NULL,283,61914,99,'CC'),
-(5,'2018-05-04 14:53:22',NULL,283,61914,99,'CC'),
-(6,'2018-05-04 14:53:39',NULL,283,61914,99,'AssignedTo'),
-(7,'2018-05-04 14:55:53',NULL,284,61915,99,'CC'),
-(8,'2018-05-07 06:13:09',NULL,286,61925,99,'CC'),
-(9,'2018-05-08 06:59:33',NULL,283,61920,99,'CC'),
-(10,'2018-05-08 06:59:37',NULL,283,61920,99,'New Message'),
-(11,'2018-05-08 07:19:22',NULL,283,61920,99,'CC'),
-(12,'2018-05-08 07:19:26',NULL,283,61920,99,'New Message'),
-(13,'2018-05-10 10:40:47',NULL,287,61936,99,'CC'),
-(14,'2018-05-10 10:40:52',NULL,287,61936,99,'New Message'),
-(15,'2018-05-13 14:53:03',NULL,266,61932,85,'New Message'),
-(16,'2018-05-15 00:48:57',NULL,283,61918,99,'CC'),
-(17,'2018-05-15 00:49:02',NULL,283,61918,99,'New Message'),
-(18,'2018-05-15 01:05:34',NULL,286,61925,99,'CC'),
-(19,'2018-05-15 01:05:38',NULL,286,61925,99,'New Message'),
-(20,'2018-05-15 01:09:48',NULL,287,61936,99,'CC'),
-(21,'2018-05-15 01:09:52',NULL,287,61936,99,'New Message'),
-(22,'2018-05-16 03:51:23',NULL,286,61925,99,'Status'),
-(23,'2018-05-21 08:21:19',NULL,283,61960,104,'New Case'),
-(24,'2018-05-21 08:21:19',NULL,283,61960,104,'New Message'),
-(25,'2018-05-21 08:21:38',NULL,283,61960,104,'New Message'),
-(26,'2018-05-21 08:21:42',NULL,283,61960,104,'New Message'),
-(27,'2018-05-21 08:21:50',NULL,283,61960,104,'New Message'),
-(28,'2018-05-21 08:42:47',NULL,283,61961,104,'New Case'),
-(29,'2018-05-21 08:42:47',NULL,283,61961,104,'New Message'),
-(30,'2018-05-21 08:46:48',NULL,283,61958,100,'New Message'),
-(31,'2018-05-21 08:46:51',NULL,283,61958,100,'New Message'),
-(32,'2018-05-21 09:11:18',NULL,283,61962,104,'New Case'),
-(33,'2018-05-21 09:11:18',NULL,283,61962,104,'New Message'),
-(34,'2018-05-21 09:11:37',NULL,283,61962,104,'New Message'),
-(35,'2018-05-21 09:11:48',NULL,283,61962,104,'New Message'),
-(36,'2018-05-21 09:18:12',NULL,283,61954,100,'New Message'),
-(37,'2018-05-21 09:26:23',NULL,283,61963,104,'New Case'),
-(38,'2018-05-21 09:26:23',NULL,283,61963,104,'New Message'),
-(39,'2018-05-21 09:26:29',NULL,283,61963,104,'New Message'),
-(40,'2018-05-21 09:26:56',NULL,283,61963,104,'New Message'),
-(41,'2018-05-21 09:29:53',NULL,283,61964,104,'New Case'),
-(42,'2018-05-21 09:29:53',NULL,283,61964,104,'New Message'),
-(43,'2018-05-21 09:29:58',NULL,283,61964,104,'New Message'),
-(44,'2018-05-21 09:30:25',NULL,283,61964,104,'New Message'),
-(45,'2018-05-21 09:52:51',NULL,283,61965,104,'New Case'),
-(46,'2018-05-21 09:52:51',NULL,283,61965,104,'New Message'),
-(47,'2018-05-21 09:56:18',NULL,283,61966,104,'New Case'),
-(48,'2018-05-21 09:56:18',NULL,283,61966,104,'New Message'),
-(49,'2018-05-21 09:56:24',NULL,283,61966,104,'New Message'),
-(50,'2018-05-21 09:56:27',NULL,283,61966,104,'New Message'),
-(51,'2018-05-21 09:56:35',NULL,283,61966,104,'New Message'),
-(52,'2018-05-21 10:05:27',NULL,283,61967,104,'New Case'),
-(53,'2018-05-21 10:05:27',NULL,283,61967,104,'New Message'),
-(54,'2018-05-21 10:05:33',NULL,283,61967,104,'New Message'),
-(55,'2018-05-21 10:05:36',NULL,283,61967,104,'New Message'),
-(56,'2018-05-21 10:06:01',NULL,283,61967,104,'New Message'),
-(57,'2018-05-21 10:07:33',NULL,283,61968,104,'New Case'),
-(58,'2018-05-21 10:07:33',NULL,283,61968,104,'New Message'),
-(59,'2018-05-21 10:07:38',NULL,283,61968,104,'New Message'),
-(60,'2018-05-21 10:07:41',NULL,283,61968,104,'New Message'),
-(61,'2018-05-21 10:08:09',NULL,283,61968,104,'New Message'),
-(62,'2018-05-21 10:09:28',NULL,283,61969,104,'New Case'),
-(63,'2018-05-21 10:09:28',NULL,283,61969,104,'New Message'),
-(64,'2018-05-21 10:09:34',NULL,283,61969,104,'New Message'),
-(65,'2018-05-21 10:09:37',NULL,283,61969,104,'New Message'),
-(66,'2018-05-21 10:10:03',NULL,283,61969,104,'New Message'),
-(67,'2018-05-21 11:34:13',NULL,283,61969,100,'Status'),
-(68,'2018-05-21 11:34:13',NULL,283,61969,100,'Resolution'),
-(69,'2018-05-22 02:56:17',NULL,283,61970,104,'New Case'),
-(70,'2018-05-22 02:56:17',NULL,283,61970,104,'New Message'),
-(71,'2018-05-22 02:56:22',NULL,283,61970,104,'New Message'),
-(72,'2018-05-22 02:56:25',NULL,283,61970,104,'New Message'),
-(73,'2018-05-22 02:56:34',NULL,283,61970,104,'New Message'),
-(74,'2018-05-22 08:05:41',NULL,283,61955,100,'CC'),
-(75,'2018-05-22 08:05:45',NULL,283,61955,100,'New Message'),
-(76,'2018-05-22 08:07:20',NULL,288,61937,99,'CC'),
-(77,'2018-05-22 08:07:24',NULL,288,61937,99,'New Message'),
-(78,'2018-05-22 12:11:13',NULL,283,61969,100,'CC'),
-(79,'2018-05-22 12:12:38',NULL,283,61969,100,'CC'),
-(80,'2018-05-23 01:36:42',NULL,283,61918,99,'Solution'),
-(81,'2018-05-23 01:37:16',NULL,283,61918,99,'Next Step'),
-(82,'2018-05-23 01:39:08',NULL,283,61918,99,'New Message'),
-(83,'2018-05-23 14:32:11',NULL,283,61961,99,'New Message'),
-(84,'2018-05-24 03:33:10',NULL,284,61915,99,'Solution'),
-(85,'2018-05-24 03:33:12',NULL,284,61915,99,'Solution'),
-(86,'2018-05-24 03:33:16',NULL,284,61915,99,'Next Step'),
-(87,'2018-05-24 12:36:21',NULL,283,61969,100,'CC'),
-(88,'2018-05-24 12:36:25',NULL,283,61969,100,'New Message'),
-(89,'2018-05-24 12:36:25',NULL,288,61937,99,'CC'),
-(90,'2018-05-24 12:36:29',NULL,288,61937,99,'New Message'),
-(91,'2018-05-24 12:40:47',NULL,288,61937,99,'CC'),
-(92,'2018-05-24 12:40:54',NULL,288,61937,99,'CC'),
-(93,'2018-05-24 12:57:19',NULL,288,61937,208,'Solution'),
-(94,'2018-05-24 12:57:23',NULL,288,61937,208,'Next Step'),
-(95,'2018-05-24 12:57:37',NULL,288,61937,208,'Solution'),
-(96,'2018-05-24 12:57:40',NULL,288,61937,208,'Next Step'),
-(97,'2018-05-25 07:32:31',NULL,284,61924,99,'CC'),
-(98,'2018-05-25 07:32:35',NULL,284,61924,99,'New Message'),
-(99,'2018-05-25 08:21:42',NULL,284,61924,99,'CC'),
-(100,'2018-05-25 08:21:46',NULL,284,61924,99,'New Message'),
-(101,'2018-05-25 08:22:19',NULL,284,61924,99,'CC'),
-(102,'2018-05-25 08:22:23',NULL,284,61924,99,'New Message'),
-(103,'2018-05-25 08:24:13',NULL,284,61924,99,'CC'),
-(104,'2018-05-25 08:24:17',NULL,284,61924,99,'New Message'),
-(105,'2018-05-25 08:29:10',NULL,284,61924,99,'CC'),
-(106,'2018-05-25 08:29:14',NULL,284,61924,99,'New Message'),
-(107,'2018-05-25 08:35:30',NULL,284,61924,99,'CC'),
-(108,'2018-05-25 08:35:34',NULL,284,61924,99,'New Message'),
-(109,'2018-05-25 08:36:19',NULL,284,61924,99,'CC'),
-(110,'2018-05-25 08:36:23',NULL,284,61924,99,'New Message'),
-(111,'2018-05-25 15:11:03',NULL,288,61937,99,'Next Step'),
-(112,'2018-05-25 15:11:10',NULL,288,61937,99,'Next Step'),
-(113,'2018-05-25 15:51:29',NULL,288,61937,99,'CC'),
-(114,'2018-05-25 15:51:32',NULL,288,61937,99,'New Message'),
-(115,'2018-05-25 15:51:53',NULL,288,61937,99,'Solution'),
-(116,'2018-05-25 15:51:58',NULL,288,61937,99,'Solution'),
-(117,'2018-05-25 15:54:29',NULL,288,61937,216,'New Message'),
-(118,'2018-05-27 05:16:15',NULL,284,61924,99,'CC'),
-(119,'2018-05-28 07:54:13',NULL,284,61924,99,'Next Step'),
-(120,'2018-05-28 10:12:10',NULL,284,61924,99,'CC'),
-(121,'2018-05-28 10:12:12',NULL,284,61924,99,'New Message'),
-(122,'2018-05-29 04:11:39',NULL,287,61936,99,'New Message'),
-(123,'2018-05-29 04:11:55',NULL,287,61936,99,'Solution'),
-(124,'2018-05-29 04:11:57',NULL,287,61936,99,'Solution'),
-(125,'2018-05-29 04:12:04',NULL,287,61936,99,'Solution'),
-(126,'2018-05-29 05:57:50',NULL,287,61936,99,'New Message'),
-(127,'2018-05-29 05:58:20',NULL,287,61936,99,'New Message'),
-(128,'2018-05-29 06:39:46',NULL,287,61936,99,'New Message'),
-(129,'2018-05-29 06:40:31',NULL,287,61936,99,'New Message'),
-(130,'2018-05-29 06:46:54',NULL,287,61936,99,'New Message'),
-(131,'2018-05-29 06:50:38',NULL,287,61936,99,'New Message'),
-(132,'2018-05-29 06:53:17',NULL,287,61936,99,'New Message'),
-(133,'2018-05-29 07:02:21',NULL,287,61936,99,'New Message'),
-(134,'2018-05-29 07:21:12',NULL,287,61936,99,'New Message'),
-(135,'2018-05-29 07:23:33',NULL,287,61936,99,'New Message'),
-(136,'2018-05-29 07:30:14',NULL,286,61925,99,'New Message'),
-(137,'2018-05-29 07:30:41',NULL,286,61925,99,'New Message'),
-(138,'2018-05-29 07:30:59',NULL,286,61925,99,'Solution'),
-(139,'2018-05-29 07:31:37',NULL,284,61971,99,'New Case'),
-(140,'2018-05-29 07:31:37',NULL,284,61971,99,'New Message'),
-(141,'2018-05-29 07:31:57',NULL,288,61972,99,'New Case'),
-(142,'2018-05-29 07:31:57',NULL,288,61972,99,'New Message'),
-(143,'2018-05-30 03:08:39',NULL,283,61920,99,'New Message'),
-(144,'2018-05-30 03:27:05',NULL,283,61920,99,'New Message'),
-(145,'2018-05-30 03:30:56',NULL,283,61920,99,'New Message'),
-(146,'2018-05-30 03:32:14',NULL,283,61920,99,'New Message'),
-(147,'2018-05-30 03:34:56',NULL,283,61920,99,'New Message'),
-(148,'2018-05-30 03:36:15',NULL,283,61920,99,'New Message'),
-(149,'2018-05-30 03:37:58',NULL,283,61920,99,'New Message'),
-(150,'2018-05-30 03:41:30',NULL,283,61920,99,'New Message'),
-(151,'2018-05-30 03:43:37',NULL,283,61920,99,'New Message'),
-(152,'2018-05-30 03:44:29',NULL,283,61920,99,'New Message'),
-(153,'2018-05-30 06:16:23',NULL,284,61915,99,'New Message'),
-(154,'2018-05-30 06:20:15',NULL,283,61920,99,'New Message'),
-(155,'2018-05-30 07:08:32',NULL,283,61920,99,'New Message'),
-(156,'2018-05-30 07:09:52',NULL,283,61920,99,'New Message'),
-(157,'2018-05-30 07:13:12',NULL,283,61920,99,'New Message'),
-(158,'2018-05-30 07:24:08',NULL,283,61920,99,'New Message'),
-(159,'2018-05-30 07:24:55',NULL,283,61920,99,'New Message'),
-(160,'2018-05-30 07:26:25',NULL,283,61920,99,'New Message'),
-(161,'2018-05-30 07:32:03',NULL,283,61920,99,'New Message'),
-(162,'2018-05-30 07:33:57',NULL,283,61920,99,'New Message'),
-(163,'2018-05-30 07:36:02',NULL,283,61920,99,'New Message'),
-(164,'2018-05-30 07:36:38',NULL,283,61920,99,'New Message'),
-(165,'2018-05-30 07:37:48',NULL,283,61920,99,'New Message'),
-(166,'2018-05-30 07:38:50',NULL,284,61915,99,'New Message'),
-(167,'2018-05-30 07:40:00',NULL,284,61971,99,'New Message'),
-(168,'2018-05-30 07:41:37',NULL,283,61918,99,'New Message'),
-(169,'2018-05-31 01:00:35',NULL,284,61915,99,'New Message'),
-(170,'2018-05-31 01:14:43',NULL,284,61915,99,'New Message'),
-(171,'2018-05-31 02:28:39',NULL,284,61915,99,'New Message'),
-(172,'2018-05-31 02:32:33',NULL,284,61915,99,'New Message'),
-(173,'2018-05-31 03:49:32',NULL,286,61925,99,'New Message'),
-(174,'2018-06-03 04:32:23',NULL,283,61914,99,'New Message'),
-(175,'2018-06-03 04:32:55',NULL,283,61914,99,'New Message'),
-(176,'2018-06-03 04:40:43',NULL,284,61924,99,'New Message'),
-(177,'2018-06-03 04:45:20',NULL,284,61924,99,'New Message'),
-(178,'2018-06-04 12:59:19',NULL,283,61973,99,'New Case'),
-(179,'2018-06-04 12:59:19',NULL,283,61973,99,'New Message'),
-(180,'2018-06-05 09:17:31',NULL,283,61973,105,'New Message'),
-(181,'2018-06-05 09:17:32',NULL,283,61973,105,'CC'),
-(182,'2018-06-05 09:17:32',NULL,283,61973,105,'URL'),
-(183,'2018-06-06 09:05:22',NULL,284,61926,99,'AssignedTo'),
-(184,'2018-06-08 11:20:23',NULL,286,61974,99,'New Case'),
-(185,'2018-06-08 11:20:23',NULL,286,61974,99,'New Message'),
-(186,'2018-06-11 07:19:51',NULL,286,61974,99,'CC'),
-(187,'2018-06-11 12:44:14',NULL,283,61914,99,'New Message'),
-(188,'2018-06-11 12:59:13',NULL,283,61914,99,'CC'),
-(189,'2018-06-11 13:00:11',NULL,283,61914,99,'CC'),
-(190,'2018-06-11 14:13:44',NULL,32,12345,1,'AssignedTo'),
-(191,'2018-06-11 14:13:57',NULL,32,12345,1,'AssignedTo'),
-(192,'2018-06-11 14:19:25',NULL,32,12345,1,'AssignedTo'),
-(193,'2018-06-11 14:19:37',NULL,32,12345,1,'AssignedTo'),
-(194,'2018-06-11 14:22:35',NULL,32,12345,1,'AssignedTo'),
-(195,'2018-06-11 14:24:52',NULL,289,61975,100,'New Case'),
-(196,'2018-06-11 14:24:52',NULL,289,61975,100,'New Message'),
-(197,'2018-06-11 14:25:48',NULL,289,61975,100,'AssignedTo'),
-(198,'2018-06-11 14:26:13',NULL,289,61975,100,'CC'),
-(199,'2018-06-11 14:26:52',NULL,289,61975,100,'CC'),
-(200,'2018-06-11 14:29:31',NULL,289,61975,100,'CC'),
-(201,'2018-06-11 14:50:22',NULL,289,61975,100,'CC'),
-(202,'2018-06-11 14:50:29',NULL,289,61975,100,'CC'),
-(203,'2018-06-12 01:59:01',NULL,284,61926,99,'Solution'),
-(204,'2018-06-12 01:59:28',NULL,284,61926,99,'New Message'),
-(205,'2018-06-12 02:00:03',NULL,284,61926,99,'New Message');
 
 /*Table structure for table `ut_notification_types` */
 
@@ -5790,7 +4370,8 @@ CREATE TABLE `ut_product_group` (
   `group_type_id` smallint(6) NOT NULL COMMENT 'id in the table ut_group_types - to avoid re-creating the same group for the same product again',
   `role_type_id` smallint(6) DEFAULT NULL COMMENT 'id in the table ut_role_types - to make sure all similar stakeholder in a unit are made a member of the same group',
   `created_by_id` mediumint(9) DEFAULT NULL COMMENT 'id in the table ut_profiles',
-  `created` datetime DEFAULT NULL COMMENT 'creation ts'
+  `created` datetime DEFAULT NULL COMMENT 'creation ts',
+  KEY `ut_product_group_product_id_group_id` (`product_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_product_group` */
@@ -5925,241 +4506,9 @@ CREATE TABLE `ut_script_log` (
   `script` mediumtext COMMENT 'The script that was used to create the record',
   `log` text COMMENT 'More information about what we intended to do',
   PRIMARY KEY (`id_ut_script_log`)
-) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_script_log` */
-
-insert  into `ut_script_log`(`id_ut_script_log`,`datetime`,`script`,`log`) values 
-(1,'2018-06-20 11:09:22','demo_environment_clean.sql','A new batch of #18 users have been created.'),
-(2,'2018-06-20 11:09:20','demo_environment_clean.sql','The table groups has been reset and initial data entered.'),
-(3,'2018-06-20 11:09:20','demo_environment_clean.sql','The table ut_product_group has been truncated - no info for product_id #1.'),
-(4,'2018-06-20 11:09:20','demo_environment_clean.sql','The table group_control_map has been truncated - no info for product_id #1.'),
-(5,'2018-06-20 11:09:20','demo_environment_clean.sql','The table group_group_map has been reset and initial data entered.'),
-(6,'2018-06-20 11:09:20','demo_environment_clean.sql','The table user_group_map has been re-initialized.'),
-(7,'2018-06-20 11:09:20','demo_environment_clean.sql','The table classifications has been reset and initial data entered.'),
-(8,'2018-06-20 11:09:20','demo_environment_clean.sql','The table ut_data_to_create_units has been reset and initial data entered to create the 3 demo units.'),
-(9,'2018-06-20 11:09:20','demo_environment_clean.sql','A new unit #1 (Demo - Unit 01-02 - Comp A-1)  has been created in the classification: 2\rThe bz user #1 (real name: creator_pub_name is NULL) is the CREATOR of that unit.'),
-(10,'2018-06-20 11:09:20','demo_environment_clean.sql','We have created the groups that we will need for that unit #1\r - To grant case creation privileges. Group_id: 20\r - To grant Edit case privileges. Group_id: 21\r - To grant Edit all field regardless of role privileges. Group_id: 23\r - To grant Edit Component/roles privileges. Group_id: 24\r - To grant See unit in the Search panel privileges. Group_id: 25\r - To grant See cases privileges. Group_id: 22\r - To grant Request all flags privileges. Group_id: 27\r - To grant Approve all flags privileges. Group_id: 26\r - To grant User is publicly visible privileges. Group_id: 28\r - To grant User can see publicly visible privileges. Group_id: 29\r - To grant User is active Stakeholder privileges. Group_id: 30\r - To grant User is the unit creator privileges. Group_id: 31\r - Restrict permission to tenant only. Group_id: 32\r - Group for the tenant only. Group_id: 33\r - Group to see the users tenant. Group_id: 34\r - Restrict permission to landlord only. Group_id: 35\r - Group for the landlord only. Group_id: 36\r - Group to see the userslandlord. Group_id: 37\r - Restrict permission to agent only. Group_id: 38\r - Group for the agent only. Group_id: 39\r - Group to see the usersagent. Group_id: 40\r - Restrict permission to Contractor only. Group_id: 41\r - Group for the Contractor only. Group_id: 42\r - Group to see the usersContractor. Group_id: 43\r - Restrict permission to Management Company only. Group_id: 44\r - Group for the users in the Management Company only. Group_id: 45\r - Group to see the users in the Management Company. Group_id: 46\r - Restrict permission to occupant only. Group_id: 47\r - Group for the occupant only. Group_id: 48\r - Group to see the users occupant. Group_id: 49'),
-(11,'2018-06-20 11:09:20','demo_environment_clean.sql','We have created the following flags which are restricted to that unit: \r - Next Step (#flag_next_step is NULL).\r - Solution (#flag_solution is NULL).\r - Budget (#flag_budget is NULL).\r - Attachment (#flag_attachment is NULL).\r - OK to pay (#flag_ok_to_pay is NULL).\r - Is paid (#flag_is_paid is NULL).'),
-(12,'2018-06-20 11:09:26','demo_environment_clean.sql','We have updated the group control permissions for the product# 1: \r - Create Case (#20).\r - Edit Case (#21).\r - Edit All Field (#23).\r - Edit Component (#24).\r - Can see case (#22).\r - Can See unit in Search (#32).\r - Show case to Tenant (#35).\r - Show case to Landlord (#35).\r - Show case to Agent (#38).\r - Show case to Contractor (#41).\r - Show case to Management Company (#44).\r - Show case to Occupant(s) (#47).'),
-(13,'2018-06-20 11:09:26','demo_environment_clean.sql','The role created for that unit with temporary users were:\r- Tenant (role_type_id #1) \rThe user associated to this role was bz user #4 (real name: Generic Tenant. This user is the default assignee for this role for that unit).\r- Owner/Landlord (role_type_id #2) \rThe user associated to this role was bz user #3 (real name: Generic Landlord. This user is the default assignee for this role for that unit).\r- Agent (role_type_id #5) \rThe user associated to this role was bz user #2 (real name: Generic Agent. This user is the default assignee for this role for that unit).\r- Contractor (role_type_id #3) \rThe user associated to this role was bz user #5 (real name: Generic Contractor. This user is the default assignee for this role for that unit).\r- Management Company (role_type_id #3) \rThe user associated to this role was bz user #6 (real name: Generic Management Company. This user is the default assignee for this role for that unit).'),
-(14,'2018-06-20 11:09:27','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN tag comments.'),
-(15,'2018-06-20 11:09:27','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN create new cases for unit 1'),
-(16,'2018-06-20 11:09:27','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN edit a cases and see the unit 1'),
-(17,'2018-06-20 11:09:20','demo_environment_clean.sql','A new unit #2 (Demo - Unit 13-06 - Comp B-2)  has been created in the classification: 2\rThe bz user #1 (real name: creator_pub_name is NULL) is the CREATOR of that unit.'),
-(18,'2018-06-20 11:09:20','demo_environment_clean.sql','We have created the groups that we will need for that unit #2\r - To grant case creation privileges. Group_id: 52\r - To grant Edit case privileges. Group_id: 53\r - To grant Edit all field regardless of role privileges. Group_id: 55\r - To grant Edit Component/roles privileges. Group_id: 56\r - To grant See unit in the Search panel privileges. Group_id: 57\r - To grant See cases privileges. Group_id: 54\r - To grant Request all flags privileges. Group_id: 59\r - To grant Approve all flags privileges. Group_id: 58\r - To grant User is publicly visible privileges. Group_id: 60\r - To grant User can see publicly visible privileges. Group_id: 61\r - To grant User is active Stakeholder privileges. Group_id: 62\r - To grant User is the unit creator privileges. Group_id: 63\r - Restrict permission to tenant only. Group_id: 64\r - Group for the tenant only. Group_id: 65\r - Group to see the users tenant. Group_id: 66\r - Restrict permission to landlord only. Group_id: 67\r - Group for the landlord only. Group_id: 68\r - Group to see the userslandlord. Group_id: 69\r - Restrict permission to agent only. Group_id: 70\r - Group for the agent only. Group_id: 71\r - Group to see the usersagent. Group_id: 72\r - Restrict permission to Contractor only. Group_id: 73\r - Group for the Contractor only. Group_id: 74\r - Group to see the usersContractor. Group_id: 75\r - Restrict permission to Management Company only. Group_id: 76\r - Group for the users in the Management Company only. Group_id: 77\r - Group to see the users in the Management Company. Group_id: 78\r - Restrict permission to occupant only. Group_id: 79\r - Group for the occupant only. Group_id: 80\r - Group to see the users occupant. Group_id: 81'),
-(19,'2018-06-20 11:09:20','demo_environment_clean.sql','We have created the following flags which are restricted to that unit: \r - Next Step (#13).\r - Solution (#14).\r - Budget (#15).\r - Attachment (#16).\r - OK to pay (#17).\r - Is paid (#18).'),
-(20,'2018-06-20 11:09:32','demo_environment_clean.sql','We have updated the group control permissions for the product# 2: \r - Create Case (#52).\r - Edit Case (#53).\r - Edit All Field (#55).\r - Edit Component (#56).\r - Can see case (#54).\r - Can See unit in Search (#64).\r - Show case to Tenant (#67).\r - Show case to Landlord (#67).\r - Show case to Agent (#70).\r - Show case to Contractor (#73).\r - Show case to Management Company (#76).\r - Show case to Occupant(s) (#79).'),
-(21,'2018-06-20 11:09:32','demo_environment_clean.sql','The role created for that unit with temporary users were:\r- Tenant (role_type_id #1) \rThe user associated to this role was bz user #4 (real name: Generic Tenant. This user is the default assignee for this role for that unit).\r- Owner/Landlord (role_type_id #2) \rThe user associated to this role was bz user #3 (real name: Generic Landlord. This user is the default assignee for this role for that unit).\r- Agent (role_type_id #5) \rThe user associated to this role was bz user #2 (real name: Generic Agent. This user is the default assignee for this role for that unit).\r- Contractor (role_type_id #3) \rThe user associated to this role was bz user #5 (real name: Generic Contractor. This user is the default assignee for this role for that unit).\r- Management Company (role_type_id #3) \rThe user associated to this role was bz user #6 (real name: Generic Management Company. This user is the default assignee for this role for that unit).'),
-(22,'2018-06-20 11:09:34','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN tag comments.'),
-(23,'2018-06-20 11:09:34','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN create new cases for unit 2'),
-(24,'2018-06-20 11:09:34','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN edit a cases and see the unit 2'),
-(25,'2018-06-20 11:09:20','demo_environment_clean.sql','A new unit #3 (Demo - Unit 07-08 - Comp B-3)  has been created in the classification: 2\rThe bz user #1 (real name: creator_pub_name is NULL) is the CREATOR of that unit.'),
-(26,'2018-06-20 11:09:20','demo_environment_clean.sql','We have created the groups that we will need for that unit #3\r - To grant case creation privileges. Group_id: 84\r - To grant Edit case privileges. Group_id: 85\r - To grant Edit all field regardless of role privileges. Group_id: 87\r - To grant Edit Component/roles privileges. Group_id: 88\r - To grant See unit in the Search panel privileges. Group_id: 89\r - To grant See cases privileges. Group_id: 86\r - To grant Request all flags privileges. Group_id: 91\r - To grant Approve all flags privileges. Group_id: 90\r - To grant User is publicly visible privileges. Group_id: 92\r - To grant User can see publicly visible privileges. Group_id: 93\r - To grant User is active Stakeholder privileges. Group_id: 94\r - To grant User is the unit creator privileges. Group_id: 95\r - Restrict permission to tenant only. Group_id: 96\r - Group for the tenant only. Group_id: 97\r - Group to see the users tenant. Group_id: 98\r - Restrict permission to landlord only. Group_id: 99\r - Group for the landlord only. Group_id: 100\r - Group to see the userslandlord. Group_id: 101\r - Restrict permission to agent only. Group_id: 102\r - Group for the agent only. Group_id: 103\r - Group to see the usersagent. Group_id: 104\r - Restrict permission to Contractor only. Group_id: 105\r - Group for the Contractor only. Group_id: 106\r - Group to see the usersContractor. Group_id: 107\r - Restrict permission to Management Company only. Group_id: 108\r - Group for the users in the Management Company only. Group_id: 109\r - Group to see the users in the Management Company. Group_id: 110\r - Restrict permission to occupant only. Group_id: 111\r - Group for the occupant only. Group_id: 112\r - Group to see the users occupant. Group_id: 113'),
-(27,'2018-06-20 11:09:20','demo_environment_clean.sql','We have created the following flags which are restricted to that unit: \r - Next Step (#19).\r - Solution (#20).\r - Budget (#21).\r - Attachment (#22).\r - OK to pay (#23).\r - Is paid (#24).'),
-(28,'2018-06-20 11:09:39','demo_environment_clean.sql','We have updated the group control permissions for the product# 3: \r - Create Case (#84).\r - Edit Case (#85).\r - Edit All Field (#87).\r - Edit Component (#88).\r - Can see case (#86).\r - Can See unit in Search (#96).\r - Show case to Tenant (#99).\r - Show case to Landlord (#99).\r - Show case to Agent (#102).\r - Show case to Contractor (#105).\r - Show case to Management Company (#108).\r - Show case to Occupant(s) (#111).'),
-(29,'2018-06-20 11:09:39','demo_environment_clean.sql','The role created for that unit with temporary users were:\r- Tenant (role_type_id #1) \rThe user associated to this role was bz user #4 (real name: Generic Tenant. This user is the default assignee for this role for that unit).\r- Owner/Landlord (role_type_id #2) \rThe user associated to this role was bz user #3 (real name: Generic Landlord. This user is the default assignee for this role for that unit).\r- Agent (role_type_id #5) \rThe user associated to this role was bz user #2 (real name: Generic Agent. This user is the default assignee for this role for that unit).\r- Contractor (role_type_id #3) \rThe user associated to this role was bz user #5 (real name: Generic Contractor. This user is the default assignee for this role for that unit).\r- Management Company (role_type_id #3) \rThe user associated to this role was bz user #6 (real name: Generic Management Company. This user is the default assignee for this role for that unit).'),
-(30,'2018-06-20 11:09:41','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN tag comments.'),
-(31,'2018-06-20 11:09:41','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN create new cases for unit 3'),
-(32,'2018-06-20 11:09:41','demo_environment_clean.sql','the dummy bz users for each component: (#4, #3, #2, #5, #6) CAN edit a cases and see the unit 3'),
-(33,'2018-06-20 11:09:43','demo_environment_clean.sql','The component: 4 (for the role_type_id #5) has been updated.\rThe default user now associated to this role is bz user #7 (real name: leonel) for the unit #1'),
-(34,'2018-06-20 11:09:45','demo_environment_clean.sql','the bz user #7 CAN See time tracking information.'),
-(35,'2018-06-20 11:09:45','demo_environment_clean.sql','the bz user #7 CAN create shared queries.'),
-(36,'2018-06-20 11:09:45','demo_environment_clean.sql','the bz user #7 CAN tag comments.'),
-(37,'2018-06-20 11:09:45','demo_environment_clean.sql','the bz user #7 CAN create new cases for unit 1'),
-(38,'2018-06-20 11:09:45','demo_environment_clean.sql','the bz user #7 CAN edit a cases for unit 1'),
-(39,'2018-06-20 11:09:46','demo_environment_clean.sql','the bz user #7 CAN see all public cases for unit 1'),
-(40,'2018-06-20 11:09:46','demo_environment_clean.sql','the bz user #7 can edit all fields in the case regardless of his/her role for the unit#1'),
-(41,'2018-06-20 11:09:46','demo_environment_clean.sql','the bz user #7 can see the unit#1 in the search panel.'),
-(42,'2018-06-20 11:09:46','demo_environment_clean.sql','the bz user #7 is one of the visible assignee for cases for this unit.1'),
-(43,'2018-06-20 11:09:46','demo_environment_clean.sql','the bz user #7 CAN see the publicly visible users for the case for this unit.1'),
-(44,'2018-06-20 11:09:46','demo_environment_clean.sql','the bz user #7 CAN ask for approval for all flags.1'),
-(45,'2018-06-20 11:09:46','demo_environment_clean.sql','the bz user #7 CAN approve for all flags.1'),
-(46,'2018-06-20 11:09:46','PROCEDURE - show_to_agent','the bz user #7 CAN see case that are limited to agents for the unit #1.'),
-(47,'2018-06-20 11:09:46','PROCEDURE - are_users_agent','the bz user #7 is an agent for the unit #1'),
-(48,'2018-06-20 11:09:46','PROCEDURE - default_agent_see_users_agent','the bz user #7 can see agents for the unit 1'),
-(49,'2018-06-20 11:09:48',NULL,'The component: 9 (for the role_type_id #5) has been updated.\rThe default user now associated to this role is bz user #7 (real name: leonel) for the unit #2'),
-(50,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN See time tracking information.'),
-(51,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN create shared queries.'),
-(52,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN tag comments.'),
-(53,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN create new cases for unit 2'),
-(54,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN edit a cases for unit 2'),
-(55,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN see all public cases for unit 2'),
-(56,'2018-06-20 11:09:50',NULL,'the bz user #7 can edit all fields in the case regardless of his/her role for the unit#2'),
-(57,'2018-06-20 11:09:50',NULL,'the bz user #7 can see the unit#2 in the search panel.'),
-(58,'2018-06-20 11:09:50',NULL,'the bz user #7 is one of the visible assignee for cases for this unit.2'),
-(59,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN see the publicly visible users for the case for this unit.2'),
-(60,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN ask for approval for all flags.2'),
-(61,'2018-06-20 11:09:50',NULL,'the bz user #7 CAN approve for all flags.2'),
-(62,'2018-06-20 11:09:51','PROCEDURE - show_to_agent','the bz user #7 CAN see case that are limited to agents for the unit #2.'),
-(63,'2018-06-20 11:09:51','PROCEDURE - are_users_agent','the bz user #7 is an agent for the unit #2'),
-(64,'2018-06-20 11:09:51','PROCEDURE - default_agent_see_users_agent','the bz user #7 can see agents for the unit 2'),
-(65,'2018-06-20 11:09:52',NULL,'The component: 3 (for the role_type_id #2) has been updated.\rThe default user now associated to this role is bz user #8 (real name: marley) for the unit #1'),
-(66,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN See time tracking information.'),
-(67,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN create shared queries.'),
-(68,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN tag comments.'),
-(69,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN create new cases for unit 1'),
-(70,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN edit a cases for unit 1'),
-(71,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN see all public cases for unit 1'),
-(72,'2018-06-20 11:09:55',NULL,'the bz user #8 can edit all fields in the case regardless of his/her role for the unit#1'),
-(73,'2018-06-20 11:09:55',NULL,'the bz user #8 can see the unit#1 in the search panel.'),
-(74,'2018-06-20 11:09:55',NULL,'the bz user #8 is one of the visible assignee for cases for this unit.1'),
-(75,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN see the publicly visible users for the case for this unit.1'),
-(76,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN ask for approval for all flags.1'),
-(77,'2018-06-20 11:09:55',NULL,'the bz user #8 CAN approve for all flags.1'),
-(78,'2018-06-20 11:09:55','PROCEDURE - show_to_landlord','the bz user #8 CAN see case that are limited to landlords for the unit #1.'),
-(79,'2018-06-20 11:09:55','PROCEDURE - are_users_landlord','the bz user #8 is a landlord for the unit #1'),
-(80,'2018-06-20 11:09:55','PROCEDURE - default_landlord_see_users_landlord','the bz user #8 can see landlord in the unit 1'),
-(81,'2018-06-20 11:09:57',NULL,'The component: 13 (for the role_type_id #2) has been updated.\rThe default user now associated to this role is bz user #8 (real name: marley) for the unit #3'),
-(82,'2018-06-20 11:09:59',NULL,'the bz user #8 CAN See time tracking information.'),
-(83,'2018-06-20 11:09:59',NULL,'the bz user #8 CAN create shared queries.'),
-(84,'2018-06-20 11:09:59',NULL,'the bz user #8 CAN tag comments.'),
-(85,'2018-06-20 11:09:59',NULL,'the bz user #8 CAN create new cases for unit 3'),
-(86,'2018-06-20 11:09:59',NULL,'the bz user #8 CAN edit a cases for unit 3'),
-(87,'2018-06-20 11:09:59',NULL,'the bz user #8 CAN see all public cases for unit 3'),
-(88,'2018-06-20 11:09:59',NULL,'the bz user #8 can edit all fields in the case regardless of his/her role for the unit#3'),
-(89,'2018-06-20 11:09:59',NULL,'the bz user #8 can see the unit#3 in the search panel.'),
-(90,'2018-06-20 11:09:59',NULL,'the bz user #8 is one of the visible assignee for cases for this unit.3'),
-(91,'2018-06-20 11:10:00',NULL,'the bz user #8 CAN see the publicly visible users for the case for this unit.3'),
-(92,'2018-06-20 11:10:00',NULL,'the bz user #8 CAN ask for approval for all flags.3'),
-(93,'2018-06-20 11:10:00',NULL,'the bz user #8 CAN approve for all flags.3'),
-(94,'2018-06-20 11:10:00','PROCEDURE - show_to_landlord','the bz user #8 CAN see case that are limited to landlords for the unit #3.'),
-(95,'2018-06-20 11:10:00','PROCEDURE - are_users_landlord','the bz user #8 is a landlord for the unit #3'),
-(96,'2018-06-20 11:10:00','PROCEDURE - default_landlord_see_users_landlord','the bz user #8 can see landlord in the unit 3'),
-(97,'2018-06-20 11:10:00','PROCEDURE - show_to_occupant','the bz user #8 CAN see case that are limited to occupants for the unit #3.'),
-(98,'2018-06-20 11:10:00','PROCEDURE - is_occupant','the bz user #8 is an occupant in the unit #3'),
-(99,'2018-06-20 11:10:00','PROCEDURE - default_occupant_can_see_occupant','the bz user #8 can see occupant in the unit 3'),
-(100,'2018-06-20 11:10:02',NULL,'The component: 6 (for the role_type_id #4) has been updated.\rThe default user now associated to this role is bz user #9 (real name: michael) for the unit #1'),
-(101,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN See time tracking information.'),
-(102,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN create shared queries.'),
-(103,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN tag comments.'),
-(104,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN create new cases for unit 1'),
-(105,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN edit a cases for unit 1'),
-(106,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN see all public cases for unit 1'),
-(107,'2018-06-20 11:10:04',NULL,'the bz user #9 can edit all fields in the case regardless of his/her role for the unit#1'),
-(108,'2018-06-20 11:10:04',NULL,'the bz user #9 can see the unit#1 in the search panel.'),
-(109,'2018-06-20 11:10:04',NULL,'the bz user #9 is one of the visible assignee for cases for this unit.1'),
-(110,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN see the publicly visible users for the case for this unit.1'),
-(111,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN ask for approval for all flags.1'),
-(112,'2018-06-20 11:10:04',NULL,'the bz user #9 CAN approve for all flags.1'),
-(113,'2018-06-20 11:10:04','PROCEDURE - show_to_mgt_cny','the bz user #9 CAN see case that are limited to Mgt Cny for the unit #1.'),
-(114,'2018-06-20 11:10:04','PROCEDURE - are_users_mgt_cny','the bz user #9 is a Mgt Cny for the unit #1'),
-(115,'2018-06-20 11:10:05','PROCEDURE - default_mgt_cny_see_users_mgt_cny','the bz user #9 can see Mgt Cny for the unit 1'),
-(116,'2018-06-20 11:10:06',NULL,'The component: 16 (for the role_type_id #4) has been updated.\rThe default user now associated to this role is bz user #9 (real name: michael) for the unit #3'),
-(117,'2018-06-20 11:10:08',NULL,'the bz user #9 CAN See time tracking information.'),
-(118,'2018-06-20 11:10:08',NULL,'the bz user #9 CAN create shared queries.'),
-(119,'2018-06-20 11:10:08',NULL,'the bz user #9 CAN tag comments.'),
-(120,'2018-06-20 11:10:08',NULL,'the bz user #9 CAN create new cases for unit 3'),
-(121,'2018-06-20 11:10:08',NULL,'the bz user #9 CAN edit a cases for unit 3'),
-(122,'2018-06-20 11:10:09',NULL,'the bz user #9 CAN see all public cases for unit 3'),
-(123,'2018-06-20 11:10:09',NULL,'the bz user #9 can edit all fields in the case regardless of his/her role for the unit#3'),
-(124,'2018-06-20 11:10:09',NULL,'the bz user #9 can see the unit#3 in the search panel.'),
-(125,'2018-06-20 11:10:09',NULL,'the bz user #9 is one of the visible assignee for cases for this unit.3'),
-(126,'2018-06-20 11:10:09',NULL,'the bz user #9 CAN see the publicly visible users for the case for this unit.3'),
-(127,'2018-06-20 11:10:09',NULL,'the bz user #9 CAN ask for approval for all flags.3'),
-(128,'2018-06-20 11:10:09',NULL,'the bz user #9 CAN approve for all flags.3'),
-(129,'2018-06-20 11:10:09','PROCEDURE - show_to_mgt_cny','the bz user #9 CAN see case that are limited to Mgt Cny for the unit #3.'),
-(130,'2018-06-20 11:10:09','PROCEDURE - are_users_mgt_cny','the bz user #9 is a Mgt Cny for the unit #3'),
-(131,'2018-06-20 11:10:09','PROCEDURE - default_mgt_cny_see_users_mgt_cny','the bz user #9 can see Mgt Cny for the unit 3'),
-(132,'2018-06-20 11:10:11',NULL,'The component: 11 (for the role_type_id #4) has been updated.\rThe default user now associated to this role is bz user #11 (real name: celeste) for the unit #2'),
-(133,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN See time tracking information.'),
-(134,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN create shared queries.'),
-(135,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN tag comments.'),
-(136,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN create new cases for unit 2'),
-(137,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN edit a cases for unit 2'),
-(138,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN see all public cases for unit 2'),
-(139,'2018-06-20 11:10:13',NULL,'the bz user #11 can edit all fields in the case regardless of his/her role for the unit#2'),
-(140,'2018-06-20 11:10:13',NULL,'the bz user #11 can see the unit#2 in the search panel.'),
-(141,'2018-06-20 11:10:13',NULL,'the bz user #11 is one of the visible assignee for cases for this unit.2'),
-(142,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN see the publicly visible users for the case for this unit.2'),
-(143,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN ask for approval for all flags.2'),
-(144,'2018-06-20 11:10:13',NULL,'the bz user #11 CAN approve for all flags.2'),
-(145,'2018-06-20 11:10:14','PROCEDURE - show_to_mgt_cny','the bz user #11 CAN see case that are limited to Mgt Cny for the unit #2.'),
-(146,'2018-06-20 11:10:14','PROCEDURE - are_users_mgt_cny','the bz user #11 is a Mgt Cny for the unit #2'),
-(147,'2018-06-20 11:10:14','PROCEDURE - default_mgt_cny_see_users_mgt_cny','the bz user #11 can see Mgt Cny for the unit 2'),
-(148,'2018-06-20 11:10:15',NULL,'The component: 2 (for the role_type_id #1) has been updated.\rThe default user now associated to this role is bz user #12 (real name: jocelyn) for the unit #1'),
-(149,'2018-06-20 11:10:17',NULL,'the bz user #12 CAN See time tracking information.'),
-(150,'2018-06-20 11:10:17',NULL,'the bz user #12 CAN create shared queries.'),
-(151,'2018-06-20 11:10:17',NULL,'the bz user #12 CAN tag comments.'),
-(152,'2018-06-20 11:10:17',NULL,'the bz user #12 CAN create new cases for unit 1'),
-(153,'2018-06-20 11:10:18',NULL,'the bz user #12 CAN edit a cases for unit 1'),
-(154,'2018-06-20 11:10:18',NULL,'the bz user #12 CAN see all public cases for unit 1'),
-(155,'2018-06-20 11:10:18',NULL,'the bz user #12 can edit all fields in the case regardless of his/her role for the unit#1'),
-(156,'2018-06-20 11:10:18',NULL,'the bz user #12 can see the unit#1 in the search panel.'),
-(157,'2018-06-20 11:10:18',NULL,'the bz user #12 is one of the visible assignee for cases for this unit.1'),
-(158,'2018-06-20 11:10:18',NULL,'the bz user #12 CAN see the publicly visible users for the case for this unit.1'),
-(159,'2018-06-20 11:10:18',NULL,'the bz user #12 CAN ask for approval for all flags.1'),
-(160,'2018-06-20 11:10:18',NULL,'the bz user #12 CAN approve for all flags.1'),
-(161,'2018-06-20 11:10:18','PROCEDURE - show_to_tenant','the bz user #12 CAN see case that are limited to tenants for the unit #1.'),
-(162,'2018-06-20 11:10:18','PROCEDURE - is_tenant','the bz user #12 is a tenant in the unit #1'),
-(163,'2018-06-20 11:10:18','PROCEDURE - default_tenant_can_see_tenant','the bz user #12 can see tenant in the unit 1'),
-(164,'2018-06-20 11:10:18','PROCEDURE - show_to_occupant','the bz user #12 CAN see case that are limited to occupants for the unit #1.'),
-(165,'2018-06-20 11:10:18','PROCEDURE - is_occupant','the bz user #12 is an occupant in the unit #1'),
-(166,'2018-06-20 11:10:18','PROCEDURE - default_occupant_can_see_occupant','the bz user #12 can see occupant in the unit 1'),
-(167,'2018-06-20 11:10:20',NULL,'The component: 8 (for the role_type_id #2) has been updated.\rThe default user now associated to this role is bz user #14 (real name: regina) for the unit #2'),
-(168,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN See time tracking information.'),
-(169,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN create shared queries.'),
-(170,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN tag comments.'),
-(171,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN create new cases for unit 2'),
-(172,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN edit a cases for unit 2'),
-(173,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN see all public cases for unit 2'),
-(174,'2018-06-20 11:10:22',NULL,'the bz user #14 can edit all fields in the case regardless of his/her role for the unit#2'),
-(175,'2018-06-20 11:10:22',NULL,'the bz user #14 can see the unit#2 in the search panel.'),
-(176,'2018-06-20 11:10:22',NULL,'the bz user #14 is one of the visible assignee for cases for this unit.2'),
-(177,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN see the publicly visible users for the case for this unit.2'),
-(178,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN ask for approval for all flags.2'),
-(179,'2018-06-20 11:10:22',NULL,'the bz user #14 CAN approve for all flags.2'),
-(180,'2018-06-20 11:10:23','PROCEDURE - show_to_landlord','the bz user #14 CAN see case that are limited to landlords for the unit #2.'),
-(181,'2018-06-20 11:10:23','PROCEDURE - are_users_landlord','the bz user #14 is a landlord for the unit #2'),
-(182,'2018-06-20 11:10:23','PROCEDURE - default_landlord_see_users_landlord','the bz user #14 can see landlord in the unit 2'),
-(183,'2018-06-20 11:10:24',NULL,'The component: 5 (for the role_type_id #3) has been updated.\rThe default user now associated to this role is bz user #15 (real name: marvin) for the unit #1'),
-(184,'2018-06-20 11:10:26',NULL,'the bz user #15 CAN See time tracking information.'),
-(185,'2018-06-20 11:10:26',NULL,'the bz user #15 CAN create shared queries.'),
-(186,'2018-06-20 11:10:26',NULL,'the bz user #15 CAN tag comments.'),
-(187,'2018-06-20 11:10:26',NULL,'the bz user #15 CAN create new cases for unit 1'),
-(188,'2018-06-20 11:10:27',NULL,'the bz user #15 CAN edit a cases for unit 1'),
-(189,'2018-06-20 11:10:27',NULL,'the bz user #15 CAN see all public cases for unit 1'),
-(190,'2018-06-20 11:10:27',NULL,'the bz user #15 can edit all fields in the case regardless of his/her role for the unit#1'),
-(191,'2018-06-20 11:10:27',NULL,'the bz user #15 can see the unit#1 in the search panel.'),
-(192,'2018-06-20 11:10:27',NULL,'the bz user #15 is one of the visible assignee for cases for this unit.1'),
-(193,'2018-06-20 11:10:27',NULL,'the bz user #15 CAN see the publicly visible users for the case for this unit.1'),
-(194,'2018-06-20 11:10:27',NULL,'the bz user #15 CAN ask for approval for all flags.1'),
-(195,'2018-06-20 11:10:27',NULL,'the bz user #15 CAN approve for all flags.1'),
-(196,'2018-06-20 11:10:27','PROCEDURE - show_to_contractor','the bz user #15 CAN see case that are limited to contractors for the unit #1.'),
-(197,'2018-06-20 11:10:27','PROCEDURE - are_users_contractor','the bz user #15 is a contractor for the unit #1'),
-(198,'2018-06-20 11:10:27','PROCEDURE - default_contractor_see_users_contractor','the bz user #15 can see employee of Contractor for the unit 1'),
-(199,'2018-06-20 11:10:29',NULL,'The component: 15 (for the role_type_id #3) has been updated.\rThe default user now associated to this role is bz user #15 (real name: marvin) for the unit #3'),
-(200,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN See time tracking information.'),
-(201,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN create shared queries.'),
-(202,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN tag comments.'),
-(203,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN create new cases for unit 3'),
-(204,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN edit a cases for unit 3'),
-(205,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN see all public cases for unit 3'),
-(206,'2018-06-20 11:10:31',NULL,'the bz user #15 can edit all fields in the case regardless of his/her role for the unit#3'),
-(207,'2018-06-20 11:10:31',NULL,'the bz user #15 can see the unit#3 in the search panel.'),
-(208,'2018-06-20 11:10:31',NULL,'the bz user #15 is one of the visible assignee for cases for this unit.3'),
-(209,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN see the publicly visible users for the case for this unit.3'),
-(210,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN ask for approval for all flags.3'),
-(211,'2018-06-20 11:10:31',NULL,'the bz user #15 CAN approve for all flags.3'),
-(212,'2018-06-20 11:10:32','PROCEDURE - show_to_contractor','the bz user #15 CAN see case that are limited to contractors for the unit #3.'),
-(213,'2018-06-20 11:10:32','PROCEDURE - are_users_contractor','the bz user #15 is a contractor for the unit #3'),
-(214,'2018-06-20 11:10:32','PROCEDURE - default_contractor_see_users_contractor','the bz user #15 can see employee of Contractor for the unit 3'),
-(215,'2018-06-20 11:10:33',NULL,'The component: 10 (for the role_type_id #3) has been updated.\rThe default user now associated to this role is bz user #17 (real name: anabelle) for the unit #2'),
-(216,'2018-06-20 11:10:34',NULL,'the bz user #17 CAN See time tracking information.'),
-(217,'2018-06-20 11:10:35',NULL,'the bz user #17 CAN create shared queries.'),
-(218,'2018-06-20 11:10:35',NULL,'the bz user #17 CAN tag comments.'),
-(219,'2018-06-20 11:10:35',NULL,'the bz user #17 CAN create new cases for unit 2'),
-(220,'2018-06-20 11:10:35',NULL,'the bz user #17 CAN edit a cases for unit 2'),
-(221,'2018-06-20 11:10:35',NULL,'the bz user #17 CAN see all public cases for unit 2'),
-(222,'2018-06-20 11:10:35',NULL,'the bz user #17 can edit all fields in the case regardless of his/her role for the unit#2'),
-(223,'2018-06-20 11:10:35',NULL,'the bz user #17 can see the unit#2 in the search panel.'),
-(224,'2018-06-20 11:10:35',NULL,'the bz user #17 is one of the visible assignee for cases for this unit.2'),
-(225,'2018-06-20 11:10:35',NULL,'the bz user #17 CAN see the publicly visible users for the case for this unit.2'),
-(226,'2018-06-20 11:10:35',NULL,'the bz user #17 CAN ask for approval for all flags.2'),
-(227,'2018-06-20 11:10:35',NULL,'the bz user #17 CAN approve for all flags.2'),
-(228,'2018-06-20 11:10:35','PROCEDURE - show_to_contractor','the bz user #17 CAN see case that are limited to contractors for the unit #2.'),
-(229,'2018-06-20 11:10:35','PROCEDURE - are_users_contractor','the bz user #17 is a contractor for the unit #2'),
-(230,'2018-06-20 11:10:35','PROCEDURE - default_contractor_see_users_contractor','the bz user #17 can see employee of Contractor for the unit 2');
 
 /*Table structure for table `ut_user_group_map_temp` */
 
@@ -6900,11 +5249,9 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_component_cc` AFTER INSERT ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_component_id = new.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'component_cc';
         SET @bzfe_field = 'user_id, component_id';
@@ -6917,7 +5264,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6925,9 +5271,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6941,15 +5285,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_component_cc` AFTER UPDATE ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_component_id = new.component_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'component_cc';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -6965,10 +5306,8 @@ DELIMITER $$
                 , @new_component_id
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6976,9 +5315,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6992,7 +5329,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_component_cc` AFTER DELETE ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_component_id = old.component_id;
@@ -7007,10 +5343,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7018,9 +5352,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7034,7 +5366,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_components` AFTER INSERT ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -7043,7 +5374,6 @@ DELIMITER $$
         SET @new_initialqacontact = new.initialqacontact;
         SET @new_description = new.description;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -7066,7 +5396,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7074,9 +5403,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7090,7 +5417,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_components` AFTER UPDATE ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -7099,7 +5425,6 @@ DELIMITER $$
         SET @new_initialqacontact = new.initialqacontact;
         SET @new_description = new.description;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -7108,7 +5433,6 @@ DELIMITER $$
         SET @old_initialqacontact = old.initialqacontact;
         SET @old_description = old.description;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -7144,10 +5468,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7155,9 +5477,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7171,7 +5491,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_components` AFTER DELETE ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -7180,7 +5499,6 @@ DELIMITER $$
         SET @old_initialqacontact = old.initialqacontact;
         SET @old_description = old.description;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -7201,10 +5519,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7212,9 +5528,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7228,12 +5542,10 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flaginclusions` AFTER INSERT ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_type_id = new.type_id;
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -7248,7 +5560,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7256,9 +5567,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7272,17 +5581,14 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flaginclusions` AFTER UPDATE ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_type_id = new.type_id;
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_type_id = old.type_id;
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -7302,10 +5608,8 @@ DELIMITER $$
                 , IFNULL(@new_component_id, '(NULL)')     
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7313,9 +5617,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7329,12 +5631,10 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flaginclusions` AFTER DELETE ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_type_id = old.type_id;
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -7347,10 +5647,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7358,9 +5656,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7374,7 +5670,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flagtypes` AFTER INSERT ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -7388,7 +5683,6 @@ DELIMITER $$
         SET @new_sortkey = new.sortkey;
         SET @new_grant_group_id = new.grant_group_id;
         SET @new_request_group_id = new.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -7421,7 +5715,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7429,9 +5722,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7445,7 +5736,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flagtypes` AFTER UPDATE ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -7459,7 +5749,6 @@ DELIMITER $$
         SET @new_sortkey = new.sortkey;
         SET @new_grant_group_id = new.grant_group_id;
         SET @new_request_group_id = new.request_group_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -7473,7 +5762,6 @@ DELIMITER $$
         SET @old_sortkey = old.sortkey;
         SET @old_grant_group_id = old.grant_group_id;
         SET @old_request_group_id = old.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -7529,10 +5817,8 @@ DELIMITER $$
                 , IFNULL(@old_request_group_id, '(NULL)')    
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7540,9 +5826,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7556,7 +5840,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flagtypes` AFTER DELETE ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -7570,7 +5853,6 @@ DELIMITER $$
         SET @old_sortkey = old.sortkey;
         SET @old_grant_group_id = old.grant_group_id;
         SET @old_request_group_id = old.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -7601,10 +5883,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7612,9 +5892,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7628,7 +5906,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_control_map` AFTER INSERT ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_group_id = new.group_id;
         SET @new_product_id = new.product_id;
@@ -7639,7 +5916,6 @@ DELIMITER $$
         SET @new_editcomponents = new.editcomponents;
         SET @new_editbugs = new.editbugs;
         SET @new_canconfirm = new.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -7666,7 +5942,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7674,9 +5949,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7690,7 +5963,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_control_map` AFTER UPDATE ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_group_id = new.group_id;
         SET @new_product_id = new.product_id;
@@ -7701,7 +5973,6 @@ DELIMITER $$
         SET @new_editcomponents = new.editcomponents;
         SET @new_editbugs = new.editbugs;
         SET @new_canconfirm = new.canconfirm;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_group_id = old.group_id;
         SET @old_product_id = old.product_id;
@@ -7712,7 +5983,6 @@ DELIMITER $$
         SET @old_editcomponents = old.editcomponents;
         SET @old_editbugs = old.editbugs;
         SET @old_canconfirm = old.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -7756,10 +6026,8 @@ DELIMITER $$
                 , @new_canconfirm
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7767,9 +6035,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7783,7 +6049,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_control_map` AFTER DELETE ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_group_id = old.group_id;
         SET @old_product_id = old.product_id;
@@ -7794,7 +6059,6 @@ DELIMITER $$
         SET @old_editcomponents = old.editcomponents;
         SET @old_editbugs = old.editbugs;
         SET @old_canconfirm = old.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -7819,10 +6083,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7830,9 +6092,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7846,7 +6106,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_groups` AFTER INSERT ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -7855,7 +6114,6 @@ DELIMITER $$
         SET @new_userregexp = new.userregexp;
         SET @new_isactive = new.isactive;
         SET @new_icon_url = new.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -7878,7 +6136,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7886,9 +6143,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7902,7 +6157,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_groups` AFTER UPDATE ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -7911,7 +6165,6 @@ DELIMITER $$
         SET @new_userregexp = new.userregexp;
         SET @new_isactive = new.isactive;
         SET @new_icon_url = new.icon_url;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -7920,7 +6173,6 @@ DELIMITER $$
         SET @old_userregexp = old.userregexp;
         SET @old_isactive = old.isactive;
         SET @old_icon_url = old.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -7956,10 +6208,8 @@ DELIMITER $$
                 , IFNULL(@new_icon_url, '(NULL)')
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7967,9 +6217,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7983,7 +6231,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_groups` AFTER DELETE ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -7992,7 +6239,6 @@ DELIMITER $$
         SET @old_userregexp = old.userregexp;
         SET @old_isactive = old.isactive;
         SET @old_icon_url = old.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -8013,10 +6259,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8024,9 +6268,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8131,14 +6373,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_milestones` AFTER INSERT ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_product_id = new.product_id;
         SET @new_value = new.value;
         SET @new_sortkey = new.sortkey;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -8157,7 +6397,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8165,9 +6404,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8181,21 +6418,18 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_milestones` AFTER UPDATE ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_product_id = new.product_id;
         SET @new_value = new.value;
         SET @new_sortkey = new.sortkey;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_product_id = old.product_id;
         SET @old_value = old.value;
         SET @old_sortkey = old.sortkey;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -8223,10 +6457,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8234,9 +6466,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8250,14 +6480,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_milestones` AFTER DELETE ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_product_id = old.product_id;
         SET @old_value = old.value;
         SET @old_sortkey = old.sortkey;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -8274,10 +6502,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8285,9 +6511,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8315,7 +6539,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_products` AFTER INSERT ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_name = new.name;
         SET @new_classification_id = new.classification_id;
@@ -8323,7 +6546,6 @@ DELIMITER $$
         SET @new_isactive = new.isactive;
         SET @new_defaultmilestone = new.defaultmilestone;
         SET @new_allows_unconfirmed = new.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -8344,7 +6566,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8352,9 +6573,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8386,7 +6605,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_products` AFTER UPDATE ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_name = new.name;
         SET @new_classification_id = new.classification_id;
@@ -8394,7 +6612,6 @@ DELIMITER $$
         SET @new_isactive = new.isactive;
         SET @new_defaultmilestone = new.defaultmilestone;
         SET @new_allows_unconfirmed = new.allows_unconfirmed;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_name = old.name;
         SET @old_classification_id = old.classification_id;
@@ -8402,7 +6619,6 @@ DELIMITER $$
         SET @old_isactive = old.isactive;
         SET @old_defaultmilestone = old.defaultmilestone;
         SET @old_allows_unconfirmed = old.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -8434,10 +6650,8 @@ DELIMITER $$
                 , @new_allows_unconfirmed
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8445,9 +6659,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8475,7 +6687,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_products` AFTER DELETE ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_name = old.name;
         SET @old_classification_id = old.classification_id;
@@ -8483,7 +6694,6 @@ DELIMITER $$
         SET @old_isactive = old.isactive;
         SET @old_defaultmilestone = old.defaultmilestone;
         SET @old_allows_unconfirmed = old.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -8502,10 +6712,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8513,9 +6721,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8529,13 +6735,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_user_group_map` AFTER INSERT ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_group_id = new.group_id;
         SET @new_isbless = new.isbless;
         SET @new_grant_type = new.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -8552,7 +6756,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8560,9 +6763,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8576,19 +6777,16 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_user_group_map` AFTER UPDATE ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_group_id = new.group_id;
         SET @new_isbless = new.isbless;
         SET @new_grant_type = new.grant_type;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_group_id = old.group_id;
         SET @old_isbless = old.isbless;
         SET @old_grant_type = old.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -8612,10 +6810,8 @@ DELIMITER $$
                 , @new_grant_type
                 )
                 ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8623,9 +6819,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8639,13 +6833,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_user_group_map` AFTER DELETE ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_group_id = old.group_id;
         SET @old_isbless = old.isbless;
         SET @old_grant_type = old.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -8659,10 +6851,8 @@ DELIMITER $$
                 , @old_grant_type
             );
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8670,9 +6860,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8750,7 +6938,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_product_group` AFTER INSERT ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
@@ -8759,7 +6946,6 @@ DELIMITER $$
         SET @new_role_type_id = new.role_type_id;
         SET @new_created_by_id = new.created_by_id;
         SET @new_created = new.created;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_product_group';
         SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
@@ -8782,7 +6968,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8790,9 +6975,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8806,7 +6989,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_product_group` AFTER UPDATE ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
@@ -8860,10 +7042,8 @@ DELIMITER $$
                 , IFNULL(@new_created, '(NULL)')
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8871,9 +7051,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8887,7 +7065,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_product_group` AFTER DELETE ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
@@ -8896,7 +7073,6 @@ DELIMITER $$
         SET @old_role_type_id = old.role_type_id;
         SET @old_created_by_id = old.created_by_id;
         SET @old_created = old.created;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_product_group';
         SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
@@ -8917,10 +7093,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8928,9 +7102,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8944,13 +7116,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_versions` AFTER INSERT ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_value = new.value;
         SET @new_product_id = new.product_id;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -8967,7 +7137,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8975,9 +7144,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8991,19 +7158,16 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_versions` AFTER UPDATE ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_value = new.value;
         SET @new_product_id = new.product_id;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_value = old.value;
         SET @old_product_id = old.product_id;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -9027,10 +7191,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -9038,9 +7200,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -9054,13 +7214,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_versions` AFTER DELETE ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_value = old.value;
         SET @old_product_id = old.product_id;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -9075,10 +7233,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -9086,9 +7242,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -9189,7 +7343,6 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `add_user_to_role_in_unit`()
 BEGIN
-
     # This procedure needs the following objects:
     #   - variables:
     #       - `mefe_invitation_id`
@@ -9285,7 +7438,6 @@ BEGIN
     # First we need to define all the variables we need
     #					
     #####################################################
-
     # We make sure that all the variable we user are set to NULL first
     # This is to avoid issue of a variable 'silently' using a value from a previous run
         SET @reference_for_update = NULL;
@@ -9330,7 +7482,6 @@ BEGIN
         SET @can_approve_all_flags = NULL;
         SET @is_current_assignee_this_role_a_dummy_user = NULL;
         SET @this_script = NULL;
-
     # Default values:
         
         #User Permissions in the unit:
@@ -9351,10 +7502,8 @@ BEGIN
         
         # Do we need to make the invitee a default CC for all new cases for this role in this unit?
             SET @user_in_default_cc_for_cases = 0;
-
     # Timestamp	
         SET @timestamp = NOW();
-
     # We define the name of this script for future reference:
         SET @this_script = 'PROCEDURE add_user_to_role_in_unit';
         
@@ -9363,19 +7512,14 @@ BEGIN
         
     # The reference of the record we want to update in the table `ut_invitation_api_data`
         SET @reference_for_update = (SELECT `id` FROM `ut_invitation_api_data` WHERE `mefe_invitation_id` = @mefe_invitation_id);	
-
     # The MEFE information:
         SET @mefe_invitor_user_id = (SELECT `mefe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
     # The unit name and description
         SET @product_id = (SELECT `bz_unit_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
     # The Invitor - BZ user id of the user that has genereated the invitation.
         SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
         # We populate the additional variables that we will need for this script to work:
             SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
-
     # Role in this unit for the invited user:
         #	- Tenant 1
         # 	- Landlord 2
@@ -9386,7 +7530,6 @@ BEGIN
             
     # The user who you want to associate to this unit - BZ user id of the user that you want to associate/invite to the unit.
         SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
         # We populate the additional variables that we will need for this script to work:
             SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
             SET @user_pub_name = (SELECT (LEFT(`login_name`,INSTR(`login_name`,"@")-1)) FROM `profiles` WHERE `userid` = @bz_user_id);
@@ -9411,10 +7554,8 @@ BEGIN
                                             ;
                     
         # Is the current assignee for this role for this unit one of the dummy user in this environment?
-
             # What is the CURRENT default assignee for the role this user has been invited to?
                 SET @current_default_assignee_this_role = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
-
             # What is the default dummy user id for this environment?
             
                 # Get the BZ profile id of the dummy users based on the environment variable
@@ -9423,7 +7564,6 @@ BEGIN
                                                     FROM `ut_temp_dummy_users_for_roles` 
                                                     WHERE `environment_id` = @environment)
                                                     ;
-
                     # Landlord 2
                         SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` 
                                                     FROM `ut_temp_dummy_users_for_roles` 
@@ -9447,7 +7587,6 @@ BEGIN
                                                     FROM `ut_temp_dummy_users_for_roles` 
                                                     WHERE `environment_id` = @environment)
                                                     ;
-
             # What is the BZ dummy user id for this role in this script?
                 SET @bz_user_id_dummy_user_this_role = IF( @id_role_type = 1
                                                 , @bz_user_id_dummy_tenant
@@ -9466,7 +7605,6 @@ BEGIN
                                                     )
                                                 )
                                                 ;
-
     # Is the invited user an occupant of the unit?
         SET @is_occupant = (SELECT `is_occupant` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
         
@@ -9484,7 +7622,6 @@ BEGIN
         #	- The invitation type
         #	- The default values currently configured
         # We NEED to have defined the variable @invitation_type FIRST!
-
         # Things which depends on the invitation type:
         
             # Do we need to make the invitee a default CC for all new cases for this role in this unit?
@@ -9498,7 +7635,6 @@ BEGIN
                         , 0
                         )
                         ;
-
             # Do we need to replace the default assignee for this role in this unit?
             # This depends on the type of invitation that we are creating
             #	- 1 (YES) if the invitation type is
@@ -9522,7 +7658,6 @@ BEGIN
                         , 0
                         )
                         ;
-
     # Answer to the question "Is the current default assignee for this role one of the dummy users?"
         SET @is_current_assignee_this_role_a_dummy_user = IF( @replace_default_assignee = 1
             , 0
@@ -9547,10 +7682,8 @@ BEGIN
     #		- @component_id_this_role: 
     #		  The id of the role in the bz table `components`
         CALL `remove_user_from_default_cc`;
-
     # We are recording this for KPI measurements
     #	- Number of user per role per unit.
-
         # We record the information about the users that we have just created
         # If this is the first time we record something for this user for this unit, we create a new record.
         # If there is already a record for THAT USER for THIS, then we are updating the information
@@ -9667,7 +7800,6 @@ BEGIN
                     , '.\r\ '
                     , `comment`)
             ;
-
     # We always reset the permissions to the default permissions first
         # Revoke all permissions for this user in this unit
             # This procedure needs the following objects:
@@ -9763,7 +7895,6 @@ BEGIN
     #		- @is_mefe_only_user
     #		- @role_user_more
         CALL `update_assignee_if_dummy_user`;
-
     # Make the invited user default CC for all cases in this unit if needed
     # This procedure needs the following objects:
     #	- variables:
@@ -9777,7 +7908,6 @@ BEGIN
         
         # Run the procedure
             CALL `user_in_default_cc_for_cases`;	
-
     # Make the invited user the new default assignee for all cases in this role in this unit if needed
     # This procedure needs the following objects:
     #	- variables:
@@ -9791,7 +7921,6 @@ BEGIN
         
         # Run the procedure
             CALL `user_is_default_assignee_for_cases`;
-
     # Remove this user from this role in this unit if needed:
     # This procedure needs the following objects
     #	- Variables:
@@ -9805,9 +7934,7 @@ BEGIN
     #		- @user_pub_name
     #		- @creator_bz_id
         CALL `remove_user_from_role`;
-
     # Update the table 'ut_invitation_api_data' so we record what we have done
-
         # Timestamp	
             SET @timestamp = NOW();
             
@@ -9817,7 +7944,6 @@ BEGIN
                     , `script` = @this_script
                 WHERE `mefe_invitation_id` = @mefe_invitation_id
                 ;
-
 END */$$
 DELIMITER ;
 
@@ -12085,10 +10211,8 @@ BEGIN
 			WHERE `user_id` = @bz_user_id
 				AND `component_id` = @component_id_this_role
 		;
-
 	# We get the product id so we can log this properly
 		SET @product_id_for_this_procedure = (SELECT `product_id` FROM `components` WHERE `id` = @component_id_this_role);
-
 	# We record the name of this procedure for future debugging and audit_log`
 			SET @script = 'PROCEDURE - remove_user_from_default_cc';
 			SET @timestamp = NOW();
@@ -12110,7 +10234,6 @@ BEGIN
 			VALUES
 			(@timestamp, @script, @script_log_message)
 			;
-
 	# Cleanup the variables for the log messages
 		SET @script_log_message = NULL;
 		SET @script = NULL;
@@ -12137,7 +10260,6 @@ BEGIN
 	#		- @id_role_type
 	# 		- @this_script
 	#		- @creator_bz_id
-
 	# We only do this if this is needed:
 	IF (@remove_user_from_role = 1)
 	THEN
@@ -12162,7 +10284,6 @@ BEGIN
 			# All the permission have been prepared, we can now update the permissions table
 			#		- This NEEDS the table 'ut_user_group_map_temp'
 				CALL `update_permissions_invited_user`;
-
 		# Who are the initial owner and initialqa contact for this role?
 												
 			# Get the old values so we can 
@@ -12189,7 +10310,6 @@ BEGIN
 				, '0'
 				)
 				;
-
 		# We need to check if the user we are removing is the current qa user for this role for this unit.
 			SET @is_user_qa = IF(@old_component_initialqacontact = @bz_user_id
 				, '1'
@@ -12200,7 +10320,6 @@ BEGIN
 		# We record the name of this procedure for future debugging and audit_log`
 			SET @script = 'PROCEDURE - remove_user_from_role';
 			SET @timestamp = NOW();
-
 		IF @is_user_default_assignee = 1
 		THEN
 		# We need to replace this with the default dummy user
@@ -12269,7 +10388,6 @@ BEGIN
 					WHERE 
 					`id` = @component_id_this_role
 					;
-
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('The component: '
 					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
@@ -12311,7 +10429,6 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 		END IF;
-
 		IF @is_user_qa = 1
 		THEN
 		# IF the user is the current qa contact: We need to replace this with the default dummy user
@@ -12322,7 +10439,6 @@ BEGIN
 		# 	- @this_script
 		#	- @product_id
 		#	- @creator_bz_id
-
 			# We define the dummy user role description based on the variable @id_role_type
 				SET @dummy_user_role_desc = IF(@id_role_type = 1
 					, CONCAT('Generic '
@@ -12380,7 +10496,6 @@ BEGIN
 					WHERE 
 					`id` = @component_id_this_role
 					;	
-
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('The component: '
 					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
@@ -12438,17 +10553,13 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `revoke_all_permission_for_this_user_in_this_unit`()
     SQL SECURITY INVOKER
 BEGIN
-
     # this procedure needs the following variables:
     #   - @product_id
     #   - @bz_user_id
-
 	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - revoke_all_permission_for_this_user_in_this_unit';
 		SET @timestamp = NOW();
-
 	# We need to get the group_id for this unit
-
 		SET @can_see_time_tracking_group_id = 16;
 		SET @can_create_shared_queries_group_id = 17;
 		SET @can_tag_comment_group_id = 18;	
@@ -12460,39 +10571,29 @@ BEGIN
 		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
 		
 		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
-
 		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
-
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-
 		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
 		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
 		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
-
 		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
 		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
 		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
-
 		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
 		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
 		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
-
 		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
 		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
 		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
-
 		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
 		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
 		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
-
 		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
 		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
 		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
-
 	# We can now remove all the permissions for this unit.
-
 		DELETE FROM `user_group_map`
 			WHERE (
 				(`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
@@ -12527,10 +10628,8 @@ BEGIN
 				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
 				)
 				;
-
         # We also delete from the table `ut_user_group_map_temp`
         # This is needed so we do not re-create the permissions when we invite a new user or create a new unit.
-
             DELETE FROM `ut_user_group_map_temp`
                 WHERE (
                     (`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
@@ -12565,9 +10664,7 @@ BEGIN
                     OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
                     )
                     ;
-
 			# Log the actions of the script.
-
 				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user #'
 										, @bz_user_id
 										, '\r\- can_see_time_tracking: 0'
@@ -12616,7 +10713,6 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @script = NULL;
-
 END */$$
 DELIMITER ;
 
@@ -13109,11 +11205,9 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `table_to_list_dummy_user_by_environment`()
     SQL SECURITY INVOKER
 BEGIN
-
 	# We create a temporary table to record the ids of the dummy users in each environments:
 		/*Table structure for table `ut_temp_dummy_users_for_roles` */
 			DROP TEMPORARY TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
-
 			CREATE TEMPORARY TABLE `ut_temp_dummy_users_for_roles` (
 			  `environment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
 			  `environment_name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
@@ -13124,13 +11218,11 @@ BEGIN
 			  `agent_id` int(11) DEFAULT NULL,
 			  PRIMARY KEY (`environment_id`)
 			) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 		/*Data for the table `ut_temp_dummy_users_for_roles` */
 			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`, `environment_name`, `tenant_id`, `landlord_id`, `contractor_id`, `mgt_cny_id`, `agent_id`) values 
 				(1,'DEV/Staging', 96, 94, 93, 95, 92),
 				(2,'Prod', 93, 91, 90, 92, 89),
 				(3,'demo/dev', 4, 3, 5, 6, 2);
-
 END */$$
 DELIMITER ;
 
@@ -13193,9 +11285,7 @@ BEGIN
 	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - unit_create_with_dummy_users';
 		SET @timestamp = NOW();
-
 	# We create a temporary table to record the ids of the dummy users in each environments:
-
         CALL `table_to_list_dummy_user_by_environment`;
 			
 	# Get the BZ profile id of the dummy users based on the environment variable
@@ -13213,7 +11303,6 @@ BEGIN
 			
 		# Agent 5
 			SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-
 	# The unit:
 		# BZ Classification id for the unit that you want to create (default is 2)
 		    SET @classification_id = (SELECT `classification_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
@@ -13231,9 +11320,7 @@ BEGIN
 	# Other important information that should not change:
             SET @visibility_explanation_1 = 'Visible only to ';
             SET @visibility_explanation_2 = ' for this unit.';
-
 	# The global permission for the application
-
 	# This should not change, it was hard coded when we created Unee-T
 		# Can tag comments
 			SET @can_tag_comment_group_id = 18;	
@@ -13249,13 +11336,10 @@ BEGIN
         
             # We are predicting the product id to avoid name duplicates
    			    SET @predicted_product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
-
             # We need a unique unit name
 			    SET @unit_bz_name = CONCAT(@unit_name, '-', @predicted_product_id);
-
             # We need a default milestone for that unit
                 SET @default_milestone = '---';
-
             # We need a default version for that unit
 	    	    SET @default_version = '---';
 			
@@ -13273,7 +11357,6 @@ BEGIN
 	
         # Get the actual id that was created for that unit
             SET @product_id = (SELECT LAST_INSERT_ID());
-
     	# Log the actions of the script.
 			SET @script_log_message = CONCAT('A new unit #'
 									, (SELECT IFNULL(@product_id, 'product_id is NULL'))
@@ -13303,11 +11386,8 @@ BEGIN
 				;
 			
 			SET @script_log_message = NULL;
-
     # We can now get the real id of the unit
-
         SET @unit = CONCAT(@unit_bz_name, '-', @product_id);
-
     # We log this in the `audit_log` table
 		
 		INSERT INTO `audit_log` 
@@ -13329,9 +11409,7 @@ BEGIN
 			, @timestamp
 			)
 			;
-
     # We prepare all the names we will need
-
 		SET @unit_for_query = REPLACE(@unit, ' ', '%');
 		
 		SET @unit_for_flag = REPLACE(@unit_for_query, '%', '_');
@@ -13364,7 +11442,6 @@ BEGIN
 		SET @unit_for_group = REPLACE(@unit_for_group, '----', '-');
 		SET @unit_for_group = REPLACE(@unit_for_group, '---', '-');
 		SET @unit_for_group = REPLACE(@unit_for_group, '--', '-');
-
 		# We need a version for this product
 			
 			# We can now insert the version there
@@ -13376,10 +11453,8 @@ BEGIN
 					VALUES
 					(@default_version, @product_id, 1)
 					;
-
             # We get the id for the version 
                 SET @version_id = (SELECT LAST_INSERT_ID());
-
 			# We also log this in the `audit_log` table
 					
 						INSERT INTO `audit_log` 
@@ -13403,7 +11478,6 @@ BEGIN
 							;
 					
 		# We now create the milestone for this product.
-
 			# We can now insert the milestone there
 			INSERT INTO `milestones`
 				(`product_id`
@@ -13432,7 +11506,6 @@ BEGIN
 					VALUES
 					(@creator_bz_id, 'Bugzilla::Milestone', @milestone_id, '__create__', NULL, @default_milestone, @timestamp)
 					;
-
 	#  We create all the components/roles we need
 		# For the temporary users:
 			# Tenant
@@ -13445,7 +11518,6 @@ BEGIN
 													, ' TO THIS UNIT'
 													);
 				SET @user_role_desc_tenant = @role_user_pub_info_tenant;
-
 			# Landlord
 				SET @role_user_g_description_landlord = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 2);
 				SET @user_pub_name_landlord = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_landlord);
@@ -13489,10 +11561,8 @@ BEGIN
 													, ' TO THIS UNIT'
 													);
 				SET @user_role_desc_mgt_cny = @role_user_pub_info_mgt_cny;
-
 		# We have eveything, we can create the components we need:
         # We insert the component 1 by 1 to get the id for each component easily
-
 			# Tenant (component_id_tenant)
                 INSERT INTO `components`
                     (`name`
@@ -13511,10 +11581,8 @@ BEGIN
                     , 1
                     )
                     ;
-
                 # We get the id for the component for the tenant 
                     SET @component_id_tenant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_tenant
@@ -13545,7 +11613,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
             # Landlord (component_id_landlord)
                 INSERT INTO `components`
                     (`id`
@@ -13566,10 +11633,8 @@ BEGIN
                     , 1
                     )
                     ;
-
                 # We get the id for the component for the Landlord
                     SET @component_id_landlord = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_landlord
@@ -13600,7 +11665,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
             # Agent (component_id_agent)
                 INSERT INTO `components`
                     (`id`
@@ -13624,7 +11688,6 @@ BEGIN
             
                 # We get the id for the component for the Agent
                     SET @component_id_agent = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_agent
@@ -13655,7 +11718,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
             # Contractor (component_id_contractor)
                 INSERT INTO `components`
                     (`id`
@@ -13679,7 +11741,6 @@ BEGIN
             
                 # We get the id for the component for the Contractor
                     SET @component_id_contractor = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_contractor
@@ -13734,7 +11795,6 @@ BEGIN
             
                 # We get the id for the component for the Management Company 
                     SET @component_id_mgt_cny = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_mgt_cny
@@ -13783,7 +11843,6 @@ BEGIN
                     , (@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
                     , (@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
                     ;
-
 	# We create the goups we need
 		# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
 		# This will avoid a scenario where we need to grant permission to see occupants for instances but the group for occupants does not exist yet...
@@ -13930,10 +11989,8 @@ BEGIN
 					# Can See users in invited_by user Group
 					SET @group_name_see_users_invited_by = (CONCAT(@unit_for_group,'-06-Can-see-invited-by'));
 					SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
-
 		# We can populate the 'groups' table now.
         # We insert the groups 1 by 1 so we can get the id for each of these groups.
-
             # create_case_group_id
             	INSERT INTO `groups`
                     (`name`
@@ -13952,10 +12009,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @create_case_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -13975,7 +12030,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_edit_case_group_id
             	INSERT INTO `groups`
                     (`name`
@@ -13994,10 +12048,8 @@ BEGIN
                     , NULL
                     )
                     ;            
-
                 # Get the actual id that was created for that group
                     SET @can_edit_case_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14017,7 +12069,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_see_cases_group_id
             	INSERT INTO `groups`
                     (`name`
@@ -14036,10 +12087,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @can_see_cases_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14059,7 +12108,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_edit_all_field_case_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14078,10 +12126,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @can_edit_all_field_case_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14101,7 +12147,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_edit_component_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14120,10 +12165,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @can_edit_component_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14143,7 +12186,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_see_unit_in_search_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14162,10 +12204,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @can_see_unit_in_search_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14185,7 +12225,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # all_g_flags_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14204,10 +12243,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @all_g_flags_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14227,7 +12264,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # all_r_flags_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14246,10 +12282,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @all_r_flags_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14269,7 +12303,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # list_visible_assignees_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14288,10 +12321,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @list_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14311,7 +12342,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # see_visible_assignees_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14330,10 +12360,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @see_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14353,7 +12381,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # active_stakeholder_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14375,7 +12402,6 @@ BEGIN
                 
                 # Get the actual id that was created for that group
                     SET @active_stakeholder_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14395,7 +12421,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # unit_creator_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -14414,10 +12439,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @unit_creator_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14437,7 +12460,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_tenant
                 INSERT INTO `groups`
                     (`name`
@@ -14456,10 +12478,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_tenant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14479,7 +12499,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_tenant
                 INSERT INTO `groups`
                     (`name`
@@ -14498,10 +12517,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_tenant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14521,7 +12538,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_tenant
                 INSERT INTO `groups`
                     (`name`
@@ -14540,10 +12556,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_tenant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14563,7 +12577,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_landlord
                INSERT INTO `groups`
                     (`name`
@@ -14582,10 +12595,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_landlord = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14605,7 +12616,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_landlord
                INSERT INTO `groups`
                     (`name`
@@ -14624,10 +12634,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_landlord = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14647,7 +12655,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_landlord
                 INSERT INTO `groups`
                     (`name`
@@ -14666,10 +12673,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_landlord = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14689,7 +12694,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_agent
                INSERT INTO `groups`
                     (`name`
@@ -14708,10 +12712,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_agent = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14731,7 +12733,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_agent
                 INSERT INTO `groups`
                     (`name`
@@ -14750,10 +12751,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_agent = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14773,7 +12772,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_agent
                 INSERT INTO `groups`
                     (`name`
@@ -14792,10 +12790,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_agent = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14815,7 +12811,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_contractor
                 INSERT INTO `groups`
                     (`name`
@@ -14834,10 +12829,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_contractor = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14857,7 +12850,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_contractor
                 INSERT INTO `groups`
                     (`name`
@@ -14876,10 +12868,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_contractor = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14899,7 +12889,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_contractor
                 INSERT INTO `groups`
                     (`name`
@@ -14918,10 +12907,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_contractor = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14941,7 +12928,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_mgt_cny
                 INSERT INTO `groups`
                     (`name`
@@ -14960,10 +12946,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_mgt_cny = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -14983,7 +12967,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_mgt_cny
                 INSERT INTO `groups`
                     (`name`
@@ -15002,10 +12985,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_mgt_cny = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -15025,7 +13006,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_mgt_cny
                 INSERT INTO `groups`
                     (`name`
@@ -15044,10 +13024,8 @@ BEGIN
                     , NULL
                     )
                     ;         
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_mgt_cny = (SELECT LAST_INSERT_ID());   
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -15067,7 +13045,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_occupant
                 INSERT INTO `groups`
                     (`name`
@@ -15086,10 +13063,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_occupant = (SELECT LAST_INSERT_ID());   
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -15109,7 +13084,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_occupant
                 INSERT INTO `groups`
                     (`name`
@@ -15128,10 +13102,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_occupant = (SELECT LAST_INSERT_ID());  
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -15151,7 +13123,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_occupant
                 INSERT INTO `groups`
                     (`name`
@@ -15173,7 +13144,6 @@ BEGIN
                     
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_occupant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -15193,7 +13163,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_invited_by
                 INSERT INTO `groups`
                     (`name`
@@ -15212,10 +13181,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_invited_by = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -15234,7 +13201,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_invited_by
                 INSERT INTO `groups`
                     (`name`
@@ -15253,10 +13219,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_invited_by = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -15276,7 +13240,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
 		# We record the groups we have just created:
 		#	We NEED the component_id for that
 			INSERT INTO `ut_product_group`
@@ -15387,7 +13350,6 @@ BEGIN
 			SET @flag_is_paid_name = CONCAT('is_paid_', @unit_for_flag);
 	
         # We insert the flagtypes 1 by 1 to get the id for each component easily
-
 		# Flagtype for next_step
 			INSERT INTO `flagtypes`
 				(`name`
@@ -15416,10 +13378,8 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_next_step_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Next Step (#'
                                         , (SELECT IFNULL(@flag_next_step_id, 'flag_next_step is NULL'))
@@ -15439,7 +13399,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for solution
 			INSERT INTO `flagtypes`
 				(`name`
@@ -15468,10 +13427,8 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_solution_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Solution (#'
                                         , (SELECT IFNULL(@flag_solution_id, 'flag_solution is NULL'))
@@ -15491,7 +13448,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for budget
 			INSERT INTO `flagtypes`
 				(`name`
@@ -15520,10 +13476,8 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_budget_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Budget (#'
                                         , (SELECT IFNULL(@flag_budget_id, 'flag_budget is NULL'))
@@ -15543,7 +13497,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for attachment
 			INSERT INTO `flagtypes`
 				(`name`
@@ -15572,10 +13525,8 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_attachment_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Attachment (#'
                                         , (SELECT IFNULL(@flag_attachment_id, 'flag_attachment is NULL'))
@@ -15595,7 +13546,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for ok_to_pay
 			INSERT INTO `flagtypes`
 				(`name`
@@ -15624,10 +13574,8 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_ok_to_pay_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag OK to pay (#'
                                         , (SELECT IFNULL(@flag_ok_to_pay_id, 'flag_ok_to_pay is NULL'))
@@ -15647,7 +13595,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for is_paid
 			INSERT INTO `flagtypes`
 				(`name`
@@ -15676,10 +13623,8 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_is_paid_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Is paid (#'
                                         , (SELECT IFNULL(@flag_is_paid_id, 'flag_is_paid is NULL'))
@@ -15699,7 +13644,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We also define the flag inclusion
 			INSERT INTO `flaginclusions`
 				(`type_id`
@@ -15714,7 +13658,6 @@ BEGIN
 				, (@flag_ok_to_pay_id, @product_id, NULL)
 				, (@flag_is_paid_id, @product_id, NULL)
 				;
-
 		# We update the BZ logs
 			INSERT INTO `audit_log`
 				(`user_id`
@@ -15738,7 +13681,6 @@ BEGIN
 		# Data for the table `group_group_map`
         # We first insert these in the table `ut_group_group_map_temp`
         # If you need to re-create the table `ut_group_group_map_temp`, use the procedure `create_temp_table_to_update_group_permissions`
-
             INSERT INTO `ut_group_group_map_temp`
                 (`member_id`
                 , `grantor_id`
@@ -15801,7 +13743,6 @@ BEGIN
                 , (@group_id_see_users_occupant, @group_id_are_users_occupant, 2)
                 , (@group_id_see_users_invited_by, @group_id_are_users_invited_by, 2)
                 ;
-
 	# We make sure that only user in certain groups can create, edit or see cases.
 		INSERT INTO `group_control_map`
 			(`group_id`
@@ -15828,7 +13769,6 @@ BEGIN
 			, (@group_id_show_to_mgt_cny, @product_id, 0, 2, 0, 0, 0, 0, 0)
 			, (@group_id_show_to_occupant, @product_id, 0, 2, 0, 0, 0, 0, 0)
 			;
-
 		# Log the actions of the script.
 			SET @script_log_message = CONCAT('We have updated the group control permissions for the product# '
 									, @product_id
@@ -15881,7 +13821,6 @@ BEGIN
 				;
 			
 			SET @script_log_message = NULL;
-
 		# We insert the series categories that BZ needs...
 				
 			# What are the name for the categories
@@ -15976,10 +13915,8 @@ BEGIN
 							, '&component='
 							, @component_name_for_serie_agent)
 							);
-
 		# We have eveything, we can create the series_categories we need:
         # We insert the series_categories 1 by 1 to get the id for each series_categories easily
-
 		# We can now insert the series category product
 			INSERT INTO `series_categories`
 				(`name`
@@ -15987,10 +13924,8 @@ BEGIN
 				VALUES 
 				(@series_category_product_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_product = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_tenant
 			INSERT INTO `series_categories`
 				(`name`
@@ -15998,10 +13933,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_tenant_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_tenant = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_landlord
 			INSERT INTO `series_categories`
 				(`name`
@@ -16009,10 +13942,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_landlord_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_landlord = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_contractor
 			INSERT INTO `series_categories`
 				(`name`
@@ -16020,10 +13951,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_contractor_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_contractor = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_mgtcny
 			INSERT INTO `series_categories`
 				(`name`
@@ -16031,10 +13960,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_mgtcny_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_mgtcny = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_agent
 			INSERT INTO `series_categories`
 				(`name`
@@ -16042,10 +13969,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_agent_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_agent = (SELECT LAST_INSERT_ID());
-
         # We do not need the series_id - we can insert in bulk here
             # Insert the series related to the product/unit
                 INSERT INTO `series`
@@ -16103,7 +14028,6 @@ BEGIN
                     ,(NULL, @creator_bz_id, @series_category_product, @series_category_component_agent, 'All Open', 1, @serie_search_all_open_agent, 1)
                     ,(NULL, @creator_bz_id, @series_category_product, @series_category_component_agent, 'All Closed', 1, @serie_search_all_closed_agent, 1)
                     ;
-
 	# We now assign the permissions to each of the dummy user associated to each role:
     #   - Tenant (1)
     #     @bz_user_id_dummy_tenant
@@ -16120,7 +14044,6 @@ BEGIN
     # For each of the dummy users, we use the following parameters:
         SET @user_in_default_cc_for_cases = 1;
         SET @replace_default_assignee = 1;
-
         # Default permissions for dummy users:	
             #User Permissions in the unit:
                 # Generic Permissions
@@ -16203,7 +14126,6 @@ BEGIN
 					, (@bz_user_id_dummy_contractor, @create_case_group_id, 0, 0)
 					, (@bz_user_id_dummy_mgt_cny, @create_case_group_id, 0, 0)
 					;
-
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('the dummy bz users for each component: '
 											, '(#'
@@ -16233,7 +14155,6 @@ BEGIN
  
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
-
 			# User can Edit a case and see this unit, this is needed so the API does not throw an error see issue #60:
 				INSERT INTO `ut_user_group_map_temp`
 					(`user_id`
@@ -16253,7 +14174,6 @@ BEGIN
 					, (@bz_user_id_dummy_contractor, @can_see_unit_in_search_group_id, 0, 0)
 					, (@bz_user_id_dummy_mgt_cny, @can_see_unit_in_search_group_id, 0, 0)
 					;
-
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('the dummy bz users for each component: '
 											, '(#'
@@ -16285,17 +14205,13 @@ BEGIN
 					SET @script_log_message = NULL;
 			
 	# We give the user the permission they need.
-
         # We update the `group_group_map` table first
         #   - Create an intermediary table to deduplicate the records in the table `ut_group_group_map_temp`
         #   - If the record does NOT exists in the table then INSERT new records in the table `group_group_map`
         #   - If the record DOES exist in the table then update the new records in the table `group_group_map`
-
             # We drop the deduplication table if it exists:
                 DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
-
             # We create a table `ut_group_group_map_dedup` to prepare the data we need to insert
-
                 CREATE TEMPORARY TABLE `ut_group_group_map_dedup` (
                     `member_id` mediumint(9) NOT NULL,
                     `grantor_id` mediumint(9) NOT NULL,
@@ -16308,7 +14224,6 @@ BEGIN
                 ;
     
             # We insert the de-duplicated record in the table `ut_group_group_map_dedup`
-
                 INSERT INTO `ut_group_group_map_dedup`
                 SELECT `member_id`
                     , `grantor_id`
@@ -16334,14 +14249,11 @@ BEGIN
                     , `grantor_id` = `ut_group_group_map_dedup`.`grantor_id`
                     , `grant_type` = `ut_group_group_map_dedup`.`grant_type`
                 ;
-
             # We drop the temp table as we do not need it anymore
                 DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
-
         # We can now update the permissions table for the users
         # This NEEDS the table 'ut_user_group_map_temp'
             CALL `update_permissions_invited_user`;
-
 	# Update the table 'ut_data_to_create_units' so that we record that the unit has been created
 		UPDATE `ut_data_to_create_units`
 		SET 
@@ -16674,7 +14586,6 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_audit_log`()
     SQL SECURITY INVOKER
 BEGIN
-
     # This procedure need the following variables
     #   - @bzfe_table: the table that was updated
     #   - @bzfe_field: The fields that were updated
@@ -16685,7 +14596,6 @@ BEGIN
  
 	# When are we doing this?
         SET @timestamp = NOW(); 
-
     # We update the audit_log table
         INSERT INTO `ut_audit_log`
             (`datetime`
@@ -16706,7 +14616,6 @@ BEGIN
             , @comment
             )
         ;
-
 END */$$
 DELIMITER ;
 
@@ -16985,15 +14894,12 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_permissions_invited_user`()
     SQL SECURITY INVOKER
 BEGIN
-
 	# We update the `user_group_map` table
     #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
     #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
     #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
-
 	# We drop the deduplication table if it exists:
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
-
 	# We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
 		CREATE TEMPORARY TABLE `ut_user_group_map_dedup` (
 			`user_id` MEDIUMINT(9) NOT NULL,
@@ -17034,10 +14940,8 @@ BEGIN
 			, `isbless` = `ut_user_group_map_dedup`.`isbless`
 			, `grant_type` = `ut_user_group_map_dedup`.`grant_type`
 		;
-
 	# We drop the temp table as we do not need it anymore
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
-
 END */$$
 DELIMITER ;
 
@@ -17131,11 +15035,9 @@ DELIMITER $$
 BEGIN
 	IF (@user_in_default_cc_for_cases = 1)
 	THEN 
-
 		# We record the name of this procedure for future debugging and audit_log`
 			SET @script = 'PROCEDURE - user_in_default_cc_for_cases';
 			SET @timestamp = NOW();
-
 		# We use a temporary table to make sure we do not have duplicates.
 		
 		# DELETE the temp table if it exists
@@ -17147,12 +15049,10 @@ BEGIN
             , `component_id` MEDIUMINT(9) NOT NULL
 		    )
             ;
-
 		# Add the records that exist in the table component_cc
 		INSERT INTO `ut_temp_component_cc`
 			SELECT *
 			FROM `component_cc`;
-
 		# Add the new user rights for the product
 			INSERT INTO `ut_temp_component_cc`
 				(user_id
@@ -17161,10 +15061,8 @@ BEGIN
 				VALUES
 				(@bz_user_id, @component_id)
 				;
-
         # We drop the deduplication table if it exists:
             DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
-
         # We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
             CREATE TEMPORARY TABLE `ut_temp_component_cc_dedup` (
                 `user_id` MEDIUMINT(9) NOT NULL
@@ -17182,7 +15080,6 @@ BEGIN
             GROUP BY `user_id`
                 , `component_id`
             ;
-
 		# We insert the new records in the table `component_cc`
 			INSERT INTO `component_cc`
 			SELECT `user_id`
@@ -17197,7 +15094,6 @@ BEGIN
                 `user_id` = `ut_temp_component_cc_dedup`.`user_id`
 				, `component_id` = `ut_temp_component_cc_dedup`.`component_id`
 			;
-
         # Clean up:
             # We drop the deduplication table if it exists:
                 DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
@@ -17253,16 +15149,13 @@ BEGIN
 	#		- @user_pub_name
 	#		- @product_id
 	#
-
 	# We only do this if this is needed:
 	IF (@replace_default_assignee = 1)
 	
 	THEN
-
 	# We record the name of this procedure for future debugging and audit_log`
 		SET @script = 'PROCEDURE - user_is_default_assignee_for_cases';
 		SET @timestamp = NOW();
-
 	# change the initial owner and initialqa contact to the invited BZ user.
 											
 		# Get the old values so we can log those
@@ -17278,7 +15171,6 @@ BEGIN
 										FROM `components` 
 										WHERE `id` = @component_id_this_role)
 										;
-
 		# Update the default assignee and qa contact
 			UPDATE `components`
 			SET 
@@ -17316,7 +15208,6 @@ BEGIN
         # Cleanup the variables for the log messages
             SET @script_log_message = NULL;
             SET @script = NULL;
-
 	# We update the BZ logs
 		INSERT  INTO `audit_log`
 			(`user_id`
@@ -17332,7 +15223,6 @@ BEGIN
 			, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id,@timestamp)
 			, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@user_role_desc,@timestamp)
 			;
-
 	END IF;
 END */$$
 DELIMITER ;
