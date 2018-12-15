@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.28
+MySQL - 5.7.12 : Database - unee_t_v3.29
 *********************************************************************
 */
 
@@ -2837,7 +2837,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -2870,7 +2870,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (26,'v3.25','2018-10-24 10:47:40','upgrade_unee-t_v3.24_to_v3.25.sql','Database updated from v3.24 to v3.25'),
 (27,'v3.26','2018-10-25 03:18:42','upgrade_unee-t_v3.25_to_v3.26.sql','Database updated from v3.25 to v3.26'),
 (28,'v3.27','2018-11-09 00:26:09','upgrade_unee-t_v3.26_to_v3.27.sql','Database updated from v3.26 to v3.27'),
-(29,'v3.28','2018-12-06 16:10:06','upgrade_unee-t_v3.27_to_v3.28.sql','Database updated from v3.27 to v3.28');
+(29,'v3.28','2018-12-15 10:15:53','upgrade_unee-t_v3.27_to_v3.28.sql','Database updated from v3.27 to v3.28'),
+(30,'v3.29','2018-12-15 10:23:39','upgrade_unee-t_v3.28_to_v3.29.sql','Database updated from v3.28 to v3.29');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -2887,120 +2888,6 @@ CREATE TABLE `ut_flash_units_with_dummy_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_flash_units_with_dummy_users` */
-
-/*Table structure for table `ut_group_group_map_temp` */
-
-DROP TABLE IF EXISTS `ut_group_group_map_temp`;
-
-CREATE TABLE `ut_group_group_map_temp` (
-  `member_id` mediumint(9) NOT NULL,
-  `grantor_id` mediumint(9) NOT NULL,
-  `grant_type` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_group_group_map_temp` */
-
-insert  into `ut_group_group_map_temp`(`member_id`,`grantor_id`,`grant_type`) values 
-(1,1,0),
-(1,1,1),
-(1,1,2),
-(1,2,0),
-(1,2,1),
-(1,2,2),
-(1,3,0),
-(1,3,1),
-(1,3,2),
-(1,4,0),
-(1,4,1),
-(1,4,2),
-(1,5,0),
-(1,5,1),
-(1,5,2),
-(1,6,0),
-(1,6,1),
-(1,6,2),
-(1,7,0),
-(1,7,1),
-(1,7,2),
-(1,8,0),
-(1,8,1),
-(1,8,2),
-(1,9,0),
-(1,9,1),
-(1,9,2),
-(1,10,0),
-(1,10,1),
-(1,10,2),
-(1,11,0),
-(1,11,1),
-(1,11,2),
-(1,12,0),
-(1,12,1),
-(1,12,2),
-(1,13,0),
-(1,13,1),
-(1,13,2),
-(1,14,0),
-(1,14,1),
-(1,14,2),
-(1,15,0),
-(1,15,1),
-(1,15,2),
-(1,16,0),
-(1,16,1),
-(1,16,2),
-(31,16,0),
-(1,17,0),
-(1,17,1),
-(1,17,2),
-(31,17,0),
-(1,18,0),
-(1,18,1),
-(1,18,2),
-(31,18,0),
-(1,19,0),
-(1,19,1),
-(1,19,2),
-(31,19,0),
-(1,20,1),
-(1,20,2),
-(31,20,0),
-(1,21,0),
-(1,21,1),
-(1,21,2),
-(31,21,0),
-(1,22,1),
-(1,22,2),
-(31,22,0),
-(1,23,1),
-(1,23,2),
-(31,23,0),
-(1,24,1),
-(1,24,2),
-(31,24,0),
-(1,25,1),
-(1,25,2),
-(31,25,0),
-(1,26,0),
-(1,26,1),
-(1,26,2),
-(31,26,0),
-(1,27,1),
-(1,27,2),
-(31,27,0),
-(1,28,1),
-(1,28,2),
-(31,28,0),
-(1,29,0),
-(1,29,1),
-(1,29,2),
-(31,29,0),
-(1,30,0),
-(1,30,1),
-(1,30,2),
-(31,30,0),
-(1,31,1),
-(1,31,2);
 
 /*Table structure for table `ut_group_types` */
 
@@ -3488,7 +3375,8 @@ CREATE TABLE `ut_product_group` (
   `group_type_id` smallint(6) NOT NULL COMMENT 'id in the table ut_group_types - to avoid re-creating the same group for the same product again',
   `role_type_id` smallint(6) DEFAULT NULL COMMENT 'id in the table ut_role_types - to make sure all similar stakeholder in a unit are made a member of the same group',
   `created_by_id` mediumint(9) DEFAULT NULL COMMENT 'id in the table ut_profiles',
-  `created` datetime DEFAULT NULL COMMENT 'creation ts'
+  `created` datetime DEFAULT NULL COMMENT 'creation ts',
+  KEY `ut_product_group_product_id_group_id` (`product_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_product_group` */
@@ -3528,22 +3416,6 @@ CREATE TABLE `ut_script_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `ut_script_log` */
-
-/*Table structure for table `ut_user_group_map_temp` */
-
-DROP TABLE IF EXISTS `ut_user_group_map_temp`;
-
-CREATE TABLE `ut_user_group_map_temp` (
-  `user_id` mediumint(9) NOT NULL,
-  `group_id` mediumint(9) NOT NULL,
-  `isbless` tinyint(4) NOT NULL DEFAULT '0',
-  `grant_type` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `ut_user_group_map_temp` */
-
-insert  into `ut_user_group_map_temp`(`user_id`,`group_id`,`isbless`,`grant_type`) values 
-(1,1,0,0);
 
 /*Table structure for table `versions` */
 
@@ -4020,11 +3892,9 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_component_cc` AFTER INSERT ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_component_id = new.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'component_cc';
         SET @bzfe_field = 'user_id, component_id';
@@ -4037,7 +3907,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4045,9 +3914,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4061,15 +3928,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_component_cc` AFTER UPDATE ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_component_id = new.component_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'component_cc';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -4085,10 +3949,8 @@ DELIMITER $$
                 , @new_component_id
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4096,9 +3958,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4112,7 +3972,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_component_cc` AFTER DELETE ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_component_id = old.component_id;
@@ -4127,10 +3986,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4138,9 +3995,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4154,7 +4009,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_components` AFTER INSERT ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -4163,7 +4017,6 @@ DELIMITER $$
         SET @new_initialqacontact = new.initialqacontact;
         SET @new_description = new.description;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -4186,7 +4039,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4194,9 +4046,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4210,7 +4060,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_components` AFTER UPDATE ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -4219,7 +4068,6 @@ DELIMITER $$
         SET @new_initialqacontact = new.initialqacontact;
         SET @new_description = new.description;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -4228,7 +4076,6 @@ DELIMITER $$
         SET @old_initialqacontact = old.initialqacontact;
         SET @old_description = old.description;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -4264,10 +4111,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4275,9 +4120,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4291,7 +4134,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_components` AFTER DELETE ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -4300,7 +4142,6 @@ DELIMITER $$
         SET @old_initialqacontact = old.initialqacontact;
         SET @old_description = old.description;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -4321,10 +4162,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4332,9 +4171,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4348,12 +4185,10 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flaginclusions` AFTER INSERT ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_type_id = new.type_id;
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -4368,7 +4203,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4376,9 +4210,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4392,17 +4224,14 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flaginclusions` AFTER UPDATE ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_type_id = new.type_id;
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_type_id = old.type_id;
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -4422,10 +4251,8 @@ DELIMITER $$
                 , IFNULL(@new_component_id, '(NULL)')     
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4433,9 +4260,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4449,12 +4274,10 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flaginclusions` AFTER DELETE ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_type_id = old.type_id;
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -4467,10 +4290,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4478,9 +4299,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4494,7 +4313,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flagtypes` AFTER INSERT ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -4508,7 +4326,6 @@ DELIMITER $$
         SET @new_sortkey = new.sortkey;
         SET @new_grant_group_id = new.grant_group_id;
         SET @new_request_group_id = new.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -4541,7 +4358,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4549,9 +4365,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4565,7 +4379,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flagtypes` AFTER UPDATE ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -4579,7 +4392,6 @@ DELIMITER $$
         SET @new_sortkey = new.sortkey;
         SET @new_grant_group_id = new.grant_group_id;
         SET @new_request_group_id = new.request_group_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -4593,7 +4405,6 @@ DELIMITER $$
         SET @old_sortkey = old.sortkey;
         SET @old_grant_group_id = old.grant_group_id;
         SET @old_request_group_id = old.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -4649,10 +4460,8 @@ DELIMITER $$
                 , IFNULL(@old_request_group_id, '(NULL)')    
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4660,9 +4469,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4676,7 +4483,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flagtypes` AFTER DELETE ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -4690,7 +4496,6 @@ DELIMITER $$
         SET @old_sortkey = old.sortkey;
         SET @old_grant_group_id = old.grant_group_id;
         SET @old_request_group_id = old.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -4721,10 +4526,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4732,9 +4535,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4748,7 +4549,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_control_map` AFTER INSERT ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_group_id = new.group_id;
         SET @new_product_id = new.product_id;
@@ -4759,7 +4559,6 @@ DELIMITER $$
         SET @new_editcomponents = new.editcomponents;
         SET @new_editbugs = new.editbugs;
         SET @new_canconfirm = new.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -4786,7 +4585,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4794,9 +4592,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4810,7 +4606,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_control_map` AFTER UPDATE ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_group_id = new.group_id;
         SET @new_product_id = new.product_id;
@@ -4821,7 +4616,6 @@ DELIMITER $$
         SET @new_editcomponents = new.editcomponents;
         SET @new_editbugs = new.editbugs;
         SET @new_canconfirm = new.canconfirm;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_group_id = old.group_id;
         SET @old_product_id = old.product_id;
@@ -4832,7 +4626,6 @@ DELIMITER $$
         SET @old_editcomponents = old.editcomponents;
         SET @old_editbugs = old.editbugs;
         SET @old_canconfirm = old.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -4876,10 +4669,8 @@ DELIMITER $$
                 , @new_canconfirm
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4887,9 +4678,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -4903,7 +4692,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_control_map` AFTER DELETE ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_group_id = old.group_id;
         SET @old_product_id = old.product_id;
@@ -4914,7 +4702,6 @@ DELIMITER $$
         SET @old_editcomponents = old.editcomponents;
         SET @old_editbugs = old.editbugs;
         SET @old_canconfirm = old.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -4939,10 +4726,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -4950,9 +4735,138 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
+END */$$
 
+
+DELIMITER ;
+
+/* Trigger structure for table `group_group_map` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_group_group_map` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_group_map` AFTER INSERT ON `group_group_map` FOR EACH ROW 
+  BEGIN
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_member_id = new.member_id;
+        SET @new_grantor_id = new.grantor_id;
+        SET @new_grant_type = new.grant_type;
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_group_map';
+        SET @bzfe_field = 'member_id, grantor_id, grant_type';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_member_id
+                , ', '
+                , @new_grantor_id
+                , ', '
+                , @new_grant_type
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_group_group_map';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `group_group_map` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_group_group_map` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_group_map` AFTER UPDATE ON `group_group_map` FOR EACH ROW 
+  BEGIN
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_member_id = new.member_id;
+        SET @new_grantor_id = new.grantor_id;
+        SET @new_grant_type = new.grant_type;
+        
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_member_id = old.member_id;
+        SET @old_grantor_id = old.grantor_id;
+        SET @old_grant_type = old.grant_type;
+        
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_group_map';
+        SET @bzfe_field = 'member_id, grantor_id, grant_type';
+        SET @previous_value = CONCAT (
+                @old_member_id
+                , ', '
+                , @old_grantor_id
+                , ', '
+                , @old_grant_type
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_member_id
+                , ', '
+                , @new_grantor_id
+                , ', '
+                , @new_grant_type
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_group_group_map';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `group_group_map` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_group_group_map` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_group_map` AFTER DELETE ON `group_group_map` FOR EACH ROW 
+  BEGIN
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_member_id = old.member_id;
+        SET @old_grantor_id = old.grantor_id;
+        SET @old_grant_type = old.grant_type;
+        
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'group_group_map';
+        SET @bzfe_field = 'member_id, grantor_id, grant_type';
+        SET @previous_value = CONCAT (
+                @old_member_id
+                , ', '
+                , @old_grantor_id
+                , ', '
+                , @old_grant_type 
+            )
+           ;
+        SET @new_value = NULL;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_group_group_map';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
 END */$$
 
 
@@ -4966,7 +4880,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_groups` AFTER INSERT ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -4975,7 +4888,6 @@ DELIMITER $$
         SET @new_userregexp = new.userregexp;
         SET @new_isactive = new.isactive;
         SET @new_icon_url = new.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -4998,7 +4910,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5006,9 +4917,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5022,7 +4931,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_groups` AFTER UPDATE ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -5031,7 +4939,6 @@ DELIMITER $$
         SET @new_userregexp = new.userregexp;
         SET @new_isactive = new.isactive;
         SET @new_icon_url = new.icon_url;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -5040,7 +4947,6 @@ DELIMITER $$
         SET @old_userregexp = old.userregexp;
         SET @old_isactive = old.isactive;
         SET @old_icon_url = old.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -5076,10 +4982,8 @@ DELIMITER $$
                 , IFNULL(@new_icon_url, '(NULL)')
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5087,9 +4991,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5103,7 +5005,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_groups` AFTER DELETE ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -5112,7 +5013,6 @@ DELIMITER $$
         SET @old_userregexp = old.userregexp;
         SET @old_isactive = old.isactive;
         SET @old_icon_url = old.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -5133,10 +5033,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5144,9 +5042,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5251,14 +5147,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_milestones` AFTER INSERT ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_product_id = new.product_id;
         SET @new_value = new.value;
         SET @new_sortkey = new.sortkey;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -5277,7 +5171,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5285,9 +5178,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5301,21 +5192,18 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_milestones` AFTER UPDATE ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_product_id = new.product_id;
         SET @new_value = new.value;
         SET @new_sortkey = new.sortkey;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_product_id = old.product_id;
         SET @old_value = old.value;
         SET @old_sortkey = old.sortkey;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -5343,10 +5231,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5354,9 +5240,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5370,14 +5254,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_milestones` AFTER DELETE ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_product_id = old.product_id;
         SET @old_value = old.value;
         SET @old_sortkey = old.sortkey;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -5394,10 +5276,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5405,9 +5285,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5435,7 +5313,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_products` AFTER INSERT ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_name = new.name;
         SET @new_classification_id = new.classification_id;
@@ -5443,7 +5320,6 @@ DELIMITER $$
         SET @new_isactive = new.isactive;
         SET @new_defaultmilestone = new.defaultmilestone;
         SET @new_allows_unconfirmed = new.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -5464,7 +5340,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5472,9 +5347,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5506,7 +5379,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_products` AFTER UPDATE ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_name = new.name;
         SET @new_classification_id = new.classification_id;
@@ -5514,7 +5386,6 @@ DELIMITER $$
         SET @new_isactive = new.isactive;
         SET @new_defaultmilestone = new.defaultmilestone;
         SET @new_allows_unconfirmed = new.allows_unconfirmed;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_name = old.name;
         SET @old_classification_id = old.classification_id;
@@ -5522,7 +5393,6 @@ DELIMITER $$
         SET @old_isactive = old.isactive;
         SET @old_defaultmilestone = old.defaultmilestone;
         SET @old_allows_unconfirmed = old.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -5554,10 +5424,8 @@ DELIMITER $$
                 , @new_allows_unconfirmed
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5565,9 +5433,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5595,7 +5461,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_products` AFTER DELETE ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_name = old.name;
         SET @old_classification_id = old.classification_id;
@@ -5603,7 +5468,6 @@ DELIMITER $$
         SET @old_isactive = old.isactive;
         SET @old_defaultmilestone = old.defaultmilestone;
         SET @old_allows_unconfirmed = old.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -5622,10 +5486,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5633,9 +5495,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5649,13 +5509,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_user_group_map` AFTER INSERT ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_group_id = new.group_id;
         SET @new_isbless = new.isbless;
         SET @new_grant_type = new.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -5672,7 +5530,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5680,9 +5537,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5696,19 +5551,16 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_user_group_map` AFTER UPDATE ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_group_id = new.group_id;
         SET @new_isbless = new.isbless;
         SET @new_grant_type = new.grant_type;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_group_id = old.group_id;
         SET @old_isbless = old.isbless;
         SET @old_grant_type = old.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -5732,10 +5584,8 @@ DELIMITER $$
                 , @new_grant_type
                 )
                 ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5743,9 +5593,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5759,13 +5607,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_user_group_map` AFTER DELETE ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_group_id = old.group_id;
         SET @old_isbless = old.isbless;
         SET @old_grant_type = old.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -5779,10 +5625,8 @@ DELIMITER $$
                 , @old_grant_type
             );
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5790,9 +5634,519 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
+END */$$
 
+
+DELIMITER ;
+
+/* Trigger structure for table `ut_data_to_create_units` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_ut_data_to_create_units` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_data_to_create_units` AFTER INSERT ON `ut_data_to_create_units` FOR EACH ROW 
+  BEGIN
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_id_unit_to_create = new.id_unit_to_create;
+        SET @new_mefe_unit_id = new.mefe_unit_id;
+        SET @new_mefe_creator_user_id = new.mefe_creator_user_id;
+        SET @new_bzfe_creator_user_id = new.bzfe_creator_user_id;
+        SET @new_classification_id = new.classification_id;
+        SET @new_unit_name = new.unit_name;
+        SET @new_unit_description_details = new.unit_description_details;
+        SET @new_bz_created_date = new.bz_created_date;
+        SET @new_comment = new.comment;
+        SET @new_product_id = new.product_id;
+        SET @new_deleted_datetime = new.deleted_datetime;
+        SET @new_deletion_script = new.deletion_script;
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_data_to_create_units';
+        SET @bzfe_field = 'id_unit_to_create, mefe_unit_id, mefe_creator_user_id, bzfe_creator_user_id, classification_id, unit_name, unit_description_details, bz_created_date, comment, product_id, deleted_datetime, deletion_script';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_id_unit_to_create
+                , ', '
+                , IFNULL(@new_mefe_unit_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_mefe_creator_user_id, '(NULL)')
+                , ', '
+                , @new_bzfe_creator_user_id
+                , ', '
+                , @new_classification_id
+                , ', '
+                , @new_unit_name
+                , ', '
+                , IFNULL(@new_unit_description_details, '(NULL)')
+                , ', '
+                , IFNULL(@new_bz_created_date, '(NULL)')
+                , ', '
+                , IFNULL(@new_comment, '(NULL)')
+                , ', '
+                , IFNULL(@new_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_deleted_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@new_deletion_script, '(NULL)')
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_data_to_create_units';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `ut_data_to_create_units` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_ut_data_to_create_units` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_data_to_create_units` AFTER UPDATE ON `ut_data_to_create_units` FOR EACH ROW 
+  BEGIN
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_id_unit_to_create = new.id_unit_to_create;
+        SET @new_mefe_unit_id = new.mefe_unit_id;
+        SET @new_mefe_creator_user_id = new.mefe_creator_user_id;
+        SET @new_bzfe_creator_user_id = new.bzfe_creator_user_id;
+        SET @new_classification_id = new.classification_id;
+        SET @new_unit_name = new.unit_name;
+        SET @new_unit_description_details = new.unit_description_details;
+        SET @new_bz_created_date = new.bz_created_date;
+        SET @new_comment = new.comment;
+        SET @new_product_id = new.product_id;
+        SET @new_deleted_datetime = new.deleted_datetime;
+        SET @new_deletion_script = new.deletion_script;
+        
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_id_unit_to_create = old.id_unit_to_create;
+        SET @old_mefe_unit_id = old.mefe_unit_id;
+        SET @old_mefe_creator_user_id = old.mefe_creator_user_id;
+        SET @old_bzfe_creator_user_id = old.bzfe_creator_user_id;
+        SET @old_classification_id = old.classification_id;
+        SET @old_unit_name = old.unit_name;
+        SET @old_unit_description_details = old.unit_description_details;
+        SET @old_bz_created_date = old.bz_created_date;
+        SET @old_comment = old.comment;
+        SET @old_product_id = old.product_id;
+        SET @old_deleted_datetime = old.deleted_datetime;
+        SET @old_deletion_script = old.deletion_script;
+        
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_data_to_create_units';
+        SET @bzfe_field = 'id_unit_to_create, mefe_unit_id, mefe_creator_user_id, bzfe_creator_user_id, classification_id, unit_name, unit_description_details, bz_created_date, comment, product_id, deleted_datetime, deletion_script';
+        SET @previous_value = CONCAT (
+                @old_id_unit_to_create
+                , ', '
+                , IFNULL(@old_mefe_unit_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_mefe_creator_user_id, '(NULL)')
+                , ', '
+                , @old_bzfe_creator_user_id
+                , ', '
+                , @old_classification_id
+                , ', '
+                , @old_unit_name
+                , ', '
+                , IFNULL(@old_unit_description_details, '(NULL)')
+                , ', '
+                , IFNULL(@old_bz_created_date, '(NULL)')
+                , ', '
+                , IFNULL(@old_comment, '(NULL)')
+                , ', '
+                , IFNULL(@old_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_deleted_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@old_deletion_script, '(NULL)')
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_id_unit_to_create
+                , ', '
+                , IFNULL(@new_mefe_unit_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_mefe_creator_user_id, '(NULL)')
+                , ', '
+                , @new_bzfe_creator_user_id
+                , ', '
+                , @new_classification_id
+                , ', '
+                , @new_unit_name
+                , ', '
+                , IFNULL(@new_unit_description_details, '(NULL)')
+                , ', '
+                , IFNULL(@new_bz_created_date, '(NULL)')
+                , ', '
+                , IFNULL(@new_comment, '(NULL)')
+                , ', '
+                , IFNULL(@new_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_deleted_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@new_deletion_script, '(NULL)')
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_data_to_create_units';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `ut_data_to_create_units` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_ut_data_to_create_units` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_data_to_create_units` AFTER DELETE ON `ut_data_to_create_units` FOR EACH ROW 
+  BEGIN
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_id_unit_to_create = old.id_unit_to_create;
+        SET @old_mefe_unit_id = old.mefe_unit_id;
+        SET @old_mefe_creator_user_id = old.mefe_creator_user_id;
+        SET @old_bzfe_creator_user_id = old.bzfe_creator_user_id;
+        SET @old_classification_id = old.classification_id;
+        SET @old_unit_name = old.unit_name;
+        SET @old_unit_description_details = old.unit_description_details;
+        SET @old_bz_created_date = old.bz_created_date;
+        SET @old_comment = old.comment;
+        SET @old_product_id = old.product_id;
+        SET @old_deleted_datetime = old.deleted_datetime;
+        SET @old_deletion_script = old.deletion_script;
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_data_to_create_units';
+        SET @bzfe_field = 'id_unit_to_create, mefe_unit_id, mefe_creator_user_id, bzfe_creator_user_id, classification_id, unit_name, unit_description_details, bz_created_date, comment, product_id, deleted_datetime, deletion_script';
+        SET @previous_value = CONCAT (
+                @old_id_unit_to_create
+                , ', '
+                , IFNULL(@old_mefe_unit_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_mefe_creator_user_id, '(NULL)')
+                , ', '
+                , @old_bzfe_creator_user_id
+                , ', '
+                , @old_classification_id
+                , ', '
+                , @old_unit_name
+                , ', '
+                , IFNULL(@old_unit_description_details, '(NULL)')
+                , ', '
+                , IFNULL(@old_bz_created_date, '(NULL)')
+                , ', '
+                , IFNULL(@old_comment, '(NULL)')
+                , ', '
+                , IFNULL(@old_product_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_deleted_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@old_deletion_script, '(NULL)')
+            )
+           ;
+        SET @new_value = NULL;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_data_to_create_units';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `ut_invitation_api_data` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_ut_invitation_api_data` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_invitation_api_data` AFTER INSERT ON `ut_invitation_api_data` FOR EACH ROW 
+  BEGIN
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_id = new.id;
+        SET @new_mefe_invitation_id = new.mefe_invitation_id;
+        SET @new_bzfe_invitor_user_id = new.bzfe_invitor_user_id;
+        SET @new_bz_user_id = new.bz_user_id;
+        SET @new_user_role_type_id = new.user_role_type_id;
+        SET @new_is_occupant = new.is_occupant;
+        SET @new_bz_case_id = new.bz_case_id;
+        SET @new_bz_unit_id = new.bz_unit_id;
+        SET @new_invitation_type = new.invitation_type;
+        SET @new_is_mefe_only_user = new.is_mefe_only_user;
+        SET @new_user_more = new.user_more;
+        SET @new_mefe_invitor_user_id = new.mefe_invitor_user_id;
+        SET @new_processed_datetime = new.processed_datetime;
+        SET @new_script = new.script;
+        SET @new_api_post_datetime = new.api_post_datetime;
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_invitation_api_data';
+        SET @bzfe_field = 'id, mefe_invitation_id, bzfe_invitor_user_id, bz_user_id, user_role_type_id, is_occupant, bz_case_id, bz_unit_id, invitation_type, is_mefe_only_user, user_more, mefe_invitor_user_id, processed_datetime, script, api_post_datetime';
+        SET @previous_value = NULL;
+        SET @new_value = CONCAT (
+                @new_id
+                , ', '
+                , IFNULL(@new_mefe_invitation_id, '(NULL)')
+                , ', '
+                , @new_bzfe_invitor_user_id
+                , ', '
+                , @new_bz_user_id
+                , ', '
+                , @new_user_role_type_id
+                , ', '
+                , IFNULL(@new_is_occupant, '(NULL)')
+                , ', '
+                , IFNULL(@new_bz_case_id, '(NULL)')
+                , ', '
+                , @new_bz_unit_id
+                , ', '
+                , @new_invitation_type
+                , ', '
+                , IFNULL(@new_is_mefe_only_user, '(NULL)')
+                , ', '
+                , IFNULL(@new_user_more, '(NULL)')
+                , ', '
+                , IFNULL(@new_mefe_invitor_user_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_processed_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@new_script, '(NULL)')
+                , ', '
+                , IFNULL(@new_api_post_datetime, '(NULL)')
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_invitation_api_data';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `ut_invitation_api_data` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_ut_invitation_api_data` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_invitation_api_data` AFTER UPDATE ON `ut_invitation_api_data` FOR EACH ROW 
+  BEGIN
+    # We capture the new values of each fields in dedicated variables:
+        SET @new_id = new.id;
+        SET @new_mefe_invitation_id = new.mefe_invitation_id;
+        SET @new_bzfe_invitor_user_id = new.bzfe_invitor_user_id;
+        SET @new_bz_user_id = new.bz_user_id;
+        SET @new_user_role_type_id = new.user_role_type_id;
+        SET @new_is_occupant = new.is_occupant;
+        SET @new_bz_case_id = new.bz_case_id;
+        SET @new_bz_unit_id = new.bz_unit_id;
+        SET @new_invitation_type = new.invitation_type;
+        SET @new_is_mefe_only_user = new.is_mefe_only_user;
+        SET @new_user_more = new.user_more;
+        SET @new_mefe_invitor_user_id = new.mefe_invitor_user_id;
+        SET @new_processed_datetime = new.processed_datetime;
+        SET @new_script = new.script;
+        SET @new_api_post_datetime = new.api_post_datetime;
+        
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_id = old.id;
+        SET @old_mefe_invitation_id = old.mefe_invitation_id;
+        SET @old_bzfe_invitor_user_id = old.bzfe_invitor_user_id;
+        SET @old_bz_user_id = old.bz_user_id;
+        SET @old_user_role_type_id = old.user_role_type_id;
+        SET @old_is_occupant = old.is_occupant;
+        SET @old_bz_case_id = old.bz_case_id;
+        SET @old_bz_unit_id = old.bz_unit_id;
+        SET @old_invitation_type = old.invitation_type;
+        SET @old_is_mefe_only_user = old.is_mefe_only_user;
+        SET @old_user_more = old.user_more;
+        SET @old_mefe_invitor_user_id = old.mefe_invitor_user_id;
+        SET @old_processed_datetime = old.processed_datetime;
+        SET @old_script = old.script;
+        SET @old_api_post_datetime = old.api_post_datetime;
+                
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_invitation_api_data';
+        SET @bzfe_field = 'id, mefe_invitation_id, bzfe_invitor_user_id, bz_user_id, user_role_type_id, is_occupant, bz_case_id, bz_unit_id, invitation_type, is_mefe_only_user, user_more, mefe_invitor_user_id, processed_datetime, script, api_post_datetime';
+        SET @previous_value = CONCAT (
+                @old_id
+                , ', '
+                , IFNULL(@old_mefe_invitation_id, '(NULL)')
+                , ', '
+                , @old_bzfe_invitor_user_id
+                , ', '
+                , @old_bz_user_id
+                , ', '
+                , @old_user_role_type_id
+                , ', '
+                , IFNULL(@old_is_occupant, '(NULL)')
+                , ', '
+                , IFNULL(@old_bz_case_id, '(NULL)')
+                , ', '
+                , @old_bz_unit_id
+                , ', '
+                , @old_invitation_type
+                , ', '
+                , IFNULL(@old_is_mefe_only_user, '(NULL)')
+                , ', '
+                , IFNULL(@old_user_more, '(NULL)')
+                , ', '
+                , IFNULL(@old_mefe_invitor_user_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_processed_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@old_script, '(NULL)')
+                , ', '
+                , IFNULL(@old_api_post_datetime, '(NULL)')
+            )
+           ;
+        SET @new_value = CONCAT (
+                @new_id
+                , ', '
+                , IFNULL(@new_mefe_invitation_id, '(NULL)')
+                , ', '
+                , @new_bzfe_invitor_user_id
+                , ', '
+                , @new_bz_user_id
+                , ', '
+                , @new_user_role_type_id
+                , ', '
+                , IFNULL(@new_is_occupant, '(NULL)')
+                , ', '
+                , IFNULL(@new_bz_case_id, '(NULL)')
+                , ', '
+                , @new_bz_unit_id
+                , ', '
+                , @new_invitation_type
+                , ', '
+                , IFNULL(@new_is_mefe_only_user, '(NULL)')
+                , ', '
+                , IFNULL(@new_user_more, '(NULL)')
+                , ', '
+                , IFNULL(@new_mefe_invitor_user_id, '(NULL)')
+                , ', '
+                , IFNULL(@new_processed_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@new_script, '(NULL)')
+                , ', '
+                , IFNULL(@new_api_post_datetime, '(NULL)')
+            )
+           ;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_invitation_api_data';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
+END */$$
+
+
+DELIMITER ;
+
+/* Trigger structure for table `ut_invitation_api_data` */
+
+DELIMITER $$
+
+/*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_ut_invitation_api_data` */$$
+
+/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_invitation_api_data` AFTER DELETE ON `ut_invitation_api_data` FOR EACH ROW 
+  BEGIN
+    # We capture the old values of each fields in dedicated variables:
+        SET @old_id = old.id;
+        SET @old_mefe_invitation_id = old.mefe_invitation_id;
+        SET @old_bzfe_invitor_user_id = old.bzfe_invitor_user_id;
+        SET @old_bz_user_id = old.bz_user_id;
+        SET @old_user_role_type_id = old.user_role_type_id;
+        SET @old_is_occupant = old.is_occupant;
+        SET @old_bz_case_id = old.bz_case_id;
+        SET @old_bz_unit_id = old.bz_unit_id;
+        SET @old_invitation_type = old.invitation_type;
+        SET @old_is_mefe_only_user = old.is_mefe_only_user;
+        SET @old_user_more = old.user_more;
+        SET @old_mefe_invitor_user_id = old.mefe_invitor_user_id;
+        SET @old_processed_datetime = old.processed_datetime;
+        SET @old_script = old.script;
+        SET @old_api_post_datetime = old.api_post_datetime;
+    # We set the variable we need to update the log with relevant information:
+        SET @bzfe_table = 'ut_invitation_api_data';
+        SET @bzfe_field = 'id, mefe_invitation_id, bzfe_invitor_user_id, bz_user_id, user_role_type_id, is_occupant, bz_case_id, bz_unit_id, invitation_type, is_mefe_only_user, user_more, mefe_invitor_user_id, processed_datetime, script, api_post_datetime';
+        SET @previous_value = CONCAT (
+                @old_id
+                , ', '
+                , IFNULL(@old_mefe_invitation_id, '(NULL)')
+                , ', '
+                , @old_bzfe_invitor_user_id
+                , ', '
+                , @old_bz_user_id
+                , ', '
+                , @old_user_role_type_id
+                , ', '
+                , IFNULL(@old_is_occupant, '(NULL)')
+                , ', '
+                , IFNULL(@old_bz_case_id, '(NULL)')
+                , ', '
+                , @old_bz_unit_id
+                , ', '
+                , @old_invitation_type
+                , ', '
+                , IFNULL(@old_is_mefe_only_user, '(NULL)')
+                , ', '
+                , IFNULL(@old_user_more, '(NULL)')
+                , ', '
+                , IFNULL(@old_mefe_invitor_user_id, '(NULL)')
+                , ', '
+                , IFNULL(@old_processed_datetime, '(NULL)')
+                , ', '
+                , IFNULL(@old_script, '(NULL)')
+                , ', '
+                , IFNULL(@old_api_post_datetime, '(NULL)')
+            )
+           ;
+        SET @new_value = NULL;
+        # The @script variable is defined by the highest level script we have - we do NOT change that
+        SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_invitation_api_data';
+    # We have all the variables:
+        #   - @bzfe_table: the table that was updated
+        #   - @bzfe_field: The fields that were updated
+        #   - @previous_value: The previouso value for the field
+        #   - @new_value: the values captured by the trigger when the new value is inserted.
+        #   - @script: the script that is calling this procedure
+        #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
+        CALL `update_audit_log`;
 END */$$
 
 
@@ -5870,7 +6224,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_product_group` AFTER INSERT ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
@@ -5879,7 +6232,6 @@ DELIMITER $$
         SET @new_role_type_id = new.role_type_id;
         SET @new_created_by_id = new.created_by_id;
         SET @new_created = new.created;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_product_group';
         SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
@@ -5902,7 +6254,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5910,9 +6261,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5926,7 +6275,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_product_group` AFTER UPDATE ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
@@ -5980,10 +6328,8 @@ DELIMITER $$
                 , IFNULL(@new_created, '(NULL)')
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5991,9 +6337,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6007,7 +6351,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_product_group` AFTER DELETE ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
@@ -6016,7 +6359,6 @@ DELIMITER $$
         SET @old_role_type_id = old.role_type_id;
         SET @old_created_by_id = old.created_by_id;
         SET @old_created = old.created;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_product_group';
         SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
@@ -6037,10 +6379,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6048,9 +6388,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6064,13 +6402,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_versions` AFTER INSERT ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_value = new.value;
         SET @new_product_id = new.product_id;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -6087,7 +6423,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6095,9 +6430,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6111,19 +6444,16 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_versions` AFTER UPDATE ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_value = new.value;
         SET @new_product_id = new.product_id;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_value = old.value;
         SET @old_product_id = old.product_id;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -6147,10 +6477,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6158,9 +6486,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6174,13 +6500,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_versions` AFTER DELETE ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_value = old.value;
         SET @old_product_id = old.product_id;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -6195,10 +6519,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6206,9 +6528,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6309,7 +6629,6 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `add_user_to_role_in_unit`()
 BEGIN
-
     # This procedure needs the following objects:
     #   - variables:
     #       - `mefe_invitation_id`
@@ -6400,12 +6719,13 @@ BEGIN
     # Limits of this script:
     #	- Unit must have all roles created with Dummy user roles.
     #
+    #    
+    
     #####################################################
     #					
-    # First we need to define all the variables we need
+    # We need to define all the variables we need
     #					
     #####################################################
-
     # We make sure that all the variable we user are set to NULL first
     # This is to avoid issue of a variable 'silently' using a value from a previous run
         SET @reference_for_update = NULL;
@@ -6450,7 +6770,6 @@ BEGIN
         SET @can_approve_all_flags = NULL;
         SET @is_current_assignee_this_role_a_dummy_user = NULL;
         SET @this_script = NULL;
-
     # Default values:
         
         #User Permissions in the unit:
@@ -6471,10 +6790,8 @@ BEGIN
         
         # Do we need to make the invitee a default CC for all new cases for this role in this unit?
             SET @user_in_default_cc_for_cases = 0;
-
     # Timestamp	
         SET @timestamp = NOW();
-
     # We define the name of this script for future reference:
         SET @this_script = 'PROCEDURE add_user_to_role_in_unit';
         
@@ -6483,19 +6800,14 @@ BEGIN
         
     # The reference of the record we want to update in the table `ut_invitation_api_data`
         SET @reference_for_update = (SELECT `id` FROM `ut_invitation_api_data` WHERE `mefe_invitation_id` = @mefe_invitation_id);	
-
     # The MEFE information:
         SET @mefe_invitor_user_id = (SELECT `mefe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
     # The unit name and description
         SET @product_id = (SELECT `bz_unit_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
     # The Invitor - BZ user id of the user that has genereated the invitation.
         SET @creator_bz_id = (SELECT `bzfe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
         # We populate the additional variables that we will need for this script to work:
             SET @creator_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @creator_bz_id);
-
     # Role in this unit for the invited user:
         #	- Tenant 1
         # 	- Landlord 2
@@ -6506,7 +6818,6 @@ BEGIN
             
     # The user who you want to associate to this unit - BZ user id of the user that you want to associate/invite to the unit.
         SET @bz_user_id = (SELECT `bz_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
-
         # We populate the additional variables that we will need for this script to work:
             SET @role_user_g_description = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`=@id_role_type);
             SET @user_pub_name = (SELECT (LEFT(`login_name`,INSTR(`login_name`,"@")-1)) FROM `profiles` WHERE `userid` = @bz_user_id);
@@ -6531,10 +6842,8 @@ BEGIN
                                             ;
                     
         # Is the current assignee for this role for this unit one of the dummy user in this environment?
-
             # What is the CURRENT default assignee for the role this user has been invited to?
                 SET @current_default_assignee_this_role = (SELECT `initialowner` FROM `components` WHERE `id` = @component_id_this_role);
-
             # What is the default dummy user id for this environment?
             
                 # Get the BZ profile id of the dummy users based on the environment variable
@@ -6543,7 +6852,6 @@ BEGIN
                                                     FROM `ut_temp_dummy_users_for_roles` 
                                                     WHERE `environment_id` = @environment)
                                                     ;
-
                     # Landlord 2
                         SET @bz_user_id_dummy_landlord = (SELECT `landlord_id` 
                                                     FROM `ut_temp_dummy_users_for_roles` 
@@ -6567,7 +6875,6 @@ BEGIN
                                                     FROM `ut_temp_dummy_users_for_roles` 
                                                     WHERE `environment_id` = @environment)
                                                     ;
-
             # What is the BZ dummy user id for this role in this script?
                 SET @bz_user_id_dummy_user_this_role = IF( @id_role_type = 1
                                                 , @bz_user_id_dummy_tenant
@@ -6586,7 +6893,6 @@ BEGIN
                                                     )
                                                 )
                                                 ;
-
     # Is the invited user an occupant of the unit?
         SET @is_occupant = (SELECT `is_occupant` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
         
@@ -6604,7 +6910,6 @@ BEGIN
         #	- The invitation type
         #	- The default values currently configured
         # We NEED to have defined the variable @invitation_type FIRST!
-
         # Things which depends on the invitation type:
         
             # Do we need to make the invitee a default CC for all new cases for this role in this unit?
@@ -6618,7 +6923,6 @@ BEGIN
                         , 0
                         )
                         ;
-
             # Do we need to replace the default assignee for this role in this unit?
             # This depends on the type of invitation that we are creating
             #	- 1 (YES) if the invitation type is
@@ -6642,7 +6946,6 @@ BEGIN
                         , 0
                         )
                         ;
-
     # Answer to the question "Is the current default assignee for this role one of the dummy users?"
         SET @is_current_assignee_this_role_a_dummy_user = IF( @replace_default_assignee = 1
             , 0
@@ -6652,10 +6955,12 @@ BEGIN
                 )
             )
             ;
-                                    
+    # We need to create the table to prepare the permissions for the users:
+        CALL `create_temp_table_to_update_permissions`;
+    
     #################################################################
     #
-    # All the variables have been set - we can call the procedures
+    # All the variables and tables have been set - we can call the procedures
     #
     #################################################################
         
@@ -6667,10 +6972,8 @@ BEGIN
     #		- @component_id_this_role: 
     #		  The id of the role in the bz table `components`
         CALL `remove_user_from_default_cc`;
-
     # We are recording this for KPI measurements
     #	- Number of user per role per unit.
-
         # We record the information about the users that we have just created
         # If this is the first time we record something for this user for this unit, we create a new record.
         # If there is already a record for THAT USER for THIS, then we are updating the information
@@ -6787,13 +7090,14 @@ BEGIN
                     , '.\r\ '
                     , `comment`)
             ;
-
     # We always reset the permissions to the default permissions first
         # Revoke all permissions for this user in this unit
             # This procedure needs the following objects:
             #	- Variables:
             #		- @product_id
             #		- @bz_user_id
+            #	- table 
+            #       - 'ut_user_group_map_temp'
             CALL `revoke_all_permission_for_this_user_in_this_unit`;
             
         # Prepare the permissions - configure these to default:
@@ -6883,7 +7187,6 @@ BEGIN
     #		- @is_mefe_only_user
     #		- @role_user_more
         CALL `update_assignee_if_dummy_user`;
-
     # Make the invited user default CC for all cases in this unit if needed
     # This procedure needs the following objects:
     #	- variables:
@@ -6897,7 +7200,6 @@ BEGIN
         
         # Run the procedure
             CALL `user_in_default_cc_for_cases`;	
-
     # Make the invited user the new default assignee for all cases in this role in this unit if needed
     # This procedure needs the following objects:
     #	- variables:
@@ -6911,7 +7213,6 @@ BEGIN
         
         # Run the procedure
             CALL `user_is_default_assignee_for_cases`;
-
     # Remove this user from this role in this unit if needed:
     # This procedure needs the following objects
     #	- Variables:
@@ -6925,11 +7226,11 @@ BEGIN
     #		- @user_pub_name
     #		- @creator_bz_id
         CALL `remove_user_from_role`;
-
     # Update the table 'ut_invitation_api_data' so we record what we have done
-
         # Timestamp	
             SET @timestamp = NOW();
+        # Make sure we have the correct value for the name of this script
+            SET @script = 'PROCEDURE add_user_to_role_in_unit';
             
         # We do the update to record that we have reached the end of the script...
             UPDATE `ut_invitation_api_data`
@@ -6937,7 +7238,6 @@ BEGIN
                     , `script` = @this_script
                 WHERE `mefe_invitation_id` = @mefe_invitation_id
                 ;
-
 END */$$
 DELIMITER ;
 
@@ -8162,18 +8462,19 @@ DELIMITER $$
     SQL SECURITY INVOKER
 BEGIN
 	# DELETE the temp table if it exists
-	    DROP TABLE IF EXISTS `ut_group_group_map_temp`;
-	
+	    DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_temp`;
 	# Re-create the temp table
-        CREATE TABLE `ut_group_group_map_temp` (
-        `member_id` MEDIUMINT(9) NOT NULL,
-        `grantor_id` MEDIUMINT(9) NOT NULL,
-        `grant_type` TINYINT(4) NOT NULL DEFAULT 0
-        ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+        CREATE TEMPORARY TABLE `ut_group_group_map_temp` (
+        `member_id` MEDIUMINT(9) NOT NULL
+        , `grantor_id` MEDIUMINT(9) NOT NULL
+        , `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+        )
+        ;
     # Add the records that exist in the table group_group_map
         INSERT INTO `ut_group_group_map_temp`
             SELECT *
-            FROM `group_group_map`;
+            FROM `group_group_map`
+        ;
 END */$$
 DELIMITER ;
 
@@ -8186,18 +8487,19 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `create_temp_table_to_update_permissions`()
     SQL SECURITY INVOKER
 BEGIN
-	# We use a temporary table to make sure we do not have duplicates.
+    # We use a temporary table to make sure we do not have duplicates.
 		
 		# DELETE the temp table if it exists
-		DROP TABLE IF EXISTS `ut_user_group_map_temp`;
+		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_temp`;
 		
 		# Re-create the temp table
-		CREATE TABLE `ut_user_group_map_temp` (
-		  `user_id` MEDIUMINT(9) NOT NULL,
-		  `group_id` MEDIUMINT(9) NOT NULL,
-		  `isbless` TINYINT(4) NOT NULL DEFAULT '0',
-		  `grant_type` TINYINT(4) NOT NULL DEFAULT '0'
-		) ENGINE=INNODB DEFAULT CHARSET=utf8;
+		CREATE TEMPORARY TABLE `ut_user_group_map_temp` (
+		  `user_id` MEDIUMINT(9) NOT NULL
+		  , `group_id` MEDIUMINT(9) NOT NULL
+		  , `isbless` TINYINT(4) NOT NULL DEFAULT 0
+          , `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+		)
+        ;
 		# Add all the records that exists in the table user_group_map
 		INSERT INTO `ut_user_group_map_temp`
 			SELECT *
@@ -9287,17 +9589,17 @@ BEGIN
 	#		- @component_id_this_role: The id of the role in the bz table `components`
 	#
 	# We delete the record in the table that store default CC information
+    # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+        SET @script = 'PROCEDURE remove_user_from_default_cc';
+    # We can now do the deletion
 		DELETE
 		FROM `component_cc`
 			WHERE `user_id` = @bz_user_id
 				AND `component_id` = @component_id_this_role
 		;
-
 	# We get the product id so we can log this properly
 		SET @product_id_for_this_procedure = (SELECT `product_id` FROM `components` WHERE `id` = @component_id_this_role);
-
-	# We record the name of this procedure for future debugging and audit_log`
-			SET @script = 'PROCEDURE - remove_user_from_default_cc';
+	# We record the time when  this was done for future debugging and audit_log`
 			SET @timestamp = NOW();
 				
 	# Log the actions of the script.
@@ -9317,7 +9619,6 @@ BEGIN
 			VALUES
 			(@timestamp, @script, @script_log_message)
 			;
-
 	# Cleanup the variables for the log messages
 		SET @script_log_message = NULL;
 		SET @script = NULL;
@@ -9344,7 +9645,9 @@ BEGIN
 	#		- @id_role_type
 	# 		- @this_script
 	#		- @creator_bz_id
-
+    #
+    #   - Tables:
+    #       - `ut_user_group_map_temp`
 	# We only do this if this is needed:
 	IF (@remove_user_from_role = 1)
 	THEN
@@ -9355,9 +9658,6 @@ BEGIN
 		#
 		# The script also reset the permissions for this user for this role for this unit to the default permissions.
 		# We need to remove ALL the permissions for this user.
-		
-			# Create the table to prepare the permissions
-				CALL `create_temp_table_to_update_permissions`;
 				
 			# Revoke all permissions for this user in this unit
 				# This procedure needs the following objects:
@@ -9369,7 +9669,6 @@ BEGIN
 			# All the permission have been prepared, we can now update the permissions table
 			#		- This NEEDS the table 'ut_user_group_map_temp'
 				CALL `update_permissions_invited_user`;
-
 		# Who are the initial owner and initialqa contact for this role?
 												
 			# Get the old values so we can 
@@ -9396,7 +9695,6 @@ BEGIN
 				, '0'
 				)
 				;
-
 		# We need to check if the user we are removing is the current qa user for this role for this unit.
 			SET @is_user_qa = IF(@old_component_initialqacontact = @bz_user_id
 				, '1'
@@ -9407,7 +9705,6 @@ BEGIN
 		# We record the name of this procedure for future debugging and audit_log`
 			SET @script = 'PROCEDURE - remove_user_from_role';
 			SET @timestamp = NOW();
-
 		IF @is_user_default_assignee = 1
 		THEN
 		# We need to replace this with the default dummy user
@@ -9470,13 +9767,15 @@ BEGIN
 				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
 			
 			# Update the default assignee
-				UPDATE `components`
-				SET `initialowner` = @bz_user_id_dummy_user_this_role
-					,`description` = @dummy_user_role_desc
-					WHERE 
-					`id` = @component_id_this_role
-					;
-
+                # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                    SET @script = 'PROCEDURE remove_user_from_role';
+                # We can now do the update
+                    UPDATE `components`
+                    SET `initialowner` = @bz_user_id_dummy_user_this_role
+                        ,`description` = @dummy_user_role_desc
+                        WHERE 
+                        `id` = @component_id_this_role
+                        ;
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('The component: '
 					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
@@ -9518,7 +9817,6 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 		END IF;
-
 		IF @is_user_qa = 1
 		THEN
 		# IF the user is the current qa contact: We need to replace this with the default dummy user
@@ -9529,7 +9827,6 @@ BEGIN
 		# 	- @this_script
 		#	- @product_id
 		#	- @creator_bz_id
-
 			# We define the dummy user role description based on the variable @id_role_type
 				SET @dummy_user_role_desc = IF(@id_role_type = 1
 					, CONCAT('Generic '
@@ -9581,13 +9878,15 @@ BEGIN
 				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
 		
 			# Update the default assignee and qa contact
-				UPDATE `components`
-				SET 
-					`initialqacontact` = @bz_user_id_dummy_user_this_role
-					WHERE 
-					`id` = @component_id_this_role
-					;	
-
+                # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                    SET @script = 'PROCEDURE remove_user_from_role';
+                # We can now do the update
+                    UPDATE `components`
+                    SET 
+                        `initialqacontact` = @bz_user_id_dummy_user_this_role
+                        WHERE 
+                        `id` = @component_id_this_role
+                        ;	
 			# Log the actions of the script.
 				SET @script_log_message = CONCAT('The component: '
 					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
@@ -9645,17 +9944,13 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `revoke_all_permission_for_this_user_in_this_unit`()
     SQL SECURITY INVOKER
 BEGIN
-
     # this procedure needs the following variables:
     #   - @product_id
     #   - @bz_user_id
-
 	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - revoke_all_permission_for_this_user_in_this_unit';
 		SET @timestamp = NOW();
-
 	# We need to get the group_id for this unit
-
 		SET @can_see_time_tracking_group_id = 16;
 		SET @can_create_shared_queries_group_id = 17;
 		SET @can_tag_comment_group_id = 18;	
@@ -9667,39 +9962,29 @@ BEGIN
 		SET @can_edit_all_field_case_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 26));
 		
 		SET @can_see_unit_in_search_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 38));
-
 		SET @list_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 4));
 		SET @see_visible_assignees_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 5));	
-
 		SET @all_r_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 18));
 		SET @all_g_flags_group_id = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 19));
-
 		SET @group_id_show_to_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 24));
 		SET @group_id_are_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 3));
 		SET @group_id_see_users_occupant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 36));
-
 		SET @group_id_show_to_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 1));
 		SET @group_id_are_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 1));
 		SET @group_id_see_users_tenant = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 1));
-
 		SET @group_id_show_to_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 2));
 		SET @group_id_are_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 2));
 		SET @group_id_see_users_landlord = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 2));
-
 		SET @group_id_show_to_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 5));
 		SET @group_id_are_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 5));
 		SET @group_id_see_users_agent = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 5));
-
 		SET @group_id_show_to_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 3));
 		SET @group_id_are_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 3));
 		SET @group_id_see_users_contractor = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 3));
-
 		SET @group_id_show_to_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 2 AND `role_type_id` = 4));
 		SET @group_id_are_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 22 AND `role_type_id` = 4));
 		SET @group_id_see_users_mgt_cny = (SELECT `group_id` FROM `ut_product_group` WHERE (`product_id` = @product_id AND `group_type_id` = 37 AND `role_type_id` = 4));
-
 	# We can now remove all the permissions for this unit.
-
 		DELETE FROM `user_group_map`
 			WHERE (
 				(`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
@@ -9734,10 +10019,8 @@ BEGIN
 				OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
 				)
 				;
-
         # We also delete from the table `ut_user_group_map_temp`
         # This is needed so we do not re-create the permissions when we invite a new user or create a new unit.
-
             DELETE FROM `ut_user_group_map_temp`
                 WHERE (
                     (`user_id` = @bz_user_id AND `group_id` = @can_see_time_tracking_group_id)
@@ -9772,9 +10055,7 @@ BEGIN
                     OR (`user_id` = @bz_user_id AND `group_id` = @group_id_see_users_mgt_cny)
                     )
                     ;
-
 			# Log the actions of the script.
-
 				SET @script_log_message = CONCAT('We have revoked all the permissions for the bz user #'
 										, @bz_user_id
 										, '\r\- can_see_time_tracking: 0'
@@ -9823,7 +10104,6 @@ BEGIN
 			# Cleanup the variables for the log messages
 				SET @script_log_message = NULL;
 				SET @script = NULL;
-
 END */$$
 DELIMITER ;
 
@@ -10316,11 +10596,9 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `table_to_list_dummy_user_by_environment`()
     SQL SECURITY INVOKER
 BEGIN
-
 	# We create a temporary table to record the ids of the dummy users in each environments:
 		/*Table structure for table `ut_temp_dummy_users_for_roles` */
 			DROP TEMPORARY TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
-
 			CREATE TEMPORARY TABLE `ut_temp_dummy_users_for_roles` (
 			  `environment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
 			  `environment_name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
@@ -10331,13 +10609,11 @@ BEGIN
 			  `agent_id` int(11) DEFAULT NULL,
 			  PRIMARY KEY (`environment_id`)
 			) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 		/*Data for the table `ut_temp_dummy_users_for_roles` */
 			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`, `environment_name`, `tenant_id`, `landlord_id`, `contractor_id`, `mgt_cny_id`, `agent_id`) values 
 				(1,'DEV/Staging', 96, 94, 93, 95, 92),
 				(2,'Prod', 93, 91, 90, 92, 89),
 				(3,'demo/dev', 4, 3, 5, 6, 2);
-
 END */$$
 DELIMITER ;
 
@@ -10354,9 +10630,6 @@ BEGIN
     #   - variables:
 	#	    - @mefe_unit_id
 	#	    - @environment
-    #   - Tables:
-    #       - `ut_group_group_map_temp`
-    #       - `ut_user_group_map_temp`
     #
     # This procedure needs the following info in the table `ut_data_to_create_units`
     #   - id_unit_to_create
@@ -10400,10 +10673,13 @@ BEGIN
 	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - unit_create_with_dummy_users';
 		SET @timestamp = NOW();
-
 	# We create a temporary table to record the ids of the dummy users in each environments:
-
         CALL `table_to_list_dummy_user_by_environment`;
+    # We create the temporary tables to update the group permissions
+        CALL `create_temp_table_to_update_group_permissions`;
+    
+    # We create the temporary tables to update the user permissions
+        CALL `create_temp_table_to_update_permissions`;
 			
 	# Get the BZ profile id of the dummy users based on the environment variable
 		# Tenant 1
@@ -10420,7 +10696,6 @@ BEGIN
 			
 		# Agent 5
 			SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
-
 	# The unit:
 		# BZ Classification id for the unit that you want to create (default is 2)
 		    SET @classification_id = (SELECT `classification_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
@@ -10438,9 +10713,7 @@ BEGIN
 	# Other important information that should not change:
             SET @visibility_explanation_1 = 'Visible only to ';
             SET @visibility_explanation_2 = ' for this unit.';
-
 	# The global permission for the application
-
 	# This should not change, it was hard coded when we created Unee-T
 		# Can tag comments
 			SET @can_tag_comment_group_id = 18;	
@@ -10456,31 +10729,30 @@ BEGIN
         
             # We are predicting the product id to avoid name duplicates
    			    SET @predicted_product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
-
             # We need a unique unit name
 			    SET @unit_bz_name = CONCAT(@unit_name, '-', @predicted_product_id);
-
             # We need a default milestone for that unit
                 SET @default_milestone = '---';
-
             # We need a default version for that unit
 	    	    SET @default_version = '---';
 			
 	# We now create the unit we need.
-		INSERT INTO `products`
-			(`name`
-			, `classification_id`
-			, `description`
-			, `isactive`
-			, `defaultmilestone`
-			, `allows_unconfirmed`
-			)
-			VALUES
-			(@unit_bz_name, @classification_id, @unit_description, 1, @default_milestone, 1);
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+        # Insert the new product into the `products table`
+            INSERT INTO `products`
+                (`name`
+                , `classification_id`
+                , `description`
+                , `isactive`
+                , `defaultmilestone`
+                , `allows_unconfirmed`
+                )
+                VALUES
+                (@unit_bz_name, @classification_id, @unit_description, 1, @default_milestone, 1);
 	
         # Get the actual id that was created for that unit
             SET @product_id = (SELECT LAST_INSERT_ID());
-
     	# Log the actions of the script.
 			SET @script_log_message = CONCAT('A new unit #'
 									, (SELECT IFNULL(@product_id, 'product_id is NULL'))
@@ -10510,11 +10782,8 @@ BEGIN
 				;
 			
 			SET @script_log_message = NULL;
-
     # We can now get the real id of the unit
-
         SET @unit = CONCAT(@unit_bz_name, '-', @product_id);
-
     # We log this in the `audit_log` table
 		
 		INSERT INTO `audit_log` 
@@ -10536,9 +10805,7 @@ BEGIN
 			, @timestamp
 			)
 			;
-
     # We prepare all the names we will need
-
 		SET @unit_for_query = REPLACE(@unit, ' ', '%');
 		
 		SET @unit_for_flag = REPLACE(@unit_for_query, '%', '_');
@@ -10571,9 +10838,10 @@ BEGIN
 		SET @unit_for_group = REPLACE(@unit_for_group, '----', '-');
 		SET @unit_for_group = REPLACE(@unit_for_group, '---', '-');
 		SET @unit_for_group = REPLACE(@unit_for_group, '--', '-');
-
 		# We need a version for this product
-			
+            # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                SET @script = 'PROCEDURE unit_create_with_dummy_users';
+	
 			# We can now insert the version there
 				INSERT INTO `versions`
 					(`value`
@@ -10583,10 +10851,8 @@ BEGIN
 					VALUES
 					(@default_version, @product_id, 1)
 					;
-
             # We get the id for the version 
                 SET @version_id = (SELECT LAST_INSERT_ID());
-
 			# We also log this in the `audit_log` table
 					
 						INSERT INTO `audit_log` 
@@ -10610,23 +10876,22 @@ BEGIN
 							;
 					
 		# We now create the milestone for this product.
-
+            # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                SET @script = 'PROCEDURE unit_create_with_dummy_users';
 			# We can now insert the milestone there
-			INSERT INTO `milestones`
-				(`product_id`
-				, `value`
-				, `sortkey`
-				, `isactive`
-				)
-				VALUES
-				(@product_id, @default_milestone, 0 , 1)
-				;
-            
+                INSERT INTO `milestones`
+                    (`product_id`
+                    , `value`
+                    , `sortkey`
+                    , `isactive`
+                    )
+                    VALUES
+                    (@product_id, @default_milestone, 0 , 1)
+                    ;
+                
             # We get the id for the milestone 
                 SET @milestone_id = (SELECT LAST_INSERT_ID());
-		
 			# We also log this in the `audit_log` table
-			
 				INSERT INTO `audit_log` 
 					(`user_id`
 					, `class`
@@ -10639,7 +10904,6 @@ BEGIN
 					VALUES
 					(@creator_bz_id, 'Bugzilla::Milestone', @milestone_id, '__create__', NULL, @default_milestone, @timestamp)
 					;
-
 	#  We create all the components/roles we need
 		# For the temporary users:
 			# Tenant
@@ -10652,7 +10916,6 @@ BEGIN
 													, ' TO THIS UNIT'
 													);
 				SET @user_role_desc_tenant = @role_user_pub_info_tenant;
-
 			# Landlord
 				SET @role_user_g_description_landlord = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 2);
 				SET @user_pub_name_landlord = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_landlord);
@@ -10696,10 +10959,10 @@ BEGIN
 													, ' TO THIS UNIT'
 													);
 				SET @user_role_desc_mgt_cny = @role_user_pub_info_mgt_cny;
-
 		# We have eveything, we can create the components we need:
         # We insert the component 1 by 1 to get the id for each component easily
-
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
 			# Tenant (component_id_tenant)
                 INSERT INTO `components`
                     (`name`
@@ -10718,27 +10981,25 @@ BEGIN
                     , 1
                     )
                     ;
-
                 # We get the id for the component for the tenant 
                     SET @component_id_tenant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_tenant
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_tenant, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_tenant, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'tenant:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_tenant, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '1'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_tenant, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_tenant, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'
                                             )
                                             ;
                     
@@ -10752,11 +11013,9 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
             # Landlord (component_id_landlord)
                 INSERT INTO `components`
-                    (`id`
-                    , `name`
+                    (`name`
                     , `product_id`
                     , `initialowner`
                     , `initialqacontact`
@@ -10764,8 +11023,7 @@ BEGIN
                     , `isactive`
                     ) 
                     VALUES
-                    (@component_id_landlord
-                    , @role_user_g_description_landlord
+                    (@role_user_g_description_landlord
                     , @product_id
                     , @bz_user_id_dummy_landlord
                     , @bz_user_id_dummy_landlord
@@ -10773,27 +11031,25 @@ BEGIN
                     , 1
                     )
                     ;
-
                 # We get the id for the component for the Landlord
                     SET @component_id_landlord = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_landlord
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_landlord, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_landlord, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'Landlord:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_landlord, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '2'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_landlord, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_landlord, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'
                                             )
                                             ;
                     
@@ -10807,11 +11063,9 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
             # Agent (component_id_agent)
                 INSERT INTO `components`
-                    (`id`
-                    , `name`
+                    (`name`
                     , `product_id`
                     , `initialowner`
                     , `initialqacontact`
@@ -10819,8 +11073,7 @@ BEGIN
                     , `isactive`
                     ) 
                     VALUES
-                    (@component_id_agent
-                    , @role_user_g_description_agent
+                    (@role_user_g_description_agent
                     , @product_id
                     , @bz_user_id_dummy_agent
                     , @bz_user_id_dummy_agent
@@ -10831,24 +11084,23 @@ BEGIN
             
                 # We get the id for the component for the Agent
                     SET @component_id_agent = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_agent
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_agent, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_agent, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'Agent:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_agent, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '5'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_agent, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_agent, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'
                                             )
                                             ;
                     
@@ -10862,11 +11114,9 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
             # Contractor (component_id_contractor)
                 INSERT INTO `components`
-                    (`id`
-                    , `name`
+                    (`name`
                     , `product_id`
                     , `initialowner`
                     , `initialqacontact`
@@ -10874,8 +11124,7 @@ BEGIN
                     , `isactive`
                     ) 
                     VALUES
-                    (@component_id_contractor
-                    , @role_user_g_description_contractor
+                    (@role_user_g_description_contractor
                     , @product_id
                     , @bz_user_id_dummy_contractor
                     , @bz_user_id_dummy_contractor
@@ -10886,24 +11135,23 @@ BEGIN
             
                 # We get the id for the component for the Contractor
                     SET @component_id_contractor = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_contractor
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_contractor, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_contractor, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'Contractor:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_contractor, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '3'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_contractor, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_contractor, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'
                                             )
                                             ;
                     
@@ -10920,8 +11168,7 @@ BEGIN
             
             # Management Company (component_id_mgt_cny)
                 INSERT INTO `components`
-                    (`id`
-                    , `name`
+                    (`name`
                     , `product_id`
                     , `initialowner`
                     , `initialqacontact`
@@ -10929,8 +11176,7 @@ BEGIN
                     , `isactive`
                     ) 
                     VALUES
-                    (@component_id_mgt_cny
-                    , @role_user_g_description_mgt_cny
+                    (@role_user_g_description_mgt_cny
                     , @product_id
                     , @bz_user_id_dummy_mgt_cny
                     , @bz_user_id_dummy_mgt_cny
@@ -10941,24 +11187,23 @@ BEGIN
             
                 # We get the id for the component for the Management Company 
                     SET @component_id_mgt_cny = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following component #'
                                             , @component_id_mgt_cny
-                                            , 'was created for the unit # '
+                                            , ' was created for the unit # '
                                             , @product_id
-                                            , 'with temporary user as the '
+                                            , ' Temporary user #'
+                                            , (SELECT IFNULL(@bz_user_id_dummy_mgt_cny, 'bz_user_id is NULL'))
+                                            , ' (real name: '
+                                            , (SELECT IFNULL(@user_pub_name_mgt_cny, 'user_pub_name is NULL'))
+                                            , '. This user is the default assignee for this role for that unit).'
+                                            , ' is the '
                                             , 'Management Company:'
                                             , '\r\- '
                                             , (SELECT IFNULL(@role_user_g_description_mgt_cny, 'role_user_g_description is NULL'))
                                             , ' (role_type_id #'
                                             , '4'
                                             , ') '
-                                            , '\r\The user associated to this role was bz user #'
-                                            , (SELECT IFNULL(@bz_user_id_dummy_mgt_cny, 'bz_user_id is NULL'))
-                                            , ' (real name: '
-                                            , (SELECT IFNULL(@user_pub_name_mgt_cny, 'user_pub_name is NULL'))
-                                            , '. This user is the default assignee for this role for that unit).'								
                                             )
                                             ;
                     
@@ -10990,7 +11235,6 @@ BEGIN
                     , (@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
                     , (@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
                     ;
-
 	# We create the goups we need
 		# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
 		# This will avoid a scenario where we need to grant permission to see occupants for instances but the group for occupants does not exist yet...
@@ -11137,10 +11381,10 @@ BEGIN
 					# Can See users in invited_by user Group
 					SET @group_name_see_users_invited_by = (CONCAT(@unit_for_group,'-06-Can-see-invited-by'));
 					SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
-
 		# We can populate the 'groups' table now.
         # We insert the groups 1 by 1 so we can get the id for each of these groups.
-
+            # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                SET @script = 'PROCEDURE unit_create_with_dummy_users';
             # create_case_group_id
             	INSERT INTO `groups`
                     (`name`
@@ -11159,10 +11403,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @create_case_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11182,7 +11424,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_edit_case_group_id
             	INSERT INTO `groups`
                     (`name`
@@ -11201,10 +11442,8 @@ BEGIN
                     , NULL
                     )
                     ;            
-
                 # Get the actual id that was created for that group
                     SET @can_edit_case_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11224,7 +11463,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_see_cases_group_id
             	INSERT INTO `groups`
                     (`name`
@@ -11243,10 +11481,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @can_see_cases_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11266,7 +11502,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_edit_all_field_case_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11285,10 +11520,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @can_edit_all_field_case_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11308,7 +11541,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_edit_component_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11327,10 +11559,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @can_edit_component_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11350,7 +11580,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # can_see_unit_in_search_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11369,10 +11598,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @can_see_unit_in_search_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11392,7 +11619,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # all_g_flags_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11411,10 +11637,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @all_g_flags_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11434,7 +11658,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # all_r_flags_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11453,10 +11676,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @all_r_flags_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11476,7 +11697,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # list_visible_assignees_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11495,10 +11715,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @list_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11518,7 +11736,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # see_visible_assignees_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11537,10 +11754,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @see_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11560,7 +11775,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # active_stakeholder_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11582,7 +11796,6 @@ BEGIN
                 
                 # Get the actual id that was created for that group
                     SET @active_stakeholder_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11602,7 +11815,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # unit_creator_group_id
                 INSERT INTO `groups`
                     (`name`
@@ -11621,10 +11833,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @unit_creator_group_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11644,7 +11854,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_tenant
                 INSERT INTO `groups`
                     (`name`
@@ -11663,10 +11872,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_tenant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11686,7 +11893,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_tenant
                 INSERT INTO `groups`
                     (`name`
@@ -11705,10 +11911,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_tenant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11728,7 +11932,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_tenant
                 INSERT INTO `groups`
                     (`name`
@@ -11747,10 +11950,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_tenant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11770,7 +11971,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_landlord
                INSERT INTO `groups`
                     (`name`
@@ -11789,10 +11989,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_landlord = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11812,7 +12010,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_landlord
                INSERT INTO `groups`
                     (`name`
@@ -11831,10 +12028,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_landlord = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11854,7 +12049,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_landlord
                 INSERT INTO `groups`
                     (`name`
@@ -11873,10 +12067,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_landlord = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11896,7 +12088,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_agent
                INSERT INTO `groups`
                     (`name`
@@ -11915,10 +12106,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_agent = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11938,7 +12127,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_agent
                 INSERT INTO `groups`
                     (`name`
@@ -11957,10 +12145,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_agent = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -11980,7 +12166,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_agent
                 INSERT INTO `groups`
                     (`name`
@@ -11999,10 +12184,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_agent = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12022,7 +12205,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_contractor
                 INSERT INTO `groups`
                     (`name`
@@ -12041,10 +12223,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_contractor = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12064,7 +12244,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_contractor
                 INSERT INTO `groups`
                     (`name`
@@ -12083,10 +12262,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_contractor = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12106,7 +12283,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_contractor
                 INSERT INTO `groups`
                     (`name`
@@ -12125,10 +12301,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_contractor = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12148,7 +12322,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_mgt_cny
                 INSERT INTO `groups`
                     (`name`
@@ -12167,10 +12340,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_mgt_cny = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12190,7 +12361,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_mgt_cny
                 INSERT INTO `groups`
                     (`name`
@@ -12209,10 +12379,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_mgt_cny = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12232,7 +12400,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_mgt_cny
                 INSERT INTO `groups`
                     (`name`
@@ -12251,10 +12418,8 @@ BEGIN
                     , NULL
                     )
                     ;         
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_mgt_cny = (SELECT LAST_INSERT_ID());   
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12274,7 +12439,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_show_to_occupant
                 INSERT INTO `groups`
                     (`name`
@@ -12293,10 +12457,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_show_to_occupant = (SELECT LAST_INSERT_ID());   
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12316,7 +12478,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_occupant
                 INSERT INTO `groups`
                     (`name`
@@ -12335,10 +12496,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_occupant = (SELECT LAST_INSERT_ID());  
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12358,7 +12517,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_occupant
                 INSERT INTO `groups`
                     (`name`
@@ -12380,7 +12538,6 @@ BEGIN
                     
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_occupant = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12400,7 +12557,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_are_users_invited_by
                 INSERT INTO `groups`
                     (`name`
@@ -12419,10 +12575,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_are_users_invited_by = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12441,7 +12595,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
             # group_id_see_users_invited_by
                 INSERT INTO `groups`
                     (`name`
@@ -12460,10 +12613,8 @@ BEGIN
                     , NULL
                     )
                     ;
-
                 # Get the actual id that was created for that group
                     SET @group_id_see_users_invited_by = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('Unit #'
                                             , @product_id
@@ -12483,9 +12634,11 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;		
-
 		# We record the groups we have just created:
 		#	We NEED the component_id for that
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+        # We can now insert in the table
 			INSERT INTO `ut_product_group`
 				(
 				product_id
@@ -12594,7 +12747,8 @@ BEGIN
 			SET @flag_is_paid_name = CONCAT('is_paid_', @unit_for_flag);
 	
         # We insert the flagtypes 1 by 1 to get the id for each component easily
-
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
 		# Flagtype for next_step
 			INSERT INTO `flagtypes`
 				(`name`
@@ -12623,15 +12777,13 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_next_step_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Next Step (#'
                                         , (SELECT IFNULL(@flag_next_step_id, 'flag_next_step is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -12646,7 +12798,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for solution
 			INSERT INTO `flagtypes`
 				(`name`
@@ -12675,15 +12826,13 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_solution_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Solution (#'
                                         , (SELECT IFNULL(@flag_solution_id, 'flag_solution is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -12698,7 +12847,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for budget
 			INSERT INTO `flagtypes`
 				(`name`
@@ -12727,15 +12875,13 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_budget_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Budget (#'
                                         , (SELECT IFNULL(@flag_budget_id, 'flag_budget is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -12750,7 +12896,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for attachment
 			INSERT INTO `flagtypes`
 				(`name`
@@ -12779,15 +12924,13 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_attachment_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Attachment (#'
                                         , (SELECT IFNULL(@flag_attachment_id, 'flag_attachment is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -12802,7 +12945,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for ok_to_pay
 			INSERT INTO `flagtypes`
 				(`name`
@@ -12831,15 +12973,13 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_ok_to_pay_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag OK to pay (#'
                                         , (SELECT IFNULL(@flag_ok_to_pay_id, 'flag_ok_to_pay is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -12854,7 +12994,6 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We can now create the flagtypes for is_paid
 			INSERT INTO `flagtypes`
 				(`name`
@@ -12883,15 +13022,13 @@ BEGIN
                 , @all_r_flags_group_id
                 )
                 ;
-
                 # We get the id for that flag
                     SET @flag_is_paid_id = (SELECT LAST_INSERT_ID());
-
                 # Log the actions of the script.
                     SET @script_log_message = CONCAT('The following flag Is paid (#'
                                         , (SELECT IFNULL(@flag_is_paid_id, 'flag_is_paid is NULL'))
                                         , ').'
-                                        , 'was created for the unit #'
+                                        , ' was created for the unit #'
                                         , @product_id
                                         )
                                         ;
@@ -12906,8 +13043,10 @@ BEGIN
                         ;
                     
                     SET @script_log_message = NULL;	
-
 		# We also define the flag inclusion
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+        # We can now do the insert
 			INSERT INTO `flaginclusions`
 				(`type_id`
 				, `product_id`
@@ -12921,7 +13060,6 @@ BEGIN
 				, (@flag_ok_to_pay_id, @product_id, NULL)
 				, (@flag_is_paid_id, @product_id, NULL)
 				;
-
 		# We update the BZ logs
 			INSERT INTO `audit_log`
 				(`user_id`
@@ -12945,7 +13083,6 @@ BEGIN
 		# Data for the table `group_group_map`
         # We first insert these in the table `ut_group_group_map_temp`
         # If you need to re-create the table `ut_group_group_map_temp`, use the procedure `create_temp_table_to_update_group_permissions`
-
             INSERT INTO `ut_group_group_map_temp`
                 (`member_id`
                 , `grantor_id`
@@ -13008,8 +13145,10 @@ BEGIN
                 , (@group_id_see_users_occupant, @group_id_are_users_occupant, 2)
                 , (@group_id_see_users_invited_by, @group_id_are_users_invited_by, 2)
                 ;
-
 	# We make sure that only user in certain groups can create, edit or see cases.
+    # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+        SET @script = 'PROCEDURE unit_create_with_dummy_users';
+    # We can now do the insert
 		INSERT INTO `group_control_map`
 			(`group_id`
 			, `product_id`
@@ -13035,7 +13174,6 @@ BEGIN
 			, (@group_id_show_to_mgt_cny, @product_id, 0, 2, 0, 0, 0, 0, 0)
 			, (@group_id_show_to_occupant, @product_id, 0, 2, 0, 0, 0, 0, 0)
 			;
-
 		# Log the actions of the script.
 			SET @script_log_message = CONCAT('We have updated the group control permissions for the product# '
 									, @product_id
@@ -13088,7 +13226,6 @@ BEGIN
 				;
 			
 			SET @script_log_message = NULL;
-
 		# We insert the series categories that BZ needs...
 				
 			# What are the name for the categories
@@ -13183,10 +13320,10 @@ BEGIN
 							, '&component='
 							, @component_name_for_serie_agent)
 							);
-
 		# We have eveything, we can create the series_categories we need:
         # We insert the series_categories 1 by 1 to get the id for each series_categories easily
-
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
 		# We can now insert the series category product
 			INSERT INTO `series_categories`
 				(`name`
@@ -13194,10 +13331,8 @@ BEGIN
 				VALUES 
 				(@series_category_product_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_product = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_tenant
 			INSERT INTO `series_categories`
 				(`name`
@@ -13205,10 +13340,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_tenant_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_tenant = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_landlord
 			INSERT INTO `series_categories`
 				(`name`
@@ -13216,10 +13349,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_landlord_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_landlord = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_contractor
 			INSERT INTO `series_categories`
 				(`name`
@@ -13227,10 +13358,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_contractor_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_contractor = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_mgtcny
 			INSERT INTO `series_categories`
 				(`name`
@@ -13238,10 +13367,8 @@ BEGIN
 				VALUES 
 				(@series_category_component_mgtcny_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_mgtcny = (SELECT LAST_INSERT_ID());
-
 		# We can now insert the series category component_agent
 			INSERT INTO `series_categories`
 				(`name`
@@ -13249,11 +13376,11 @@ BEGIN
 				VALUES 
 				(@series_category_component_agent_name)
 				;
-
             # We get the id for the series_category 
                 SET @series_category_component_agent = (SELECT LAST_INSERT_ID());
-
         # We do not need the series_id - we can insert in bulk here
+            # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                SET @script = 'PROCEDURE unit_create_with_dummy_users';
             # Insert the series related to the product/unit
                 INSERT INTO `series`
                     (`series_id`
@@ -13310,7 +13437,6 @@ BEGIN
                     ,(NULL, @creator_bz_id, @series_category_product, @series_category_component_agent, 'All Open', 1, @serie_search_all_open_agent, 1)
                     ,(NULL, @creator_bz_id, @series_category_product, @series_category_component_agent, 'All Closed', 1, @serie_search_all_closed_agent, 1)
                     ;
-
 	# We now assign the permissions to each of the dummy user associated to each role:
     #   - Tenant (1)
     #     @bz_user_id_dummy_tenant
@@ -13327,7 +13453,6 @@ BEGIN
     # For each of the dummy users, we use the following parameters:
         SET @user_in_default_cc_for_cases = 1;
         SET @replace_default_assignee = 1;
-
         # Default permissions for dummy users:	
             #User Permissions in the unit:
                 # Generic Permissions
@@ -13410,7 +13535,6 @@ BEGIN
 					, (@bz_user_id_dummy_contractor, @create_case_group_id, 0, 0)
 					, (@bz_user_id_dummy_mgt_cny, @create_case_group_id, 0, 0)
 					;
-
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('the dummy bz users for each component: '
 											, '(#'
@@ -13440,7 +13564,6 @@ BEGIN
  
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
-
 			# User can Edit a case and see this unit, this is needed so the API does not throw an error see issue #60:
 				INSERT INTO `ut_user_group_map_temp`
 					(`user_id`
@@ -13460,7 +13583,6 @@ BEGIN
 					, (@bz_user_id_dummy_contractor, @can_see_unit_in_search_group_id, 0, 0)
 					, (@bz_user_id_dummy_mgt_cny, @can_see_unit_in_search_group_id, 0, 0)
 					;
-
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('the dummy bz users for each component: '
 											, '(#'
@@ -13490,19 +13612,14 @@ BEGIN
 				 
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
-			
 	# We give the user the permission they need.
-
         # We update the `group_group_map` table first
         #   - Create an intermediary table to deduplicate the records in the table `ut_group_group_map_temp`
         #   - If the record does NOT exists in the table then INSERT new records in the table `group_group_map`
         #   - If the record DOES exist in the table then update the new records in the table `group_group_map`
-
             # We drop the deduplication table if it exists:
                 DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
-
             # We create a table `ut_group_group_map_dedup` to prepare the data we need to insert
-
                 CREATE TEMPORARY TABLE `ut_group_group_map_dedup` (
                     `member_id` mediumint(9) NOT NULL,
                     `grantor_id` mediumint(9) NOT NULL,
@@ -13515,7 +13632,6 @@ BEGIN
                 ;
     
             # We insert the de-duplicated record in the table `ut_group_group_map_dedup`
-
                 INSERT INTO `ut_group_group_map_dedup`
                 SELECT `member_id`
                     , `grantor_id`
@@ -13525,42 +13641,46 @@ BEGIN
                 GROUP BY `member_id`
                     , `grantor_id`
                     , `grant_type`
+                ORDER BY `member_id` ASC
+                    , `grantor_id` ASC
                 ;
-                    
             # We insert the data we need in the `group_group_map` table
-                INSERT INTO `group_group_map`
-                SELECT `member_id`
-                    , `grantor_id`
-                    , `grant_type`
-                FROM
-                    `ut_group_group_map_dedup`
-                # The below code is overkill in this context: 
-                # the Unique Key Constraint makes sure that all records are unique in the table `ut_group_group_map_dedup`
-                ON DUPLICATE KEY UPDATE
-                    `member_id` = `ut_group_group_map_dedup`.`member_id`
-                    , `grantor_id` = `ut_group_group_map_dedup`.`grantor_id`
-                    , `grant_type` = `ut_group_group_map_dedup`.`grant_type`
-                ;
-
+                # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+                    SET @script = 'PROCEDURE unit_create_with_dummy_users';
+                # We can now do the insert
+                    INSERT INTO `group_group_map`
+                    SELECT `member_id`
+                        , `grantor_id`
+                        , `grant_type`
+                    FROM
+                        `ut_group_group_map_dedup`
+                    # The below code is overkill in this context: 
+                    # the Unique Key Constraint makes sure that all records are unique in the table `ut_group_group_map_dedup`
+                    ON DUPLICATE KEY UPDATE
+                        `member_id` = `ut_group_group_map_dedup`.`member_id`
+                        , `grantor_id` = `ut_group_group_map_dedup`.`grantor_id`
+                        , `grant_type` = `ut_group_group_map_dedup`.`grant_type`
+                    ;
             # We drop the temp table as we do not need it anymore
                 DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
-
         # We can now update the permissions table for the users
         # This NEEDS the table 'ut_user_group_map_temp'
             CALL `update_permissions_invited_user`;
-
 	# Update the table 'ut_data_to_create_units' so that we record that the unit has been created
-		UPDATE `ut_data_to_create_units`
-		SET 
-			`bz_created_date` = @timestamp
-			, `comment` = CONCAT ('inserted in BZ with the script \''
-					, @script
-					, '\'\r\ '
-					, IFNULL(`comment`, '')
-					)
-			, `product_id` = @product_id
-		WHERE `id_unit_to_create` = @unit_reference_for_import;
-	
+        # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+            SET @script = 'PROCEDURE unit_create_with_dummy_users';
+        # We can now do the uppdate
+            UPDATE `ut_data_to_create_units`
+            SET 
+                `bz_created_date` = @timestamp
+                , `comment` = CONCAT ('inserted in BZ with the script \''
+                        , @script
+                        , '\'\r\ '
+                        , IFNULL(`comment`, '')
+                        )
+                , `product_id` = @product_id
+            WHERE `id_unit_to_create` = @unit_reference_for_import;
+        
 END */$$
 DELIMITER ;
 
@@ -13881,7 +14001,6 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_audit_log`()
     SQL SECURITY INVOKER
 BEGIN
-
     # This procedure need the following variables
     #   - @bzfe_table: the table that was updated
     #   - @bzfe_field: The fields that were updated
@@ -13892,7 +14011,6 @@ BEGIN
  
 	# When are we doing this?
         SET @timestamp = NOW(); 
-
     # We update the audit_log table
         INSERT INTO `ut_audit_log`
             (`datetime`
@@ -13913,7 +14031,6 @@ BEGIN
             , @comment
             )
         ;
-
 END */$$
 DELIMITER ;
 
@@ -14192,15 +14309,14 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_permissions_invited_user`()
     SQL SECURITY INVOKER
 BEGIN
-
 	# We update the `user_group_map` table
     #   - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
     #   - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
     #   - If the record DOES exist in the table then update the new records in the table `user_group_map`
-
+    #
+    # We NEED the table `ut_user_group_map_temp` BUT this table should already exist. DO NO re-create it here!!!
 	# We drop the deduplication table if it exists:
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
-
 	# We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
 		CREATE TEMPORARY TABLE `ut_user_group_map_dedup` (
 			`user_id` MEDIUMINT(9) NOT NULL,
@@ -14223,6 +14339,8 @@ BEGIN
 			, `group_id`
 			, `isbless`
 			, `grant_type`
+        ORDER BY `user_id` ASC
+            , `group_id` ASC
 		;
 			
 	# We insert the data we need in the `user_group_map` table
@@ -14241,10 +14359,8 @@ BEGIN
 			, `isbless` = `ut_user_group_map_dedup`.`isbless`
 			, `grant_type` = `ut_user_group_map_dedup`.`grant_type`
 		;
-
 	# We drop the temp table as we do not need it anymore
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
-
 END */$$
 DELIMITER ;
 
@@ -14338,28 +14454,24 @@ DELIMITER $$
 BEGIN
 	IF (@user_in_default_cc_for_cases = 1)
 	THEN 
-
 		# We record the name of this procedure for future debugging and audit_log`
 			SET @script = 'PROCEDURE - user_in_default_cc_for_cases';
 			SET @timestamp = NOW();
-
 		# We use a temporary table to make sure we do not have duplicates.
 		
 		# DELETE the temp table if it exists
-		DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc`;
+	    	DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc`;
 		
 		# Re-create the temp table
-		CREATE TEMPORARY TABLE `ut_temp_component_cc` (
-            `user_id` MEDIUMINT(9) NOT NULL
-            , `component_id` MEDIUMINT(9) NOT NULL
-		    )
-            ;
-
+            CREATE TEMPORARY TABLE `ut_temp_component_cc` (
+                `user_id` MEDIUMINT(9) NOT NULL
+                , `component_id` MEDIUMINT(9) NOT NULL
+                )
+                ;
 		# Add the records that exist in the table component_cc
-		INSERT INTO `ut_temp_component_cc`
-			SELECT *
-			FROM `component_cc`;
-
+            INSERT INTO `ut_temp_component_cc`
+                SELECT *
+                FROM `component_cc`;
 		# Add the new user rights for the product
 			INSERT INTO `ut_temp_component_cc`
 				(user_id
@@ -14368,10 +14480,8 @@ BEGIN
 				VALUES
 				(@bz_user_id, @component_id)
 				;
-
         # We drop the deduplication table if it exists:
             DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
-
         # We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
             CREATE TEMPORARY TABLE `ut_temp_component_cc_dedup` (
                 `user_id` MEDIUMINT(9) NOT NULL
@@ -14389,7 +14499,6 @@ BEGIN
             GROUP BY `user_id`
                 , `component_id`
             ;
-
 		# We insert the new records in the table `component_cc`
 			INSERT INTO `component_cc`
 			SELECT `user_id`
@@ -14404,7 +14513,6 @@ BEGIN
                 `user_id` = `ut_temp_component_cc_dedup`.`user_id`
 				, `component_id` = `ut_temp_component_cc_dedup`.`component_id`
 			;
-
         # Clean up:
             # We drop the deduplication table if it exists:
                 DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
@@ -14460,16 +14568,13 @@ BEGIN
 	#		- @user_pub_name
 	#		- @product_id
 	#
-
 	# We only do this if this is needed:
 	IF (@replace_default_assignee = 1)
 	
 	THEN
-
 	# We record the name of this procedure for future debugging and audit_log`
 		SET @script = 'PROCEDURE - user_is_default_assignee_for_cases';
 		SET @timestamp = NOW();
-
 	# change the initial owner and initialqa contact to the invited BZ user.
 											
 		# Get the old values so we can log those
@@ -14485,7 +14590,6 @@ BEGIN
 										FROM `components` 
 										WHERE `id` = @component_id_this_role)
 										;
-
 		# Update the default assignee and qa contact
 			UPDATE `components`
 			SET 
@@ -14523,7 +14627,6 @@ BEGIN
         # Cleanup the variables for the log messages
             SET @script_log_message = NULL;
             SET @script = NULL;
-
 	# We update the BZ logs
 		INSERT  INTO `audit_log`
 			(`user_id`
@@ -14539,7 +14642,6 @@ BEGIN
 			, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@old_component_initialqacontact,@bz_user_id,@timestamp)
 			, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@user_role_desc,@timestamp)
 			;
-
 	END IF;
 END */$$
 DELIMITER ;
