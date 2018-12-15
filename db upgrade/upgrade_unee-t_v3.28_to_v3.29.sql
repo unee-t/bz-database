@@ -107,10 +107,6 @@
 # When are we doing this?
 	SET @the_timestamp = NOW();
 
-
-
-
-
 # Adds an index to the table `ut_product_group` to improve performance when we invite a user to a unit
     ALTER TABLE `ut_product_group` 
         ADD KEY `ut_product_group_product_id_group_id`(`product_id`,`group_id`) ;
