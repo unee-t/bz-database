@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.29
+MySQL - 5.7.12 : Database - unee_t_v3.30
 *********************************************************************
 */
 
@@ -2837,7 +2837,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` text COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -2871,7 +2871,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (27,'v3.26','2018-10-25 03:18:42','upgrade_unee-t_v3.25_to_v3.26.sql','Database updated from v3.25 to v3.26'),
 (28,'v3.27','2018-11-09 00:26:09','upgrade_unee-t_v3.26_to_v3.27.sql','Database updated from v3.26 to v3.27'),
 (29,'v3.28','2018-12-15 10:15:53','upgrade_unee-t_v3.27_to_v3.28.sql','Database updated from v3.27 to v3.28'),
-(30,'v3.29','2018-12-15 10:23:39','upgrade_unee-t_v3.28_to_v3.29.sql','Database updated from v3.28 to v3.29');
+(30,'v3.29','2018-12-15 10:23:39','upgrade_unee-t_v3.28_to_v3.29.sql','Database updated from v3.28 to v3.29'),
+(31,'v3.30','2018-12-17 02:54:02','upgrade_unee-t_v3.29_to_v3.30.sql','Database updated from v3.29 to v3.30');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -8461,8 +8462,10 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `create_temp_table_to_update_group_permissions`()
     SQL SECURITY INVOKER
 BEGIN
+
 	# DELETE the temp table if it exists
 	    DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_temp`;
+
 	# Re-create the temp table
         CREATE TEMPORARY TABLE `ut_group_group_map_temp` (
         `member_id` MEDIUMINT(9) NOT NULL
@@ -8470,11 +8473,7 @@ BEGIN
         , `grant_type` TINYINT(4) NOT NULL DEFAULT 0
         )
         ;
-    # Add the records that exist in the table group_group_map
-        INSERT INTO `ut_group_group_map_temp`
-            SELECT *
-            FROM `group_group_map`
-        ;
+
 END */$$
 DELIMITER ;
 
@@ -8500,10 +8499,7 @@ BEGIN
           , `grant_type` TINYINT(4) NOT NULL DEFAULT 0
 		)
         ;
-		# Add all the records that exists in the table user_group_map
-		INSERT INTO `ut_user_group_map_temp`
-			SELECT *
-			FROM `user_group_map`;
+
 END */$$
 DELIMITER ;
 
