@@ -23,7 +23,7 @@
 ###############################
 # This update
 #
-#   - Tries to speed up the SQL routine to 
+#   - Speeds up the SQL routine to 
 #       - Invite a user to a unit
 #       - Create a new unit
 #       Before the change: we copy all the records from the tables
@@ -178,25 +178,6 @@ BEGIN
 END
 $$
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # We also make sure that we use the correct definition for the Unee-T fields:
 
