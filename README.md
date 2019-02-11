@@ -15,7 +15,7 @@ The Row Format MUST be `Dynamic` (preferred) or `Compressed`
 
 ## Character Set and Collation
 
-For makinlum compatibility we use the following:
+For maximum compatibility we use the following:
 - Character Set = utf8mb4
 - Collation = utf8mb4_unicode_520_ci
 
