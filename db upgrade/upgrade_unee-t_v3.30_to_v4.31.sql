@@ -37,9 +37,11 @@
 # be fully  compatible with the utf8 norm
 #
 # Check the database engine
-# SELECT * FROM information_schema.INNODB_SYS_TABLESPACES;
+# SELECT * FROM information_schema.INNODB_SYS_TABLESPACES
+# WHERE `NAME` LIKE '%bugzilla%'
+# ;
 #
-# Step 1: convert rows to dynamic
+# Step 1: convert rows to dynamic ONLY IF `ROW FORMAT` is NOT 'Dynamic'
 # The SQL query looks like:
 # ALTER TABLE `table_name` ROW_FORMAT=DYNAMIC;
 #
