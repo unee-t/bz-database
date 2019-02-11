@@ -23,7 +23,7 @@ See [GH Issue #110](https://github.com/unee-t/bz-database/issues/110) for more c
 
 # Before your start:
 To use this, you should have installed the Unee-t BZFE on an AWS EC2 instance ideally...
-See the [README file] (https://github.com/unee-t/bugzilla-customisation/blob/master/README.md) on the [bugzilla-customization repo] (https://github.com/unee-t/bugzilla-customisation) for more details, including a step by step video of how this is done.
+See the [README file](https://github.com/unee-t/bugzilla-customisation/blob/master/README.md) on the [bugzilla-customization repo](https://github.com/unee-t/bugzilla-customisation) for more details, including a step by step video of how this is done.
 
 # What's in this repo:
 Scripts and stuff to play and tinker with the bz database so we can build the BZFE.
