@@ -1,7 +1,25 @@
-# IMPORTANT NOTE
+# IMPORTANT NOTES
+
+## Which database?
 Since v3.x of the database schema, we have created dependencies which REQUIRE you to run the BZFE of Unee-T on Amazon Aurora.
 This is needed so we can create notifications in a simple and scalable way. 
-See [Issue #13] (https://github.com/unee-t/frontend/issues/13) for more details about that.
+See [Issue #13](https://github.com/unee-t/frontend/issues/13) for more details about that.
+
+## Minimum requirements:
+
+Database MUST be built upon  MySQL5.7+ or MariaDb 10.2+ so we can use the DB Engine `InnoDB` and File format `Barracuda`
+
+## ROW format:
+
+The Row Format MUST be `Dynamic` (preferred) or `Compressed` 
+
+## Character Set and Collation
+
+For makinlum compatibility we use the following:
+- Character Set = utf8mb4
+- Collation = utf8mb4_unicode_520_ci
+
+See [GH Issue #110](https://github.com/unee-t/bz-database/issues/110) for more context.
 
 # Before your start:
 To use this, you should have installed the Unee-t BZFE on an AWS EC2 instance ideally...
@@ -33,49 +51,3 @@ When you use the docker image, we create Demo users and demo units as part of th
 Details about these demo users and demo units can be found on the [documentation about the demo environment](https://documentation.unee-t.com/2018/03/01/introduction-to-the-demo-environment/)
 
 You can restore a fresh version of the demo environment using scripts in the folder /demo-test environment
-
-# Stress Test
-
-There is one specific script 'insert_DEMO-TEST_users_in_unee-t_bzfe_vx.y.sql' which creates a lot of user and a lot of unit.
-This is use to simulate a large Unee-T environment.
-This script has NOT been updated since db v2.14 (if you want to do that, feel free to help!)
-
-## Before you run this script:
-Open the script and choose a value for the 2 variables:
-* iteration_number_of_users: This variable allow you to users in batches of 12 users.
-* number_of_units_per_user: This variable defines the minium number of units that each user will have created either 
-  * As Tenant and occupant for the first unit
-  * As Landlord for all the units after the first units.
-
-## How does the script work:
-
-### Users:
-The administrator user is administrator@example.com. Password: `administrator`.
-
-The script will create users in batches of 12 users (on top of the adminsitrator user)
-* Each batch has the following users:
-  * leonel@example.com. Password: `leonel`.
-  * marley@example.com. Password: `marley`.
-  * michael@example.com. Password: `michael`.
-  * sabrina@example.com. Password: `sabrina`.
-  * celeste@example.com. Password: `celeste`.
-  * jocelyn@example.com. Password: `jocelyn`.
-  * marina@example.com. Password: `marina`.
-  * regina@example.com. Password: `regina`.
-  * marvin@example.com. Password: `marvin`.
-  * lawrence@example.com. Password: `lawrence`.
-  * anabelle@example.com. Password: `anabelle`.
-  * management.co@example.com. Password: `management co`.
-
-You can choose to create n batches of users by changing the variable `iteration_number_of_users` at the top of the script.
-
->Example: if you choose `iteration_number_of_users` = 2, you will have 1 + (12 * 2) = 25 users in you installation.
-
-### Units:
-The script creates at least 1 unit for each user.
-
-**Important note:** Each unit created will be linked to more than 1 user (more on that later)
-You can define the number of unit created by each user by changing the variable `number_of_units_per_user` at the top of the script.
-
-The script will loop and create n more unit for each user.
-Example: if you choose `iteration_number_of_users` = 2 and `number_of_units_per_user` = 10, the script will create 1 + 12 * 2 = 25 * 10 = 250 units.
