@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v3.30
+SQLyog Ultimate v13.1.2 (64 bit)
+MySQL - 5.7.12 : Database - unee_t_v4.32
 *********************************************************************
 */
 
@@ -21,7 +21,7 @@ CREATE TABLE `attach_data` (
   `thedata` longblob NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_attach_data_id_attachments_attach_id` FOREIGN KEY (`id`) REFERENCES `attachments` (`attach_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 MAX_ROWS=100000 AVG_ROW_LENGTH=1000000;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci MAX_ROWS=100000 AVG_ROW_LENGTH=1000000;
 
 /*Data for the table `attach_data` */
 
@@ -34,10 +34,10 @@ CREATE TABLE `attachments` (
   `bug_id` mediumint(9) NOT NULL,
   `creation_ts` datetime NOT NULL,
   `modification_time` datetime NOT NULL,
-  `description` tinytext NOT NULL,
-  `mimetype` tinytext NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `mimetype` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `ispatch` tinyint(4) NOT NULL DEFAULT '0',
-  `filename` varchar(255) NOT NULL,
+  `filename` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `submitter_id` mediumint(9) NOT NULL,
   `isobsolete` tinyint(4) NOT NULL DEFAULT '0',
   `isprivate` tinyint(4) NOT NULL DEFAULT '0',
@@ -48,7 +48,7 @@ CREATE TABLE `attachments` (
   KEY `attachments_submitter_id_idx` (`submitter_id`,`bug_id`),
   CONSTRAINT `fk_attachments_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_attachments_submitter_id_profiles_userid` FOREIGN KEY (`submitter_id`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `attachments` */
 
@@ -58,16 +58,16 @@ DROP TABLE IF EXISTS `audit_log`;
 
 CREATE TABLE `audit_log` (
   `user_id` mediumint(9) DEFAULT NULL,
-  `class` varchar(255) NOT NULL,
+  `class` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `object_id` int(11) NOT NULL,
-  `field` varchar(64) NOT NULL,
-  `removed` mediumtext,
-  `added` mediumtext,
+  `field` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `removed` longtext COLLATE utf8mb4_unicode_520_ci,
+  `added` longtext COLLATE utf8mb4_unicode_520_ci,
   `at_time` datetime NOT NULL,
   KEY `audit_log_class_idx` (`class`,`at_time`),
   KEY `fk_audit_log_user_id_profiles_userid` (`user_id`),
   CONSTRAINT `fk_audit_log_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `audit_log` */
 
@@ -385,12 +385,12 @@ DROP TABLE IF EXISTS `bug_cf_ipi_clust_3_roadbook_for`;
 
 CREATE TABLE `bug_cf_ipi_clust_3_roadbook_for` (
   `bug_id` mediumint(9) NOT NULL,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   UNIQUE KEY `bug_cf_ipi_clust_3_roadbook_for_bug_id_idx` (`bug_id`,`value`),
   KEY `fk_0da76aa50ea9cec77ea8e213c8655f99` (`value`),
   CONSTRAINT `fk_0da76aa50ea9cec77ea8e213c8655f99` FOREIGN KEY (`value`) REFERENCES `cf_ipi_clust_3_roadbook_for` (`value`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bug_cf_ipi_clust_3_roadbook_for_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bug_cf_ipi_clust_3_roadbook_for` */
 
@@ -400,12 +400,12 @@ DROP TABLE IF EXISTS `bug_cf_ipi_clust_9_acct_action`;
 
 CREATE TABLE `bug_cf_ipi_clust_9_acct_action` (
   `bug_id` mediumint(9) NOT NULL,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   UNIQUE KEY `bug_cf_ipi_clust_9_acct_action_bug_id_idx` (`bug_id`,`value`),
   KEY `fk_e5fc7a4f159b990bfcdfcaf844d0728b` (`value`),
   CONSTRAINT `fk_bug_cf_ipi_clust_9_acct_action_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_e5fc7a4f159b990bfcdfcaf844d0728b` FOREIGN KEY (`value`) REFERENCES `cf_ipi_clust_9_acct_action` (`value`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bug_cf_ipi_clust_9_acct_action` */
 
@@ -420,7 +420,7 @@ CREATE TABLE `bug_group_map` (
   KEY `bug_group_map_group_id_idx` (`group_id`),
   CONSTRAINT `fk_bug_group_map_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_bug_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bug_group_map` */
 
@@ -431,12 +431,12 @@ DROP TABLE IF EXISTS `bug_see_also`;
 CREATE TABLE `bug_see_also` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `bug_id` mediumint(9) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  `class` varchar(255) NOT NULL DEFAULT '',
+  `value` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `class` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `bug_see_also_bug_id_idx` (`bug_id`,`value`),
   CONSTRAINT `fk_bug_see_also_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bug_see_also` */
 
@@ -446,7 +446,7 @@ DROP TABLE IF EXISTS `bug_severity`;
 
 CREATE TABLE `bug_severity` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -454,7 +454,7 @@ CREATE TABLE `bug_severity` (
   UNIQUE KEY `bug_severity_value_idx` (`value`),
   KEY `bug_severity_sortkey_idx` (`sortkey`,`value`),
   KEY `bug_severity_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bug_severity` */
 
@@ -471,7 +471,7 @@ DROP TABLE IF EXISTS `bug_status`;
 
 CREATE TABLE `bug_status` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -480,7 +480,7 @@ CREATE TABLE `bug_status` (
   UNIQUE KEY `bug_status_value_idx` (`value`),
   KEY `bug_status_sortkey_idx` (`sortkey`,`value`),
   KEY `bug_status_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bug_status` */
 
@@ -505,7 +505,7 @@ CREATE TABLE `bug_tag` (
   KEY `fk_bug_tag_tag_id_tag_id` (`tag_id`),
   CONSTRAINT `fk_bug_tag_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_bug_tag_tag_id_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bug_tag` */
 
@@ -524,7 +524,7 @@ CREATE TABLE `bug_user_last_visit` (
   KEY `fk_bug_user_last_visit_bug_id_bugs_bug_id` (`bug_id`),
   CONSTRAINT `fk_bug_user_last_visit_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_bug_user_last_visit_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bug_user_last_visit` */
 
@@ -535,23 +535,23 @@ DROP TABLE IF EXISTS `bugs`;
 CREATE TABLE `bugs` (
   `bug_id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `assigned_to` mediumint(9) NOT NULL,
-  `bug_file_loc` mediumtext NOT NULL,
-  `bug_severity` varchar(64) NOT NULL,
-  `bug_status` varchar(64) NOT NULL,
+  `bug_file_loc` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `bug_severity` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `bug_status` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `creation_ts` datetime DEFAULT NULL,
   `delta_ts` datetime NOT NULL,
-  `short_desc` varchar(255) NOT NULL,
-  `op_sys` varchar(64) NOT NULL,
-  `priority` varchar(64) NOT NULL,
+  `short_desc` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `op_sys` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `priority` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `product_id` smallint(6) NOT NULL,
-  `rep_platform` varchar(64) NOT NULL,
+  `rep_platform` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `reporter` mediumint(9) NOT NULL,
-  `version` varchar(64) NOT NULL,
+  `version` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `component_id` mediumint(9) NOT NULL,
-  `resolution` varchar(64) NOT NULL DEFAULT '',
-  `target_milestone` varchar(64) NOT NULL DEFAULT '---',
+  `resolution` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `target_milestone` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
   `qa_contact` mediumint(9) DEFAULT NULL,
-  `status_whiteboard` mediumtext NOT NULL,
+  `status_whiteboard` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `lastdiffed` datetime DEFAULT NULL,
   `everconfirmed` tinyint(4) NOT NULL,
   `reporter_accessible` tinyint(4) NOT NULL DEFAULT '1',
@@ -559,35 +559,35 @@ CREATE TABLE `bugs` (
   `estimated_time` decimal(7,2) NOT NULL DEFAULT '0.00',
   `remaining_time` decimal(7,2) NOT NULL DEFAULT '0.00',
   `deadline` datetime DEFAULT NULL,
-  `cf_ipi_clust_4_status_in_progress` varchar(64) NOT NULL DEFAULT '---',
-  `cf_ipi_clust_4_status_standby` varchar(64) NOT NULL DEFAULT '---',
-  `cf_ipi_clust_2_room` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_6_claim_type` varchar(64) NOT NULL DEFAULT '---',
-  `cf_ipi_clust_1_solution` mediumtext NOT NULL,
-  `cf_ipi_clust_1_next_step` mediumtext NOT NULL,
+  `cf_ipi_clust_4_status_in_progress` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
+  `cf_ipi_clust_4_status_standby` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
+  `cf_ipi_clust_2_room` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_6_claim_type` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
+  `cf_ipi_clust_1_solution` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cf_ipi_clust_1_next_step` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `cf_ipi_clust_1_next_step_date` date DEFAULT NULL,
-  `cf_ipi_clust_3_field_action` mediumtext NOT NULL,
+  `cf_ipi_clust_3_field_action` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `cf_ipi_clust_3_field_action_from` datetime DEFAULT NULL,
   `cf_ipi_clust_3_field_action_until` datetime DEFAULT NULL,
-  `cf_ipi_clust_3_action_type` varchar(64) NOT NULL DEFAULT '---',
+  `cf_ipi_clust_3_action_type` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
   `cf_ipi_clust_3_nber_field_visits` int(11) NOT NULL DEFAULT '0',
-  `cf_ipi_clust_5_approved_budget` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_5_budget` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_8_contract_id` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_9_inv_ll` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_9_inv_det_ll` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_9_inv_cust` mediumtext NOT NULL,
-  `cf_ipi_clust_9_inv_det_cust` mediumtext NOT NULL,
-  `cf_ipi_clust_5_spe_action_purchase_list` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_5_spe_approval_for` mediumtext NOT NULL,
-  `cf_ipi_clust_5_spe_approval_comment` mediumtext NOT NULL,
-  `cf_ipi_clust_5_spe_contractor` mediumtext NOT NULL,
-  `cf_ipi_clust_5_spe_purchase_cost` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_7_spe_bill_number` varchar(255) NOT NULL DEFAULT '',
-  `cf_ipi_clust_7_spe_payment_type` varchar(64) NOT NULL DEFAULT '---',
-  `cf_ipi_clust_7_spe_contractor_payment` mediumtext NOT NULL,
-  `cf_ipi_clust_8_spe_customer` varchar(255) NOT NULL DEFAULT '',
-  `cf_specific_for` varchar(64) NOT NULL DEFAULT '---',
+  `cf_ipi_clust_5_approved_budget` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_5_budget` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_8_contract_id` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_9_inv_ll` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_9_inv_det_ll` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_9_inv_cust` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cf_ipi_clust_9_inv_det_cust` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cf_ipi_clust_5_spe_action_purchase_list` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_5_spe_approval_for` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cf_ipi_clust_5_spe_approval_comment` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cf_ipi_clust_5_spe_contractor` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cf_ipi_clust_5_spe_purchase_cost` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_7_spe_bill_number` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_ipi_clust_7_spe_payment_type` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
+  `cf_ipi_clust_7_spe_contractor_payment` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cf_ipi_clust_8_spe_customer` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `cf_specific_for` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
   PRIMARY KEY (`bug_id`),
   KEY `bugs_assigned_to_idx` (`assigned_to`),
   KEY `bugs_creation_ts_idx` (`creation_ts`),
@@ -608,7 +608,7 @@ CREATE TABLE `bugs` (
   CONSTRAINT `fk_bugs_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bugs_qa_contact_profiles_userid` FOREIGN KEY (`qa_contact`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bugs_reporter_profiles_userid` FOREIGN KEY (`reporter`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bugs` */
 
@@ -623,8 +623,8 @@ CREATE TABLE `bugs_activity` (
   `who` mediumint(9) NOT NULL,
   `bug_when` datetime NOT NULL,
   `fieldid` mediumint(9) NOT NULL,
-  `added` varchar(255) DEFAULT NULL,
-  `removed` varchar(255) DEFAULT NULL,
+  `added` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `removed` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `comment_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `bugs_activity_bug_id_idx` (`bug_id`),
@@ -640,7 +640,7 @@ CREATE TABLE `bugs_activity` (
   CONSTRAINT `fk_bugs_activity_comment_id_longdescs_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `longdescs` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_bugs_activity_fieldid_fielddefs_id` FOREIGN KEY (`fieldid`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_bugs_activity_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bugs_activity` */
 
@@ -649,12 +649,12 @@ CREATE TABLE `bugs_activity` (
 DROP TABLE IF EXISTS `bugs_aliases`;
 
 CREATE TABLE `bugs_aliases` (
-  `alias` varchar(40) NOT NULL,
+  `alias` varchar(40) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `bug_id` mediumint(9) DEFAULT NULL,
   UNIQUE KEY `bugs_aliases_alias_idx` (`alias`),
   KEY `bugs_aliases_bug_id_idx` (`bug_id`),
   CONSTRAINT `fk_bugs_aliases_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bugs_aliases` */
 
@@ -664,14 +664,14 @@ DROP TABLE IF EXISTS `bugs_fulltext`;
 
 CREATE TABLE `bugs_fulltext` (
   `bug_id` mediumint(9) NOT NULL,
-  `short_desc` varchar(255) NOT NULL,
-  `comments` mediumtext,
-  `comments_noprivate` mediumtext,
+  `short_desc` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `comments` longtext COLLATE utf8mb4_unicode_520_ci,
+  `comments_noprivate` longtext COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`bug_id`),
   FULLTEXT KEY `bugs_fulltext_short_desc_idx` (`short_desc`),
   FULLTEXT KEY `bugs_fulltext_comments_idx` (`comments`),
   FULLTEXT KEY `bugs_fulltext_comments_noprivate_idx` (`comments_noprivate`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bugs_fulltext` */
 
@@ -682,7 +682,7 @@ DROP TABLE IF EXISTS `bz_schema`;
 CREATE TABLE `bz_schema` (
   `schema_data` longblob NOT NULL,
   `version` decimal(3,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `bz_schema` */
 
@@ -700,7 +700,7 @@ CREATE TABLE `category_group_map` (
   KEY `fk_category_group_map_group_id_groups_id` (`group_id`),
   CONSTRAINT `fk_category_group_map_category_id_series_categories_id` FOREIGN KEY (`category_id`) REFERENCES `series_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_category_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `category_group_map` */
 
@@ -715,7 +715,7 @@ CREATE TABLE `cc` (
   KEY `cc_who_idx` (`who`),
   CONSTRAINT `fk_cc_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_cc_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cc` */
 
@@ -725,7 +725,7 @@ DROP TABLE IF EXISTS `cf_ipi_clust_3_action_type`;
 
 CREATE TABLE `cf_ipi_clust_3_action_type` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -733,7 +733,7 @@ CREATE TABLE `cf_ipi_clust_3_action_type` (
   UNIQUE KEY `cf_ipi_clust_3_action_type_value_idx` (`value`),
   KEY `cf_ipi_clust_3_action_type_sortkey_idx` (`sortkey`,`value`),
   KEY `cf_ipi_clust_3_action_type_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_ipi_clust_3_action_type` */
 
@@ -756,7 +756,7 @@ DROP TABLE IF EXISTS `cf_ipi_clust_3_roadbook_for`;
 
 CREATE TABLE `cf_ipi_clust_3_roadbook_for` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -764,7 +764,7 @@ CREATE TABLE `cf_ipi_clust_3_roadbook_for` (
   UNIQUE KEY `cf_ipi_clust_3_roadbook_for_value_idx` (`value`),
   KEY `cf_ipi_clust_3_roadbook_for_visibility_value_id_idx` (`visibility_value_id`),
   KEY `cf_ipi_clust_3_roadbook_for_sortkey_idx` (`sortkey`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_ipi_clust_3_roadbook_for` */
 
@@ -836,7 +836,7 @@ DROP TABLE IF EXISTS `cf_ipi_clust_4_status_in_progress`;
 
 CREATE TABLE `cf_ipi_clust_4_status_in_progress` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -844,7 +844,7 @@ CREATE TABLE `cf_ipi_clust_4_status_in_progress` (
   UNIQUE KEY `cf_ipi_clust_4_status_in_progress_value_idx` (`value`),
   KEY `cf_ipi_clust_4_status_in_progress_visibility_value_id_idx` (`visibility_value_id`),
   KEY `cf_ipi_clust_4_status_in_progress_sortkey_idx` (`sortkey`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_ipi_clust_4_status_in_progress` */
 
@@ -861,7 +861,7 @@ DROP TABLE IF EXISTS `cf_ipi_clust_4_status_standby`;
 
 CREATE TABLE `cf_ipi_clust_4_status_standby` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -869,7 +869,7 @@ CREATE TABLE `cf_ipi_clust_4_status_standby` (
   UNIQUE KEY `cf_ipi_clust_4_status_standby_value_idx` (`value`),
   KEY `cf_ipi_clust_4_status_standby_visibility_value_id_idx` (`visibility_value_id`),
   KEY `cf_ipi_clust_4_status_standby_sortkey_idx` (`sortkey`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_ipi_clust_4_status_standby` */
 
@@ -884,7 +884,7 @@ DROP TABLE IF EXISTS `cf_ipi_clust_6_claim_type`;
 
 CREATE TABLE `cf_ipi_clust_6_claim_type` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -892,7 +892,7 @@ CREATE TABLE `cf_ipi_clust_6_claim_type` (
   UNIQUE KEY `cf_ipi_clust_6_claim_type_value_idx` (`value`),
   KEY `cf_ipi_clust_6_claim_type_sortkey_idx` (`sortkey`,`value`),
   KEY `cf_ipi_clust_6_claim_type_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_ipi_clust_6_claim_type` */
 
@@ -967,7 +967,7 @@ DROP TABLE IF EXISTS `cf_ipi_clust_7_spe_payment_type`;
 
 CREATE TABLE `cf_ipi_clust_7_spe_payment_type` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -975,7 +975,7 @@ CREATE TABLE `cf_ipi_clust_7_spe_payment_type` (
   UNIQUE KEY `cf_ipi_clust_7_spe_payment_type_value_idx` (`value`),
   KEY `cf_ipi_clust_7_spe_payment_type_visibility_value_id_idx` (`visibility_value_id`),
   KEY `cf_ipi_clust_7_spe_payment_type_sortkey_idx` (`sortkey`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_ipi_clust_7_spe_payment_type` */
 
@@ -993,7 +993,7 @@ DROP TABLE IF EXISTS `cf_ipi_clust_9_acct_action`;
 
 CREATE TABLE `cf_ipi_clust_9_acct_action` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -1001,7 +1001,7 @@ CREATE TABLE `cf_ipi_clust_9_acct_action` (
   UNIQUE KEY `cf_ipi_clust_9_acct_action_value_idx` (`value`),
   KEY `cf_ipi_clust_9_acct_action_visibility_value_id_idx` (`visibility_value_id`),
   KEY `cf_ipi_clust_9_acct_action_sortkey_idx` (`sortkey`,`value`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_ipi_clust_9_acct_action` */
 
@@ -1017,7 +1017,7 @@ DROP TABLE IF EXISTS `cf_specific_for`;
 
 CREATE TABLE `cf_specific_for` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -1025,7 +1025,7 @@ CREATE TABLE `cf_specific_for` (
   UNIQUE KEY `cf_specific_for_value_idx` (`value`),
   KEY `cf_specific_for_sortkey_idx` (`sortkey`,`value`),
   KEY `cf_specific_for_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_specific_for` */
 
@@ -1039,12 +1039,12 @@ DROP TABLE IF EXISTS `classifications`;
 
 CREATE TABLE `classifications` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
-  `description` mediumtext,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_520_ci,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `classifications_name_idx` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `classifications` */
 
@@ -1062,7 +1062,7 @@ CREATE TABLE `component_cc` (
   KEY `fk_component_cc_user_id_profiles_userid` (`user_id`),
   CONSTRAINT `fk_component_cc_component_id_components_id` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_component_cc_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `component_cc` */
 
@@ -1072,11 +1072,11 @@ DROP TABLE IF EXISTS `components`;
 
 CREATE TABLE `components` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `product_id` smallint(6) NOT NULL,
   `initialowner` mediumint(9) NOT NULL,
   `initialqacontact` mediumint(9) DEFAULT NULL,
-  `description` mediumtext NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `components_product_id_idx` (`product_id`,`name`),
@@ -1086,7 +1086,7 @@ CREATE TABLE `components` (
   CONSTRAINT `fk_components_initialowner_profiles_userid` FOREIGN KEY (`initialowner`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE,
   CONSTRAINT `fk_components_initialqacontact_profiles_userid` FOREIGN KEY (`initialqacontact`) REFERENCES `profiles` (`userid`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_components_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `components` */
 
@@ -1118,7 +1118,7 @@ CREATE TABLE `dependencies` (
   KEY `dependencies_dependson_idx` (`dependson`),
   CONSTRAINT `fk_dependencies_blocked_bugs_bug_id` FOREIGN KEY (`blocked`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_dependencies_dependson_bugs_bug_id` FOREIGN KEY (`dependson`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `dependencies` */
 
@@ -1133,7 +1133,7 @@ CREATE TABLE `duplicates` (
   KEY `fk_duplicates_dupe_of_bugs_bug_id` (`dupe_of`),
   CONSTRAINT `fk_duplicates_dupe_bugs_bug_id` FOREIGN KEY (`dupe`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_duplicates_dupe_of_bugs_bug_id` FOREIGN KEY (`dupe_of`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `duplicates` */
 
@@ -1148,7 +1148,7 @@ CREATE TABLE `email_bug_ignore` (
   KEY `fk_email_bug_ignore_bug_id_bugs_bug_id` (`bug_id`),
   CONSTRAINT `fk_email_bug_ignore_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_email_bug_ignore_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `email_bug_ignore` */
 
@@ -1162,7 +1162,7 @@ CREATE TABLE `email_setting` (
   `event` tinyint(4) NOT NULL,
   UNIQUE KEY `email_setting_user_id_idx` (`user_id`,`relationship`,`event`),
   CONSTRAINT `fk_email_setting_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `email_setting` */
 
@@ -1555,7 +1555,7 @@ CREATE TABLE `field_visibility` (
   `value_id` smallint(6) NOT NULL,
   UNIQUE KEY `field_visibility_field_id_idx` (`field_id`,`value_id`),
   CONSTRAINT `fk_field_visibility_field_id_fielddefs_id` FOREIGN KEY (`field_id`) REFERENCES `fielddefs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `field_visibility` */
 
@@ -1583,11 +1583,11 @@ DROP TABLE IF EXISTS `fielddefs`;
 
 CREATE TABLE `fielddefs` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `type` smallint(6) NOT NULL DEFAULT '0',
   `custom` tinyint(4) NOT NULL DEFAULT '0',
-  `description` tinytext NOT NULL,
-  `long_desc` varchar(255) NOT NULL DEFAULT '',
+  `description` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `long_desc` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   `mailhead` tinyint(4) NOT NULL DEFAULT '0',
   `sortkey` smallint(6) NOT NULL,
   `obsolete` tinyint(4) NOT NULL DEFAULT '0',
@@ -1595,7 +1595,7 @@ CREATE TABLE `fielddefs` (
   `buglist` tinyint(4) NOT NULL DEFAULT '0',
   `visibility_field_id` mediumint(9) DEFAULT NULL,
   `value_field_id` mediumint(9) DEFAULT NULL,
-  `reverse_desc` tinytext,
+  `reverse_desc` text COLLATE utf8mb4_unicode_520_ci,
   `is_mandatory` tinyint(4) NOT NULL DEFAULT '0',
   `is_numeric` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -1606,7 +1606,7 @@ CREATE TABLE `fielddefs` (
   KEY `fk_fielddefs_visibility_field_id_fielddefs_id` (`visibility_field_id`),
   CONSTRAINT `fk_fielddefs_value_field_id_fielddefs_id` FOREIGN KEY (`value_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_fielddefs_visibility_field_id_fielddefs_id` FOREIGN KEY (`visibility_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `fielddefs` */
 
@@ -1716,7 +1716,7 @@ CREATE TABLE `flagexclusions` (
   CONSTRAINT `fk_flagexclusions_component_id_components_id` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_flagexclusions_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_flagexclusions_type_id_flagtypes_id` FOREIGN KEY (`type_id`) REFERENCES `flagtypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `flagexclusions` */
 
@@ -1734,7 +1734,7 @@ CREATE TABLE `flaginclusions` (
   CONSTRAINT `fk_flaginclusions_component_id_components_id` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_flaginclusions_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_flaginclusions_type_id_flagtypes_id` FOREIGN KEY (`type_id`) REFERENCES `flagtypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `flaginclusions` */
 
@@ -1765,7 +1765,7 @@ DROP TABLE IF EXISTS `flags`;
 CREATE TABLE `flags` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `type_id` smallint(6) NOT NULL,
-  `status` char(1) NOT NULL,
+  `status` char(1) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `bug_id` mediumint(9) NOT NULL,
   `attach_id` mediumint(9) DEFAULT NULL,
   `creation_date` datetime NOT NULL,
@@ -1783,7 +1783,7 @@ CREATE TABLE `flags` (
   CONSTRAINT `fk_flags_requestee_id_profiles_userid` FOREIGN KEY (`requestee_id`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE,
   CONSTRAINT `fk_flags_setter_id_profiles_userid` FOREIGN KEY (`setter_id`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE,
   CONSTRAINT `fk_flags_type_id_flagtypes_id` FOREIGN KEY (`type_id`) REFERENCES `flagtypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `flags` */
 
@@ -1793,10 +1793,10 @@ DROP TABLE IF EXISTS `flagtypes`;
 
 CREATE TABLE `flagtypes` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `description` mediumtext NOT NULL,
-  `cc_list` varchar(200) DEFAULT NULL,
-  `target_type` char(1) NOT NULL DEFAULT 'b',
+  `name` varchar(50) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cc_list` varchar(200) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `target_type` char(1) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'b',
   `is_active` tinyint(4) NOT NULL DEFAULT '1',
   `is_requestable` tinyint(4) NOT NULL DEFAULT '0',
   `is_requesteeble` tinyint(4) NOT NULL DEFAULT '0',
@@ -1809,7 +1809,7 @@ CREATE TABLE `flagtypes` (
   KEY `fk_flagtypes_request_group_id_groups_id` (`request_group_id`),
   CONSTRAINT `fk_flagtypes_grant_group_id_groups_id` FOREIGN KEY (`grant_group_id`) REFERENCES `groups` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_flagtypes_request_group_id_groups_id` FOREIGN KEY (`request_group_id`) REFERENCES `groups` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `flagtypes` */
 
@@ -1851,7 +1851,7 @@ CREATE TABLE `group_control_map` (
   KEY `group_control_map_group_id_idx` (`group_id`),
   CONSTRAINT `fk_group_control_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_group_control_map_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `group_control_map` */
 
@@ -1907,7 +1907,7 @@ CREATE TABLE `group_group_map` (
   KEY `group_group_map_member_id_grant_type_idx` (`member_id`,`grant_type`),
   CONSTRAINT `fk_group_group_map_grantor_id_groups_id` FOREIGN KEY (`grantor_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_group_group_map_member_id_groups_id` FOREIGN KEY (`member_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `group_group_map` */
 
@@ -2103,15 +2103,15 @@ DROP TABLE IF EXISTS `groups`;
 
 CREATE TABLE `groups` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `description` mediumtext NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isbuggroup` tinyint(4) NOT NULL,
-  `userregexp` tinytext NOT NULL,
+  `userregexp` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `icon_url` tinytext,
+  `icon_url` text COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `groups_name_idx` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `groups` */
 
@@ -2238,11 +2238,11 @@ DROP TABLE IF EXISTS `keyworddefs`;
 
 CREATE TABLE `keyworddefs` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
-  `description` mediumtext NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `keyworddefs_name_idx` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `keyworddefs` */
 
@@ -2262,7 +2262,7 @@ CREATE TABLE `keywords` (
   KEY `keywords_keywordid_idx` (`keywordid`),
   CONSTRAINT `fk_keywords_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_keywords_keywordid_keyworddefs_id` FOREIGN KEY (`keywordid`) REFERENCES `keyworddefs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `keywords` */
 
@@ -2273,10 +2273,10 @@ DROP TABLE IF EXISTS `login_failure`;
 CREATE TABLE `login_failure` (
   `user_id` mediumint(9) NOT NULL,
   `login_time` datetime NOT NULL,
-  `ip_addr` varchar(40) NOT NULL,
+  `ip_addr` varchar(40) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   KEY `login_failure_user_id_idx` (`user_id`),
   CONSTRAINT `fk_login_failure_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `login_failure` */
 
@@ -2285,15 +2285,15 @@ CREATE TABLE `login_failure` (
 DROP TABLE IF EXISTS `logincookies`;
 
 CREATE TABLE `logincookies` (
-  `cookie` varchar(16) NOT NULL,
+  `cookie` varchar(16) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `userid` mediumint(9) NOT NULL,
-  `ipaddr` varchar(40) DEFAULT NULL,
+  `ipaddr` varchar(40) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `lastused` datetime NOT NULL,
   PRIMARY KEY (`cookie`),
   KEY `logincookies_lastused_idx` (`lastused`),
   KEY `fk_logincookies_userid_profiles_userid` (`userid`),
   CONSTRAINT `fk_logincookies_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `logincookies` */
 
@@ -2307,18 +2307,18 @@ CREATE TABLE `longdescs` (
   `who` mediumint(9) NOT NULL,
   `bug_when` datetime NOT NULL,
   `work_time` decimal(7,2) NOT NULL DEFAULT '0.00',
-  `thetext` mediumtext NOT NULL,
+  `thetext` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isprivate` tinyint(4) NOT NULL DEFAULT '0',
   `already_wrapped` tinyint(4) NOT NULL DEFAULT '0',
   `type` smallint(6) NOT NULL DEFAULT '0',
-  `extra_data` varchar(255) DEFAULT NULL,
+  `extra_data` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `longdescs_bug_id_idx` (`bug_id`,`work_time`),
   KEY `longdescs_who_idx` (`who`,`bug_id`),
   KEY `longdescs_bug_when_idx` (`bug_when`),
   CONSTRAINT `fk_longdescs_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_longdescs_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `longdescs` */
 
@@ -2329,11 +2329,11 @@ DROP TABLE IF EXISTS `longdescs_tags`;
 CREATE TABLE `longdescs_tags` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `comment_id` int(11) DEFAULT NULL,
-  `tag` varchar(24) NOT NULL,
+  `tag` varchar(24) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `longdescs_tags_idx` (`comment_id`,`tag`),
   CONSTRAINT `fk_longdescs_tags_comment_id_longdescs_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `longdescs` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `longdescs_tags` */
 
@@ -2347,8 +2347,8 @@ CREATE TABLE `longdescs_tags_activity` (
   `comment_id` int(11) DEFAULT NULL,
   `who` mediumint(9) NOT NULL,
   `bug_when` datetime NOT NULL,
-  `added` varchar(24) DEFAULT NULL,
-  `removed` varchar(24) DEFAULT NULL,
+  `added` varchar(24) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `removed` varchar(24) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `longdescs_tags_activity_bug_id_idx` (`bug_id`),
   KEY `fk_longdescs_tags_activity_comment_id_longdescs_comment_id` (`comment_id`),
@@ -2356,7 +2356,7 @@ CREATE TABLE `longdescs_tags_activity` (
   CONSTRAINT `fk_longdescs_tags_activity_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_longdescs_tags_activity_comment_id_longdescs_comment_id` FOREIGN KEY (`comment_id`) REFERENCES `longdescs` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_longdescs_tags_activity_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `longdescs_tags_activity` */
 
@@ -2366,11 +2366,11 @@ DROP TABLE IF EXISTS `longdescs_tags_weights`;
 
 CREATE TABLE `longdescs_tags_weights` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `tag` varchar(24) NOT NULL,
+  `tag` varchar(24) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `weight` mediumint(9) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `longdescs_tags_weights_tag_idx` (`tag`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `longdescs_tags_weights` */
 
@@ -2382,7 +2382,7 @@ CREATE TABLE `mail_staging` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` longblob NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `mail_staging` */
 
@@ -2442,13 +2442,13 @@ DROP TABLE IF EXISTS `milestones`;
 CREATE TABLE `milestones` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `product_id` smallint(6) NOT NULL,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `milestones_product_id_idx` (`product_id`,`value`),
   CONSTRAINT `fk_milestones_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `milestones` */
 
@@ -2464,12 +2464,12 @@ DROP TABLE IF EXISTS `namedqueries`;
 CREATE TABLE `namedqueries` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `userid` mediumint(9) NOT NULL,
-  `name` varchar(64) NOT NULL,
-  `query` mediumtext NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `query` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `namedqueries_userid_idx` (`userid`,`name`),
   CONSTRAINT `fk_namedqueries_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `namedqueries` */
 
@@ -2484,7 +2484,7 @@ CREATE TABLE `namedqueries_link_in_footer` (
   KEY `namedqueries_link_in_footer_userid_idx` (`user_id`),
   CONSTRAINT `fk_namedqueries_link_in_footer_namedquery_id_namedqueries_id` FOREIGN KEY (`namedquery_id`) REFERENCES `namedqueries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_namedqueries_link_in_footer_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `namedqueries_link_in_footer` */
 
@@ -2499,7 +2499,7 @@ CREATE TABLE `namedquery_group_map` (
   KEY `namedquery_group_map_group_id_idx` (`group_id`),
   CONSTRAINT `fk_namedquery_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_namedquery_group_map_namedquery_id_namedqueries_id` FOREIGN KEY (`namedquery_id`) REFERENCES `namedqueries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `namedquery_group_map` */
 
@@ -2509,7 +2509,7 @@ DROP TABLE IF EXISTS `op_sys`;
 
 CREATE TABLE `op_sys` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -2517,7 +2517,7 @@ CREATE TABLE `op_sys` (
   UNIQUE KEY `op_sys_value_idx` (`value`),
   KEY `op_sys_sortkey_idx` (`sortkey`,`value`),
   KEY `op_sys_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `op_sys` */
 
@@ -2542,7 +2542,7 @@ DROP TABLE IF EXISTS `priority`;
 
 CREATE TABLE `priority` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -2550,7 +2550,7 @@ CREATE TABLE `priority` (
   UNIQUE KEY `priority_value_idx` (`value`),
   KEY `priority_sortkey_idx` (`sortkey`,`value`),
   KEY `priority_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `priority` */
 
@@ -2565,17 +2565,17 @@ DROP TABLE IF EXISTS `products`;
 
 CREATE TABLE `products` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `classification_id` smallint(6) NOT NULL DEFAULT '1',
-  `description` mediumtext NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `defaultmilestone` varchar(64) NOT NULL DEFAULT '---',
+  `defaultmilestone` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
   `allows_unconfirmed` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `products_name_idx` (`name`),
   KEY `fk_products_classification_id_classifications_id` (`classification_id`),
   CONSTRAINT `fk_products_classification_id_classifications_id` FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `products` */
 
@@ -2591,12 +2591,12 @@ DROP TABLE IF EXISTS `profile_search`;
 CREATE TABLE `profile_search` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` mediumint(9) NOT NULL,
-  `bug_list` mediumtext NOT NULL,
-  `list_order` mediumtext,
+  `bug_list` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `list_order` longtext COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`id`),
   KEY `profile_search_user_id_idx` (`user_id`),
   CONSTRAINT `fk_profile_search_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `profile_search` */
 
@@ -2606,13 +2606,13 @@ DROP TABLE IF EXISTS `profile_setting`;
 
 CREATE TABLE `profile_setting` (
   `user_id` mediumint(9) NOT NULL,
-  `setting_name` varchar(32) NOT NULL,
-  `setting_value` varchar(32) NOT NULL,
+  `setting_name` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `setting_value` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   UNIQUE KEY `profile_setting_value_unique_idx` (`user_id`,`setting_name`),
   KEY `fk_profile_setting_setting_name_setting_name` (`setting_name`),
   CONSTRAINT `fk_profile_setting_setting_name_setting_name` FOREIGN KEY (`setting_name`) REFERENCES `setting` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_profile_setting_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `profile_setting` */
 
@@ -2622,19 +2622,19 @@ DROP TABLE IF EXISTS `profiles`;
 
 CREATE TABLE `profiles` (
   `userid` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `login_name` varchar(255) NOT NULL,
-  `cryptpassword` varchar(128) DEFAULT NULL,
-  `realname` varchar(255) NOT NULL DEFAULT '',
-  `disabledtext` mediumtext NOT NULL,
+  `login_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cryptpassword` varchar(128) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `realname` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
+  `disabledtext` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `disable_mail` tinyint(4) NOT NULL DEFAULT '0',
   `mybugslink` tinyint(4) NOT NULL DEFAULT '1',
-  `extern_id` varchar(64) DEFAULT NULL,
+  `extern_id` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `is_enabled` tinyint(4) NOT NULL DEFAULT '1',
   `last_seen_date` datetime DEFAULT NULL,
   PRIMARY KEY (`userid`),
   UNIQUE KEY `profiles_login_name_idx` (`login_name`),
   UNIQUE KEY `profiles_extern_id_idx` (`extern_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `profiles` */
 
@@ -2668,8 +2668,8 @@ CREATE TABLE `profiles_activity` (
   `who` mediumint(9) NOT NULL,
   `profiles_when` datetime NOT NULL,
   `fieldid` mediumint(9) NOT NULL,
-  `oldvalue` tinytext,
-  `newvalue` tinytext,
+  `oldvalue` text COLLATE utf8mb4_unicode_520_ci,
+  `newvalue` text COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`id`),
   KEY `profiles_activity_userid_idx` (`userid`),
   KEY `profiles_activity_profiles_when_idx` (`profiles_when`),
@@ -2678,7 +2678,7 @@ CREATE TABLE `profiles_activity` (
   CONSTRAINT `fk_profiles_activity_fieldid_fielddefs_id` FOREIGN KEY (`fieldid`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_profiles_activity_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_profiles_activity_who_profiles_userid` FOREIGN KEY (`who`) REFERENCES `profiles` (`userid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `profiles_activity` */
 
@@ -2689,12 +2689,12 @@ DROP TABLE IF EXISTS `quips`;
 CREATE TABLE `quips` (
   `quipid` mediumint(9) NOT NULL AUTO_INCREMENT,
   `userid` mediumint(9) DEFAULT NULL,
-  `quip` varchar(512) NOT NULL,
+  `quip` varchar(512) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `approved` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`quipid`),
   KEY `fk_quips_userid_profiles_userid` (`userid`),
   CONSTRAINT `fk_quips_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `quips` */
 
@@ -2704,7 +2704,7 @@ DROP TABLE IF EXISTS `rep_platform`;
 
 CREATE TABLE `rep_platform` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -2712,7 +2712,7 @@ CREATE TABLE `rep_platform` (
   UNIQUE KEY `rep_platform_value_idx` (`value`),
   KEY `rep_platform_sortkey_idx` (`sortkey`,`value`),
   KEY `rep_platform_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `rep_platform` */
 
@@ -2735,12 +2735,12 @@ DROP TABLE IF EXISTS `reports`;
 CREATE TABLE `reports` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `user_id` mediumint(9) NOT NULL,
-  `name` varchar(64) NOT NULL,
-  `query` mediumtext NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `query` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `reports_user_id_idx` (`user_id`,`name`),
   CONSTRAINT `fk_reports_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `reports` */
 
@@ -2750,7 +2750,7 @@ DROP TABLE IF EXISTS `resolution`;
 
 CREATE TABLE `resolution` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `visibility_value_id` smallint(6) DEFAULT NULL,
@@ -2758,7 +2758,7 @@ CREATE TABLE `resolution` (
   UNIQUE KEY `resolution_value_idx` (`value`),
   KEY `resolution_sortkey_idx` (`sortkey`,`value`),
   KEY `resolution_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `resolution` */
 
@@ -2779,9 +2779,9 @@ CREATE TABLE `series` (
   `creator` mediumint(9) DEFAULT NULL,
   `category` smallint(6) NOT NULL,
   `subcategory` smallint(6) NOT NULL,
-  `name` varchar(64) NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `frequency` smallint(6) NOT NULL,
-  `query` mediumtext NOT NULL,
+  `query` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `is_public` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`series_id`),
   UNIQUE KEY `series_category_idx` (`category`,`subcategory`,`name`),
@@ -2790,7 +2790,7 @@ CREATE TABLE `series` (
   CONSTRAINT `fk_series_category_series_categories_id` FOREIGN KEY (`category`) REFERENCES `series_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_series_creator_profiles_userid` FOREIGN KEY (`creator`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_series_subcategory_series_categories_id` FOREIGN KEY (`subcategory`) REFERENCES `series_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `series` */
 
@@ -2800,10 +2800,10 @@ DROP TABLE IF EXISTS `series_categories`;
 
 CREATE TABLE `series_categories` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `series_categories_name_idx` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `series_categories` */
 
@@ -2822,7 +2822,7 @@ CREATE TABLE `series_data` (
   `series_value` mediumint(9) NOT NULL,
   UNIQUE KEY `series_data_series_id_idx` (`series_id`,`series_date`),
   CONSTRAINT `fk_series_data_series_id_series_series_id` FOREIGN KEY (`series_id`) REFERENCES `series` (`series_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `series_data` */
 
@@ -2831,12 +2831,12 @@ CREATE TABLE `series_data` (
 DROP TABLE IF EXISTS `setting`;
 
 CREATE TABLE `setting` (
-  `name` varchar(32) NOT NULL,
-  `default_value` varchar(32) NOT NULL,
+  `name` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `default_value` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `is_enabled` tinyint(4) NOT NULL DEFAULT '1',
-  `subclass` varchar(32) DEFAULT NULL,
+  `subclass` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `setting` */
 
@@ -2863,13 +2863,13 @@ insert  into `setting`(`name`,`default_value`,`is_enabled`,`subclass`) values
 DROP TABLE IF EXISTS `setting_value`;
 
 CREATE TABLE `setting_value` (
-  `name` varchar(32) NOT NULL,
-  `value` varchar(32) NOT NULL,
+  `name` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `value` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `sortindex` smallint(6) NOT NULL,
   UNIQUE KEY `setting_value_nv_unique_idx` (`name`,`value`),
   UNIQUE KEY `setting_value_ns_unique_idx` (`name`,`sortindex`),
   CONSTRAINT `fk_setting_value_name_setting_name` FOREIGN KEY (`name`) REFERENCES `setting` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `setting_value` */
 
@@ -2917,7 +2917,7 @@ CREATE TABLE `status_workflow` (
   KEY `fk_status_workflow_new_status_bug_status_id` (`new_status`),
   CONSTRAINT `fk_status_workflow_new_status_bug_status_id` FOREIGN KEY (`new_status`) REFERENCES `bug_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_status_workflow_old_status_bug_status_id` FOREIGN KEY (`old_status`) REFERENCES `bug_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `status_workflow` */
 
@@ -2956,12 +2956,12 @@ DROP TABLE IF EXISTS `tag`;
 
 CREATE TABLE `tag` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `user_id` mediumint(9) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tag_user_id_idx` (`user_id`,`name`),
   CONSTRAINT `fk_tag_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `tag` */
 
@@ -2972,13 +2972,13 @@ DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE `tokens` (
   `userid` mediumint(9) DEFAULT NULL,
   `issuedate` datetime NOT NULL,
-  `token` varchar(16) NOT NULL,
-  `tokentype` varchar(16) NOT NULL,
-  `eventdata` tinytext,
+  `token` varchar(16) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `tokentype` varchar(16) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `eventdata` text COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`token`),
   KEY `tokens_userid_idx` (`userid`),
   CONSTRAINT `fk_tokens_userid_profiles_userid` FOREIGN KEY (`userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `tokens` */
 
@@ -2989,12 +2989,12 @@ DROP TABLE IF EXISTS `ts_error`;
 CREATE TABLE `ts_error` (
   `error_time` int(11) NOT NULL,
   `jobid` int(11) NOT NULL,
-  `message` varchar(255) NOT NULL,
+  `message` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `funcid` int(11) NOT NULL DEFAULT '0',
   KEY `ts_error_funcid_idx` (`funcid`,`error_time`),
   KEY `ts_error_error_time_idx` (`error_time`),
   KEY `ts_error_jobid_idx` (`jobid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ts_error` */
 
@@ -3011,7 +3011,7 @@ CREATE TABLE `ts_exitstatus` (
   PRIMARY KEY (`jobid`),
   KEY `ts_exitstatus_funcid_idx` (`funcid`),
   KEY `ts_exitstatus_delete_after_idx` (`delete_after`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ts_exitstatus` */
 
@@ -3021,10 +3021,10 @@ DROP TABLE IF EXISTS `ts_funcmap`;
 
 CREATE TABLE `ts_funcmap` (
   `funcid` int(11) NOT NULL AUTO_INCREMENT,
-  `funcname` varchar(255) NOT NULL,
+  `funcname` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`funcid`),
   UNIQUE KEY `ts_funcmap_funcname_idx` (`funcname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ts_funcmap` */
 
@@ -3036,17 +3036,17 @@ CREATE TABLE `ts_job` (
   `jobid` int(11) NOT NULL AUTO_INCREMENT,
   `funcid` int(11) NOT NULL,
   `arg` longblob,
-  `uniqkey` varchar(255) DEFAULT NULL,
+  `uniqkey` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `insert_time` int(11) DEFAULT NULL,
   `run_after` int(11) NOT NULL,
   `grabbed_until` int(11) NOT NULL,
   `priority` smallint(6) DEFAULT NULL,
-  `coalesce` varchar(255) DEFAULT NULL,
+  `coalesce` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`jobid`),
   UNIQUE KEY `ts_job_funcid_idx` (`funcid`,`uniqkey`),
   KEY `ts_job_run_after_idx` (`run_after`,`funcid`),
   KEY `ts_job_coalesce_idx` (`coalesce`,`funcid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ts_job` */
 
@@ -3056,10 +3056,10 @@ DROP TABLE IF EXISTS `ts_note`;
 
 CREATE TABLE `ts_note` (
   `jobid` int(11) NOT NULL,
-  `notekey` varchar(255) DEFAULT NULL,
+  `notekey` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `value` longblob,
   UNIQUE KEY `ts_note_jobid_idx` (`jobid`,`notekey`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ts_note` */
 
@@ -3070,15 +3070,15 @@ DROP TABLE IF EXISTS `user_api_keys`;
 CREATE TABLE `user_api_keys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` mediumint(9) NOT NULL,
-  `api_key` varchar(40) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `api_key` varchar(40) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `revoked` tinyint(4) NOT NULL DEFAULT '0',
   `last_used` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_api_keys_api_key_idx` (`api_key`),
   KEY `user_api_keys_user_id_idx` (`user_id`),
   CONSTRAINT `fk_user_api_keys_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `user_api_keys` */
 
@@ -3098,7 +3098,7 @@ CREATE TABLE `user_group_map` (
   KEY `fk_user_group_map_group_id_groups_id` (`group_id`),
   CONSTRAINT `fk_user_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_user_group_map_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `user_group_map` */
 
@@ -3359,7 +3359,7 @@ CREATE TABLE `ut_all_units` (
   `id_record` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` smallint(6) NOT NULL COMMENT 'The id in the `products` table',
   PRIMARY KEY (`id_record`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_all_units` */
 
@@ -3370,14 +3370,14 @@ DROP TABLE IF EXISTS `ut_audit_log`;
 CREATE TABLE `ut_audit_log` (
   `id_ut_log` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
   `datetime` datetime DEFAULT NULL COMMENT 'When was this record created',
-  `bzfe_table` varchar(256) DEFAULT NULL COMMENT 'The name of the table that was altered',
-  `bzfe_field` varchar(256) DEFAULT NULL COMMENT 'The name of the field that was altered in the bzfe table',
-  `previous_value` mediumtext COMMENT 'The value of the field before the change',
-  `new_value` mediumtext COMMENT 'The value of the field after the change',
-  `script` mediumtext COMMENT 'The script that was used to create the record',
-  `comment` text COMMENT 'More information about what we intended to do',
+  `bzfe_table` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The name of the table that was altered',
+  `bzfe_field` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The name of the field that was altered in the bzfe table',
+  `previous_value` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'The value of the field before the change',
+  `new_value` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'The value of the field after the change',
+  `script` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'The script that was used to create the record',
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'More information about what we intended to do',
   PRIMARY KEY (`id_ut_log`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_audit_log` */
 
@@ -3388,11 +3388,11 @@ DROP TABLE IF EXISTS `ut_contractor_types`;
 CREATE TABLE `ut_contractor_types` (
   `id_contractor_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `contractor_type` varchar(255) NOT NULL COMMENT 'A name for this contractor type',
-  `bz_description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
-  `description` text COMMENT 'Detailed description of this contractor type',
+  `contractor_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this contractor type',
+  `bz_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
+  `description` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this contractor type',
   PRIMARY KEY (`id_contractor_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_contractor_types` */
 
@@ -3412,11 +3412,11 @@ DROP TABLE IF EXISTS `ut_contractors`;
 CREATE TABLE `ut_contractors` (
   `id_contractor` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `contractor_name` varchar(255) NOT NULL COMMENT 'A name for this contractor',
-  `contractor_description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ contractor.',
-  `contractor_details` text COMMENT 'Detailed description of this contractor - This can be built from a SQL Less table and/or the MEFE',
+  `contractor_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this contractor',
+  `contractor_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ contractor.',
+  `contractor_details` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this contractor - This can be built from a SQL Less table and/or the MEFE',
   PRIMARY KEY (`id_contractor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_contractors` */
 
@@ -3426,13 +3426,13 @@ DROP TABLE IF EXISTS `ut_data_to_add_user_to_a_case`;
 
 CREATE TABLE `ut_data_to_add_user_to_a_case` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
-  `mefe_invitation_id` varchar(256) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
-  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `mefe_invitation_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitor_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
   `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
   `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
   `bz_case_id` mediumint(9) NOT NULL COMMENT 'The case id that the user is invited to - This is a FK to the BZ table ''bugs''',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
-  `comment` text COMMENT 'Any comment',
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
   PRIMARY KEY (`id`),
   KEY `add_user_to_a_case_invitor_bz_id` (`bzfe_invitor_user_id`),
   KEY `add_user_to_a_case_invitee_bz_id` (`bz_user_id`),
@@ -3440,7 +3440,7 @@ CREATE TABLE `ut_data_to_add_user_to_a_case` (
   CONSTRAINT `add_user_to_a_case_case_id` FOREIGN KEY (`bz_case_id`) REFERENCES `bugs` (`bug_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `add_user_to_a_case_invitee_bz_id` FOREIGN KEY (`bz_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `add_user_to_a_case_invitor_bz_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_data_to_add_user_to_a_case` */
 
@@ -3450,16 +3450,16 @@ DROP TABLE IF EXISTS `ut_data_to_add_user_to_a_role`;
 
 CREATE TABLE `ut_data_to_add_user_to_a_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
-  `mefe_invitation_id` varchar(256) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
-  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `mefe_invitation_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitor_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
   `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
   `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
   `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
   `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
   `is_occupant` tinyint(1) DEFAULT '0' COMMENT '1 if TRUE, 0 if FALSE',
-  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
+  `user_more` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
-  `comment` text COMMENT 'Any comment',
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
   PRIMARY KEY (`id`),
   KEY `add_user_to_a_role_bz_user_id` (`bz_user_id`),
   KEY `add_user_to_a_role_invitor_bz_id` (`bzfe_invitor_user_id`),
@@ -3469,7 +3469,7 @@ CREATE TABLE `ut_data_to_add_user_to_a_role` (
   CONSTRAINT `add_user_to_a_role_invitor_bz_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `add_user_to_a_role_product_id` FOREIGN KEY (`bz_unit_id`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `add_user_to_a_role_role_type_id` FOREIGN KEY (`user_role_type_id`) REFERENCES `ut_role_types` (`id_role_type`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_data_to_add_user_to_a_role` */
 
@@ -3479,24 +3479,24 @@ DROP TABLE IF EXISTS `ut_data_to_create_units`;
 
 CREATE TABLE `ut_data_to_create_units` (
   `id_unit_to_create` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
-  `mefe_unit_id` varchar(256) DEFAULT NULL COMMENT 'The id of this unit in the MEFE database',
-  `mefe_creator_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `mefe_unit_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of this unit in the MEFE database',
+  `mefe_creator_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
   `bzfe_creator_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
   `classification_id` smallint(6) NOT NULL COMMENT 'The ID of the classification for this unit - a FK to the BZ table ''classifications''',
-  `unit_name` varchar(54) NOT NULL DEFAULT '' COMMENT 'A name for the unit. We will append the product id and this will be inserted in the product name field of the BZ tabele product which has a max lenght of 64',
-  `unit_description_details` varchar(500) DEFAULT '' COMMENT 'More information about the unit - this is a free text space',
+  `unit_name` varchar(54) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '' COMMENT 'A name for the unit. We will append the product id and this will be inserted in the product name field of the BZ tabele product which has a max lenght of 64',
+  `unit_description_details` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT '' COMMENT 'More information about the unit - this is a free text space',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
-  `comment` text COMMENT 'Any comment',
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
   `product_id` smallint(6) DEFAULT NULL COMMENT 'The id of the product in the BZ table ''products''. Because this is a record that we will keep even AFTER we deleted the record in the BZ table, this can NOT be a FK.',
   `deleted_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was deleted in the BZ db (together with all objects related to this product/unit).',
-  `deletion_script` varchar(500) DEFAULT NULL COMMENT 'The script used to delete this product and all objects related to this product in the BZ database',
+  `deletion_script` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The script used to delete this product and all objects related to this product in the BZ database',
   PRIMARY KEY (`id_unit_to_create`),
   UNIQUE KEY `new_unite_mefe_unit_id_must_be_unique` (`mefe_unit_id`),
   KEY `new_unit_classification_id_must_exist` (`classification_id`),
   KEY `new_unit_unit_creator_bz_id_must_exist` (`bzfe_creator_user_id`),
   CONSTRAINT `new_unit_classification_id_must_exist` FOREIGN KEY (`classification_id`) REFERENCES `classifications` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `new_unit_unit_creator_bz_id_must_exist` FOREIGN KEY (`bzfe_creator_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_data_to_create_units` */
 
@@ -3540,17 +3540,17 @@ DROP TABLE IF EXISTS `ut_data_to_replace_dummy_roles`;
 
 CREATE TABLE `ut_data_to_replace_dummy_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
-  `mefe_invitation_id` varchar(256) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
-  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `mefe_invitation_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitor_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
   `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
   `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
   `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
   `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
   `is_occupant` tinyint(1) DEFAULT '0' COMMENT '1 if TRUE, 0 if FALSE',
   `is_mefe_user_only` tinyint(1) DEFAULT '1' COMMENT '1 (default value) if TRUE - If a user is a MEFE user only we disable the claim mail in the BZFE',
-  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
+  `user_more` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
-  `comment` text COMMENT 'Any comment',
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
   PRIMARY KEY (`id`),
   KEY `replace_dummy_role_role_type` (`user_role_type_id`),
   KEY `replace_dummy_role_bz_user_id` (`bz_user_id`),
@@ -3560,7 +3560,7 @@ CREATE TABLE `ut_data_to_replace_dummy_roles` (
   CONSTRAINT `replace_dummy_role_bz_user_id` FOREIGN KEY (`bz_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `replace_dummy_role_invitor_bz_user_id` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `replace_dummy_role_role_type` FOREIGN KEY (`user_role_type_id`) REFERENCES `ut_role_types` (`id_role_type`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_data_to_replace_dummy_roles` */
 
@@ -3584,12 +3584,12 @@ DROP TABLE IF EXISTS `ut_db_schema_version`;
 
 CREATE TABLE `ut_db_schema_version` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID in this table',
-  `schema_version` varchar(256) DEFAULT NULL COMMENT 'The current version of the BZ DB schema for Unee-T',
+  `schema_version` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current version of the BZ DB schema for Unee-T',
   `update_datetime` datetime DEFAULT NULL COMMENT 'Timestamp - when this version was implemented in THIS environment',
-  `update_script` varchar(256) DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
-  `comment` text COMMENT 'Comment',
+  `update_script` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -3624,7 +3624,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (28,'v3.27','2018-11-09 00:42:50','upgrade_unee-t_v3.26_to_v3.27.sql','Database updated from v3.26 to v3.27'),
 (29,'v3.28','2018-12-06 16:16:59','upgrade_unee-t_v3.27_to_v3.28.sql','Database updated from v3.27 to v3.28'),
 (30,'v3.29','2018-12-15 10:30:33','upgrade_unee-t_v3.28_to_v3.29.sql','Database updated from v3.28 to v3.29'),
-(31,'v3.30','2018-12-17 02:57:51','upgrade_unee-t_v3.29_to_v3.30.sql','Database updated from v3.29 to v3.30');
+(31,'v3.30','2018-12-17 02:57:51','upgrade_unee-t_v3.29_to_v3.30.sql','Database updated from v3.29 to v3.30'),
+(32,'v4.31','2019-03-01 09:41:56','upgrade_unee-t_v3.30_to_v4.31.sql','Database updated from v3.30 to v4.31');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -3638,7 +3639,7 @@ CREATE TABLE `ut_flash_units_with_dummy_users` (
   `role_id` mediumint(9) DEFAULT NULL COMMENT 'The BZ component_id - a FK to the table `components`',
   `role_type_id` smallint(6) DEFAULT NULL COMMENT 'The Ut role type id - a FK to the table ''ut_role_types''',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_flash_units_with_dummy_users` */
 
@@ -3849,11 +3850,11 @@ CREATE TABLE `ut_group_types` (
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
   `is_obsolete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is an obsolete record',
-  `groupe_type` varchar(255) NOT NULL COMMENT 'A name for this group type',
-  `bz_description` varchar(255) DEFAULT NULL COMMENT 'A short description for BZ which we use when we create the group',
-  `description` text COMMENT 'Detailed description of this group type',
+  `groupe_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this group type',
+  `bz_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short description for BZ which we use when we create the group',
+  `description` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_group_type`,`groupe_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_group_types` */
 
@@ -3902,19 +3903,19 @@ DROP TABLE IF EXISTS `ut_invitation_api_data`;
 
 CREATE TABLE `ut_invitation_api_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
-  `mefe_invitation_id` varchar(256) DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
+  `mefe_invitation_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
   `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
   `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
   `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
   `is_occupant` tinyint(1) DEFAULT '0' COMMENT '1 if TRUE, 0 if FALSE',
   `bz_case_id` mediumint(9) DEFAULT NULL COMMENT 'The id of the bug in th table ''bugs''',
   `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
-  `invitation_type` varchar(255) NOT NULL COMMENT 'The type of the invitation (assigned or CC)',
+  `invitation_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'The type of the invitation (assigned or CC)',
   `is_mefe_only_user` tinyint(1) DEFAULT '1' COMMENT '1 if the user is a MEFE only user. In this scenario, we will DISABLE the claim mail in the BZFE for that user',
-  `user_more` varchar(500) DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
-  `mefe_invitor_user_id` varchar(256) DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
+  `user_more` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
+  `mefe_invitor_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
   `processed_datetime` datetime DEFAULT NULL COMMENT 'The Timestamp when this invitation has been processed in the BZ database',
-  `script` varchar(256) DEFAULT NULL COMMENT 'The SQL script or procedure that was used to process this record',
+  `script` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The SQL script or procedure that was used to process this record',
   `api_post_datetime` datetime DEFAULT NULL COMMENT 'Date and time when this invitation has been posted as porcessed via the Unee-T inviation API',
   PRIMARY KEY (`id`),
   UNIQUE KEY `MEFE_INVITATION_ID` (`mefe_invitation_id`),
@@ -3927,7 +3928,7 @@ CREATE TABLE `ut_invitation_api_data` (
   CONSTRAINT `invitation_bz_invitor_must_exist` FOREIGN KEY (`bzfe_invitor_user_id`) REFERENCES `profiles` (`userid`),
   CONSTRAINT `invitation_bz_product_must_exist` FOREIGN KEY (`bz_unit_id`) REFERENCES `products` (`id`),
   CONSTRAINT `invitation_invitation_type_must_exist` FOREIGN KEY (`invitation_type`) REFERENCES `ut_invitation_types` (`invitation_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_invitation_api_data` */
 
@@ -3940,11 +3941,11 @@ CREATE TABLE `ut_invitation_types` (
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
   `is_active` tinyint(1) DEFAULT '0' COMMENT '1 if this is an active invitation: we have the scripts to process these',
-  `invitation_type` varchar(255) NOT NULL COMMENT 'A name for this invitation type',
-  `detailed_description` text COMMENT 'Detailed description of this group type',
+  `invitation_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this invitation type',
+  `detailed_description` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_invitation_type`,`invitation_type`),
   UNIQUE KEY `invitation_type_is_unique` (`invitation_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_invitation_types` */
 
@@ -3979,7 +3980,7 @@ CREATE TABLE `ut_log_count_closed_cases` (
   `count_closed_cases` int(11) NOT NULL COMMENT 'The number of closed case at this Datetime',
   `count_total_cases` int(11) DEFAULT NULL COMMENT 'The total number of cases in Unee-T at this time',
   PRIMARY KEY (`id_log_closed_case`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_log_count_closed_cases` */
 
@@ -3993,7 +3994,7 @@ CREATE TABLE `ut_log_count_enabled_units` (
   `count_enabled_units` int(11) NOT NULL COMMENT 'The number of enabled products/units at this Datetime',
   `count_total_units` int(11) NOT NULL COMMENT 'The total number of products/units at this Datetime',
   PRIMARY KEY (`id_log_enabled_units`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_log_count_enabled_units` */
 
@@ -4005,7 +4006,7 @@ CREATE TABLE `ut_map_contractor_to_type` (
   `contractor_id` int(11) NOT NULL COMMENT 'id in the table `ut_contractors`',
   `contractor_type_id` mediumint(9) NOT NULL COMMENT 'id in the table `ut_contractor_types`',
   `created` datetime DEFAULT NULL COMMENT 'creation ts'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_map_contractor_to_type` */
 
@@ -4017,7 +4018,7 @@ CREATE TABLE `ut_map_contractor_to_user` (
   `contractor_id` int(11) NOT NULL COMMENT 'id in the table `ut_contractors`',
   `bz_user_id` mediumint(9) NOT NULL COMMENT 'id in the table `profiles`',
   `created` datetime DEFAULT NULL COMMENT 'creation ts'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_map_contractor_to_user` */
 
@@ -4031,12 +4032,12 @@ CREATE TABLE `ut_map_invitation_type_to_permission_type` (
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `record_created_by` smallint(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
   `is_obsolete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is an obsolete record',
-  `comment` text COMMENT 'Any comment',
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
   PRIMARY KEY (`invitation_type_id`,`permission_type_id`),
   KEY `map_invitation_to_permission_permission_type_id` (`permission_type_id`),
   CONSTRAINT `map_invitation_to_permission_invitation_type_id` FOREIGN KEY (`invitation_type_id`) REFERENCES `ut_invitation_types` (`id_invitation_type`),
   CONSTRAINT `map_invitation_to_permission_permission_type_id` FOREIGN KEY (`permission_type_id`) REFERENCES `ut_permission_types` (`id_permission_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_map_invitation_type_to_permission_type` */
 
@@ -4049,10 +4050,10 @@ CREATE TABLE `ut_map_user_mefe_bzfe` (
   `record_created_by` smallint(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
   `is_obsolete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is an obsolete record',
   `bzfe_update_needed` tinyint(1) DEFAULT '0' COMMENT 'Do we need to update this record in the BZFE - This is to keep track of the user that have been modified in the MEFE but NOT yet in the BZFE',
-  `mefe_user_id` varchar(256) DEFAULT NULL COMMENT 'id of the user in the MEFE',
+  `mefe_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'id of the user in the MEFE',
   `bz_profile_id` mediumint(6) DEFAULT NULL COMMENT 'id of the user in the BZFE',
-  `comment` text COMMENT 'Any comment'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_map_user_mefe_bzfe` */
 
@@ -4086,11 +4087,11 @@ CREATE TABLE `ut_map_user_unit_details` (
   `can_approve_user_for_flags` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 (TRUE) if the user can decide if a user can be requested to approve all flags',
   `can_decide_if_user_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 (TRUE) if the user can decide if another user is visible',
   `can_decide_if_user_can_see_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 (TRUE) if the user can decide if another user can see the visible users',
-  `public_name` varchar(255) DEFAULT NULL COMMENT 'The user Public name',
-  `more_info` text COMMENT 'More information about this user. We display this in the component/stakeholder description for the unit',
-  `comment` text COMMENT 'Any comment',
+  `public_name` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The user Public name',
+  `more_info` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'More information about this user. We display this in the component/stakeholder description for the unit',
+  `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
   UNIQUE KEY `bz_profile_id_bz_product_id` (`bz_profile_id`,`bz_unit_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_map_user_unit_details` */
 
@@ -4136,14 +4137,14 @@ CREATE TABLE `ut_notification_case_assignee` (
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
   `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
   `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
-  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
   `invitor_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
   `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
   `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
   `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
-  `current_list_of_invitees` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
+  `current_list_of_invitees` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_notification_case_assignee` */
 
@@ -4157,15 +4158,15 @@ CREATE TABLE `ut_notification_case_invited` (
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
   `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
   `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
-  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
   `invitor_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
   `invitee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who has been invited to the case a FK to the BZ table ''profiles''',
   `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
   `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
   `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
-  `current_list_of_invitees` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
+  `current_list_of_invitees` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_notification_case_invited` */
 
@@ -4179,11 +4180,11 @@ CREATE TABLE `ut_notification_case_new` (
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
   `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
   `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
-  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
   `reporter_user_id` mediumint(9) DEFAULT NULL,
   `assignee_user_id` mediumint(9) DEFAULT NULL,
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_notification_case_new` */
 
@@ -4197,15 +4198,15 @@ CREATE TABLE `ut_notification_case_updated` (
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
   `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
   `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
-  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
   `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
-  `update_what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The field that was updated',
+  `update_what` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The field that was updated',
   `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
   `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
   `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
-  `current_list_of_invitees` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
+  `current_list_of_invitees` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_notification_case_updated` */
 
@@ -4219,16 +4220,16 @@ CREATE TABLE `ut_notification_message_new` (
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
   `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
   `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
-  `case_title` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
+  `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
   `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
   `is_case_description` tinyint(1) DEFAULT NULL COMMENT '1 if this is the FIRST message for a case (the case description)',
-  `message_truncated` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The message, truncated to the first 255 characters',
+  `message_truncated` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The message, truncated to the first 255 characters',
   `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
   `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
   `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
-  `current_list_of_invitees` mediumtext COLLATE utf8_unicode_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
+  `current_list_of_invitees` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_notification_message_new` */
 
@@ -4243,9 +4244,9 @@ CREATE TABLE `ut_notification_messages_cases` (
   `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
   `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
   `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who needs to be notified - a FK to the BZ table ''profiles''',
-  `update_what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The field that was updated',
+  `update_what` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The field that was updated',
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_notification_messages_cases` */
 
@@ -4256,12 +4257,12 @@ DROP TABLE IF EXISTS `ut_notification_types`;
 CREATE TABLE `ut_notification_types` (
   `id_role_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `notification_type` varchar(255) NOT NULL COMMENT 'A name for this role type',
-  `short_description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
-  `long_description` text COMMENT 'Detailed description of this group type',
+  `notification_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this role type',
+  `short_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
+  `long_description` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_role_type`),
   UNIQUE KEY `unique_notification_type` (`notification_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_notification_types` */
 
@@ -4282,17 +4283,17 @@ CREATE TABLE `ut_permission_types` (
   `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
   `is_obsolete` tinyint(1) DEFAULT '0' COMMENT '1 if this is an obsolete value',
   `group_type_id` smallint(6) DEFAULT NULL COMMENT 'The id of the group that grant this permission - a FK to the table ut_group_types',
-  `permission_type` varchar(255) NOT NULL COMMENT 'A name for this role type',
-  `permission_scope` varchar(255) DEFAULT NULL COMMENT '4 possible values: GLOBAL: for all units and roles, UNIT: permission for a specific unit, ROLE: permission for a specific role in a specific unit, SPECIAL: special permission (ex: occupant)',
-  `permission_category` varchar(255) DEFAULT NULL COMMENT 'Possible values: ACCESS: group_control, GRANT FLAG: permissions to grant flags, ASK FOR APPROVAL: can ask a specific user to approve a flag, ROLE: a user is in a given role,',
+  `permission_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this role type',
+  `permission_scope` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '4 possible values: GLOBAL: for all units and roles, UNIT: permission for a specific unit, ROLE: permission for a specific role in a specific unit, SPECIAL: special permission (ex: occupant)',
+  `permission_category` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'Possible values: ACCESS: group_control, GRANT FLAG: permissions to grant flags, ASK FOR APPROVAL: can ask a specific user to approve a flag, ROLE: a user is in a given role,',
   `is_bless` tinyint(1) DEFAULT '0' COMMENT '1 if this is a permission to grant membership to a given group',
   `bless_id` smallint(6) DEFAULT NULL COMMENT 'IF this is a ''blessing'' permission - which permission can this grant',
-  `description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
-  `detailed_description` text COMMENT 'Detailed description of this group type',
+  `description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
+  `detailed_description` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_permission_type`,`permission_type`),
   KEY `premission_groupe_type` (`group_type_id`),
   CONSTRAINT `premission_groupe_type` FOREIGN KEY (`group_type_id`) REFERENCES `ut_group_types` (`id_group_type`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_permission_types` */
 
@@ -4373,7 +4374,7 @@ CREATE TABLE `ut_product_group` (
   `created_by_id` mediumint(9) DEFAULT NULL COMMENT 'id in the table ut_profiles',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   KEY `ut_product_group_product_id_group_id` (`product_id`,`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_product_group` */
 
@@ -4482,11 +4483,11 @@ DROP TABLE IF EXISTS `ut_role_types`;
 CREATE TABLE `ut_role_types` (
   `id_role_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `role_type` varchar(255) NOT NULL COMMENT 'A name for this role type',
-  `bz_description` varchar(255) DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
-  `description` text COMMENT 'Detailed description of this group type',
+  `role_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this role type',
+  `bz_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
+  `description` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_role_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_role_types` */
 
@@ -4504,10 +4505,10 @@ DROP TABLE IF EXISTS `ut_script_log`;
 CREATE TABLE `ut_script_log` (
   `id_ut_script_log` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
   `datetime` datetime DEFAULT NULL COMMENT 'When was this record created',
-  `script` mediumtext COMMENT 'The script that was used to create the record',
-  `log` text COMMENT 'More information about what we intended to do',
+  `script` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'The script that was used to create the record',
+  `log` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'More information about what we intended to do',
   PRIMARY KEY (`id_ut_script_log`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `ut_script_log` */
 
@@ -4779,13 +4780,13 @@ DROP TABLE IF EXISTS `versions`;
 
 CREATE TABLE `versions` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `value` varchar(64) NOT NULL,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `product_id` smallint(6) NOT NULL,
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `versions_product_id_idx` (`product_id`,`value`),
   CONSTRAINT `fk_versions_product_id_products_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `versions` */
 
@@ -4805,7 +4806,7 @@ CREATE TABLE `watch` (
   KEY `watch_watched_idx` (`watched`),
   CONSTRAINT `fk_watch_watched_profiles_userid` FOREIGN KEY (`watched`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_watch_watcher_profiles_userid` FOREIGN KEY (`watcher`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `watch` */
 
@@ -4816,13 +4817,13 @@ DROP TABLE IF EXISTS `whine_events`;
 CREATE TABLE `whine_events` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `owner_userid` mediumint(9) NOT NULL,
-  `subject` varchar(128) DEFAULT NULL,
-  `body` mediumtext,
+  `subject` varchar(128) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `body` longtext COLLATE utf8mb4_unicode_520_ci,
   `mailifnobugs` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `fk_whine_events_owner_userid_profiles_userid` (`owner_userid`),
   CONSTRAINT `fk_whine_events_owner_userid_profiles_userid` FOREIGN KEY (`owner_userid`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `whine_events` */
 
@@ -4833,14 +4834,14 @@ DROP TABLE IF EXISTS `whine_queries`;
 CREATE TABLE `whine_queries` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `eventid` mediumint(9) NOT NULL,
-  `query_name` varchar(64) NOT NULL DEFAULT '',
+  `query_name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   `sortkey` smallint(6) NOT NULL DEFAULT '0',
   `onemailperbug` tinyint(4) NOT NULL DEFAULT '0',
-  `title` varchar(128) NOT NULL DEFAULT '',
+  `title` varchar(128) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `whine_queries_eventid_idx` (`eventid`),
   CONSTRAINT `fk_whine_queries_eventid_whine_events_id` FOREIGN KEY (`eventid`) REFERENCES `whine_events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `whine_queries` */
 
@@ -4851,8 +4852,8 @@ DROP TABLE IF EXISTS `whine_schedules`;
 CREATE TABLE `whine_schedules` (
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
   `eventid` mediumint(9) NOT NULL,
-  `run_day` varchar(32) DEFAULT NULL,
-  `run_time` varchar(32) DEFAULT NULL,
+  `run_day` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `run_time` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `run_next` datetime DEFAULT NULL,
   `mailto` mediumint(9) NOT NULL,
   `mailto_type` smallint(6) NOT NULL DEFAULT '0',
@@ -4860,7 +4861,7 @@ CREATE TABLE `whine_schedules` (
   KEY `whine_schedules_run_next_idx` (`run_next`),
   KEY `whine_schedules_eventid_idx` (`eventid`),
   CONSTRAINT `fk_whine_schedules_eventid_whine_events_id` FOREIGN KEY (`eventid`) REFERENCES `whine_events` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `whine_schedules` */
 
@@ -5250,11 +5251,9 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_component_cc` AFTER INSERT ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_component_id = new.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'component_cc';
         SET @bzfe_field = 'user_id, component_id';
@@ -5267,7 +5266,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5275,9 +5273,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5291,15 +5287,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_component_cc` AFTER UPDATE ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_component_id = new.component_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'component_cc';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -5315,10 +5308,8 @@ DELIMITER $$
                 , @new_component_id
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5326,9 +5317,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5342,7 +5331,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_component_cc` AFTER DELETE ON `component_cc` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_component_id = old.component_id;
@@ -5357,10 +5345,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_component_cc';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5368,9 +5354,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5384,7 +5368,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_components` AFTER INSERT ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -5393,7 +5376,6 @@ DELIMITER $$
         SET @new_initialqacontact = new.initialqacontact;
         SET @new_description = new.description;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -5416,7 +5398,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5424,9 +5405,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5440,7 +5419,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_components` AFTER UPDATE ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -5449,7 +5427,6 @@ DELIMITER $$
         SET @new_initialqacontact = new.initialqacontact;
         SET @new_description = new.description;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -5458,7 +5435,6 @@ DELIMITER $$
         SET @old_initialqacontact = old.initialqacontact;
         SET @old_description = old.description;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -5494,10 +5470,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5505,9 +5479,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5521,7 +5493,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_components` AFTER DELETE ON `components` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -5530,7 +5501,6 @@ DELIMITER $$
         SET @old_initialqacontact = old.initialqacontact;
         SET @old_description = old.description;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'components';
         SET @bzfe_field = 'id, name, product_id, initialowner, initialqacontact, description, isactive';
@@ -5551,10 +5521,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_components';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5562,9 +5530,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5578,12 +5544,10 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flaginclusions` AFTER INSERT ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_type_id = new.type_id;
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -5598,7 +5562,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5606,9 +5569,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5622,17 +5583,14 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flaginclusions` AFTER UPDATE ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_type_id = new.type_id;
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_type_id = old.type_id;
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -5652,10 +5610,8 @@ DELIMITER $$
                 , IFNULL(@new_component_id, '(NULL)')     
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5663,9 +5619,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5679,12 +5633,10 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flaginclusions` AFTER DELETE ON `flaginclusions` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_type_id = old.type_id;
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flaginclusions';
         SET @bzfe_field = 'type_id, product_id, component_id';
@@ -5697,10 +5649,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_flaginclusions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5708,9 +5658,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5724,7 +5672,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flagtypes` AFTER INSERT ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -5738,7 +5685,6 @@ DELIMITER $$
         SET @new_sortkey = new.sortkey;
         SET @new_grant_group_id = new.grant_group_id;
         SET @new_request_group_id = new.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -5771,7 +5717,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5779,9 +5724,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5795,7 +5738,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flagtypes` AFTER UPDATE ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -5809,7 +5751,6 @@ DELIMITER $$
         SET @new_sortkey = new.sortkey;
         SET @new_grant_group_id = new.grant_group_id;
         SET @new_request_group_id = new.request_group_id;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -5823,7 +5764,6 @@ DELIMITER $$
         SET @old_sortkey = old.sortkey;
         SET @old_grant_group_id = old.grant_group_id;
         SET @old_request_group_id = old.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -5879,10 +5819,8 @@ DELIMITER $$
                 , IFNULL(@old_request_group_id, '(NULL)')    
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5890,9 +5828,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5906,7 +5842,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flagtypes` AFTER DELETE ON `flagtypes` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -5920,7 +5855,6 @@ DELIMITER $$
         SET @old_sortkey = old.sortkey;
         SET @old_grant_group_id = old.grant_group_id;
         SET @old_request_group_id = old.request_group_id;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'flagtypes';
         SET @bzfe_field = 'id, name, description, cc_list, target_type, is_active, is_requestable, is_requesteeble, is_multiplicable, sortkey, grant_group_id, request_group_id';
@@ -5951,10 +5885,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_flagtypes';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -5962,9 +5894,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -5978,7 +5908,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_control_map` AFTER INSERT ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_group_id = new.group_id;
         SET @new_product_id = new.product_id;
@@ -5989,7 +5918,6 @@ DELIMITER $$
         SET @new_editcomponents = new.editcomponents;
         SET @new_editbugs = new.editbugs;
         SET @new_canconfirm = new.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -6016,7 +5944,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6024,9 +5951,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6040,7 +5965,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_control_map` AFTER UPDATE ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_group_id = new.group_id;
         SET @new_product_id = new.product_id;
@@ -6051,7 +5975,6 @@ DELIMITER $$
         SET @new_editcomponents = new.editcomponents;
         SET @new_editbugs = new.editbugs;
         SET @new_canconfirm = new.canconfirm;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_group_id = old.group_id;
         SET @old_product_id = old.product_id;
@@ -6062,7 +5985,6 @@ DELIMITER $$
         SET @old_editcomponents = old.editcomponents;
         SET @old_editbugs = old.editbugs;
         SET @old_canconfirm = old.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -6106,10 +6028,8 @@ DELIMITER $$
                 , @new_canconfirm
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6117,9 +6037,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6133,7 +6051,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_control_map` AFTER DELETE ON `group_control_map` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_group_id = old.group_id;
         SET @old_product_id = old.product_id;
@@ -6144,7 +6061,6 @@ DELIMITER $$
         SET @old_editcomponents = old.editcomponents;
         SET @old_editbugs = old.editbugs;
         SET @old_canconfirm = old.canconfirm;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_control_map';
         SET @bzfe_field = 'group_id, product_id, entry, membercontrol, othercontrol, canedit, editcomponents, editbugs, canconfirm';
@@ -6169,10 +6085,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_group_control_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6180,9 +6094,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6196,12 +6108,10 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_group_map` AFTER INSERT ON `group_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_member_id = new.member_id;
         SET @new_grantor_id = new.grantor_id;
         SET @new_grant_type = new.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'group_group_map';
         SET @bzfe_field = 'member_id, grantor_id, grant_type';
@@ -6216,7 +6126,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_group_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6224,9 +6133,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6240,7 +6147,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_group_map` AFTER UPDATE ON `group_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_member_id = new.member_id;
         SET @new_grantor_id = new.grantor_id;
@@ -6270,10 +6176,8 @@ DELIMITER $$
                 , @new_grant_type
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_group_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6281,9 +6185,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6297,7 +6199,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_group_map` AFTER DELETE ON `group_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_member_id = old.member_id;
         SET @old_grantor_id = old.grantor_id;
@@ -6315,10 +6216,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_group_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6326,9 +6225,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6342,7 +6239,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_groups` AFTER INSERT ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -6351,7 +6247,6 @@ DELIMITER $$
         SET @new_userregexp = new.userregexp;
         SET @new_isactive = new.isactive;
         SET @new_icon_url = new.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -6374,7 +6269,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6382,9 +6276,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6398,7 +6290,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_groups` AFTER UPDATE ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_name = new.name;
@@ -6407,7 +6298,6 @@ DELIMITER $$
         SET @new_userregexp = new.userregexp;
         SET @new_isactive = new.isactive;
         SET @new_icon_url = new.icon_url;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -6416,7 +6306,6 @@ DELIMITER $$
         SET @old_userregexp = old.userregexp;
         SET @old_isactive = old.isactive;
         SET @old_icon_url = old.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -6452,10 +6341,8 @@ DELIMITER $$
                 , IFNULL(@new_icon_url, '(NULL)')
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6463,9 +6350,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6479,7 +6364,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_groups` AFTER DELETE ON `groups` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_name = old.name;
@@ -6488,7 +6372,6 @@ DELIMITER $$
         SET @old_userregexp = old.userregexp;
         SET @old_isactive = old.isactive;
         SET @old_icon_url = old.icon_url;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'groups';
         SET @bzfe_field = 'id, name, description, isbuggroup, userregexp, isactive, icon_url';
@@ -6509,10 +6392,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_groups';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6520,9 +6401,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6627,14 +6506,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_milestones` AFTER INSERT ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_product_id = new.product_id;
         SET @new_value = new.value;
         SET @new_sortkey = new.sortkey;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -6653,7 +6530,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6661,9 +6537,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6677,21 +6551,18 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_milestones` AFTER UPDATE ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_product_id = new.product_id;
         SET @new_value = new.value;
         SET @new_sortkey = new.sortkey;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_product_id = old.product_id;
         SET @old_value = old.value;
         SET @old_sortkey = old.sortkey;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -6719,10 +6590,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6730,9 +6599,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6746,14 +6613,12 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_milestones` AFTER DELETE ON `milestones` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_product_id = old.product_id;
         SET @old_value = old.value;
         SET @old_sortkey = old.sortkey;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'milestones';
         SET @bzfe_field = 'id, product_id, value, sortkey, isactive';
@@ -6770,10 +6635,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_milestones';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6781,9 +6644,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6797,7 +6658,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_products` AFTER INSERT ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_name = new.name;
         SET @new_classification_id = new.classification_id;
@@ -6805,7 +6665,6 @@ DELIMITER $$
         SET @new_isactive = new.isactive;
         SET @new_defaultmilestone = new.defaultmilestone;
         SET @new_allows_unconfirmed = new.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -6826,7 +6685,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6834,9 +6692,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6864,7 +6720,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_products` AFTER UPDATE ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_name = new.name;
         SET @new_classification_id = new.classification_id;
@@ -6872,7 +6727,6 @@ DELIMITER $$
         SET @new_isactive = new.isactive;
         SET @new_defaultmilestone = new.defaultmilestone;
         SET @new_allows_unconfirmed = new.allows_unconfirmed;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_name = old.name;
         SET @old_classification_id = old.classification_id;
@@ -6880,7 +6734,6 @@ DELIMITER $$
         SET @old_isactive = old.isactive;
         SET @old_defaultmilestone = old.defaultmilestone;
         SET @old_allows_unconfirmed = old.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -6912,10 +6765,8 @@ DELIMITER $$
                 , @new_allows_unconfirmed
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6923,9 +6774,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -6957,7 +6806,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_products` AFTER DELETE ON `products` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_name = old.name;
         SET @old_classification_id = old.classification_id;
@@ -6965,7 +6813,6 @@ DELIMITER $$
         SET @old_isactive = old.isactive;
         SET @old_defaultmilestone = old.defaultmilestone;
         SET @old_allows_unconfirmed = old.allows_unconfirmed;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'products';
         SET @bzfe_field = 'name, classification_id, description, isactive, defaultmilestone, allows_unconfirmed';
@@ -6984,10 +6831,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_products';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -6995,9 +6840,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7025,13 +6868,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_user_group_map` AFTER INSERT ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_group_id = new.group_id;
         SET @new_isbless = new.isbless;
         SET @new_grant_type = new.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -7048,7 +6889,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7056,9 +6896,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7072,19 +6910,16 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_user_group_map` AFTER UPDATE ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
         SET @new_group_id = new.group_id;
         SET @new_isbless = new.isbless;
         SET @new_grant_type = new.grant_type;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_group_id = old.group_id;
         SET @old_isbless = old.isbless;
         SET @old_grant_type = old.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -7108,10 +6943,8 @@ DELIMITER $$
                 , @new_grant_type
                 )
                 ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7119,9 +6952,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7135,13 +6966,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_user_group_map` AFTER DELETE ON `user_group_map` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
         SET @old_group_id = old.group_id;
         SET @old_isbless = old.isbless;
         SET @old_grant_type = old.grant_type;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'user_group_map';
         SET @bzfe_field = 'user_id, group_id, isbless, grant_type';
@@ -7155,10 +6984,8 @@ DELIMITER $$
                 , @old_grant_type
             );
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_user_group_map';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7166,9 +6993,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7182,7 +7007,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_data_to_create_units` AFTER INSERT ON `ut_data_to_create_units` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id_unit_to_create = new.id_unit_to_create;
         SET @new_mefe_unit_id = new.mefe_unit_id;
@@ -7196,7 +7020,6 @@ DELIMITER $$
         SET @new_product_id = new.product_id;
         SET @new_deleted_datetime = new.deleted_datetime;
         SET @new_deletion_script = new.deletion_script;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_data_to_create_units';
         SET @bzfe_field = 'id_unit_to_create, mefe_unit_id, mefe_creator_user_id, bzfe_creator_user_id, classification_id, unit_name, unit_description_details, bz_created_date, comment, product_id, deleted_datetime, deletion_script';
@@ -7229,7 +7052,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_data_to_create_units';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7237,9 +7059,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7253,7 +7073,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_data_to_create_units` AFTER UPDATE ON `ut_data_to_create_units` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id_unit_to_create = new.id_unit_to_create;
         SET @new_mefe_unit_id = new.mefe_unit_id;
@@ -7337,10 +7156,8 @@ DELIMITER $$
                 , IFNULL(@new_deletion_script, '(NULL)')
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_data_to_create_units';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7348,9 +7165,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7364,7 +7179,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_data_to_create_units` AFTER DELETE ON `ut_data_to_create_units` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id_unit_to_create = old.id_unit_to_create;
         SET @old_mefe_unit_id = old.mefe_unit_id;
@@ -7378,7 +7192,6 @@ DELIMITER $$
         SET @old_product_id = old.product_id;
         SET @old_deleted_datetime = old.deleted_datetime;
         SET @old_deletion_script = old.deletion_script;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_data_to_create_units';
         SET @bzfe_field = 'id_unit_to_create, mefe_unit_id, mefe_creator_user_id, bzfe_creator_user_id, classification_id, unit_name, unit_description_details, bz_created_date, comment, product_id, deleted_datetime, deletion_script';
@@ -7409,10 +7222,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_data_to_create_units';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7420,9 +7231,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7436,7 +7245,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_invitation_api_data` AFTER INSERT ON `ut_invitation_api_data` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_mefe_invitation_id = new.mefe_invitation_id;
@@ -7453,7 +7261,6 @@ DELIMITER $$
         SET @new_processed_datetime = new.processed_datetime;
         SET @new_script = new.script;
         SET @new_api_post_datetime = new.api_post_datetime;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_invitation_api_data';
         SET @bzfe_field = 'id, mefe_invitation_id, bzfe_invitor_user_id, bz_user_id, user_role_type_id, is_occupant, bz_case_id, bz_unit_id, invitation_type, is_mefe_only_user, user_more, mefe_invitor_user_id, processed_datetime, script, api_post_datetime';
@@ -7492,7 +7299,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_invitation_api_data';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7500,9 +7306,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7516,7 +7320,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_invitation_api_data` AFTER UPDATE ON `ut_invitation_api_data` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_mefe_invitation_id = new.mefe_invitation_id;
@@ -7618,10 +7421,8 @@ DELIMITER $$
                 , IFNULL(@new_api_post_datetime, '(NULL)')
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_invitation_api_data';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7629,9 +7430,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7645,7 +7444,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_invitation_api_data` AFTER DELETE ON `ut_invitation_api_data` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_mefe_invitation_id = old.mefe_invitation_id;
@@ -7662,7 +7460,6 @@ DELIMITER $$
         SET @old_processed_datetime = old.processed_datetime;
         SET @old_script = old.script;
         SET @old_api_post_datetime = old.api_post_datetime;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_invitation_api_data';
         SET @bzfe_field = 'id, mefe_invitation_id, bzfe_invitor_user_id, bz_user_id, user_role_type_id, is_occupant, bz_case_id, bz_unit_id, invitation_type, is_mefe_only_user, user_more, mefe_invitor_user_id, processed_datetime, script, api_post_datetime';
@@ -7699,10 +7496,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_invitation_api_data';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7710,9 +7505,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7790,7 +7583,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_product_group` AFTER INSERT ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
@@ -7799,7 +7591,6 @@ DELIMITER $$
         SET @new_role_type_id = new.role_type_id;
         SET @new_created_by_id = new.created_by_id;
         SET @new_created = new.created;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_product_group';
         SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
@@ -7822,7 +7613,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7830,9 +7620,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7846,7 +7634,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_product_group` AFTER UPDATE ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_product_id = new.product_id;
         SET @new_component_id = new.component_id;
@@ -7900,10 +7687,8 @@ DELIMITER $$
                 , IFNULL(@new_created, '(NULL)')
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7911,9 +7696,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7927,7 +7710,6 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_product_group` AFTER DELETE ON `ut_product_group` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_product_id = old.product_id;
         SET @old_component_id = old.component_id;
@@ -7936,7 +7718,6 @@ DELIMITER $$
         SET @old_role_type_id = old.role_type_id;
         SET @old_created_by_id = old.created_by_id;
         SET @old_created = old.created;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'ut_product_group';
         SET @bzfe_field = 'product_id, component_id, group_id, group_type_id, role_type_id, created_by_id, created';
@@ -7957,10 +7738,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_ut_product_group';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -7968,9 +7747,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -7984,13 +7761,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_versions` AFTER INSERT ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_value = new.value;
         SET @new_product_id = new.product_id;
         SET @new_isactive = new.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -8007,7 +7782,6 @@ DELIMITER $$
            ;
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_new_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8015,9 +7789,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8031,19 +7803,16 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_versions` AFTER UPDATE ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
         SET @new_value = new.value;
         SET @new_product_id = new.product_id;
         SET @new_isactive = new.isactive;
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_value = old.value;
         SET @old_product_id = old.product_id;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -8067,10 +7836,8 @@ DELIMITER $$
                 , @new_isactive
             )
            ;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_update_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8078,9 +7845,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -8094,13 +7859,11 @@ DELIMITER $$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_versions` AFTER DELETE ON `versions` FOR EACH ROW 
   BEGIN
-
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
         SET @old_value = old.value;
         SET @old_product_id = old.product_id;
         SET @old_isactive = old.isactive;
-
     # We set the variable we need to update the log with relevant information:
         SET @bzfe_table = 'versions';
         SET @bzfe_field = 'id, value, product_id, isactive';
@@ -8115,10 +7878,8 @@ DELIMITER $$
             )
            ;
         SET @new_value = NULL;
-
         # The @script variable is defined by the highest level script we have - we do NOT change that
         SET @comment = 'called via the trigger trig_update_audit_log_delete_record_versions';
-
     # We have all the variables:
         #   - @bzfe_table: the table that was updated
         #   - @bzfe_field: The fields that were updated
@@ -8126,9 +7887,7 @@ DELIMITER $$
         #   - @new_value: the values captured by the trigger when the new value is inserted.
         #   - @script: the script that is calling this procedure
         #   - @comment: a text to give some context ex: "this was created by a trigger xxx"
-
         CALL `update_audit_log`;
-
 END */$$
 
 
@@ -10053,10 +9812,8 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `create_temp_table_to_update_group_permissions`()
     SQL SECURITY INVOKER
 BEGIN
-
 	# DELETE the temp table if it exists
 	    DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_temp`;
-
 	# Re-create the temp table
         CREATE TEMPORARY TABLE `ut_group_group_map_temp` (
         `member_id` MEDIUMINT(9) NOT NULL
@@ -10064,7 +9821,6 @@ BEGIN
         , `grant_type` TINYINT(4) NOT NULL DEFAULT 0
         )
         ;
-
 END */$$
 DELIMITER ;
 
@@ -10090,7 +9846,6 @@ BEGIN
           , `grant_type` TINYINT(4) NOT NULL DEFAULT 0
 		)
         ;
-
 END */$$
 DELIMITER ;
 
@@ -16973,9 +16728,9 @@ DROP TABLE IF EXISTS `list_all_changes_to_components_default_assignee_dummy_user
 
 /*!50001 CREATE TABLE  `list_all_changes_to_components_default_assignee_dummy_users`(
  `class` varchar(255) ,
- `removed` mediumtext ,
+ `removed` longtext ,
  `action_remove` varchar(24) ,
- `added` mediumtext ,
+ `added` longtext ,
  `action_add` varchar(20) ,
  `component_id` int(11) ,
  `at_time` datetime 
@@ -16991,8 +16746,8 @@ DROP TABLE IF EXISTS `list_changes_new_assignee_is_real`;
 /*!50001 CREATE TABLE  `list_changes_new_assignee_is_real`(
  `product_id` smallint(6) ,
  `component_id` int(11) ,
- `removed` mediumtext ,
- `added` mediumtext ,
+ `removed` longtext ,
+ `added` longtext ,
  `at_time` datetime ,
  `role_type_id` smallint(6) 
 )*/;
