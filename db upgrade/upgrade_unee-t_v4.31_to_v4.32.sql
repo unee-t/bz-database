@@ -1115,6 +1115,11 @@ BEGIN
         #           - Reset the assignee for the case to the initial owner for this role/component
         #           - Record a message in the case to explain what has been done.
         #	
+											
+			# We record the name of this procedure for future debugging and audit_log
+				SET @script = 'PROCEDURE - remove_user_from_role';
+				SET @timestamp = NOW();
+
 			# Revoke all permissions for this user in this unit
 				# This procedure needs the following objects:
 				#	- Variables:
@@ -1137,222 +1142,247 @@ BEGIN
                     AND (`cc`.`who` = @product_id)
                     ;
 
-			# Add a comment to the case to let everyone know what happened.
+				# Add a comment to the case to let everyone know what happened.
 
-				SET @comment_remove_user_from_case = (CONCAT ('We removed a user in the role '
-							, @user_role_type_name 
-							, '. This user was un-invited from the case since he has no more role in this unit.'
-							)
-					);
+					SET @comment_remove_user_from_case = (CONCAT ('We removed a user in the role '
+								, @user_role_type_name 
+								, '. This user was un-invited from the case since he has no more role in this unit.'
+								)
+						);
 
-				INSERT INTO `longdescs`
-					(`bug_id`
-					, `who`
-					, `bug_when`
-					, `thetext`
-					)
-					VALUES
-						(@bz_case_id
-						, @creator_bz_id
-						, @timestamp
-						, @comment_remove_user_from_case
-						)
-						;
-
-				# Record the change in the Bug history
-
-					INSERT INTO	`bugs_activity`
-						(`bug_id` 
-						, `who` 
+					INSERT INTO `longdescs`
+						(`bug_id`
+						, `who`
 						, `bug_when`
-						, `fieldid`
-						, `added`
-						, `removed`
+						, `thetext`
 						)
 						VALUES
 							(@bz_case_id
 							, @creator_bz_id
 							, @timestamp
-							, 22
-							, NULL
-							, @bz_user_id
-						)
-						;
-
-
-
-
-######
-#
-# WIP
-#
-######
-
-            # Record what has been done in the Audit TABLE
-
-            # Add a new comment to explain what we have done
-
-                INSERT INTO ``
-                    (``
-                    , ``
-                    )
-                    VALUES
-                    ( , )
-                    ;
-
-		# Who are the initial owner and initialqa contact for this role?
-												
-			# Get the old values so we can 
-			#	- Check if these are default user for this environment
-			#	- log those
-				SET @old_component_initialowner = (SELECT `initialowner`
-					FROM `components` 
-					WHERE `id` = @component_id_this_role)
-					;
-					
-				SET @old_component_initialqacontact = (SELECT `initialqacontact` 
-					FROM `components` 
-					WHERE `id` = @component_id_this_role)
-					;
-					
-				SET @old_component_description = (SELECT `description` 
-					FROM `components` 
-					WHERE `id` = @component_id_this_role)
-					;
-		
-		# We need to check if the user we are removing is the current default user for this role for this unit.
-			SET @is_user_default_assignee = IF(@old_component_initialowner = @bz_user_id
-				, '1'
-				, '0'
-				)
-				;
-
-		# We need to check if the user we are removing is the current qa user for this role for this unit.
-			SET @is_user_qa = IF(@old_component_initialqacontact = @bz_user_id
-				, '1'
-				, '0'
-				)
-				;
-										
-		# We record the name of this procedure for future debugging and audit_log
-			SET @script = 'PROCEDURE - remove_user_from_role';
-			SET @timestamp = NOW();
-
-		IF @is_user_default_assignee = 1
-		THEN
-		# We need to replace this with the default dummy user
-		# The variables needed for this are
-		#	- @bz_user_id_dummy_user_this_role
-		# 	- @component_id_this_role
-		#	- @id_role_type
-		# 	- @this_script
-		#	- @product_id
-		#	- @creator_bz_id
-		
-			# We define the dummy user role description based on the variable @id_role_type
-				SET @dummy_user_role_desc = IF(@id_role_type = 1
-					, CONCAT('Generic '
-						, (SELECT`role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
-						, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
-						, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
-						, ' TO THIS UNIT'
-						)
-					, IF(@id_role_type = 2
-						, CONCAT('Generic '
-							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
-							, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
-							, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
-							, ' TO THIS UNIT'
+							, @comment_remove_user_from_case
 							)
-						, IF(@id_role_type = 3
-							, CONCAT('Generic '
-								, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
-								, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
-								, (SELECT`role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
-								, ' TO THIS UNIT'
-								)
-							, IF(@id_role_type = 4
-								, CONCAT('Generic '
-									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
-									, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
-									, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
-									, ' TO THIS UNIT'
-									)
-								, IF(@id_role_type = 5
+							;
+
+					# Record the change in the Bug history
+
+						INSERT INTO	`bugs_activity`
+							(`bug_id` 
+							, `who` 
+							, `bug_when`
+							, `fieldid`
+							, `added`
+							, `removed`
+							)
+							VALUES
+								(@bz_case_id
+								, @creator_bz_id
+								, @timestamp
+								, 22
+								, NULL
+								, @bz_user_id
+							)
+							;
+
+				# If the user we removed from this unit, AND he is the assignee for a case, make sure we reset the assignee to the default user for this role in this unit.
+
+					# Who are the initial owner and initialqa contact for this role?
+															
+						# Get the old values so we can 
+						#	- Check if these are default user for this environment
+						#	- log those
+							SET @old_component_initialowner = (SELECT `initialowner`
+								FROM `components` 
+								WHERE `id` = @component_id_this_role)
+								;
+								
+							SET @old_component_initialqacontact = (SELECT `initialqacontact` 
+								FROM `components` 
+								WHERE `id` = @component_id_this_role)
+								;
+								
+							SET @old_component_description = (SELECT `description` 
+								FROM `components` 
+								WHERE `id` = @component_id_this_role)
+								;
+		
+					# We need to check if the user we are removing is the current default user for this role for this unit.
+						SET @is_user_default_assignee = IF(@old_component_initialowner = @bz_user_id
+							, '1'
+							, '0'
+							)
+							;
+
+					# We need to check if the user we are removing is the current qa user for this role for this unit.
+						SET @is_user_qa = IF(@old_component_initialqacontact = @bz_user_id
+							, '1'
+							, '0'
+							)
+							;
+
+					# Do the change of default assignee.
+
+						IF @is_user_default_assignee = 1
+						THEN
+						# We need to 
+						# WIP	- Option 1: IF there is another 'Real' user in default CC for this role in this unit, 
+						#		  then replace the default assignee for this role with  with the oldest created 'real' user in default CC for this role for this unit.
+						# WIP	- Option 2: IF there is NO other 'Real' user in Default CC for this role in this unit BUT
+						#		  There is at least another 'Real' usser in this role for this unit,  
+						#		  THEN replace the default assignee for this role with  with the oldest created 'real' user in this role for this unit_id.
+						# OK	- Option 3: IF there is NO other 'Real' user in Default CC for this role in this unit
+						#		  ANDIF there are no other 'Real' usser in this role for this unit
+						#		  THEN replace the default assignee with the default dummy user for this role in this unit
+						# The variables needed for this are
+						#	- @bz_user_id_dummy_user_this_role
+						# 	- @component_id_this_role
+						#	- @id_role_type
+						# 	- @this_script
+						#	- @product_id
+						#	- @creator_bz_id
+
+						# Define the option that we have are in:
+
+							# Do we have at least another real user in default CC for the cases created in this role in this unit?
+
+								SET @oldest_default_cc_this_role = (SELECT MIN(`user_id`)
+									FROM `component_cc`
+									WHERE `component_id` = @component_id_this_role
+									;
+
+								SET @assigneed_in_option_1 = IFNULL(@oldest_default_cc_this_role, 0);
+
+							# Do we have at least another real user NOT in default CC for the cases created in this role in this unit 
+							# BUT who is also in this role for this unit?
+
+								# what is the group id for all the users in this role in this unit?
+
+									SET @option_2_group_id_this_role = (SELECT `group_id`
+										FROM `ut_product_group`
+										WHERE `component_id` = @component_id_this_role
+											AND `group_type_id` = 22
+											)
+										;
+
+WIP								# What is the oldest user in this group who is NOT a dummy user?
+
+									SET @oldest_other_user_in_this_role = (SELECT MIN(`user_id`)
+										FROM `user_group_map`
+										WHERE `group_id` = @option_2_group_id_this_role)
+										;
+
+									SET @assigneed_in_option_1 = IFNULL(@oldest_default_cc_this_role, 0);
+
+
+
+							# We now can decide the option we are in...
+WIP								SET @default_assignee_change_option = 
+						
+							# We define the dummy user role description based on the variable @id_role_type
+								SET @dummy_user_role_desc = IF(@id_role_type = 1
 									, CONCAT('Generic '
-										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+										, (SELECT`role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
 										, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
 										, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
 										, ' TO THIS UNIT'
 										)
-									, CONCAT('error in script'
-										, @this_script
-										, 'line 170'
+									, IF(@id_role_type = 2
+										, CONCAT('Generic '
+											, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+											, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+											, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+											, ' TO THIS UNIT'
+											)
+										, IF(@id_role_type = 3
+											, CONCAT('Generic '
+												, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+												, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+												, (SELECT`role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+												, ' TO THIS UNIT'
+												)
+											, IF(@id_role_type = 4
+												, CONCAT('Generic '
+													, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+													, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+													, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+													, ' TO THIS UNIT'
+													)
+												, IF(@id_role_type = 5
+													, CONCAT('Generic '
+														, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+														, ' - THIS SHOULD NOT BE USED UNTIL YOU HAVE ASSOCIATED AN ACTUAL'
+														, (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type` = @id_role_type)
+														, ' TO THIS UNIT'
+														)
+													, CONCAT('error in script'
+														, @this_script
+														, 'line 170'
+														)
+													)
+												)
+											)
 										)
 									)
-								)
-							)
-						)
-					)
-					;
-					
-			# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
-				SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
-			
-			# Update the default assignee
+									;
+									
+							# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
+								SET @dummy_user_pub_name = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_user_this_role);
+							
+							# Update the default assignee
 
-                # Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
-                    SET @script = 'PROCEDURE remove_user_from_role';
+								# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
+									SET @script = 'PROCEDURE remove_user_from_role';
 
-                # We can now do the update
-                    UPDATE `components`
-                    SET `initialowner` = @bz_user_id_dummy_user_this_role
-                        ,`description` = @dummy_user_role_desc
-                        WHERE 
-                        `id` = @component_id_this_role
-                        ;
+								# We can now do the update
 
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('The component: '
-					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
-					, ' (for the role_type_id #'
-					, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
-					, ') has been updated.'
-					, '\r\The default user now associated to this role is the dummy bz user #'
-					, (SELECT IFNULL(@bz_user_id_dummy_user_this_role, 'bz_user_id is NULL'))
-					, ' (real name: '
-					, (SELECT IFNULL(@dummy_user_pub_name, 'user_pub_name is NULL'))
-					, ') for the unit #' 
-					, @product_id
-					);
-					
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-					)
-					VALUES
-					(@timestamp, @script, @script_log_message)
-					;
-						
-			# We update the BZ logs
-				INSERT  INTO `audit_log`
-					(`user_id`
-					,`class`
-					,`object_id`
-					,`field`
-					,`removed`
-					,`added`
-					,`at_time`
-					) 
-					VALUES 
-					(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id_dummy_user_this_role,@timestamp)
-					, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@dummy_user_role_desc,@timestamp)
-					;
-			 
-			# Cleanup the variables for the log messages
-				SET @script_log_message = NULL;
-		END IF;
+									UPDATE `components`
+									SET `initialowner` = @bz_user_id_dummy_user_this_role
+										,`description` = @dummy_user_role_desc
+										WHERE 
+										`id` = @component_id_this_role
+										;
+
+							# Log the actions of the script.
+								SET @script_log_message = CONCAT('The component: '
+									, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
+									, ' (for the role_type_id #'
+									, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
+									, ') has been updated.'
+									, '\r\The default user now associated to this role is the dummy bz user #'
+									, (SELECT IFNULL(@bz_user_id_dummy_user_this_role, 'bz_user_id is NULL'))
+									, ' (real name: '
+									, (SELECT IFNULL(@dummy_user_pub_name, 'user_pub_name is NULL'))
+									, ') for the unit #' 
+									, @product_id
+									);
+									
+								INSERT INTO `ut_script_log`
+									(`datetime`
+									, `script`
+									, `log`
+									)
+									VALUES
+									(@timestamp, @script, @script_log_message)
+									;
+										
+							# We update the BZ logs
+								INSERT  INTO `audit_log`
+									(`user_id`
+									,`class`
+									,`object_id`
+									,`field`
+									,`removed`
+									,`added`
+									,`at_time`
+									) 
+									VALUES 
+									(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@old_component_initialowner,@bz_user_id_dummy_user_this_role,@timestamp)
+									, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@dummy_user_role_desc,@timestamp)
+									;
+							
+							# Cleanup the variables for the log messages
+								SET @script_log_message = NULL;
+						END IF;
 
 		IF @is_user_qa = 1
 		THEN
