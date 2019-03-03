@@ -1048,6 +1048,7 @@ DELIMITER ;
 
 
 
+# Create a procedure to remove a user assigned to any bugs/cases in a given product/unit.
 
 
 
@@ -1124,11 +1125,81 @@ BEGIN
 			# All the permission have been prepared, we can now update the permissions table
 			#		- This NEEDS the table 'ut_user_group_map_temp'
 				CALL `update_permissions_invited_user`;
+
+            # Remove the user invited to (= in CC for) any bugs/cases in the given product/unit.
+
+                DELETE `cc`
+                FROM
+                    `cc`
+                    LEFT JOIN `bugs` 
+                        ON (`cc`.`bug_id` = `bugs`.`bug_id`)
+                WHERE (`bugs`.`product_id` = @bz_user_id)  
+                    AND (`cc`.`who` = @product_id)
+                    ;
+
+			# Add a comment to the case to let everyone know what happened.
+
+				SET @comment_remove_user_from_case = (CONCAT ('We removed a user in the role '
+							, @user_role_type_name 
+							, '. This user was un-invited from the case since he has no more role in this unit.'
+							)
+					);
+
+				INSERT INTO `longdescs`
+					(`bug_id`
+					, `who`
+					, `bug_when`
+					, `thetext`
+					)
+					VALUES
+						(@bz_case_id
+						, @creator_bz_id
+						, @timestamp
+						, @comment_remove_user_from_case
+						)
+						;
+
+				# Record the change in the Bug history
+
+					INSERT INTO	`bugs_activity`
+						(`bug_id` 
+						, `who` 
+						, `bug_when`
+						, `fieldid`
+						, `added`
+						, `removed`
+						)
+						VALUES
+							(@bz_case_id
+							, @creator_bz_id
+							, @timestamp
+							, 22
+							, NULL
+							, @bz_user_id
+						)
+						;
+
+
+
+
 ######
 #
 # WIP
 #
 ######
+
+            # Record what has been done in the Audit TABLE
+
+            # Add a new comment to explain what we have done
+
+                INSERT INTO ``
+                    (``
+                    , ``
+                    )
+                    VALUES
+                    ( , )
+                    ;
+
 		# Who are the initial owner and initialqa contact for this role?
 												
 			# Get the old values so we can 
