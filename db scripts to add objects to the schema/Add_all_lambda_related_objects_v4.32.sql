@@ -78,7 +78,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, JSON_QUOTE (CONCAT ('{ '
+		, CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -96,7 +96,6 @@ BEGIN
 				, '", "current_severity" : "', current_severity
 				, '"}'
 				)
-			)
 		)
 		;
 END $$
@@ -135,7 +134,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, JSON_QUOTE (CONCAT ('{ '
+		, CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -156,7 +155,6 @@ BEGIN
 				, '", "current_severity" : "', current_severity
 				, '"}'
 				)
-			)
 		)
 		;
 END $$
@@ -192,7 +190,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, JSON_QUOTE (CONCAT ('{ '
+		, CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -210,7 +208,6 @@ BEGIN
 				, '", "current_severity" : "', current_severity
 				, '"}'
 				)
-			)
 		)
 		;
 END $$
@@ -243,7 +240,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, JSON_QUOTE (CONCAT ('{ '
+		, CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -258,7 +255,6 @@ BEGIN
 				, '", "current_severity" : "', current_severity
 				, '"}'
 				)
-			)
 		)
 		;
 END $$
@@ -295,7 +291,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, JSON_QUOTE (CONCAT ('{ '
+		, CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -314,7 +310,6 @@ BEGIN
 				, '", "current_severity" : "', current_severity
 				, '"}'
 				)
-			)
 		)
 		;
 END $$
