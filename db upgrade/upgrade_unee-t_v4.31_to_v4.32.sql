@@ -1414,7 +1414,7 @@ BEGIN
 					WHERE `id` = @component_id_this_role)
 					;
 
-			# Add a comment to the case to let everyone know what happened.
+			# Add a comment to the case to let everyone know what is happening.
 
 				# Prepare the comment:
 
@@ -1425,7 +1425,9 @@ BEGIN
 						)
 						;
 
-				# Insert the comment in all the cases we are touching
+				# Insert the comment in all the cases we are touchingfor for all the cases where:
+				#	- the product/unit is the product/unit we are removing the user from
+				#	- The user we are removing is the current assignee for these bugs/cases
 
 					INSERT INTO `longdescs`
 						(`bug_id`
@@ -1434,15 +1436,13 @@ BEGIN
 						, `thetext`
 						)
 						SELECT
-							`cc`.`bug_id`
+							`bugs`.`bug_id`
 							, @creator_bz_id
 							, @timestamp
 							, @comment_change_assignee_for_case
 							FROM `bugs`
-							INNER JOIN `cc` 
-								ON (`cc`.`bug_id` = `bugs`.`bug_id`)
 							WHERE (`bugs`.`product_id` = @product_id)  
-								AND (`cc`.`who` = @bz_user_id)
+								AND (`bugs`.`assigned_to` = @bz_user_id)
 							;
 
 				# Record the change in the Bug history for all the cases where:
