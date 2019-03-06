@@ -24,25 +24,25 @@
 #
 # As of DB schema v4.31 we have
 #   - 5 procedures that are using lambda:
-# WIP      - `lambda_notification_case_assignee_updated` latest version introduced in v4.32
-# WIP      - `lambda_notification_case_updated` latest version introduced in v4.32
-# WIP      - `lambda_notification_case_invited` latest version introduced in v4.32
-# WIP      - `lambda_notification_case_new` latest version introduced in v4.32
-# WIP     - `lambda_notification_message_new_comment` latest version introduced in v4.32
+#       - `lambda_notification_case_assignee_updated` latest version introduced in v4.32
+#       - `lambda_notification_case_updated` latest version introduced in v4.32
+#       - `lambda_notification_case_invited` latest version introduced in v4.32
+#       - `lambda_notification_case_new` latest version introduced in v4.32
+#      - `lambda_notification_message_new_comment` latest version introduced in v4.32
 #
 # These 5 procedures are associated with 6 triggers and 6 tables:
-# WIP      - `ut_prepare_message_case_assigned_updated` latest version introduced in v4.32
-#            the log for this trigger is in the table `ut_notification_case_assignee`
-# WIP      - `ut_prepare_message_case_activity` latest version introduced in v4.32
-#            the log for this trigger is in the table `ut_notification_case_updated`
-# WIP      - `ut_prepare_message_case_invited` latest version introduced in v4.32
-#            the log for this trigger is in the table `ut_notification_case_invited`
-# WIP      - `ut_prepare_message_new_case` latest version introduced in v4.32
-#            the log for this trigger is in the table `ut_notification_case_new`
-# WIP      - `ut_prepare_message_new_comment` latest version introduced i1-n v4.32
-#            the log for this trigger is not needed as it is fired as a consequence `ut_notification_classify_messages`
-# WIP       - `ut_notification_classify_messages` latest version introduced in v4.32
-#            the log for this trigger is in the table `ut_notification_message_new`
+#       - `ut_prepare_message_case_assigned_updated` latest version introduced in v4.32
+#          the log for this trigger is in the table `ut_notification_case_assignee`
+#       - `ut_prepare_message_case_activity` latest version introduced in v4.32
+#          the log for this trigger is in the table `ut_notification_case_updated`
+#       - `ut_prepare_message_case_invited` latest version introduced in v4.32
+#          the log for this trigger is in the table `ut_notification_case_invited`
+#       - `ut_prepare_message_new_case` latest version introduced in v4.32
+#          the log for this trigger is in the table `ut_notification_case_new`
+#       - `ut_prepare_message_new_comment` latest version introduced i1-n v4.32
+#          the log for this trigger is not needed as it is fired as a consequence `ut_notification_classify_messages`
+#       - `ut_notification_classify_messages` latest version introduced in v4.32
+#          the log for this trigger is in the table `ut_notification_message_new`
 #
 # Code to create these procedures:
 #
@@ -78,26 +78,27 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "invitor_user_id" : "', invitor_user_id
-			, '", "case_reporter_user_id" : "', case_reporter_user_id
-			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-			, '", "current_list_of_invitees" : "', current_list_of_invitees
-            , '", "current_status" : "', current_status
-            , '", "current_resolution" : "', current_resolution
-            , '", "current_severity" : "', current_severity
-			, '"}'
-			)
-		)
-		;
+        , JSON_QUOTE (CONCAT ('{ '
+				, '"notification_type": "', notification_type
+				, '", "bz_source_table": "', bz_source_table
+				, '", "notification_id": "', notification_id
+				, '", "created_datetime" : "', created_datetime
+				, '", "unit_id" : "', unit_id
+				, '", "case_id" : "', case_id
+				, '", "case_title" : "', case_title
+				, '", "invitor_user_id" : "', invitor_user_id
+				, '", "case_reporter_user_id" : "', case_reporter_user_id
+				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
+				, '", "current_list_of_invitees" : "', current_list_of_invitees
+				, '", "current_status" : "', current_status
+				, '", "current_resolution" : "', current_resolution
+				, '", "current_severity" : "', current_severity
+				, '"}'
+				)
+        	)
+        )
+        ;
 END $$
 DELIMITER ;
 
@@ -134,29 +135,30 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "user_id" : "', user_id
-			, '", "update_what" : "', update_what
-            , '", "old_value" : "', old_value
-            , '", "new_value" : "', new_value
-			, '", "case_reporter_user_id" : "', case_reporter_user_id
-			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-			, '", "current_list_of_invitees" : "', current_list_of_invitees
-            , '", "current_status" : "', current_status
-            , '", "current_resolution" : "', current_resolution
-            , '", "current_severity" : "', current_severity
-			, '"}'
+        , JSON_QUOTE (CONCAT ('{ '
+				, '"notification_type": "', notification_type
+				, '", "bz_source_table": "', bz_source_table
+				, '", "notification_id": "', notification_id
+				, '", "created_datetime" : "', created_datetime
+				, '", "unit_id" : "', unit_id
+				, '", "case_id" : "', case_id
+				, '", "case_title" : "', case_title
+				, '", "user_id" : "', user_id
+				, '", "update_what" : "', update_what
+				, '", "old_value" : "', old_value
+				, '", "new_value" : "', new_value
+				, '", "case_reporter_user_id" : "', case_reporter_user_id
+				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
+				, '", "current_list_of_invitees" : "', current_list_of_invitees
+				, '", "current_status" : "', current_status
+				, '", "current_resolution" : "', current_resolution
+				, '", "current_severity" : "', current_severity
+				, '"}'
+				)
 			)
-		)
-		;
+        )
+        ;
 END $$
 DELIMITER ;
 
@@ -190,26 +192,27 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "invitee_user_id" : "', invitee_user_id
-			, '", "case_reporter_user_id" : "', case_reporter_user_id
-			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-			, '", "current_list_of_invitees" : "', current_list_of_invitees
-            , '", "current_status" : "', current_status
-            , '", "current_resolution" : "', current_resolution
-            , '", "current_severity" : "', current_severity
-			, '"}'
+        , JSON_QUOTE (CONCAT ('{ '
+				, '"notification_type": "', notification_type
+				, '", "bz_source_table": "', bz_source_table
+				, '", "notification_id": "', notification_id
+				, '", "created_datetime" : "', created_datetime
+				, '", "unit_id" : "', unit_id
+				, '", "case_id" : "', case_id
+				, '", "case_title" : "', case_title
+				, '", "invitee_user_id" : "', invitee_user_id
+				, '", "case_reporter_user_id" : "', case_reporter_user_id
+				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
+				, '", "current_list_of_invitees" : "', current_list_of_invitees
+				, '", "current_status" : "', current_status
+				, '", "current_resolution" : "', current_resolution
+				, '", "current_severity" : "', current_severity
+				, '"}'
+				)
 			)
-		)
-		;
+        )
+        ;
 END $$
 DELIMITER ;
 
@@ -240,23 +243,24 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "reporter_user_id" : "', reporter_user_id
-			, '", "assignee_user_id" : "', assignee_user_id
-            , '", "current_status" : "', current_status
-            , '", "current_resolution" : "', current_resolution
-            , '", "current_severity" : "', current_severity
-			, '"}'
+        , JSON_QUOTE (CONCAT ('{ '
+				, '"notification_type": "', notification_type
+				, '", "bz_source_table": "', bz_source_table
+				, '", "notification_id": "', notification_id
+				, '", "created_datetime" : "', created_datetime
+				, '", "unit_id" : "', unit_id
+				, '", "case_id" : "', case_id
+				, '", "case_title" : "', case_title
+				, '", "reporter_user_id" : "', reporter_user_id
+				, '", "assignee_user_id" : "', assignee_user_id
+				, '", "current_status" : "', current_status
+				, '", "current_resolution" : "', current_resolution
+				, '", "current_severity" : "', current_severity
+				, '"}'
+        		)
 			)
-		)
-		;
+        )
+        ;
 END $$
 DELIMITER ;
 
@@ -291,30 +295,31 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_type": "', notification_type
-			, '", "bz_source_table": "', bz_source_table
-			, '", "notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "case_title" : "', case_title
-			, '", "created_by_user_id" : "', created_by_user_id
-			, '", "message_truncated" : "', message_truncated
-			, '", "case_reporter_user_id" : "', case_reporter_user_id
-			, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-			, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-			, '", "current_list_of_invitees" : "', current_list_of_invitees
-            , '", "current_status" : "', current_status
-            , '", "current_resolution" : "', current_resolution
-            , '", "current_severity" : "', current_severity
-			, '"}'
+        , JSON_QUOTE (CONCAT ('{ '
+				, '"notification_type": "', notification_type
+				, '", "bz_source_table": "', bz_source_table
+				, '", "notification_id": "', notification_id
+				, '", "created_datetime" : "', created_datetime
+				, '", "unit_id" : "', unit_id
+				, '", "case_id" : "', case_id
+				, '", "case_title" : "', case_title
+				, '", "created_by_user_id" : "', created_by_user_id
+				, '", "message_truncated" : "', message_truncated
+				, '", "case_reporter_user_id" : "', case_reporter_user_id
+				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
+				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
+				, '", "current_list_of_invitees" : "', current_list_of_invitees
+				, '", "current_status" : "', current_status
+				, '", "current_resolution" : "', current_resolution
+				, '", "current_severity" : "', current_severity
+				, '"}'
+				)
 			)
-		)
-		;
+        )
+        ;
 END $$
 DELIMITER ;
-#
+
 # Code to create the triggers. Keep in mind that the triggers need:
 #   - The tables where we record the logs
 #   - The procedures
