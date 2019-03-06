@@ -5,44 +5,44 @@
 ###################################################################################
 # IMPORTANT!! 
 #   1- make sure that the variable for the Lambda is correct for each environment
-#      By default, this script creates procedures for the PROD environment.
-#      See: https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
+#	  By default, this script creates procedures for the PROD environment.
+#	  See: https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
 #   	- DEV/Staging: 812644853088
 #   	- Prod: 192458993663
 #   	- Demo: 915001051872
 #   2- make sure that the following manadatory tables exist in the database:
-#       - `ut_notification_case_assignee`
-#       - `ut_notification_case_updated`
-#       - `ut_notification_case_invited`
-#       - `ut_notification_case_new`
-#       - `ut_notification_classify_messages`
-#       - `ut_notification_message_new`
-#       Why?
-#       Because this script does NOT re-create the associated DB tables that we have 
-#       created to log what happens when SQL triggers are activated
+#	   - `ut_notification_case_assignee`
+#	   - `ut_notification_case_updated`
+#	   - `ut_notification_case_invited`
+#	   - `ut_notification_case_new`
+#	   - `ut_notification_classify_messages`
+#	   - `ut_notification_message_new`
+#	   Why?
+#	   Because this script does NOT re-create the associated DB tables that we have 
+#	   created to log what happens when SQL triggers are activated
 ###################################################################################
 #
 # As of DB schema v4.31 we have
 #   - 5 procedures that are using lambda:
-#       - `lambda_notification_case_assignee_updated` latest version introduced in v4.32
-#       - `lambda_notification_case_updated` latest version introduced in v4.32
-#       - `lambda_notification_case_invited` latest version introduced in v4.32
-#       - `lambda_notification_case_new` latest version introduced in v4.32
-#      - `lambda_notification_message_new_comment` latest version introduced in v4.32
+#	   - `lambda_notification_case_assignee_updated` latest version introduced in v4.32
+#	   - `lambda_notification_case_updated` latest version introduced in v4.32
+#	   - `lambda_notification_case_invited` latest version introduced in v4.32
+#	   - `lambda_notification_case_new` latest version introduced in v4.32
+#	  - `lambda_notification_message_new_comment` latest version introduced in v4.32
 #
 # These 5 procedures are associated with 6 triggers and 6 tables:
-#       - `ut_prepare_message_case_assigned_updated` latest version introduced in v4.32
-#          the log for this trigger is in the table `ut_notification_case_assignee`
-#       - `ut_prepare_message_case_activity` latest version introduced in v4.32
-#          the log for this trigger is in the table `ut_notification_case_updated`
-#       - `ut_prepare_message_case_invited` latest version introduced in v4.32
-#          the log for this trigger is in the table `ut_notification_case_invited`
-#       - `ut_prepare_message_new_case` latest version introduced in v4.32
-#          the log for this trigger is in the table `ut_notification_case_new`
-#       - `ut_prepare_message_new_comment` latest version introduced i1-n v4.32
-#          the log for this trigger is not needed as it is fired as a consequence `ut_notification_classify_messages`
-#       - `ut_notification_classify_messages` latest version introduced in v4.32
-#          the log for this trigger is in the table `ut_notification_message_new`
+#	   - `ut_prepare_message_case_assigned_updated` latest version introduced in v4.32
+#		  the log for this trigger is in the table `ut_notification_case_assignee`
+#	   - `ut_prepare_message_case_activity` latest version introduced in v4.32
+#		  the log for this trigger is in the table `ut_notification_case_updated`
+#	   - `ut_prepare_message_case_invited` latest version introduced in v4.32
+#		  the log for this trigger is in the table `ut_notification_case_invited`
+#	   - `ut_prepare_message_new_case` latest version introduced in v4.32
+#		  the log for this trigger is in the table `ut_notification_case_new`
+#	   - `ut_prepare_message_new_comment` latest version introduced i1-n v4.32
+#		  the log for this trigger is not needed as it is fired as a consequence `ut_notification_classify_messages`
+#	   - `ut_notification_classify_messages` latest version introduced in v4.32
+#		  the log for this trigger is in the table `ut_notification_message_new`
 #
 # Code to create these procedures:
 #
@@ -66,9 +66,9 @@ CREATE PROCEDURE `lambda_notification_case_assignee_updated`(
 	, IN old_case_assignee_user_id mediumint(9)
 	, IN new_case_assignee_user_id mediumint(9)
 	, IN current_list_of_invitees mediumtext
-    , IN current_status varchar(64)
-    , IN current_resolution varchar(64)
-    , IN current_severity varchar(64)
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -78,7 +78,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-        , JSON_QUOTE (CONCAT ('{ '
+		, JSON_QUOTE (CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -96,9 +96,9 @@ BEGIN
 				, '", "current_severity" : "', current_severity
 				, '"}'
 				)
-        	)
-        )
-        ;
+			)
+		)
+		;
 END $$
 DELIMITER ;
 
@@ -117,15 +117,15 @@ CREATE PROCEDURE `lambda_notification_case_updated`(
 	, IN case_title varchar(255)
 	, IN user_id mediumint(9)
 	, IN update_what varchar(255)
-    , IN old_value varchar(255)
-    , IN new_value varchar(255)
+	, IN old_value varchar(255)
+	, IN new_value varchar(255)
 	, IN case_reporter_user_id mediumint(9)
 	, IN old_case_assignee_user_id mediumint(9)
 	, IN new_case_assignee_user_id mediumint(9)
 	, IN current_list_of_invitees mediumtext
-    , IN current_status varchar(64)
-    , IN current_resolution varchar(64)
-    , IN current_severity varchar(64)
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -135,7 +135,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-        , JSON_QUOTE (CONCAT ('{ '
+		, JSON_QUOTE (CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -157,8 +157,8 @@ BEGIN
 				, '"}'
 				)
 			)
-        )
-        ;
+		)
+		;
 END $$
 DELIMITER ;
 
@@ -180,9 +180,9 @@ CREATE PROCEDURE `lambda_notification_case_invited`(
 	, IN old_case_assignee_user_id mediumint(9)
 	, IN new_case_assignee_user_id mediumint(9)
 	, IN current_list_of_invitees mediumtext
-    , IN current_status varchar(64)
-    , IN current_resolution varchar(64)
-    , IN current_severity varchar(64)
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -192,7 +192,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-        , JSON_QUOTE (CONCAT ('{ '
+		, JSON_QUOTE (CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -211,8 +211,8 @@ BEGIN
 				, '"}'
 				)
 			)
-        )
-        ;
+		)
+		;
 END $$
 DELIMITER ;
 
@@ -231,9 +231,9 @@ CREATE PROCEDURE `lambda_notification_case_new`(
 	, IN case_title varchar(255)
 	, IN reporter_user_id mediumint(9)
 	, IN assignee_user_id mediumint(9)
-    , IN current_status varchar(64)
-    , IN current_resolution varchar(64)
-    , IN current_severity varchar(64)
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -243,7 +243,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-        , JSON_QUOTE (CONCAT ('{ '
+		, JSON_QUOTE (CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -257,10 +257,10 @@ BEGIN
 				, '", "current_resolution" : "', current_resolution
 				, '", "current_severity" : "', current_severity
 				, '"}'
-        		)
+				)
 			)
-        )
-        ;
+		)
+		;
 END $$
 DELIMITER ;
 
@@ -283,9 +283,9 @@ CREATE PROCEDURE `lambda_notification_message_new_comment`(
 	, IN old_case_assignee_user_id mediumint(9)
 	, IN new_case_assignee_user_id mediumint(9)
 	, IN current_list_of_invitees mediumtext
-    , IN current_status varchar(64)
-    , IN current_resolution varchar(64)
-    , IN current_severity varchar(64)
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -295,7 +295,7 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-        , JSON_QUOTE (CONCAT ('{ '
+		, JSON_QUOTE (CONCAT ('{ '
 				, '"notification_type": "', notification_type
 				, '", "bz_source_table": "', bz_source_table
 				, '", "notification_id": "', notification_id
@@ -315,8 +315,8 @@ BEGIN
 				, '"}'
 				)
 			)
-        )
-        ;
+		)
+		;
 END $$
 DELIMITER ;
 
@@ -351,9 +351,9 @@ BEGIN
 			SET @new_case_assignee_user_id = NULL;
 			SET @current_list_of_invitees_1 = NULL;
 			SET @current_list_of_invitees = NULL;
-            SET @current_status = NULL;
-            SET @current_resolution = NULL;
-            SET @current_severity = NULL;
+			SET @current_status = NULL;
+			SET @current_resolution = NULL;
+			SET @current_severity = NULL;
 
 		# We have a clean slate, define the variables now
 			SET @notification_type = 'case_assignee_updated';
@@ -374,9 +374,9 @@ BEGIN
 			GROUP BY `bug_id`)
 			;
 			SET @current_list_of_invitees = IFNULL(@current_list_of_invitees_1, 0);
-            SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
-            SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
-            SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
+			SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
+			SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
+			SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
 		
 		# We insert the event in the relevant notification table
 			INSERT INTO `ut_notification_case_assignee`
@@ -390,9 +390,9 @@ BEGIN
 				, `old_case_assignee_user_id`
 				, `new_case_assignee_user_id`
 				, `current_list_of_invitees`
-                , `current_status`
-                , `current_resolution`
-                , `current_severity`
+				, `current_status`
+				, `current_resolution`
+				, `current_severity`
 				)
 				VALUES
 				(@notification_id
@@ -405,9 +405,9 @@ BEGIN
 				, @old_case_assignee_user_id
 				, @new_case_assignee_user_id
 				, @current_list_of_invitees
-                , @current_status
-                , @current_resolution
-                , @current_severity
+				, @current_status
+				, @current_resolution
+				, @current_severity
 				)
 				;
 			
@@ -424,9 +424,9 @@ BEGIN
 				, @old_case_assignee_user_id
 				, @new_case_assignee_user_id
 				, @current_list_of_invitees
-                , @current_status
-                , @current_resolution
-                , @current_severity
+				, @current_status
+				, @current_resolution
+				, @current_severity
 				)
 				;
 	END IF;
@@ -454,16 +454,16 @@ BEGIN
 		SET @case_title = NULL;
 		SET @user_id = NULL;
 		SET @update_what = NULL;
-        SET @old_value = NULL;
-        SET @new_value = NULL;
+		SET @old_value = NULL;
+		SET @new_value = NULL;
 		SET @case_reporter_user_id = NULL;
 		SET @old_case_assignee_user_id = NULL;
 		SET @new_case_assignee_user_id = NULL;
 		SET @current_list_of_invitees_1 = NULL;
 		SET @current_list_of_invitees = NULL;
-        SET @current_status = NULL;
-        SET @current_resolution = NULL;
-        SET @current_severity = NULL;
+		SET @current_status = NULL;
+		SET @current_resolution = NULL;
+		SET @current_severity = NULL;
 
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_updated';
@@ -476,8 +476,8 @@ BEGIN
 		SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @user_id = NEW.`who`;
 		SET @update_what = (SELECT `description` FROM `fielddefs` WHERE `id` = NEW.`fieldid`);
-        SET @old_value = NEW.`removed`;
-        SET @new_value = NEW.`added`;
+		SET @old_value = NEW.`removed`;
+		SET @new_value = NEW.`added`;
 		SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @old_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @new_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
@@ -487,9 +487,9 @@ BEGIN
 			GROUP BY `bug_id`)
 			;
 		SET @current_list_of_invitees = IFNULL(@current_list_of_invitees_1, 0);
-        SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
-        SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
-        SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
 	
 	# We insert the event in the relevant notification table
 		INSERT INTO `ut_notification_case_updated`
@@ -500,16 +500,16 @@ BEGIN
 			, `case_title`
 			, `user_id`
 			, `update_what`
-            , `old_value`
-            , `new_value`
+			, `old_value`
+			, `new_value`
 			, `case_reporter_user_id`
 			, `old_case_assignee_user_id`
 			, `new_case_assignee_user_id`
 			, `current_list_of_invitees`
 			, `current_status`
-            , `current_resolution`
-            , `current_severity`
-            )
+			, `current_resolution`
+			, `current_severity`
+			)
 			VALUES
 			(@notification_id
 			, @created_datetime
@@ -518,15 +518,15 @@ BEGIN
 			, @case_title
 			, @user_id
 			, @update_what
-            , @old_value
-            , @new_value
+			, @old_value
+			, @new_value
 			, @case_reporter_user_id
 			, @old_case_assignee_user_id
 			, @new_case_assignee_user_id
 			, @current_list_of_invitees
-            , @current_status
-            , @current_resolution
-            , @current_severity
+			, @current_status
+			, @current_resolution
+			, @current_severity
 			)
 			;
 		
@@ -540,15 +540,15 @@ BEGIN
 			, @case_title
 			, @user_id
 			, @update_what
-            , @old_value
-            , @new_value
+			, @old_value
+			, @new_value
 			, @case_reporter_user_id
 			, @old_case_assignee_user_id
 			, @new_case_assignee_user_id
 			, @current_list_of_invitees
-            , @current_status
-            , @current_resolution
-            , @current_severity
+			, @current_status
+			, @current_resolution
+			, @current_severity
 			)
 			;
 END;
@@ -580,9 +580,9 @@ BEGIN
 		SET @new_case_assignee_user_id = NULL;
 		SET @current_list_of_invitees_1 = NULL;
 		SET @current_list_of_invitees = NULL;
-        SET @current_status = NULL;
-        SET @current_resolution = NULL;
-        SET @current_severity = NULL;
+		SET @current_status = NULL;
+		SET @current_resolution = NULL;
+		SET @current_severity = NULL;
 
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_user_invited';
@@ -603,9 +603,9 @@ BEGIN
 			GROUP BY `bug_id`)
 			;
 		SET @current_list_of_invitees = IFNULL(@current_list_of_invitees_1, 0);
-        SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
-        SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
-        SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
 
 	# We insert the event in the relevant notification table		
 		INSERT INTO `ut_notification_case_invited`
@@ -620,8 +620,8 @@ BEGIN
 			, `new_case_assignee_user_id`
 			, `current_list_of_invitees`
 			, `current_status`
-            , `current_resolution`
-            , `current_severity`
+			, `current_resolution`
+			, `current_severity`
 			)
 			VALUES
 			(@notification_id
@@ -634,9 +634,9 @@ BEGIN
 			, @old_case_assignee_user_id
 			, @new_case_assignee_user_id
 			, @current_list_of_invitees
-            , @current_status
-            , @current_resolution
-            , @current_severity
+			, @current_status
+			, @current_resolution
+			, @current_severity
 			)
 			;
 		
@@ -653,9 +653,9 @@ BEGIN
 			, @old_case_assignee_user_id
 			, @new_case_assignee_user_id
 			, @current_list_of_invitees
-            , @current_status
-            , @current_resolution
-            , @current_severity
+			, @current_status
+			, @current_resolution
+			, @current_severity
 			)
 			;
 END;
@@ -682,9 +682,9 @@ BEGIN
 		SET @case_title = NULL;
 		SET @reporter_user_id = NULL;
 		SET @assignee_user_id = NULL;
-        SET @current_status = NULL;
-        SET @current_resolution = NULL;
-        SET @current_severity = NULL;
+		SET @current_status = NULL;
+		SET @current_resolution = NULL;
+		SET @current_severity = NULL;
 
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_new';
@@ -697,9 +697,9 @@ BEGIN
 		SET @case_title = NEW.`short_desc`;
 		SET @reporter_user_id = NEW.`reporter`;
 		SET @assignee_user_id = NEW.`assigned_to`;
-        SET @current_status = NEW.`bug_status`;
-        SET @current_resolution = NEW.`resolution`;
-        SET @current_severity = NEW.`bug_severity`;
+		SET @current_status = NEW.`bug_status`;
+		SET @current_resolution = NEW.`resolution`;
+		SET @current_severity = NEW.`bug_severity`;
 	
 	# We insert the event in the notification table
 		INSERT INTO `ut_notification_case_new`
@@ -711,8 +711,8 @@ BEGIN
 			, `reporter_user_id`
 			, `assignee_user_id`
 			, `current_status`
-            , `current_resolution`
-            , `current_severity`
+			, `current_resolution`
+			, `current_severity`
 			)
 			VALUES
 			(@notification_id
@@ -722,9 +722,9 @@ BEGIN
 			, @case_title
 			, @reporter_user_id
 			, @assignee_user_id
-            , @current_status
-            , @current_resolution
-            , @current_severity
+			, @current_status
+			, @current_resolution
+			, @current_severity
 			)
 			;
 	
@@ -738,9 +738,9 @@ BEGIN
 			, @case_title
 			, @reporter_user_id
 			, @assignee_user_id
-            , @current_status
-            , @current_resolution
-            , @current_severity
+			, @current_status
+			, @current_resolution
+			, @current_severity
 			)
 			;
 END;
@@ -774,9 +774,9 @@ BEGIN
 			SET @old_case_assignee_user_id = NULL;
 			SET @new_case_assignee_user_id = NULL;
 			SET @current_list_of_invitees = NULL;
-            SET @current_status = NULL;
-            SET @current_resolution = NULL;
-            SET @current_severity = NULL;
+			SET @current_status = NULL;
+			SET @current_resolution = NULL;
+			SET @current_severity = NULL;
 
 		# We have a clean slate, define the variables now
 			SET @notification_type = 'case_new_message';
@@ -793,9 +793,9 @@ BEGIN
 			SET @old_case_assignee_user_id = NEW.`old_case_assignee_user_id`;
 			SET @new_case_assignee_user_id = NEW.`new_case_assignee_user_id`;
 			SET @current_list_of_invitees = NEW.`current_list_of_invitees`;
-            SET @current_status = NEW.`current_status`;
-            SET @current_resolution = NEW.`current_resolution`;
-            SET @current_severity = NEW.`current_severity`;
+			SET @current_status = NEW.`current_status`;
+			SET @current_resolution = NEW.`current_resolution`;
+			SET @current_severity = NEW.`current_severity`;
 			
 		# We call the Lambda procedure to notify that there is a new comment
 			CALL `lambda_notification_message_new_comment`(@notification_type
@@ -811,9 +811,9 @@ BEGIN
 				, @old_case_assignee_user_id
 				, @new_case_assignee_user_id
 				, @current_list_of_invitees
-                , @current_status
-                , @current_resolution
-                , @current_severity
+				, @current_status
+				, @current_resolution
+				, @current_severity
 				)
 				;
 	END IF;
@@ -828,9 +828,9 @@ DROP TRIGGER `ut_notification_classify_messages`;
 DELIMITER $$
 
 CREATE
-    TRIGGER `ut_notification_classify_messages` 
-    AFTER INSERT ON `longdescs` 
-    FOR EACH ROW 
+	TRIGGER `ut_notification_classify_messages` 
+	AFTER INSERT ON `longdescs` 
+	FOR EACH ROW 
 BEGIN
 	# Clean Slate: make sure all the variables we use are properly flushed first
 		SET @notification_id = NULL;
@@ -851,9 +851,9 @@ BEGIN
 		SET @new_case_assignee_user_id = NULL;
 		SET @current_list_of_invitees_1 = NULL;
 		SET @current_list_of_invitees = NULL;
-        SET @current_status = NULL;
-        SET @current_resolution = NULL;
-        SET @current_severity = NULL;
+		SET @current_status = NULL;
+		SET @current_resolution = NULL;
+		SET @current_severity = NULL;
 
 	# We have a clean slate, define the variables now
 		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_message_new`) + 1);
@@ -883,9 +883,9 @@ BEGIN
 			GROUP BY `bug_id`)
 			;
 		SET @current_list_of_invitees = IFNULL(@current_list_of_invitees_1, 0);
-        SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
-        SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
-        SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
+		SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
 		
 	# We insert the event in the relevant notification table
 		INSERT INTO `ut_notification_message_new`
@@ -902,8 +902,8 @@ BEGIN
 			, `new_case_assignee_user_id`
 			, `current_list_of_invitees`
 			, `current_status`
-            , `current_resolution`
-            , `current_severity`
+			, `current_resolution`
+			, `current_severity`
 			)
 			VALUES
 			(@notification_id
@@ -918,9 +918,9 @@ BEGIN
 			, @old_case_assignee_user_id
 			, @new_case_assignee_user_id
 			, @current_list_of_invitees
-            , @current_status
-            , @current_resolution
-            , @current_severity
+			, @current_status
+			, @current_resolution
+			, @current_severity
 			)
 			;
 
