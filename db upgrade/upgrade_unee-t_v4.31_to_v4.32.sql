@@ -101,7 +101,7 @@
 #
 # What we need to do:
 #
-#	- IF user is in CC for a case in this unit, 
+#OK	- IF user is in CC for a case in this unit, 
 #	  THEN 
 #		- un-invite this user to the cases for this unit
 #		- Record a message in the case to explain what has been done.
@@ -128,7 +128,7 @@
 # When are we doing this?
 	SET @the_timestamp = NOW();
 
-# WIP Update the lambda to add more information to the payload. See issue #115
+# Update the lambda to add more information to the payload. See issue #115
 
 	DROP TABLE IF EXISTS `ut_notification_messages_cases`;
 
@@ -175,27 +175,26 @@
 	# Re-create the procedures
 
 # `lambda_notification_case_assignee_updated` the latest version was introduced in schema v4.32
-#
 
 DROP PROCEDURE IF EXISTS `lambda_notification_case_assignee_updated`;
 	
 DELIMITER $$
 CREATE PROCEDURE `lambda_notification_case_assignee_updated`(
-	IN notification_type VARCHAR(255)
-	, IN bz_source_table VARCHAR(240)
-	, IN notification_id VARCHAR(255)
-	, IN created_datetime DATETIME
-	, IN unit_id SMALLINT(6)
-	, IN case_id MEDIUMINT(9)
-	, IN case_title VARCHAR(255)
-	, IN invitor_user_id MEDIUMINT(9)
-	, IN case_reporter_user_id MEDIUMINT(9)
-	, IN old_case_assignee_user_id MEDIUMINT(9)
-	, IN new_case_assignee_user_id MEDIUMINT(9)
-	, IN current_list_of_invitees MEDIUMTEXT
-	, IN current_status VARCHAR(64)
-	, IN current_resolution VARCHAR(64)
-	, IN current_severity VARCHAR(64)
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN invitor_user_id mediumint(9)
+	, IN case_reporter_user_id mediumint(9)
+	, IN old_case_assignee_user_id mediumint(9)
+	, IN new_case_assignee_user_id mediumint(9)
+	, IN current_list_of_invitees mediumtext
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -204,25 +203,23 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "invitor_user_id" : "', invitor_user_id
-				, '", "case_reporter_user_id" : "', case_reporter_user_id
-				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-				, '", "current_list_of_invitees" : "', current_list_of_invitees
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+		, JSON_OBJECT ('notification_type' , notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'invitor_user_id', invitor_user_id
+			, 'case_reporter_user_id', case_reporter_user_id
+			, 'old_case_assignee_user_id', old_case_assignee_user_id
+			, 'new_case_assignee_user_id', new_case_assignee_user_id
+			, 'current_list_of_invitees', current_list_of_invitees
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -234,24 +231,24 @@ DROP PROCEDURE IF EXISTS `lambda_notification_case_updated`;
 	
 DELIMITER $$
 CREATE PROCEDURE `lambda_notification_case_updated`(
-	IN notification_type VARCHAR(255)
-	, IN bz_source_table VARCHAR(240)
-	, IN notification_id VARCHAR(255)
-	, IN created_datetime DATETIME
-	, IN unit_id SMALLINT(6)
-	, IN case_id MEDIUMINT(9)
-	, IN case_title VARCHAR(255)
-	, IN user_id MEDIUMINT(9)
-	, IN update_what VARCHAR(255)
-	, IN old_value VARCHAR(255)
-	, IN new_value VARCHAR(255)
-	, IN case_reporter_user_id MEDIUMINT(9)
-	, IN old_case_assignee_user_id MEDIUMINT(9)
-	, IN new_case_assignee_user_id MEDIUMINT(9)
-	, IN current_list_of_invitees MEDIUMTEXT
-	, IN current_status VARCHAR(64)
-	, IN current_resolution VARCHAR(64)
-	, IN current_severity VARCHAR(64)
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN user_id mediumint(9)
+	, IN update_what varchar(255)
+	, IN old_value varchar(255)
+	, IN new_value varchar(255)
+	, IN case_reporter_user_id mediumint(9)
+	, IN old_case_assignee_user_id mediumint(9)
+	, IN new_case_assignee_user_id mediumint(9)
+	, IN current_list_of_invitees mediumtext
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -260,28 +257,26 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "user_id" : "', user_id
-				, '", "update_what" : "', update_what
-				, '", "old_value" : "', old_value
-				, '", "new_value" : "', new_value
-				, '", "case_reporter_user_id" : "', case_reporter_user_id
-				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-				, '", "current_list_of_invitees" : "', current_list_of_invitees
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+		, JSON_OBJECT ('notification_type', notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'user_id', user_id
+			, 'update_what', update_what
+			, 'old_value', old_value
+			, 'new_value', new_value
+			, 'case_reporter_user_id', case_reporter_user_id
+			, 'old_case_assignee_user_id', old_case_assignee_user_id
+			, 'new_case_assignee_user_id', new_case_assignee_user_id
+			, 'current_list_of_invitees', current_list_of_invitees
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -293,21 +288,21 @@ DROP PROCEDURE IF EXISTS `lambda_notification_case_invited`;
 	
 DELIMITER $$
 CREATE PROCEDURE `lambda_notification_case_invited`(
-	IN notification_type VARCHAR(255)
-	, IN bz_source_table VARCHAR(240)
-	, IN notification_id VARCHAR(255)
-	, IN created_datetime DATETIME
-	, IN unit_id SMALLINT(6)
-	, IN case_id MEDIUMINT(9)
-	, IN case_title VARCHAR(255)
-	, IN invitee_user_id MEDIUMINT(9)
-	, IN case_reporter_user_id MEDIUMINT(9)
-	, IN old_case_assignee_user_id MEDIUMINT(9)
-	, IN new_case_assignee_user_id MEDIUMINT(9)
-	, IN current_list_of_invitees MEDIUMTEXT
-	, IN current_status VARCHAR(64)
-	, IN current_resolution VARCHAR(64)
-	, IN current_severity VARCHAR(64)
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN invitee_user_id mediumint(9)
+	, IN case_reporter_user_id mediumint(9)
+	, IN old_case_assignee_user_id mediumint(9)
+	, IN new_case_assignee_user_id mediumint(9)
+	, IN current_list_of_invitees mediumtext
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -316,25 +311,23 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "invitee_user_id" : "', invitee_user_id
-				, '", "case_reporter_user_id" : "', case_reporter_user_id
-				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-				, '", "current_list_of_invitees" : "', current_list_of_invitees
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+		, JSON_OBJECT ('notification_type', notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'invitee_user_id', invitee_user_id
+			, 'case_reporter_user_id', case_reporter_user_id
+			, 'old_case_assignee_user_id', old_case_assignee_user_id
+			, 'new_case_assignee_user_id', new_case_assignee_user_id
+			, 'current_list_of_invitees', current_list_of_invitees
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -346,18 +339,18 @@ DROP PROCEDURE IF EXISTS `lambda_notification_case_new`;
 	
 DELIMITER $$
 CREATE PROCEDURE `lambda_notification_case_new`(
-	IN notification_type VARCHAR(255)
-	, IN bz_source_table VARCHAR(240)
-	, IN notification_id VARCHAR(255)
-	, IN created_datetime DATETIME
-	, IN unit_id SMALLINT(6)
-	, IN case_id MEDIUMINT(9)
-	, IN case_title VARCHAR(255)
-	, IN reporter_user_id MEDIUMINT(9)
-	, IN assignee_user_id MEDIUMINT(9)
-	, IN current_status VARCHAR(64)
-	, IN current_resolution VARCHAR(64)
-	, IN current_severity VARCHAR(64)
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN reporter_user_id mediumint(9)
+	, IN assignee_user_id mediumint(9)
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -366,22 +359,20 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "reporter_user_id" : "', reporter_user_id
-				, '", "assignee_user_id" : "', assignee_user_id
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+		, JSON_OBJECT ('notification_type', notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'reporter_user_id', reporter_user_id
+			, 'assignee_user_id', assignee_user_id
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -393,22 +384,22 @@ DROP PROCEDURE IF EXISTS `lambda_notification_message_new_comment`;
 	
 DELIMITER $$
 CREATE PROCEDURE `lambda_notification_message_new_comment`(
-	IN notification_type VARCHAR(255)
-	, IN bz_source_table VARCHAR(240)
-	, IN notification_id VARCHAR(255)
-	, IN created_datetime DATETIME
-	, IN unit_id SMALLINT(6)
-	, IN case_id MEDIUMINT(9)
-	, IN case_title VARCHAR(255)
-	, IN created_by_user_id MEDIUMINT(9)
-	, IN message_truncated VARCHAR(255)
-	, IN case_reporter_user_id MEDIUMINT(9)
-	, IN old_case_assignee_user_id MEDIUMINT(9)
-	, IN new_case_assignee_user_id MEDIUMINT(9)
-	, IN current_list_of_invitees MEDIUMTEXT
-	, IN current_status VARCHAR(64)
-	, IN current_resolution VARCHAR(64)
-	, IN current_severity VARCHAR(64)
+	IN notification_type varchar(255)
+	, IN bz_source_table varchar(240)
+	, IN notification_id varchar(255)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN case_title varchar(255)
+	, IN created_by_user_id mediumint(9)
+	, IN message_truncated varchar(255)
+	, IN case_reporter_user_id mediumint(9)
+	, IN old_case_assignee_user_id mediumint(9)
+	, IN new_case_assignee_user_id mediumint(9)
+	, IN current_list_of_invitees mediumtext
+	, IN current_status varchar(64)
+	, IN current_resolution varchar(64)
+	, IN current_severity varchar(64)
 	)
 	LANGUAGE SQL
 SQL SECURITY INVOKER
@@ -417,26 +408,24 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "created_by_user_id" : "', created_by_user_id
-				, '", "message_truncated" : "', message_truncated
-				, '", "case_reporter_user_id" : "', case_reporter_user_id
-				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-				, '", "current_list_of_invitees" : "', current_list_of_invitees
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+		, JSON_OBJECT('notification_type', notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'created_by_user_id', created_by_user_id
+			, 'message_truncated', message_truncated
+			, 'case_reporter_user_id', case_reporter_user_id
+			, 'old_case_assignee_user_id', old_case_assignee_user_id
+			, 'new_case_assignee_user_id', new_case_assignee_user_id
+			, 'current_list_of_invitees', current_list_of_invitees
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -1170,23 +1159,25 @@ BEGIN
 					)
 					;
 
-				INSERT INTO `longdescs`
-					(`bug_id`
-					, `who`
-					, `bug_when`
-					, `thetext`
-					)
-					SELECT
-						`cc`.`bug_id`
-						, @creator_bz_id
-						, @timestamp
-						, @comment_remove_user_from_case
-						FROM `bugs`
-						INNER JOIN `cc` 
-							ON (`cc`.`bug_id` = `bugs`.`bug_id`)
-						WHERE (`bugs`.`product_id` = @product_id)  
-							AND (`cc`.`who` = @bz_user_id)
-						;
+				# Insert the comment in all the cases we are touching
+
+					INSERT INTO `longdescs`
+						(`bug_id`
+						, `who`
+						, `bug_when`
+						, `thetext`
+						)
+						SELECT
+							`cc`.`bug_id`
+							, @creator_bz_id
+							, @timestamp
+							, @comment_remove_user_from_case
+							FROM `bugs`
+							INNER JOIN `cc` 
+								ON (`cc`.`bug_id` = `bugs`.`bug_id`)
+							WHERE (`bugs`.`product_id` = @product_id)  
+								AND (`cc`.`who` = @bz_user_id)
+							;
 
 				# Record the change in the Bug history for all the cases where:
 				#	- the product/unit is the product/unit we are removing the user from
@@ -1225,7 +1216,7 @@ BEGIN
 						AND (`cc`.`who` = @bz_user_id)
 					;
 		
-		# We need to check if the user we are removing is the current default user for this role for this unit.
+		# We need to check if the user we are removing is the current default assignee for this role for this unit.
 
 			# What is the current default assignee for this role/component?
 
@@ -1423,60 +1414,70 @@ BEGIN
 					WHERE `id` = @component_id_this_role)
 					;
 
-			# We need to update the assignee for all the cases 
-			#	- in this unit for this PRODUCT/Unit
-			#	- currently assigned to the user we are removing from this unit.
-
-				UPDATE `bugs`
-					SET `assigned_to` = @component_initialowner
-					WHERE `product_id` = @product_id
-						AND `assigned_to` = @bz_user_id
-					;
-
 			# Add a comment to the case to let everyone know what happened.
 
-			   	SET @comment_change_assignee_for_case = (CONCAT ('We removed a user in the role '
-						, @user_role_type_name 
-						, '. This user cannot be the assignee for this case anymore since he/she has no more role in this unit. We have assigned this case to the default assignee for this role in this unit'
+				# Prepare the comment:
+
+					SET @comment_change_assignee_for_case = (CONCAT ('We removed a user in the role '
+							, @user_role_type_name 
+							, '. This user cannot be the assignee for this case anymore since he/she has no more role in this unit. We have assigned this case to the default assignee for this role in this unit'
+							)
 						)
-					)
-					;
-
-				INSERT INTO `longdescs`
-					(`bug_id`
-					, `who`
-					, `bug_when`
-					, `thetext`
-					)
-					VALUES
-						(@bz_case_id
-						, @creator_bz_id
-						, NOW()
-						, @comment_change_assignee_for_case
-						)
-					;
-
-
-####
-# WIP WE NEED TO LOG
-####
-
-
-				SET @old_component_description = (SELECT `description` 
-					FROM `components` 
-						WHERE `id` = @component_id_this_role)
 						;
-		
-			# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
-				SET @dummy_user_pub_name = (SELECT `realname` 
-					FROM `profiles`
-					WHERE `userid` = @bz_user_id_dummy_user_this_role
-					)
-					;
 
-####
-# END WIP WE NEED TO LOG
-####			
+				# Insert the comment in all the cases we are touching
+
+					INSERT INTO `longdescs`
+						(`bug_id`
+						, `who`
+						, `bug_when`
+						, `thetext`
+						)
+						SELECT
+							`cc`.`bug_id`
+							, @creator_bz_id
+							, @timestamp
+							, @comment_change_assignee_for_case
+							FROM `bugs`
+							INNER JOIN `cc` 
+								ON (`cc`.`bug_id` = `bugs`.`bug_id`)
+							WHERE (`bugs`.`product_id` = @product_id)  
+								AND (`cc`.`who` = @bz_user_id)
+							;
+
+				# Record the change in the Bug history for all the cases where:
+				#	- the product/unit is the product/unit we are removing the user from
+				#	- The user we are removing is the current assignee for these bugs/cases
+
+					INSERT INTO	`bugs_activity`
+						(`bug_id` 
+						, `who` 
+						, `bug_when`
+						, `fieldid`
+						, `added`
+						, `removed`
+						)
+						SELECT
+							`bugs`.`bug_id`
+							, @creator_bz_id
+							, @timestamp
+							, 16
+							, @component_initialowner
+							, @bz_user_id
+							FROM `bugs`
+							WHERE (`bugs`.`product_id` = @product_id)  
+								AND (`bugs`.`assigned_to` = @bz_user_id)
+						;
+
+				# We can now update the assignee for all the cases 
+				#	- in this unit for this PRODUCT/Unit
+				#	- currently assigned to the user we are removing from this unit.
+
+					UPDATE `bugs`
+						SET `assigned_to` = @component_initialowner
+						WHERE `product_id` = @product_id
+							AND `assigned_to` = @bz_user_id
+						;			
 
 		# We need to check if the user we are removing is the current qa user for this role for this unit.
 
@@ -1573,6 +1574,19 @@ BEGIN
 ####
 # WIP WE NEED TO LOG
 ####
+
+				SET @old_component_description = (SELECT `description` 
+					FROM `components` 
+						WHERE `id` = @component_id_this_role)
+						;
+		
+			# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
+				SET @dummy_user_pub_name = (SELECT `realname` 
+					FROM `profiles`
+					WHERE `userid` = @bz_user_id_dummy_user_this_role
+					)
+					;
+
 					# Log the actions of the script.
 							SET @script_log_message = CONCAT('The component: '
 								, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))

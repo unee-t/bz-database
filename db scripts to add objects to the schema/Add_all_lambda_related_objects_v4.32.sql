@@ -20,6 +20,9 @@
 #	   Why?
 #	   Because this script does NOT re-create the associated DB tables that we have 
 #	   created to log what happens when SQL triggers are activated
+#
+#	3- This requires MySQL 5.7.22 or later OR Maria DB 10.2.3 or later
+#	   these are the only version which support the JSON functions
 ###################################################################################
 #
 # As of DB schema v4.31 we have
