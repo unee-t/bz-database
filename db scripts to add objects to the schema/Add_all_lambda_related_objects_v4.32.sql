@@ -78,24 +78,22 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "invitor_user_id" : "', invitor_user_id
-				, '", "case_reporter_user_id" : "', case_reporter_user_id
-				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-				, '", "current_list_of_invitees" : "', current_list_of_invitees
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+		, JSON_OBJECT ('notification_type' , notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'invitor_user_id', invitor_user_id
+			, 'case_reporter_user_id', case_reporter_user_id
+			, 'old_case_assignee_user_id', old_case_assignee_user_id
+			, 'new_case_assignee_user_id', new_case_assignee_user_id
+			, 'current_list_of_invitees', current_list_of_invitees
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -134,27 +132,25 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "user_id" : "', user_id
-				, '", "update_what" : "', update_what
-				, '", "old_value" : "', old_value
-				, '", "new_value" : "', new_value
-				, '", "case_reporter_user_id" : "', case_reporter_user_id
-				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-				, '", "current_list_of_invitees" : "', current_list_of_invitees
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+		, JSON_OBJECT ('notification_type', notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'user_id', user_id
+			, 'update_what', update_what
+			, 'old_value', old_value
+			, 'new_value', new_value
+			, 'case_reporter_user_id', case_reporter_user_id
+			, 'old_case_assignee_user_id', old_case_assignee_user_id
+			, 'new_case_assignee_user_id', new_case_assignee_user_id
+			, 'current_list_of_invitees', current_list_of_invitees
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -190,24 +186,22 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "invitee_user_id" : "', invitee_user_id
-				, '", "case_reporter_user_id" : "', case_reporter_user_id
-				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-				, '", "current_list_of_invitees" : "', current_list_of_invitees
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+		, JSON_OBJECT ('notification_type', notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'invitee_user_id', invitee_user_id
+			, 'case_reporter_user_id', case_reporter_user_id
+			, 'old_case_assignee_user_id', old_case_assignee_user_id
+			, 'new_case_assignee_user_id', new_case_assignee_user_id
+			, 'current_list_of_invitees', current_list_of_invitees
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -240,21 +234,19 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "reporter_user_id" : "', reporter_user_id
-				, '", "assignee_user_id" : "', assignee_user_id
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+		, JSON_OBJECT ('notification_type', notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'reporter_user_id', reporter_user_id
+			, 'assignee_user_id', assignee_user_id
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
@@ -291,25 +283,23 @@ BEGIN
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
 	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
-		, CONCAT ('{ '
-				, '"notification_type": "', notification_type
-				, '", "bz_source_table": "', bz_source_table
-				, '", "notification_id": "', notification_id
-				, '", "created_datetime" : "', created_datetime
-				, '", "unit_id" : "', unit_id
-				, '", "case_id" : "', case_id
-				, '", "case_title" : "', case_title
-				, '", "created_by_user_id" : "', created_by_user_id
-				, '", "message_truncated" : "', message_truncated
-				, '", "case_reporter_user_id" : "', case_reporter_user_id
-				, '", "old_case_assignee_user_id" : "', old_case_assignee_user_id
-				, '", "new_case_assignee_user_id" : "', new_case_assignee_user_id
-				, '", "current_list_of_invitees" : "', current_list_of_invitees
-				, '", "current_status" : "', current_status
-				, '", "current_resolution" : "', current_resolution
-				, '", "current_severity" : "', current_severity
-				, '"}'
-				)
+		, JSON_OBJECT('notification_type', notification_type
+			, 'bz_source_table', bz_source_table
+			, 'notification_id', notification_id
+			, 'created_datetime', created_datetime
+			, 'unit_id', unit_id
+			, 'case_id', case_id
+			, 'case_title', case_title
+			, 'created_by_user_id', created_by_user_id
+			, 'message_truncated', message_truncated
+			, 'case_reporter_user_id', case_reporter_user_id
+			, 'old_case_assignee_user_id', old_case_assignee_user_id
+			, 'new_case_assignee_user_id', new_case_assignee_user_id
+			, 'current_list_of_invitees', current_list_of_invitees
+			, 'current_status', current_status
+			, 'current_resolution', current_resolution
+			, 'current_severity', current_severity
+			)
 		)
 		;
 END $$
