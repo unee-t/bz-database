@@ -3963,10 +3963,8 @@ DROP TABLE IF EXISTS `ut_local_dev_lambda_calls`;
 
 CREATE TABLE `ut_local_dev_lambda_calls` (
   `notification_type` varchar(255) NOT NULL,
-  `json_payload` text,
-  KEY `notification_type_must_exist` (`notification_type`),
-  CONSTRAINT `notification_type_must_exist` FOREIGN KEY (`notification_type`) REFERENCES `ut_notification_types` (`notification_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  `json_payload` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_local_dev_lambda_calls` */
 
