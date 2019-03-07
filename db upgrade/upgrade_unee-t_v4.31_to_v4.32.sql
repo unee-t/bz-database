@@ -33,7 +33,7 @@
 ###############################
 # In this update
 #
-# OK Update the lambda to add more information to the payload. See issue #115 (https://github.com/unee-t/bz-database/issues/115)
+# Update the lambda to add more information to the payload. See issue #115 (https://github.com/unee-t/bz-database/issues/115)
 #   - Current Status for the case
 #   - Current Resolution for the case
 #   - In case of an update to the case: New value of the thing that has been changed in the case.
@@ -93,7 +93,7 @@
 #		- `ut_notification_classify_messages` latest version introduced in v3.17
 #			the log for this trigger is in the table `ut_notification_message_new`
 #
-# WIP Fixes issue #114 (https://github.com/unee-t/bz-database/issues/114)
+# Fixes issue #114 (https://github.com/unee-t/bz-database/issues/114)
 # Alter the procedure `remove_user_from_role`
 # We need to make sure that the user that we are removing from a role in a unit:
 #   - is NOT currently invited to a case for this unit
@@ -101,7 +101,7 @@
 #
 # What we need to do:
 #
-#OK	- IF user is in CC for a case in this unit, 
+#	- IF user is in CC for a case in this unit, 
 #	  THEN 
 #		- un-invite this user to the cases for this unit
 #		- Record a message in the case to explain what has been done.
@@ -1037,26 +1037,7 @@ $$
 
 DELIMITER ;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#############
-#
-# WIP Update the procedure `remove_user_from_role`
-#
-#############
+# Update the procedure `remove_user_from_role`
 	
 	DROP PROCEDURE IF EXISTS `remove_user_from_role`;
 
@@ -1136,8 +1117,8 @@ BEGIN
 
 					SET @user_role_type_this_role = (SELECT `role_type_id` 
 						FROM `ut_product_group`
-						WHERE `component_id` = @component_id_this_role
-							AND `group_type_id` = 22
+						WHERE (`component_id` = @component_id_this_role)
+							AND (`group_type_id` = 22)
 						)
 						;
 
@@ -1260,6 +1241,7 @@ BEGIN
 							SET @oldest_default_cc_this_role = (SELECT MIN(`user_id`)
 							FROM `component_cc`
 								WHERE `component_id` = @component_id_this_role
+								)
 								;
 
 							SET @assignee_in_option_1 = IFNULL(@oldest_default_cc_this_role, 0);
@@ -1273,15 +1255,19 @@ BEGIN
 
 										SET @old_component_description = (SELECT `description` 
 											FROM `components` 
-												WHERE `id` = @component_id_this_role)
-												;
+											WHERE `id` = @component_id_this_role
+											)
+											;
 
 									# We use this user ID as the new default assignee for this component/role
 
 										SET @assignee_in_option_1_name = (SELECT `realname` 
 											FROM `profiles` 
-											WHERE `userid` = @assignee_in_option_1)
+											WHERE `userid` = @assignee_in_option_1
+											)
 											;
+
+									# We can now update the default assignee for this component/role
 
 										UPDATE `components`
 											SET `initialowner` = @assignee_in_option_1
@@ -1307,8 +1293,8 @@ BEGIN
 											,`at_time`
 											) 
 											VALUES 
-											(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@bz_user_id,@assignee_in_option_1,@timestamp)
-											, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@assignee_in_option_1_name,@timestamp)
+											(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialowner', @bz_user_id, @assignee_in_option_1, @timestamp)
+											, (@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'description', @old_component_description, @assignee_in_option_1_name, @timestamp)
 											;
 
 								END IF;
@@ -1332,7 +1318,8 @@ BEGIN
 
 										SET @oldest_other_user_in_this_role = (SELECT MIN(`user_id`)
 											FROM `user_group_map`
-											WHERE `group_id` = @option_2_group_id_this_role)
+											WHERE `group_id` = @option_2_group_id_this_role
+											)
 											;
 
 										SET @assignee_in_option_2 = IFNULL(@oldest_default_cc_this_role, 0);
@@ -1348,15 +1335,19 @@ BEGIN
 
 												SET @old_component_description = (SELECT `description` 
 													FROM `components` 
-														WHERE `id` = @component_id_this_role)
-														;
+													WHERE `id` = @component_id_this_role
+													)
+													;
 
 											# We use this user ID as the new default assignee for this component/role.
 
 												SET @assignee_in_option_2_name = (SELECT `realname` 
 													FROM `profiles` 
-													WHERE `userid` = @assignee_in_option_2)
+													WHERE `userid` = @assignee_in_option_2
+													)
 													;
+
+											# We can now update the default assignee for this component/role
 
 												UPDATE `components`
 													SET `initialowner` = @assignee_in_option_2
@@ -1375,8 +1366,8 @@ BEGIN
 													,`at_time`
 													) 
 													VALUES 
-													(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@bz_user_id,@assignee_in_option_2,@timestamp)
-													, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@assignee_in_option_2_name,@timestamp)
+													(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialowner', @bz_user_id, @assignee_in_option_2, @timestamp)
+													, (@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'description', @old_component_description, @assignee_in_option_2_name, @timestamp)
 													;
 
 										END IF;
@@ -1391,8 +1382,9 @@ BEGIN
 
 												SET @old_component_description = (SELECT `description` 
 													FROM `components` 
-														WHERE `id` = @component_id_this_role)
-														;
+													WHERE `id` = @component_id_this_role
+													)
+													;
 
 											# We define the dummy user role description based on the variable @id_role_type
 												SET @dummy_user_role_desc = IF(@id_role_type = 1
@@ -1461,8 +1453,8 @@ BEGIN
 														,`at_time`
 														) 
 														VALUES 
-														(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialowner',@bz_user_id,@bz_user_id_dummy_user_this_role,@timestamp)
-														, (@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'description',@old_component_description,@dummy_user_role_desc,@timestamp)
+														(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialowner', @bz_user_id, @bz_user_id_dummy_user_this_role, @timestamp)
+														, (@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'description', @old_component_description, @dummy_user_role_desc, @timestamp)
 														;
 										END IF;
 								END IF;
@@ -1475,7 +1467,8 @@ BEGIN
 
 				SET @component_initialowner = (SELECT `initialowner`
 					FROM `components` 
-					WHERE `id` = @component_id_this_role)
+					WHERE `id` = @component_id_this_role
+					)
 					;
 
 			# Add a comment to the case to let everyone know what is happening.
@@ -1484,8 +1477,8 @@ BEGIN
 
 					SET @user_role_type_this_role = (SELECT `role_type_id` 
 						FROM `ut_product_group`
-						WHERE `component_id` = @component_id_this_role
-							AND `group_type_id` = 22
+						WHERE (`component_id` = @component_id_this_role)
+							AND (`group_type_id` = 22)
 						)
 						;
 
@@ -1564,7 +1557,8 @@ BEGIN
 
 				SET @old_component_initialqacontact = (SELECT `initialqacontact` 
 					FROM `components` 
-					WHERE `id` = @component_id_this_role)
+					WHERE `id` = @component_id_this_role
+					)
 					;
 
 			# Check if the current QA contact for all the cases in this product/unit is the user we are removing
@@ -1617,21 +1611,29 @@ BEGIN
 
 										SET @qa_in_option_1_name = (SELECT `realname` 
 											FROM `profiles` 
-											WHERE `userid` = @qa_in_option_1)
+											WHERE `userid` = @qa_in_option_1
+											)
 											;
 
 										UPDATE `components`
-											SET `initialowner` = @qa_in_option_1
-												,`description` = @qa_in_option_1_name
+											SET `initialqacontact` = @qa_in_option_1
 											WHERE `id` = @component_id_this_role
 											;
 
-									# We remove this user ID from the list of users in Default CC for this role/component
-
-										DELETE FROM `component_cc`
-											WHERE `component_id` = @component_id_this_role
-												AND `user_id` = @qa_in_option_1
-												;
+									# We log the change in the BZ native audit log
+										
+										INSERT  INTO `audit_log`
+											(`user_id`
+											,`class`
+											,`object_id`
+											,`field`
+											,`removed`
+											,`added`
+											,`at_time`
+											) 
+											VALUES 
+											(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialqacontact', @bz_user_id, @qa_in_option_1, @timestamp)
+											;
 
 								END IF;
 
@@ -1645,8 +1647,8 @@ BEGIN
 
 										SET @option_2_group_id_this_role = (SELECT `group_id`
 											FROM `ut_product_group`
-											WHERE `component_id` = @component_id_this_role
-												AND `group_type_id` = 22
+											WHERE (`component_id` = @component_id_this_role)
+												AND (`group_type_id` = 22)
 												)
 											;
 
@@ -1654,7 +1656,8 @@ BEGIN
 
 										SET @oldest_other_user_in_this_role = (SELECT MIN(`user_id`)
 											FROM `user_group_map`
-											WHERE `group_id` = @option_2_group_id_this_role)
+											WHERE `group_id` = @option_2_group_id_this_role
+											)
 											;
 
 										SET @qa_in_option_2 = IFNULL(@oldest_default_cc_this_role, 0);
@@ -1670,13 +1673,30 @@ BEGIN
 
 												SET @qa_in_option_2_name = (SELECT `realname` 
 													FROM `profiles` 
-													WHERE `userid` = @qa_in_option_2)
+													WHERE `userid` = @qa_in_option_2
+													)
 													;
 
+											# We can now update the default assignee for this component/role
+
 												UPDATE `components`
-													SET `initialowner` = @qa_in_option_2
-														,`description` = @qa_in_option_2_name
+													SET `initialqacontact` = @qa_in_option_2
 													WHERE `id` = @component_id_this_role
+													;
+
+											# We log the change in the BZ native audit log
+											
+												INSERT  INTO `audit_log`
+													(`user_id`
+													,`class`
+													,`object_id`
+													,`field`
+													,`removed`
+													,`added`
+													,`at_time`
+													) 
+													VALUES 
+													(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialqacontact', @bz_user_id, @qa_in_option_2, @timestamp)
 													;
 
 										END IF;
@@ -1737,141 +1757,40 @@ BEGIN
 											# We can now do the update
 
 												UPDATE `components`
-												SET `initialowner` = @bz_user_id_dummy_user_this_role
-													,`description` = @dummy_user_role_desc
+												SET `initialqacontact` = @bz_user_id_dummy_user_this_role
 													WHERE 
 													`id` = @component_id_this_role
 													;
+
+											# We log the change in the BZ native audit log
+											
+												INSERT  INTO `audit_log`
+													(`user_id`
+													,`class`
+													,`object_id`
+													,`field`
+													,`removed`
+													,`added`
+													,`at_time`
+													) 
+													VALUES 
+													(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialqacontact', @bz_user_id, @bz_user_id_dummy_user_this_role, @timestamp)
+													;
+
 										END IF;
 								END IF;
 				END IF;
+
+	# Housekeeping 
+	# Clean up the variables we used specifically for this script
+
+		SET @script = NULL;
+		SET @timestamp = NULL;
+
 	END IF;
+
 END $$
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-####
-# WIP WE NEED TO LOG
-#	- BZ native logs
-#		- Change initial onwer DONE
-#		- Change initial qa contact WIP
-#	- ut_script_log:
-#		- Actions of the script
-####
-
-				SET @old_component_description = (SELECT `description` 
-					FROM `components` 
-						WHERE `id` = @component_id_this_role)
-						;
-		
-			# We define the dummy user public name based on the variable @bz_user_id_dummy_user_this_role
-				SET @dummy_user_pub_name = (SELECT `realname` 
-					FROM `profiles`
-					WHERE `userid` = @bz_user_id_dummy_user_this_role
-					)
-					;
-
-					# Log the actions of the script.
-							SET @script_log_message = CONCAT('The component: '
-								, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
-								, ' (for the role_type_id #'
-								, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
-								, ') has been updated.'
-								, '\r\The default user now associated to this role is the dummy bz user #'
-								, (SELECT IFNULL(@bz_user_id_dummy_user_this_role, 'bz_user_id is NULL'))
-								, ' (real name: '
-								, (SELECT IFNULL(@dummy_user_pub_name, 'user_pub_name is NULL'))
-								, ') for the unit #' 
-								, @product_id
-								);
-								
-							INSERT INTO `ut_script_log`
-								(`datetime`
-								, `script`
-								, `log`
-								)
-								VALUES
-								(@timestamp, @script, @script_log_message)
-								;
-						
-						# Cleanup the variables for the log messages
-							SET @script_log_message = NULL;
-
-
-
-			# Log the actions of the script.
-				SET @script_log_message = CONCAT('The component: '
-					, (SELECT IFNULL(@component_id_this_role, 'component_id_this_role is NULL'))
-					, ' (for the role_type_id #'
-					, (SELECT IFNULL(@id_role_type, 'id_role_type is NULL'))
-					, ') has been updated.'
-					, '\r\The QA contact now associated to this role is the dummy bz user #'
-					, (SELECT IFNULL(@bz_user_id_dummy_user_this_role, 'bz_user_id is NULL'))
-					, ' (real name: '
-					, (SELECT IFNULL(@dummy_user_pub_name, 'user_pub_name is NULL'))
-					, ') for the unit #' 
-					, @product_id
-					);
-					
-				INSERT INTO `ut_script_log`
-					(`datetime`
-					, `script`
-					, `log`
-						)
-					VALUES
-					(@timestamp, @script, @script_log_message)
-					;
-						
-			# We update the BZ logs
-				INSERT  INTO `audit_log`
-					(`user_id`
-					,`class`
-					,`object_id`
-					,`field`
-					,`removed`
-					,`added`
-					,`at_time`
-					) 
-					VALUES 
-					(@creator_bz_id,'Bugzilla::Component',@component_id_this_role,'initialqacontact',@component_initialqacontact,@bz_user_id_dummy_user_this_role,@timestamp)
-					;
-				 
-				# Cleanup the variables for the log messages
-					SET @script_log_message = NULL;
-
-		
-		# Clean up the variable for the script and timestamp
-			SET @script = NULL;
-			SET @timestamp = NULL;
-			SET @user_role_type_name = NULL;
-
-####
-#
-# END WIP
-#
-####
-
-
-
-
-
-
-
-
 
 # We also make sure that we use the correct definition for the Unee-T fields:
 
