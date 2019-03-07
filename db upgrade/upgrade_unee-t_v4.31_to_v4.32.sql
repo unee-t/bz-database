@@ -1,16 +1,14 @@
 ####################################################################################
 #
-#
-# This is a MAJOR upgrade. We MUST use at least Aurora MySQl 5.7+ if you want 
+# We MUST use at least Aurora MySQl 5.7.22+ if you want 
 # to be able to use the Lambda function Unee-T depends on to work as intended
 #
 # Alternativey if you do NOT need to use the Lambda function, it is possible to use
-#   - MySQL 5.7 +
-#   - MariaDb 10.2+
-#
+#   - MySQL 5.7.22 +
+#   - MariaDb 10.2.3 +
 #
 ####################################################################################
-
+#
 # For any question about this script, ask Franck
 #
 ###################################################################################
@@ -1598,6 +1596,7 @@ BEGIN
 							SET @oldest_default_cc_this_role = (SELECT MIN(`user_id`)
 								FROM `component_cc`
 								WHERE `component_id` = @component_id_this_role
+								)
 								;
 
 							SET @qa_in_option_1 = IFNULL(@oldest_default_cc_this_role, 0);
@@ -1649,7 +1648,7 @@ BEGIN
 											FROM `ut_product_group`
 											WHERE (`component_id` = @component_id_this_role)
 												AND (`group_type_id` = 22)
-												)
+											)
 											;
 
 									# What is the oldest user in this group who is NOT a dummy user?
