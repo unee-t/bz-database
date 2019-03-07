@@ -22,7 +22,7 @@
 	SET @new_schema_version = 'v4.32';
 #
 # What is the name of this script?
-	SET @this_script = CONCAT ('upgrade_unee-t_', @old_schema_version, '_to_', @new_schema_version);
+	SET @this_script = CONCAT ('upgrade_unee-t_', @old_schema_version, '_to_', @new_schema_version, '.sql');
 #
 ###############################
 #
