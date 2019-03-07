@@ -37,7 +37,6 @@
 #   - Current Status for the case
 #   - Current Resolution for the case
 #   - In case of an update to the case: New value of the thing that has been changed in the case.
-# In order to do this we need to:
 #
 #   - Do some housekeeping:
 #	   - the Table `ut_notification_messages_cases` should be dropped (obsolete since schema v3.13)
@@ -72,6 +71,7 @@
 #		   - 'current_severity' VARCHAR(64)
 #
 #   - Re-Create the procedures and add the additional payload
+#	  Use `JSON_OBJECT` instead of `CONCAT` to generate the payload for the lambdas.
 #	   - `lambda_notification_case_assignee_updated` latest version introduced in v3.18
 #	   - `lambda_notification_case_updated` latest version introduced in v3.15
 #	   - `lambda_notification_case_invited` latest version introduced in v3.15
@@ -172,7 +172,7 @@
 			ADD COLUMN `current_severity` VARCHAR(64)  COLLATE utf8mb4_unicode_520_ci NULL COMMENT 'The current severity of the case/bug' AFTER `current_resolution` ;
 		/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 
-	# Re-create the procedures
+# Re-create the procedures:
 
 # `lambda_notification_case_assignee_updated` the latest version was introduced in schema v4.32
 
@@ -967,7 +967,6 @@ BEGIN
 		SET @current_severity = NULL;
 
 	# We have a clean slate, define the variables now
-		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_message_new`) + 1);
 		SET @created_datetime = NOW();
 		SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = NEW.`bug_id`);
 		SET @case_id = NEW.`bug_id`;
@@ -981,9 +980,9 @@ BEGIN
 			;
 		SET @is_case_description = IF(@count_comments = 1 , 1, 0);
 		SET @message = (CAST(NEW.`thetext` AS CHAR));
-		SET @message_sanitized_1 = REPLACE(@message,'\r\n',' ');
-		SET @message_sanitized_2 = REPLACE(@message_sanitized_1,'\r',' ');
-		SET @message_sanitized_3 = REPLACE(@message_sanitized_2,'\n',' ');
+		SET @message_sanitized_1 = REPLACE(@message,'\r\n', ' ');
+		SET @message_sanitized_2 = REPLACE(@message_sanitized_1,'\r', ' ');
+		SET @message_sanitized_3 = REPLACE(@message_sanitized_2,'\n', ' ');
 		SET @message_truncated = (SUBSTRING(@message_sanitized_3, 1, 255));
 		SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @old_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
@@ -1000,8 +999,7 @@ BEGIN
 		
 	# We insert the event in the relevant notification table
 		INSERT INTO `ut_notification_message_new`
-			(notification_id
-			, `created_datetime`
+			(`created_datetime`
 			, `unit_id`
 			, `case_id`
 			, `case_title`
@@ -1017,8 +1015,7 @@ BEGIN
 			, `current_severity`
 			)
 			VALUES
-			(@notification_id
-			, @created_datetime
+			(@created_datetime
 			, @unit_id
 			, @case_id
 			, @case_title
