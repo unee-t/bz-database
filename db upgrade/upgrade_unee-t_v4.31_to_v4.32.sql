@@ -31,6 +31,10 @@
 ###############################
 # In this update
 #
+# Make the following fields editable on case creation:
+#	- `Next Step`
+#	- `Next Step Date`
+#
 # Update the lambda to add more information to the payload. See issue #115 (https://github.com/unee-t/bz-database/issues/115)
 #   - Current Status for the case
 #   - Current Resolution for the case
@@ -125,6 +129,20 @@
 
 # When are we doing this?
 	SET @the_timestamp = NOW();
+
+# Make the following fields editable on case creation:
+#	- `Next Step`
+#	- `Next Step Date`
+
+	# The field 'Next Step' should be editable on case/bug creation
+	UPDATE `fielddefs`
+		SET `enter_bug` = 1
+		WHERE `id` = 65;
+
+	# The field 'Next Step Date' should be editable on case/bug creation   
+	UPDATE `fielddefs`
+		SET `enter_bug` = 1
+    WHERE `id` = 66;
 
 # Update the lambda to add more information to the payload. See issue #115
 
