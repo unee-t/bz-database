@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.1.2 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v4.32
+MySQL - 5.7.12 : Database - unee_t_v4.33
 *********************************************************************
 */
 
@@ -17,7 +17,7 @@ MySQL - 5.7.12 : Database - unee_t_v4.32
 DROP TABLE IF EXISTS `attach_data`;
 
 CREATE TABLE `attach_data` (
-  `id` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL,
   `thedata` longblob NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_attach_data_id_attachments_attach_id` FOREIGN KEY (`id`) REFERENCES `attachments` (`attach_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -30,15 +30,15 @@ CREATE TABLE `attach_data` (
 DROP TABLE IF EXISTS `attachments`;
 
 CREATE TABLE `attachments` (
-  `attach_id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `bug_id` mediumint(9) NOT NULL,
+  `attach_id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `bug_id` mediumint(9) unsigned NOT NULL,
   `creation_ts` datetime NOT NULL,
   `modification_time` datetime NOT NULL,
   `description` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `mimetype` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `ispatch` tinyint(4) NOT NULL DEFAULT '0',
   `filename` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `submitter_id` mediumint(9) NOT NULL,
+  `submitter_id` mediumint(9) unsigned NOT NULL,
   `isobsolete` tinyint(4) NOT NULL DEFAULT '0',
   `isprivate` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`attach_id`),
@@ -57,9 +57,9 @@ CREATE TABLE `attachments` (
 DROP TABLE IF EXISTS `audit_log`;
 
 CREATE TABLE `audit_log` (
-  `user_id` mediumint(9) DEFAULT NULL,
+  `user_id` mediumint(9) unsigned DEFAULT NULL,
   `class` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `object_id` int(11) NOT NULL,
+  `object_id` int(11) unsigned NOT NULL,
   `field` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `removed` longtext COLLATE utf8mb4_unicode_520_ci,
   `added` longtext COLLATE utf8mb4_unicode_520_ci,
@@ -237,7 +237,7 @@ insert  into `audit_log`(`user_id`,`class`,`object_id`,`field`,`removed`,`added`
 DROP TABLE IF EXISTS `bug_cf_ipi_clust_3_roadbook_for`;
 
 CREATE TABLE `bug_cf_ipi_clust_3_roadbook_for` (
-  `bug_id` mediumint(9) NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   UNIQUE KEY `bug_cf_ipi_clust_3_roadbook_for_bug_id_idx` (`bug_id`,`value`),
   KEY `fk_0da76aa50ea9cec77ea8e213c8655f99` (`value`),
@@ -252,7 +252,7 @@ CREATE TABLE `bug_cf_ipi_clust_3_roadbook_for` (
 DROP TABLE IF EXISTS `bug_cf_ipi_clust_9_acct_action`;
 
 CREATE TABLE `bug_cf_ipi_clust_9_acct_action` (
-  `bug_id` mediumint(9) NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   UNIQUE KEY `bug_cf_ipi_clust_9_acct_action_bug_id_idx` (`bug_id`,`value`),
   KEY `fk_e5fc7a4f159b990bfcdfcaf844d0728b` (`value`),
@@ -267,8 +267,8 @@ CREATE TABLE `bug_cf_ipi_clust_9_acct_action` (
 DROP TABLE IF EXISTS `bug_group_map`;
 
 CREATE TABLE `bug_group_map` (
-  `bug_id` mediumint(9) NOT NULL,
-  `group_id` mediumint(9) NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
+  `group_id` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `bug_group_map_bug_id_idx` (`bug_id`,`group_id`),
   KEY `bug_group_map_group_id_idx` (`group_id`),
   CONSTRAINT `fk_bug_group_map_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -282,8 +282,8 @@ CREATE TABLE `bug_group_map` (
 DROP TABLE IF EXISTS `bug_see_also`;
 
 CREATE TABLE `bug_see_also` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `bug_id` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `bug_id` mediumint(9) unsigned NOT NULL,
   `value` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `class` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
@@ -298,11 +298,11 @@ CREATE TABLE `bug_see_also` (
 DROP TABLE IF EXISTS `bug_severity`;
 
 CREATE TABLE `bug_severity` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `bug_severity_value_idx` (`value`),
   KEY `bug_severity_sortkey_idx` (`sortkey`,`value`),
@@ -323,11 +323,11 @@ insert  into `bug_severity`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_
 DROP TABLE IF EXISTS `bug_status`;
 
 CREATE TABLE `bug_status` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   `is_open` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `bug_status_value_idx` (`value`),
@@ -352,8 +352,8 @@ insert  into `bug_status`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id
 DROP TABLE IF EXISTS `bug_tag`;
 
 CREATE TABLE `bug_tag` (
-  `bug_id` mediumint(9) NOT NULL,
-  `tag_id` mediumint(9) NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
+  `tag_id` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `bug_tag_bug_id_idx` (`bug_id`,`tag_id`),
   KEY `fk_bug_tag_tag_id_tag_id` (`tag_id`),
   CONSTRAINT `fk_bug_tag_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -367,9 +367,9 @@ CREATE TABLE `bug_tag` (
 DROP TABLE IF EXISTS `bug_user_last_visit`;
 
 CREATE TABLE `bug_user_last_visit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` mediumint(9) NOT NULL,
-  `bug_id` mediumint(9) NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(9) unsigned NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
   `last_visit_ts` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `bug_user_last_visit_idx` (`user_id`,`bug_id`),
@@ -386,8 +386,8 @@ CREATE TABLE `bug_user_last_visit` (
 DROP TABLE IF EXISTS `bugs`;
 
 CREATE TABLE `bugs` (
-  `bug_id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `assigned_to` mediumint(9) NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `assigned_to` mediumint(9) unsigned NOT NULL,
   `bug_file_loc` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `bug_severity` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `bug_status` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
@@ -396,14 +396,14 @@ CREATE TABLE `bugs` (
   `short_desc` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `op_sys` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `priority` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `product_id` smallint(6) NOT NULL,
+  `product_id` mediumint(9) unsigned NOT NULL,
   `rep_platform` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `reporter` mediumint(9) NOT NULL,
+  `reporter` mediumint(9) unsigned NOT NULL,
   `version` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `component_id` mediumint(9) NOT NULL,
+  `component_id` mediumint(9) unsigned NOT NULL,
   `resolution` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   `target_milestone` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
-  `qa_contact` mediumint(9) DEFAULT NULL,
+  `qa_contact` mediumint(9) unsigned DEFAULT NULL,
   `status_whiteboard` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `lastdiffed` datetime DEFAULT NULL,
   `everconfirmed` tinyint(4) NOT NULL,
@@ -423,7 +423,7 @@ CREATE TABLE `bugs` (
   `cf_ipi_clust_3_field_action_from` datetime DEFAULT NULL,
   `cf_ipi_clust_3_field_action_until` datetime DEFAULT NULL,
   `cf_ipi_clust_3_action_type` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
-  `cf_ipi_clust_3_nber_field_visits` int(11) NOT NULL DEFAULT '0',
+  `cf_ipi_clust_3_nber_field_visits` int(11) unsigned NOT NULL DEFAULT '0',
   `cf_ipi_clust_5_approved_budget` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   `cf_ipi_clust_5_budget` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   `cf_ipi_clust_8_contract_id` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
@@ -470,15 +470,15 @@ CREATE TABLE `bugs` (
 DROP TABLE IF EXISTS `bugs_activity`;
 
 CREATE TABLE `bugs_activity` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `bug_id` mediumint(9) NOT NULL,
-  `attach_id` mediumint(9) DEFAULT NULL,
-  `who` mediumint(9) NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `bug_id` mediumint(9) unsigned NOT NULL,
+  `attach_id` mediumint(9) unsigned DEFAULT NULL,
+  `who` mediumint(9) unsigned NOT NULL,
   `bug_when` datetime NOT NULL,
-  `fieldid` mediumint(9) NOT NULL,
+  `fieldid` mediumint(9) unsigned NOT NULL,
   `added` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `removed` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `comment_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `bugs_activity_bug_id_idx` (`bug_id`),
   KEY `bugs_activity_who_idx` (`who`),
@@ -503,7 +503,7 @@ DROP TABLE IF EXISTS `bugs_aliases`;
 
 CREATE TABLE `bugs_aliases` (
   `alias` varchar(40) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `bug_id` mediumint(9) DEFAULT NULL,
+  `bug_id` mediumint(9) unsigned DEFAULT NULL,
   UNIQUE KEY `bugs_aliases_alias_idx` (`alias`),
   KEY `bugs_aliases_bug_id_idx` (`bug_id`),
   CONSTRAINT `fk_bugs_aliases_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -516,7 +516,7 @@ CREATE TABLE `bugs_aliases` (
 DROP TABLE IF EXISTS `bugs_fulltext`;
 
 CREATE TABLE `bugs_fulltext` (
-  `bug_id` mediumint(9) NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
   `short_desc` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `comments` longtext COLLATE utf8mb4_unicode_520_ci,
   `comments_noprivate` longtext COLLATE utf8mb4_unicode_520_ci,
@@ -547,8 +547,8 @@ insert  into `bz_schema`(`schema_data`,`version`) values
 DROP TABLE IF EXISTS `category_group_map`;
 
 CREATE TABLE `category_group_map` (
-  `category_id` smallint(6) NOT NULL,
-  `group_id` mediumint(9) NOT NULL,
+  `category_id` mediumint(9) unsigned NOT NULL,
+  `group_id` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `category_group_map_category_id_idx` (`category_id`,`group_id`),
   KEY `fk_category_group_map_group_id_groups_id` (`group_id`),
   CONSTRAINT `fk_category_group_map_category_id_series_categories_id` FOREIGN KEY (`category_id`) REFERENCES `series_categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -562,8 +562,8 @@ CREATE TABLE `category_group_map` (
 DROP TABLE IF EXISTS `cc`;
 
 CREATE TABLE `cc` (
-  `bug_id` mediumint(9) NOT NULL,
-  `who` mediumint(9) NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
+  `who` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `cc_bug_id_idx` (`bug_id`,`who`),
   KEY `cc_who_idx` (`who`),
   CONSTRAINT `fk_cc_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -577,11 +577,11 @@ CREATE TABLE `cc` (
 DROP TABLE IF EXISTS `cf_ipi_clust_3_action_type`;
 
 CREATE TABLE `cf_ipi_clust_3_action_type` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cf_ipi_clust_3_action_type_value_idx` (`value`),
   KEY `cf_ipi_clust_3_action_type_sortkey_idx` (`sortkey`,`value`),
@@ -608,11 +608,11 @@ insert  into `cf_ipi_clust_3_action_type`(`id`,`value`,`sortkey`,`isactive`,`vis
 DROP TABLE IF EXISTS `cf_ipi_clust_3_roadbook_for`;
 
 CREATE TABLE `cf_ipi_clust_3_roadbook_for` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cf_ipi_clust_3_roadbook_for_value_idx` (`value`),
   KEY `cf_ipi_clust_3_roadbook_for_visibility_value_id_idx` (`visibility_value_id`),
@@ -688,11 +688,11 @@ insert  into `cf_ipi_clust_3_roadbook_for`(`id`,`value`,`sortkey`,`isactive`,`vi
 DROP TABLE IF EXISTS `cf_ipi_clust_4_status_in_progress`;
 
 CREATE TABLE `cf_ipi_clust_4_status_in_progress` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cf_ipi_clust_4_status_in_progress_value_idx` (`value`),
   KEY `cf_ipi_clust_4_status_in_progress_visibility_value_id_idx` (`visibility_value_id`),
@@ -713,11 +713,11 @@ insert  into `cf_ipi_clust_4_status_in_progress`(`id`,`value`,`sortkey`,`isactiv
 DROP TABLE IF EXISTS `cf_ipi_clust_4_status_standby`;
 
 CREATE TABLE `cf_ipi_clust_4_status_standby` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cf_ipi_clust_4_status_standby_value_idx` (`value`),
   KEY `cf_ipi_clust_4_status_standby_visibility_value_id_idx` (`visibility_value_id`),
@@ -736,11 +736,11 @@ insert  into `cf_ipi_clust_4_status_standby`(`id`,`value`,`sortkey`,`isactive`,`
 DROP TABLE IF EXISTS `cf_ipi_clust_6_claim_type`;
 
 CREATE TABLE `cf_ipi_clust_6_claim_type` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cf_ipi_clust_6_claim_type_value_idx` (`value`),
   KEY `cf_ipi_clust_6_claim_type_sortkey_idx` (`sortkey`,`value`),
@@ -819,11 +819,11 @@ insert  into `cf_ipi_clust_6_claim_type`(`id`,`value`,`sortkey`,`isactive`,`visi
 DROP TABLE IF EXISTS `cf_ipi_clust_7_spe_payment_type`;
 
 CREATE TABLE `cf_ipi_clust_7_spe_payment_type` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cf_ipi_clust_7_spe_payment_type_value_idx` (`value`),
   KEY `cf_ipi_clust_7_spe_payment_type_visibility_value_id_idx` (`visibility_value_id`),
@@ -845,11 +845,11 @@ insert  into `cf_ipi_clust_7_spe_payment_type`(`id`,`value`,`sortkey`,`isactive`
 DROP TABLE IF EXISTS `cf_ipi_clust_9_acct_action`;
 
 CREATE TABLE `cf_ipi_clust_9_acct_action` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cf_ipi_clust_9_acct_action_value_idx` (`value`),
   KEY `cf_ipi_clust_9_acct_action_visibility_value_id_idx` (`visibility_value_id`),
@@ -869,11 +869,11 @@ insert  into `cf_ipi_clust_9_acct_action`(`id`,`value`,`sortkey`,`isactive`,`vis
 DROP TABLE IF EXISTS `cf_specific_for`;
 
 CREATE TABLE `cf_specific_for` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cf_specific_for_value_idx` (`value`),
   KEY `cf_specific_for_sortkey_idx` (`sortkey`,`value`),
@@ -891,10 +891,10 @@ insert  into `cf_specific_for`(`id`,`value`,`sortkey`,`isactive`,`visibility_val
 DROP TABLE IF EXISTS `classifications`;
 
 CREATE TABLE `classifications` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_520_ci,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `classifications_name_idx` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -910,8 +910,8 @@ insert  into `classifications`(`id`,`name`,`description`,`sortkey`) values
 DROP TABLE IF EXISTS `component_cc`;
 
 CREATE TABLE `component_cc` (
-  `user_id` mediumint(9) NOT NULL,
-  `component_id` mediumint(9) NOT NULL,
+  `user_id` mediumint(9) unsigned NOT NULL,
+  `component_id` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `component_cc_user_id_idx` (`component_id`,`user_id`),
   KEY `fk_component_cc_user_id_profiles_userid` (`user_id`),
   CONSTRAINT `fk_component_cc_component_id_components_id` FOREIGN KEY (`component_id`) REFERENCES `components` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -925,11 +925,11 @@ CREATE TABLE `component_cc` (
 DROP TABLE IF EXISTS `components`;
 
 CREATE TABLE `components` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `product_id` smallint(6) NOT NULL,
-  `initialowner` mediumint(9) NOT NULL,
-  `initialqacontact` mediumint(9) DEFAULT NULL,
+  `product_id` mediumint(9) unsigned NOT NULL,
+  `initialowner` mediumint(9) unsigned NOT NULL,
+  `initialqacontact` mediumint(9) unsigned DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
@@ -952,8 +952,8 @@ insert  into `components`(`id`,`name`,`product_id`,`initialowner`,`initialqacont
 DROP TABLE IF EXISTS `dependencies`;
 
 CREATE TABLE `dependencies` (
-  `blocked` mediumint(9) NOT NULL,
-  `dependson` mediumint(9) NOT NULL,
+  `blocked` mediumint(9) unsigned NOT NULL,
+  `dependson` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `dependencies_blocked_idx` (`blocked`,`dependson`),
   KEY `dependencies_dependson_idx` (`dependson`),
   CONSTRAINT `fk_dependencies_blocked_bugs_bug_id` FOREIGN KEY (`blocked`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -967,8 +967,8 @@ CREATE TABLE `dependencies` (
 DROP TABLE IF EXISTS `duplicates`;
 
 CREATE TABLE `duplicates` (
-  `dupe_of` mediumint(9) NOT NULL,
-  `dupe` mediumint(9) NOT NULL,
+  `dupe_of` mediumint(9) unsigned NOT NULL,
+  `dupe` mediumint(9) unsigned NOT NULL,
   PRIMARY KEY (`dupe`),
   KEY `fk_duplicates_dupe_of_bugs_bug_id` (`dupe_of`),
   CONSTRAINT `fk_duplicates_dupe_bugs_bug_id` FOREIGN KEY (`dupe`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -982,8 +982,8 @@ CREATE TABLE `duplicates` (
 DROP TABLE IF EXISTS `email_bug_ignore`;
 
 CREATE TABLE `email_bug_ignore` (
-  `user_id` mediumint(9) NOT NULL,
-  `bug_id` mediumint(9) NOT NULL,
+  `user_id` mediumint(9) unsigned NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `email_bug_ignore_user_id_idx` (`user_id`,`bug_id`),
   KEY `fk_email_bug_ignore_bug_id_bugs_bug_id` (`bug_id`),
   CONSTRAINT `fk_email_bug_ignore_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -997,7 +997,7 @@ CREATE TABLE `email_bug_ignore` (
 DROP TABLE IF EXISTS `email_setting`;
 
 CREATE TABLE `email_setting` (
-  `user_id` mediumint(9) NOT NULL,
+  `user_id` mediumint(9) unsigned NOT NULL,
   `relationship` tinyint(4) NOT NULL,
   `event` tinyint(4) NOT NULL,
   UNIQUE KEY `email_setting_user_id_idx` (`user_id`,`relationship`,`event`),
@@ -1391,8 +1391,8 @@ insert  into `email_setting`(`user_id`,`relationship`,`event`) values
 DROP TABLE IF EXISTS `field_visibility`;
 
 CREATE TABLE `field_visibility` (
-  `field_id` mediumint(9) DEFAULT NULL,
-  `value_id` smallint(6) NOT NULL,
+  `field_id` mediumint(9) unsigned DEFAULT NULL,
+  `value_id` smallint(6) unsigned NOT NULL,
   UNIQUE KEY `field_visibility_field_id_idx` (`field_id`,`value_id`),
   CONSTRAINT `fk_field_visibility_field_id_fielddefs_id` FOREIGN KEY (`field_id`) REFERENCES `fielddefs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -1422,19 +1422,19 @@ insert  into `field_visibility`(`field_id`,`value_id`) values
 DROP TABLE IF EXISTS `fielddefs`;
 
 CREATE TABLE `fielddefs` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `type` smallint(6) NOT NULL DEFAULT '0',
+  `type` smallint(6) unsigned NOT NULL DEFAULT '0',
   `custom` tinyint(4) NOT NULL DEFAULT '0',
   `description` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `long_desc` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   `mailhead` tinyint(4) NOT NULL DEFAULT '0',
-  `sortkey` smallint(6) NOT NULL,
+  `sortkey` smallint(6) unsigned NOT NULL,
   `obsolete` tinyint(4) NOT NULL DEFAULT '0',
   `enter_bug` tinyint(4) NOT NULL DEFAULT '0',
   `buglist` tinyint(4) NOT NULL DEFAULT '0',
-  `visibility_field_id` mediumint(9) DEFAULT NULL,
-  `value_field_id` mediumint(9) DEFAULT NULL,
+  `visibility_field_id` mediumint(9) unsigned DEFAULT NULL,
+  `value_field_id` mediumint(9) unsigned DEFAULT NULL,
   `reverse_desc` text COLLATE utf8mb4_unicode_520_ci,
   `is_mandatory` tinyint(4) NOT NULL DEFAULT '0',
   `is_numeric` tinyint(4) NOT NULL DEFAULT '0',
@@ -1547,9 +1547,9 @@ insert  into `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`
 DROP TABLE IF EXISTS `flagexclusions`;
 
 CREATE TABLE `flagexclusions` (
-  `type_id` smallint(6) NOT NULL,
-  `product_id` smallint(6) DEFAULT NULL,
-  `component_id` mediumint(9) DEFAULT NULL,
+  `type_id` mediumint(9) unsigned NOT NULL,
+  `product_id` mediumint(9) unsigned DEFAULT NULL,
+  `component_id` mediumint(9) unsigned DEFAULT NULL,
   UNIQUE KEY `flagexclusions_type_id_idx` (`type_id`,`product_id`,`component_id`),
   KEY `fk_flagexclusions_product_id_products_id` (`product_id`),
   KEY `fk_flagexclusions_component_id_components_id` (`component_id`),
@@ -1565,9 +1565,9 @@ CREATE TABLE `flagexclusions` (
 DROP TABLE IF EXISTS `flaginclusions`;
 
 CREATE TABLE `flaginclusions` (
-  `type_id` smallint(6) NOT NULL,
-  `product_id` smallint(6) DEFAULT NULL,
-  `component_id` mediumint(9) DEFAULT NULL,
+  `type_id` mediumint(9) unsigned NOT NULL,
+  `product_id` mediumint(9) unsigned DEFAULT NULL,
+  `component_id` mediumint(9) unsigned DEFAULT NULL,
   UNIQUE KEY `flaginclusions_type_id_idx` (`type_id`,`product_id`,`component_id`),
   KEY `fk_flaginclusions_product_id_products_id` (`product_id`),
   KEY `fk_flaginclusions_component_id_components_id` (`component_id`),
@@ -1591,15 +1591,15 @@ insert  into `flaginclusions`(`type_id`,`product_id`,`component_id`) values
 DROP TABLE IF EXISTS `flags`;
 
 CREATE TABLE `flags` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `type_id` smallint(6) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `type_id` mediumint(9) unsigned NOT NULL,
   `status` char(1) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `bug_id` mediumint(9) NOT NULL,
-  `attach_id` mediumint(9) DEFAULT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
+  `attach_id` mediumint(9) unsigned DEFAULT NULL,
   `creation_date` datetime NOT NULL,
   `modification_date` datetime DEFAULT NULL,
-  `setter_id` mediumint(9) NOT NULL,
-  `requestee_id` mediumint(9) DEFAULT NULL,
+  `setter_id` mediumint(9) unsigned NOT NULL,
+  `requestee_id` mediumint(9) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `flags_bug_id_idx` (`bug_id`,`attach_id`),
   KEY `flags_setter_id_idx` (`setter_id`),
@@ -1620,7 +1620,7 @@ CREATE TABLE `flags` (
 DROP TABLE IF EXISTS `flagtypes`;
 
 CREATE TABLE `flagtypes` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `cc_list` varchar(200) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
@@ -1629,9 +1629,9 @@ CREATE TABLE `flagtypes` (
   `is_requestable` tinyint(4) NOT NULL DEFAULT '0',
   `is_requesteeble` tinyint(4) NOT NULL DEFAULT '0',
   `is_multiplicable` tinyint(4) NOT NULL DEFAULT '0',
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
-  `grant_group_id` mediumint(9) DEFAULT NULL,
-  `request_group_id` mediumint(9) DEFAULT NULL,
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `grant_group_id` mediumint(9) unsigned DEFAULT NULL,
+  `request_group_id` mediumint(9) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_flagtypes_grant_group_id_groups_id` (`grant_group_id`),
   KEY `fk_flagtypes_request_group_id_groups_id` (`request_group_id`),
@@ -1654,8 +1654,8 @@ insert  into `flagtypes`(`id`,`name`,`description`,`cc_list`,`target_type`,`is_a
 DROP TABLE IF EXISTS `group_control_map`;
 
 CREATE TABLE `group_control_map` (
-  `group_id` mediumint(9) NOT NULL,
-  `product_id` smallint(6) NOT NULL,
+  `group_id` mediumint(9) unsigned NOT NULL,
+  `product_id` mediumint(9) unsigned NOT NULL,
   `entry` tinyint(4) NOT NULL DEFAULT '0',
   `membercontrol` tinyint(4) NOT NULL DEFAULT '0',
   `othercontrol` tinyint(4) NOT NULL DEFAULT '0',
@@ -1676,8 +1676,8 @@ CREATE TABLE `group_control_map` (
 DROP TABLE IF EXISTS `group_group_map`;
 
 CREATE TABLE `group_group_map` (
-  `member_id` mediumint(9) NOT NULL,
-  `grantor_id` mediumint(9) NOT NULL,
+  `member_id` mediumint(9) unsigned NOT NULL,
+  `grantor_id` mediumint(9) unsigned NOT NULL,
   `grant_type` tinyint(4) NOT NULL DEFAULT '0',
   UNIQUE KEY `group_group_map_member_id_idx` (`member_id`,`grantor_id`,`grant_type`),
   KEY `fk_group_group_map_grantor_id_groups_id` (`grantor_id`),
@@ -1796,7 +1796,7 @@ insert  into `group_group_map`(`member_id`,`grantor_id`,`grant_type`) values
 DROP TABLE IF EXISTS `groups`;
 
 CREATE TABLE `groups` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isbuggroup` tinyint(4) NOT NULL,
@@ -1847,7 +1847,7 @@ insert  into `groups`(`id`,`name`,`description`,`isbuggroup`,`userregexp`,`isact
 DROP TABLE IF EXISTS `keyworddefs`;
 
 CREATE TABLE `keyworddefs` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
@@ -1866,8 +1866,8 @@ insert  into `keyworddefs`(`id`,`name`,`description`) values
 DROP TABLE IF EXISTS `keywords`;
 
 CREATE TABLE `keywords` (
-  `bug_id` mediumint(9) NOT NULL,
-  `keywordid` smallint(6) NOT NULL,
+  `bug_id` mediumint(9) unsigned NOT NULL,
+  `keywordid` smallint(6) unsigned NOT NULL,
   UNIQUE KEY `keywords_bug_id_idx` (`bug_id`,`keywordid`),
   KEY `keywords_keywordid_idx` (`keywordid`),
   CONSTRAINT `fk_keywords_bug_id_bugs_bug_id` FOREIGN KEY (`bug_id`) REFERENCES `bugs` (`bug_id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1881,7 +1881,7 @@ CREATE TABLE `keywords` (
 DROP TABLE IF EXISTS `login_failure`;
 
 CREATE TABLE `login_failure` (
-  `user_id` mediumint(9) NOT NULL,
+  `user_id` mediumint(9) unsigned NOT NULL,
   `login_time` datetime NOT NULL,
   `ip_addr` varchar(40) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   KEY `login_failure_user_id_idx` (`user_id`),
@@ -1896,7 +1896,7 @@ DROP TABLE IF EXISTS `logincookies`;
 
 CREATE TABLE `logincookies` (
   `cookie` varchar(16) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `userid` mediumint(9) NOT NULL,
+  `userid` mediumint(9) unsigned NOT NULL,
   `ipaddr` varchar(40) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `lastused` datetime NOT NULL,
   PRIMARY KEY (`cookie`),
@@ -1912,15 +1912,15 @@ CREATE TABLE `logincookies` (
 DROP TABLE IF EXISTS `longdescs`;
 
 CREATE TABLE `longdescs` (
-  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bug_id` mediumint(9) NOT NULL,
-  `who` mediumint(9) NOT NULL,
+  `comment_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `bug_id` mediumint(9) unsigned NOT NULL,
+  `who` mediumint(9) unsigned NOT NULL,
   `bug_when` datetime NOT NULL,
   `work_time` decimal(7,2) NOT NULL DEFAULT '0.00',
   `thetext` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isprivate` tinyint(4) NOT NULL DEFAULT '0',
   `already_wrapped` tinyint(4) NOT NULL DEFAULT '0',
-  `type` smallint(6) NOT NULL DEFAULT '0',
+  `type` smallint(6) unsigned NOT NULL DEFAULT '0',
   `extra_data` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `longdescs_bug_id_idx` (`bug_id`,`work_time`),
@@ -1937,8 +1937,8 @@ CREATE TABLE `longdescs` (
 DROP TABLE IF EXISTS `longdescs_tags`;
 
 CREATE TABLE `longdescs_tags` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `comment_id` int(11) DEFAULT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `comment_id` int(11) unsigned DEFAULT NULL,
   `tag` varchar(24) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `longdescs_tags_idx` (`comment_id`,`tag`),
@@ -1952,10 +1952,10 @@ CREATE TABLE `longdescs_tags` (
 DROP TABLE IF EXISTS `longdescs_tags_activity`;
 
 CREATE TABLE `longdescs_tags_activity` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `bug_id` mediumint(9) NOT NULL,
-  `comment_id` int(11) DEFAULT NULL,
-  `who` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `bug_id` mediumint(9) unsigned NOT NULL,
+  `comment_id` int(11) unsigned DEFAULT NULL,
+  `who` mediumint(9) unsigned NOT NULL,
   `bug_when` datetime NOT NULL,
   `added` varchar(24) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `removed` varchar(24) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
@@ -1975,9 +1975,9 @@ CREATE TABLE `longdescs_tags_activity` (
 DROP TABLE IF EXISTS `longdescs_tags_weights`;
 
 CREATE TABLE `longdescs_tags_weights` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `tag` varchar(24) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `weight` mediumint(9) NOT NULL,
+  `weight` mediumint(9) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `longdescs_tags_weights_tag_idx` (`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -1989,7 +1989,7 @@ CREATE TABLE `longdescs_tags_weights` (
 DROP TABLE IF EXISTS `mail_staging`;
 
 CREATE TABLE `mail_staging` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `message` longblob NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -2001,10 +2001,10 @@ CREATE TABLE `mail_staging` (
 DROP TABLE IF EXISTS `milestones`;
 
 CREATE TABLE `milestones` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `product_id` smallint(6) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` mediumint(9) unsigned NOT NULL,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `milestones_product_id_idx` (`product_id`,`value`),
@@ -2021,8 +2021,8 @@ insert  into `milestones`(`id`,`product_id`,`value`,`sortkey`,`isactive`) values
 DROP TABLE IF EXISTS `namedqueries`;
 
 CREATE TABLE `namedqueries` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` mediumint(9) unsigned NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `query` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
@@ -2037,8 +2037,8 @@ CREATE TABLE `namedqueries` (
 DROP TABLE IF EXISTS `namedqueries_link_in_footer`;
 
 CREATE TABLE `namedqueries_link_in_footer` (
-  `namedquery_id` mediumint(9) NOT NULL,
-  `user_id` mediumint(9) NOT NULL,
+  `namedquery_id` mediumint(9) unsigned NOT NULL,
+  `user_id` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `namedqueries_link_in_footer_id_idx` (`namedquery_id`,`user_id`),
   KEY `namedqueries_link_in_footer_userid_idx` (`user_id`),
   CONSTRAINT `fk_namedqueries_link_in_footer_namedquery_id_namedqueries_id` FOREIGN KEY (`namedquery_id`) REFERENCES `namedqueries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -2052,8 +2052,8 @@ CREATE TABLE `namedqueries_link_in_footer` (
 DROP TABLE IF EXISTS `namedquery_group_map`;
 
 CREATE TABLE `namedquery_group_map` (
-  `namedquery_id` mediumint(9) NOT NULL,
-  `group_id` mediumint(9) NOT NULL,
+  `namedquery_id` mediumint(9) unsigned NOT NULL,
+  `group_id` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `namedquery_group_map_namedquery_id_idx` (`namedquery_id`),
   KEY `namedquery_group_map_group_id_idx` (`group_id`),
   CONSTRAINT `fk_namedquery_group_map_group_id_groups_id` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -2067,11 +2067,11 @@ CREATE TABLE `namedquery_group_map` (
 DROP TABLE IF EXISTS `op_sys`;
 
 CREATE TABLE `op_sys` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `op_sys_value_idx` (`value`),
   KEY `op_sys_sortkey_idx` (`sortkey`,`value`),
@@ -2100,11 +2100,11 @@ insert  into `op_sys`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) v
 DROP TABLE IF EXISTS `priority`;
 
 CREATE TABLE `priority` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `priority_value_idx` (`value`),
   KEY `priority_sortkey_idx` (`sortkey`,`value`),
@@ -2123,9 +2123,9 @@ insert  into `priority`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`)
 DROP TABLE IF EXISTS `products`;
 
 CREATE TABLE `products` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `classification_id` smallint(6) NOT NULL DEFAULT '1',
+  `classification_id` mediumint(9) unsigned NOT NULL DEFAULT '1',
   `description` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   `defaultmilestone` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
@@ -2146,8 +2146,8 @@ insert  into `products`(`id`,`name`,`classification_id`,`description`,`isactive`
 DROP TABLE IF EXISTS `profile_search`;
 
 CREATE TABLE `profile_search` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` mediumint(9) NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(9) unsigned NOT NULL,
   `bug_list` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `list_order` longtext COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`id`),
@@ -2162,7 +2162,7 @@ CREATE TABLE `profile_search` (
 DROP TABLE IF EXISTS `profile_setting`;
 
 CREATE TABLE `profile_setting` (
-  `user_id` mediumint(9) NOT NULL,
+  `user_id` mediumint(9) unsigned NOT NULL,
   `setting_name` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `setting_value` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   UNIQUE KEY `profile_setting_value_unique_idx` (`user_id`,`setting_name`),
@@ -2178,7 +2178,7 @@ CREATE TABLE `profile_setting` (
 DROP TABLE IF EXISTS `profiles`;
 
 CREATE TABLE `profiles` (
-  `userid` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `userid` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `login_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `cryptpassword` varchar(128) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `realname` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
@@ -2208,11 +2208,11 @@ insert  into `profiles`(`userid`,`login_name`,`cryptpassword`,`realname`,`disabl
 DROP TABLE IF EXISTS `profiles_activity`;
 
 CREATE TABLE `profiles_activity` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(9) NOT NULL,
-  `who` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` mediumint(9) unsigned NOT NULL,
+  `who` mediumint(9) unsigned NOT NULL,
   `profiles_when` datetime NOT NULL,
-  `fieldid` mediumint(9) NOT NULL,
+  `fieldid` mediumint(9) unsigned NOT NULL,
   `oldvalue` text COLLATE utf8mb4_unicode_520_ci,
   `newvalue` text COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`id`),
@@ -2232,8 +2232,8 @@ CREATE TABLE `profiles_activity` (
 DROP TABLE IF EXISTS `quips`;
 
 CREATE TABLE `quips` (
-  `quipid` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(9) DEFAULT NULL,
+  `quipid` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` mediumint(9) unsigned DEFAULT NULL,
   `quip` varchar(512) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `approved` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`quipid`),
@@ -2248,11 +2248,11 @@ CREATE TABLE `quips` (
 DROP TABLE IF EXISTS `rep_platform`;
 
 CREATE TABLE `rep_platform` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `rep_platform_value_idx` (`value`),
   KEY `rep_platform_sortkey_idx` (`sortkey`,`value`),
@@ -2278,8 +2278,8 @@ insert  into `rep_platform`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_
 DROP TABLE IF EXISTS `reports`;
 
 CREATE TABLE `reports` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `user_id` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(9) unsigned NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `query` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
@@ -2294,11 +2294,11 @@ CREATE TABLE `reports` (
 DROP TABLE IF EXISTS `resolution`;
 
 CREATE TABLE `resolution` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
-  `visibility_value_id` smallint(6) DEFAULT NULL,
+  `visibility_value_id` smallint(6) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `resolution_value_idx` (`value`),
   KEY `resolution_sortkey_idx` (`sortkey`,`value`),
@@ -2320,12 +2320,12 @@ insert  into `resolution`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id
 DROP TABLE IF EXISTS `series`;
 
 CREATE TABLE `series` (
-  `series_id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `creator` mediumint(9) DEFAULT NULL,
-  `category` smallint(6) NOT NULL,
-  `subcategory` smallint(6) NOT NULL,
+  `series_id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `creator` mediumint(9) unsigned DEFAULT NULL,
+  `category` mediumint(9) unsigned NOT NULL,
+  `subcategory` mediumint(9) unsigned NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `frequency` smallint(6) NOT NULL,
+  `frequency` smallint(6) unsigned NOT NULL,
   `query` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `is_public` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`series_id`),
@@ -2344,7 +2344,7 @@ CREATE TABLE `series` (
 DROP TABLE IF EXISTS `series_categories`;
 
 CREATE TABLE `series_categories` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `series_categories_name_idx` (`name`)
@@ -2362,9 +2362,9 @@ insert  into `series_categories`(`id`,`name`) values
 DROP TABLE IF EXISTS `series_data`;
 
 CREATE TABLE `series_data` (
-  `series_id` mediumint(9) NOT NULL,
+  `series_id` mediumint(9) unsigned NOT NULL,
   `series_date` datetime NOT NULL,
-  `series_value` mediumint(9) NOT NULL,
+  `series_value` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `series_data_series_id_idx` (`series_id`,`series_date`),
   CONSTRAINT `fk_series_data_series_id_series_series_id` FOREIGN KEY (`series_id`) REFERENCES `series` (`series_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -2410,7 +2410,7 @@ DROP TABLE IF EXISTS `setting_value`;
 CREATE TABLE `setting_value` (
   `name` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `value` varchar(32) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `sortindex` smallint(6) NOT NULL,
+  `sortindex` smallint(6) unsigned NOT NULL,
   UNIQUE KEY `setting_value_nv_unique_idx` (`name`,`value`),
   UNIQUE KEY `setting_value_ns_unique_idx` (`name`,`sortindex`),
   CONSTRAINT `fk_setting_value_name_setting_name` FOREIGN KEY (`name`) REFERENCES `setting` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -2455,8 +2455,8 @@ insert  into `setting_value`(`name`,`value`,`sortindex`) values
 DROP TABLE IF EXISTS `status_workflow`;
 
 CREATE TABLE `status_workflow` (
-  `old_status` smallint(6) DEFAULT NULL,
-  `new_status` smallint(6) NOT NULL,
+  `old_status` smallint(6) unsigned DEFAULT NULL,
+  `new_status` smallint(6) unsigned NOT NULL,
   `require_comment` tinyint(4) NOT NULL DEFAULT '0',
   UNIQUE KEY `status_workflow_idx` (`old_status`,`new_status`),
   KEY `fk_status_workflow_new_status_bug_status_id` (`new_status`),
@@ -2500,9 +2500,9 @@ insert  into `status_workflow`(`old_status`,`new_status`,`require_comment`) valu
 DROP TABLE IF EXISTS `tag`;
 
 CREATE TABLE `tag` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `user_id` mediumint(9) NOT NULL,
+  `user_id` mediumint(9) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tag_user_id_idx` (`user_id`,`name`),
   CONSTRAINT `fk_tag_user_id_profiles_userid` FOREIGN KEY (`user_id`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -2515,7 +2515,7 @@ CREATE TABLE `tag` (
 DROP TABLE IF EXISTS `tokens`;
 
 CREATE TABLE `tokens` (
-  `userid` mediumint(9) DEFAULT NULL,
+  `userid` mediumint(9) unsigned DEFAULT NULL,
   `issuedate` datetime NOT NULL,
   `token` varchar(16) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `tokentype` varchar(16) COLLATE utf8mb4_unicode_520_ci NOT NULL,
@@ -2532,10 +2532,10 @@ CREATE TABLE `tokens` (
 DROP TABLE IF EXISTS `ts_error`;
 
 CREATE TABLE `ts_error` (
-  `error_time` int(11) NOT NULL,
-  `jobid` int(11) NOT NULL,
+  `error_time` int(11) unsigned NOT NULL,
+  `jobid` int(11) unsigned NOT NULL,
   `message` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `funcid` int(11) NOT NULL DEFAULT '0',
+  `funcid` int(11) unsigned NOT NULL DEFAULT '0',
   KEY `ts_error_funcid_idx` (`funcid`,`error_time`),
   KEY `ts_error_error_time_idx` (`error_time`),
   KEY `ts_error_jobid_idx` (`jobid`)
@@ -2548,11 +2548,11 @@ CREATE TABLE `ts_error` (
 DROP TABLE IF EXISTS `ts_exitstatus`;
 
 CREATE TABLE `ts_exitstatus` (
-  `jobid` int(11) NOT NULL AUTO_INCREMENT,
-  `funcid` int(11) NOT NULL DEFAULT '0',
-  `status` smallint(6) DEFAULT NULL,
-  `completion_time` int(11) DEFAULT NULL,
-  `delete_after` int(11) DEFAULT NULL,
+  `jobid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `funcid` int(11) unsigned NOT NULL DEFAULT '0',
+  `status` smallint(6) unsigned DEFAULT NULL,
+  `completion_time` int(11) unsigned DEFAULT NULL,
+  `delete_after` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`jobid`),
   KEY `ts_exitstatus_funcid_idx` (`funcid`),
   KEY `ts_exitstatus_delete_after_idx` (`delete_after`)
@@ -2565,7 +2565,7 @@ CREATE TABLE `ts_exitstatus` (
 DROP TABLE IF EXISTS `ts_funcmap`;
 
 CREATE TABLE `ts_funcmap` (
-  `funcid` int(11) NOT NULL AUTO_INCREMENT,
+  `funcid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `funcname` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`funcid`),
   UNIQUE KEY `ts_funcmap_funcname_idx` (`funcname`)
@@ -2578,14 +2578,14 @@ CREATE TABLE `ts_funcmap` (
 DROP TABLE IF EXISTS `ts_job`;
 
 CREATE TABLE `ts_job` (
-  `jobid` int(11) NOT NULL AUTO_INCREMENT,
-  `funcid` int(11) NOT NULL,
+  `jobid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `funcid` int(11) unsigned NOT NULL,
   `arg` longblob,
   `uniqkey` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `insert_time` int(11) DEFAULT NULL,
-  `run_after` int(11) NOT NULL,
-  `grabbed_until` int(11) NOT NULL,
-  `priority` smallint(6) DEFAULT NULL,
+  `insert_time` int(11) unsigned DEFAULT NULL,
+  `run_after` int(11) unsigned NOT NULL,
+  `grabbed_until` int(11) unsigned NOT NULL,
+  `priority` smallint(6) unsigned DEFAULT NULL,
   `coalesce` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`jobid`),
   UNIQUE KEY `ts_job_funcid_idx` (`funcid`,`uniqkey`),
@@ -2600,7 +2600,7 @@ CREATE TABLE `ts_job` (
 DROP TABLE IF EXISTS `ts_note`;
 
 CREATE TABLE `ts_note` (
-  `jobid` int(11) NOT NULL,
+  `jobid` int(11) unsigned NOT NULL,
   `notekey` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `value` longblob,
   UNIQUE KEY `ts_note_jobid_idx` (`jobid`,`notekey`)
@@ -2613,8 +2613,8 @@ CREATE TABLE `ts_note` (
 DROP TABLE IF EXISTS `user_api_keys`;
 
 CREATE TABLE `user_api_keys` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` mediumint(9) NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(9) unsigned NOT NULL,
   `api_key` varchar(40) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `revoked` tinyint(4) NOT NULL DEFAULT '0',
@@ -2632,8 +2632,8 @@ CREATE TABLE `user_api_keys` (
 DROP TABLE IF EXISTS `user_group_map`;
 
 CREATE TABLE `user_group_map` (
-  `user_id` mediumint(9) NOT NULL,
-  `group_id` mediumint(9) NOT NULL,
+  `user_id` mediumint(9) unsigned NOT NULL,
+  `group_id` mediumint(9) unsigned NOT NULL,
   `isbless` tinyint(4) NOT NULL DEFAULT '0',
   `grant_type` tinyint(4) NOT NULL DEFAULT '0',
   UNIQUE KEY `user_group_map_user_id_idx` (`user_id`,`group_id`,`grant_type`,`isbless`),
@@ -2652,8 +2652,8 @@ insert  into `user_group_map`(`user_id`,`group_id`,`isbless`,`grant_type`) value
 DROP TABLE IF EXISTS `ut_all_units`;
 
 CREATE TABLE `ut_all_units` (
-  `id_record` int(11) NOT NULL AUTO_INCREMENT,
-  `product_id` smallint(6) NOT NULL COMMENT 'The id in the `products` table',
+  `id_record` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` mediumint(9) unsigned NOT NULL COMMENT 'The id in the `products` table',
   PRIMARY KEY (`id_record`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -2664,7 +2664,7 @@ CREATE TABLE `ut_all_units` (
 DROP TABLE IF EXISTS `ut_audit_log`;
 
 CREATE TABLE `ut_audit_log` (
-  `id_ut_log` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
+  `id_ut_log` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
   `datetime` datetime DEFAULT NULL COMMENT 'When was this record created',
   `bzfe_table` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The name of the table that was altered',
   `bzfe_field` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The name of the field that was altered in the bzfe table',
@@ -2682,7 +2682,7 @@ CREATE TABLE `ut_audit_log` (
 DROP TABLE IF EXISTS `ut_contractor_types`;
 
 CREATE TABLE `ut_contractor_types` (
-  `id_contractor_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_contractor_type` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `contractor_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this contractor type',
   `bz_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
@@ -2706,7 +2706,7 @@ insert  into `ut_contractor_types`(`id_contractor_type`,`created`,`contractor_ty
 DROP TABLE IF EXISTS `ut_contractors`;
 
 CREATE TABLE `ut_contractors` (
-  `id_contractor` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_contractor` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `contractor_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this contractor',
   `contractor_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ contractor.',
@@ -2721,12 +2721,12 @@ CREATE TABLE `ut_contractors` (
 DROP TABLE IF EXISTS `ut_data_to_add_user_to_a_case`;
 
 CREATE TABLE `ut_data_to_add_user_to_a_case` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
   `mefe_invitation_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
   `mefe_invitor_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
-  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
-  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
-  `bz_case_id` mediumint(9) NOT NULL COMMENT 'The case id that the user is invited to - This is a FK to the BZ table ''bugs''',
+  `bzfe_invitor_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `bz_case_id` mediumint(9) unsigned NOT NULL COMMENT 'The case id that the user is invited to - This is a FK to the BZ table ''bugs''',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
   `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
   PRIMARY KEY (`id`),
@@ -2745,13 +2745,13 @@ CREATE TABLE `ut_data_to_add_user_to_a_case` (
 DROP TABLE IF EXISTS `ut_data_to_add_user_to_a_role`;
 
 CREATE TABLE `ut_data_to_add_user_to_a_role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
   `mefe_invitation_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
   `mefe_invitor_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
-  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
-  `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
-  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
-  `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
+  `bzfe_invitor_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_unit_id` mediumint(9) unsigned NOT NULL COMMENT 'The product id in the BZ table ''products''',
+  `bz_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `user_role_type_id` smallint(6) unsigned NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
   `is_occupant` tinyint(1) DEFAULT '0' COMMENT '1 if TRUE, 0 if FALSE',
   `user_more` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
@@ -2774,16 +2774,16 @@ CREATE TABLE `ut_data_to_add_user_to_a_role` (
 DROP TABLE IF EXISTS `ut_data_to_create_units`;
 
 CREATE TABLE `ut_data_to_create_units` (
-  `id_unit_to_create` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `id_unit_to_create` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
   `mefe_unit_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of this unit in the MEFE database',
   `mefe_creator_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
-  `bzfe_creator_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
-  `classification_id` smallint(6) NOT NULL COMMENT 'The ID of the classification for this unit - a FK to the BZ table ''classifications''',
+  `bzfe_creator_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `classification_id` mediumint(9) unsigned NOT NULL COMMENT 'The ID of the classification for this unit - a FK to the BZ table ''classifications''',
   `unit_name` varchar(54) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '' COMMENT 'A name for the unit. We will append the product id and this will be inserted in the product name field of the BZ tabele product which has a max lenght of 64',
   `unit_description_details` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT '' COMMENT 'More information about the unit - this is a free text space',
   `bz_created_date` datetime DEFAULT NULL COMMENT 'Date and time when this unit has been created in the BZ databae',
   `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
-  `product_id` smallint(6) DEFAULT NULL COMMENT 'The id of the product in the BZ table ''products''. Because this is a record that we will keep even AFTER we deleted the record in the BZ table, this can NOT be a FK.',
+  `product_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'The id of the product in the BZ table ''products''. Because this is a record that we will keep even AFTER we deleted the record in the BZ table, this can NOT be a FK.',
   `deleted_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was deleted in the BZ db (together with all objects related to this product/unit).',
   `deletion_script` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The script used to delete this product and all objects related to this product in the BZ database',
   PRIMARY KEY (`id_unit_to_create`),
@@ -2801,13 +2801,13 @@ CREATE TABLE `ut_data_to_create_units` (
 DROP TABLE IF EXISTS `ut_data_to_replace_dummy_roles`;
 
 CREATE TABLE `ut_data_to_replace_dummy_roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
   `mefe_invitation_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
   `mefe_invitor_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The id of the creator of this unit in the MEFE database',
-  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
-  `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
-  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
-  `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
+  `bzfe_invitor_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_unit_id` mediumint(9) unsigned NOT NULL COMMENT 'The product id in the BZ table ''products''',
+  `bz_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `user_role_type_id` smallint(6) unsigned NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
   `is_occupant` tinyint(1) DEFAULT '0' COMMENT '1 if TRUE, 0 if FALSE',
   `is_mefe_user_only` tinyint(1) DEFAULT '1' COMMENT '1 (default value) if TRUE - If a user is a MEFE user only we disable the claim mail in the BZFE',
   `user_more` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
@@ -2831,13 +2831,13 @@ CREATE TABLE `ut_data_to_replace_dummy_roles` (
 DROP TABLE IF EXISTS `ut_db_schema_version`;
 
 CREATE TABLE `ut_db_schema_version` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID in this table',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique ID in this table',
   `schema_version` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current version of the BZ DB schema for Unee-T',
   `update_datetime` datetime DEFAULT NULL COMMENT 'Timestamp - when this version was implemented in THIS environment',
   `update_script` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -2874,7 +2874,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (30,'v3.29','2018-12-15 10:23:39','upgrade_unee-t_v3.28_to_v3.29.sql','Database updated from v3.28 to v3.29'),
 (31,'v3.30','2018-12-17 02:54:02','upgrade_unee-t_v3.29_to_v3.30.sql','Database updated from v3.29 to v3.30'),
 (32,'v4.31','2019-03-01 09:01:24','upgrade_unee-t_v3.30_to_v4.31.sql','Database updated from v3.30 to v4.31'),
-(33,'v4.32','2019-03-07 08:17:38','upgrade_unee-t_v4.31_to_v4.32.sql','Database updated from v4.31 to v4.32');
+(33,'v4.32','2019-03-07 08:17:38','upgrade_unee-t_v4.31_to_v4.32.sql','Database updated from v4.31 to v4.32'),
+(34,'v4.33','2019-03-31 04:57:31','upgrade_unee-t_v4.32_to_v4.33.sql','Database updated from v4.32 to v4.33');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -2897,9 +2898,9 @@ CREATE TABLE `ut_flash_units_with_dummy_users` (
 DROP TABLE IF EXISTS `ut_group_types`;
 
 CREATE TABLE `ut_group_types` (
-  `id_group_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_group_type` mediumint(9) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
+  `order` smallint(6) unsigned DEFAULT NULL COMMENT 'Order in the list',
   `is_obsolete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is an obsolete record',
   `groupe_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this group type',
   `bz_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short description for BZ which we use when we create the group',
@@ -2953,14 +2954,14 @@ insert  into `ut_group_types`(`id_group_type`,`created`,`order`,`is_obsolete`,`g
 DROP TABLE IF EXISTS `ut_invitation_api_data`;
 
 CREATE TABLE `ut_invitation_api_data` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The unique ID in this table',
   `mefe_invitation_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The unique Id for the invitation that was generated in MEFE to do the data import',
-  `bzfe_invitor_user_id` mediumint(9) NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
-  `bz_user_id` mediumint(9) NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
-  `user_role_type_id` smallint(6) NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
+  `bzfe_invitor_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The BZFE user id who creates this unit. this is a FK to the BZ table ''profiles''',
+  `bz_user_id` mediumint(9) unsigned NOT NULL COMMENT 'The userid for the user that will be rfeplcing the dummy user for this role for this unit. This is a FK to the BZ table ''profiles''',
+  `user_role_type_id` smallint(6) unsigned NOT NULL COMMENT 'The id of the role type for the invited user. This is a FK to the table ''ut_role_types''',
   `is_occupant` tinyint(1) DEFAULT '0' COMMENT '1 if TRUE, 0 if FALSE',
-  `bz_case_id` mediumint(9) DEFAULT NULL COMMENT 'The id of the bug in th table ''bugs''',
-  `bz_unit_id` smallint(6) NOT NULL COMMENT 'The product id in the BZ table ''products''',
+  `bz_case_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'The id of the bug in th table ''bugs''',
+  `bz_unit_id` mediumint(9) unsigned NOT NULL COMMENT 'The product id in the BZ table ''products''',
   `invitation_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'The type of the invitation (assigned or CC)',
   `is_mefe_only_user` tinyint(1) DEFAULT '1' COMMENT '1 if the user is a MEFE only user. In this scenario, we will DISABLE the claim mail in the BZFE for that user',
   `user_more` varchar(500) COLLATE utf8mb4_unicode_520_ci DEFAULT '' COMMENT 'A text to give more information about the user. This will be used in the BZ Component Description',
@@ -2988,9 +2989,9 @@ CREATE TABLE `ut_invitation_api_data` (
 DROP TABLE IF EXISTS `ut_invitation_types`;
 
 CREATE TABLE `ut_invitation_types` (
-  `id_invitation_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_invitation_type` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
+  `order` smallint(6) unsigned DEFAULT NULL COMMENT 'Order in the list',
   `is_active` tinyint(1) DEFAULT '0' COMMENT '1 if this is an active invitation: we have the scripts to process these',
   `invitation_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this invitation type',
   `detailed_description` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this group type',
@@ -3013,10 +3014,10 @@ insert  into `ut_invitation_types`(`id_invitation_type`,`created`,`order`,`is_ac
 DROP TABLE IF EXISTS `ut_log_count_closed_cases`;
 
 CREATE TABLE `ut_log_count_closed_cases` (
-  `id_log_closed_case` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique id in this table',
+  `id_log_closed_case` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique id in this table',
   `timestamp` datetime DEFAULT NULL COMMENT 'The timestamp when this record was created',
-  `count_closed_cases` int(11) NOT NULL COMMENT 'The number of closed case at this Datetime',
-  `count_total_cases` int(11) DEFAULT NULL COMMENT 'The total number of cases in Unee-T at this time',
+  `count_closed_cases` int(11) unsigned NOT NULL COMMENT 'The number of closed case at this Datetime',
+  `count_total_cases` int(11) unsigned DEFAULT NULL COMMENT 'The total number of cases in Unee-T at this time',
   PRIMARY KEY (`id_log_closed_case`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -3027,10 +3028,10 @@ CREATE TABLE `ut_log_count_closed_cases` (
 DROP TABLE IF EXISTS `ut_log_count_enabled_units`;
 
 CREATE TABLE `ut_log_count_enabled_units` (
-  `id_log_enabled_units` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique id in this table',
+  `id_log_enabled_units` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique id in this table',
   `timestamp` datetime DEFAULT NULL COMMENT 'The timestamp when this record was created',
-  `count_enabled_units` int(11) NOT NULL COMMENT 'The number of enabled products/units at this Datetime',
-  `count_total_units` int(11) NOT NULL COMMENT 'The total number of products/units at this Datetime',
+  `count_enabled_units` int(11) unsigned NOT NULL COMMENT 'The number of enabled products/units at this Datetime',
+  `count_total_units` int(11) unsigned NOT NULL COMMENT 'The total number of products/units at this Datetime',
   PRIMARY KEY (`id_log_enabled_units`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -3041,8 +3042,8 @@ CREATE TABLE `ut_log_count_enabled_units` (
 DROP TABLE IF EXISTS `ut_map_contractor_to_type`;
 
 CREATE TABLE `ut_map_contractor_to_type` (
-  `contractor_id` int(11) NOT NULL COMMENT 'id in the table `ut_contractors`',
-  `contractor_type_id` mediumint(9) NOT NULL COMMENT 'id in the table `ut_contractor_types`',
+  `contractor_id` int(11) unsigned NOT NULL COMMENT 'id in the table `ut_contractors`',
+  `contractor_type_id` mediumint(9) unsigned NOT NULL COMMENT 'id in the table `ut_contractor_types`',
   `created` datetime DEFAULT NULL COMMENT 'creation ts'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -3053,8 +3054,8 @@ CREATE TABLE `ut_map_contractor_to_type` (
 DROP TABLE IF EXISTS `ut_map_contractor_to_user`;
 
 CREATE TABLE `ut_map_contractor_to_user` (
-  `contractor_id` int(11) NOT NULL COMMENT 'id in the table `ut_contractors`',
-  `bz_user_id` mediumint(9) NOT NULL COMMENT 'id in the table `profiles`',
+  `contractor_id` int(11) unsigned NOT NULL COMMENT 'id in the table `ut_contractors`',
+  `bz_user_id` mediumint(9) unsigned NOT NULL COMMENT 'id in the table `profiles`',
   `created` datetime DEFAULT NULL COMMENT 'creation ts'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -3065,10 +3066,10 @@ CREATE TABLE `ut_map_contractor_to_user` (
 DROP TABLE IF EXISTS `ut_map_invitation_type_to_permission_type`;
 
 CREATE TABLE `ut_map_invitation_type_to_permission_type` (
-  `invitation_type_id` smallint(6) NOT NULL COMMENT 'id of the invitation type in the table `ut_invitation_types`',
-  `permission_type_id` smallint(6) NOT NULL COMMENT 'id of the permission type in the table `ut_permission_types`',
+  `invitation_type_id` smallint(6) unsigned NOT NULL COMMENT 'id of the invitation type in the table `ut_invitation_types`',
+  `permission_type_id` smallint(6) unsigned NOT NULL COMMENT 'id of the permission type in the table `ut_permission_types`',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `record_created_by` smallint(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
+  `record_created_by` mediumint(9) unsigned DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
   `is_obsolete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is an obsolete record',
   `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Any comment',
   PRIMARY KEY (`invitation_type_id`,`permission_type_id`),
@@ -3085,7 +3086,7 @@ DROP TABLE IF EXISTS `ut_map_user_mefe_bzfe`;
 
 CREATE TABLE `ut_map_user_mefe_bzfe` (
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `record_created_by` smallint(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
+  `record_created_by` mediumint(9) unsigned DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
   `is_obsolete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is an obsolete record',
   `bzfe_update_needed` tinyint(1) DEFAULT '0' COMMENT 'Do we need to update this record in the BZFE - This is to keep track of the user that have been modified in the MEFE but NOT yet in the BZFE',
   `mefe_user_id` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'id of the user in the MEFE',
@@ -3101,12 +3102,12 @@ DROP TABLE IF EXISTS `ut_map_user_unit_details`;
 
 CREATE TABLE `ut_map_user_unit_details` (
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `record_created_by` smallint(6) DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
+  `record_created_by` mediumint(9) unsigned DEFAULT NULL COMMENT 'id of the user who created this user in the bz `profiles` table',
   `is_obsolete` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is an obsolete record',
-  `user_id` int(11) DEFAULT NULL COMMENT 'id of the user in the MEFE',
+  `user_id` int(11) unsigned DEFAULT NULL COMMENT 'id of the user in the MEFE',
   `bz_profile_id` mediumint(6) DEFAULT NULL COMMENT 'id of the user in the BZFE',
-  `bz_unit_id` smallint(6) DEFAULT NULL COMMENT 'The id of the unit in the BZFE',
-  `role_type_id` smallint(6) DEFAULT NULL COMMENT 'An id in the table ut_role_types: the role of the user for this unit',
+  `bz_unit_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'The id of the unit in the BZFE',
+  `role_type_id` smallint(6) unsigned DEFAULT NULL COMMENT 'An id in the table ut_role_types: the role of the user for this unit',
   `can_see_time_tracking` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 (TRUE) if the user can see the timetracking information for a case',
   `can_create_shared_queries` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 (TRUE) if the user can create shared queries',
   `can_tag_comment` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1 (TRUE) if the user can tag comments',
@@ -3138,16 +3139,16 @@ CREATE TABLE `ut_map_user_unit_details` (
 DROP TABLE IF EXISTS `ut_notification_case_assignee`;
 
 CREATE TABLE `ut_notification_case_assignee` (
-  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `notification_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
   `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
-  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
-  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `unit_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
   `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
-  `invitor_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
-  `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
-  `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
-  `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
+  `invitor_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
+  `case_reporter_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
+  `old_case_assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
+  `new_case_assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
   `current_list_of_invitees` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   `current_status` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current status of the case/bug',
   `current_resolution` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current resolution of the case/bug',
@@ -3162,17 +3163,17 @@ CREATE TABLE `ut_notification_case_assignee` (
 DROP TABLE IF EXISTS `ut_notification_case_invited`;
 
 CREATE TABLE `ut_notification_case_invited` (
-  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `notification_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
   `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
-  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
-  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `unit_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
   `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
-  `invitor_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
-  `invitee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who has been invited to the case a FK to the BZ table ''profiles''',
-  `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
-  `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
-  `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
+  `invitor_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
+  `invitee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - The user who has been invited to the case a FK to the BZ table ''profiles''',
+  `case_reporter_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
+  `old_case_assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
+  `new_case_assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
   `current_list_of_invitees` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   `current_status` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current status of the case/bug',
   `current_resolution` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current resolution of the case/bug',
@@ -3187,14 +3188,14 @@ CREATE TABLE `ut_notification_case_invited` (
 DROP TABLE IF EXISTS `ut_notification_case_new`;
 
 CREATE TABLE `ut_notification_case_new` (
-  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `notification_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
   `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
-  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
-  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `unit_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
   `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
-  `reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'The BZ profile Id of the reporter for the case',
-  `assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'The BZ profile ID of the Assignee to the case',
+  `reporter_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'The BZ profile Id of the reporter for the case',
+  `assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'The BZ profile ID of the Assignee to the case',
   `current_status` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current status of the case/bug',
   `current_resolution` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current resolution of the case/bug',
   `current_severity` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current severity of the case/bug',
@@ -3208,19 +3209,19 @@ CREATE TABLE `ut_notification_case_new` (
 DROP TABLE IF EXISTS `ut_notification_case_updated`;
 
 CREATE TABLE `ut_notification_case_updated` (
-  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `notification_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
   `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
-  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
-  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `unit_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
   `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
-  `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
+  `user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
   `update_what` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The field that was updated',
   `old_value` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The value before it was updated',
   `new_value` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The value after it was updated',
-  `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
-  `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
-  `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
+  `case_reporter_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
+  `old_case_assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
+  `new_case_assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
   `current_list_of_invitees` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   `current_status` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current status of the case/bug',
   `current_resolution` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current resolution of the case/bug',
@@ -3235,18 +3236,18 @@ CREATE TABLE `ut_notification_case_updated` (
 DROP TABLE IF EXISTS `ut_notification_message_new`;
 
 CREATE TABLE `ut_notification_message_new` (
-  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
+  `notification_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id in this table',
   `created_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this was created',
   `processed_datetime` datetime DEFAULT NULL COMMENT 'Timestamp when this notification was processed',
-  `unit_id` smallint(6) DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
-  `case_id` mediumint(9) DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
+  `unit_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Unit ID - a FK to the BZ table ''products''',
+  `case_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'Case ID - a FK to the BZ table ''bugs''',
   `case_title` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The title for the case - the is the field `short_desc` in the `bugs` table',
-  `user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
+  `user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - The user who inititated the change - a FK to the BZ table ''profiles''',
   `is_case_description` tinyint(1) DEFAULT NULL COMMENT '1 if this is the FIRST message for a case (the case description)',
   `message_truncated` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The message, truncated to the first 255 characters',
-  `case_reporter_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
-  `old_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
-  `new_case_assignee_user_id` mediumint(9) DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
+  `case_reporter_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the reporter for the case',
+  `old_case_assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case before the change',
+  `new_case_assignee_user_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'User ID - BZ user id of the assignee for the case after the change',
   `current_list_of_invitees` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'comma separated list of user IDs - BZ user ids of the user in cc for this case/bug AFTER the change',
   `current_status` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current status of the case/bug',
   `current_resolution` varchar(64) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The current resolution of the case/bug',
@@ -3261,7 +3262,7 @@ CREATE TABLE `ut_notification_message_new` (
 DROP TABLE IF EXISTS `ut_notification_types`;
 
 CREATE TABLE `ut_notification_types` (
-  `id_role_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_role_type` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `notification_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this role type',
   `short_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
@@ -3284,16 +3285,16 @@ insert  into `ut_notification_types`(`id_role_type`,`created`,`notification_type
 DROP TABLE IF EXISTS `ut_permission_types`;
 
 CREATE TABLE `ut_permission_types` (
-  `id_permission_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_permission_type` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
-  `order` smallint(6) DEFAULT NULL COMMENT 'Order in the list',
+  `order` smallint(6) unsigned DEFAULT NULL COMMENT 'Order in the list',
   `is_obsolete` tinyint(1) DEFAULT '0' COMMENT '1 if this is an obsolete value',
-  `group_type_id` smallint(6) DEFAULT NULL COMMENT 'The id of the group that grant this permission - a FK to the table ut_group_types',
+  `group_type_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'The id of the group that grant this permission - a FK to the table ut_group_types',
   `permission_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this role type',
   `permission_scope` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT '4 possible values: GLOBAL: for all units and roles, UNIT: permission for a specific unit, ROLE: permission for a specific role in a specific unit, SPECIAL: special permission (ex: occupant)',
   `permission_category` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'Possible values: ACCESS: group_control, GRANT FLAG: permissions to grant flags, ASK FOR APPROVAL: can ask a specific user to approve a flag, ROLE: a user is in a given role,',
   `is_bless` tinyint(1) DEFAULT '0' COMMENT '1 if this is a permission to grant membership to a given group',
-  `bless_id` smallint(6) DEFAULT NULL COMMENT 'IF this is a ''blessing'' permission - which permission can this grant',
+  `bless_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'IF this is a ''blessing'' permission - which permission can this grant',
   `description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
   `detailed_description` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Detailed description of this group type',
   PRIMARY KEY (`id_permission_type`,`permission_type`),
@@ -3372,12 +3373,12 @@ insert  into `ut_permission_types`(`id_permission_type`,`created`,`order`,`is_ob
 DROP TABLE IF EXISTS `ut_product_group`;
 
 CREATE TABLE `ut_product_group` (
-  `product_id` smallint(6) NOT NULL COMMENT 'id in the table products - to identify all the groups for a product/unit',
-  `component_id` mediumint(9) DEFAULT NULL COMMENT 'id in the table components - to identify all the groups for a given component/role',
-  `group_id` mediumint(9) NOT NULL COMMENT 'id in the table groups - to map the group to the list in the table `groups`',
-  `group_type_id` smallint(6) NOT NULL COMMENT 'id in the table ut_group_types - to avoid re-creating the same group for the same product again',
-  `role_type_id` smallint(6) DEFAULT NULL COMMENT 'id in the table ut_role_types - to make sure all similar stakeholder in a unit are made a member of the same group',
-  `created_by_id` mediumint(9) DEFAULT NULL COMMENT 'id in the table ut_profiles',
+  `product_id` mediumint(9) unsigned NOT NULL COMMENT 'id in the table products - to identify all the groups for a product/unit',
+  `component_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'id in the table components - to identify all the groups for a given component/role',
+  `group_id` mediumint(9) unsigned NOT NULL COMMENT 'id in the table groups - to map the group to the list in the table `groups`',
+  `group_type_id` mediumint(9) unsigned NOT NULL COMMENT 'id in the table ut_group_types - to avoid re-creating the same group for the same product again',
+  `role_type_id` smallint(6) unsigned DEFAULT NULL COMMENT 'id in the table ut_role_types - to make sure all similar stakeholder in a unit are made a member of the same group',
+  `created_by_id` mediumint(9) unsigned DEFAULT NULL COMMENT 'id in the table ut_profiles',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   KEY `ut_product_group_product_id_group_id` (`product_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -3389,7 +3390,7 @@ CREATE TABLE `ut_product_group` (
 DROP TABLE IF EXISTS `ut_role_types`;
 
 CREATE TABLE `ut_role_types` (
-  `id_role_type` smallint(6) NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
+  `id_role_type` smallint(6) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID in this table',
   `created` datetime DEFAULT NULL COMMENT 'creation ts',
   `role_type` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'A name for this role type',
   `bz_description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'A short, generic description that we include each time we create a new BZ unit.',
@@ -3411,7 +3412,7 @@ insert  into `ut_role_types`(`id_role_type`,`created`,`role_type`,`bz_descriptio
 DROP TABLE IF EXISTS `ut_script_log`;
 
 CREATE TABLE `ut_script_log` (
-  `id_ut_script_log` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
+  `id_ut_script_log` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The id of the record in this table',
   `datetime` datetime DEFAULT NULL COMMENT 'When was this record created',
   `script` longtext COLLATE utf8mb4_unicode_520_ci COMMENT 'The script that was used to create the record',
   `log` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'More information about what we intended to do',
@@ -3425,9 +3426,9 @@ CREATE TABLE `ut_script_log` (
 DROP TABLE IF EXISTS `versions`;
 
 CREATE TABLE `versions` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
   `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `product_id` smallint(6) NOT NULL,
+  `product_id` mediumint(9) unsigned NOT NULL,
   `isactive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `versions_product_id_idx` (`product_id`,`value`),
@@ -3444,8 +3445,8 @@ insert  into `versions`(`id`,`value`,`product_id`,`isactive`) values
 DROP TABLE IF EXISTS `watch`;
 
 CREATE TABLE `watch` (
-  `watcher` mediumint(9) NOT NULL,
-  `watched` mediumint(9) NOT NULL,
+  `watcher` mediumint(9) unsigned NOT NULL,
+  `watched` mediumint(9) unsigned NOT NULL,
   UNIQUE KEY `watch_watcher_idx` (`watcher`,`watched`),
   KEY `watch_watched_idx` (`watched`),
   CONSTRAINT `fk_watch_watched_profiles_userid` FOREIGN KEY (`watched`) REFERENCES `profiles` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -3459,8 +3460,8 @@ CREATE TABLE `watch` (
 DROP TABLE IF EXISTS `whine_events`;
 
 CREATE TABLE `whine_events` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `owner_userid` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `owner_userid` mediumint(9) unsigned NOT NULL,
   `subject` varchar(128) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `body` longtext COLLATE utf8mb4_unicode_520_ci,
   `mailifnobugs` tinyint(4) NOT NULL DEFAULT '0',
@@ -3476,10 +3477,10 @@ CREATE TABLE `whine_events` (
 DROP TABLE IF EXISTS `whine_queries`;
 
 CREATE TABLE `whine_queries` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `eventid` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `eventid` mediumint(9) unsigned NOT NULL,
   `query_name` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
-  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `sortkey` smallint(6) unsigned NOT NULL DEFAULT '0',
   `onemailperbug` tinyint(4) NOT NULL DEFAULT '0',
   `title` varchar(128) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
@@ -3494,13 +3495,13 @@ CREATE TABLE `whine_queries` (
 DROP TABLE IF EXISTS `whine_schedules`;
 
 CREATE TABLE `whine_schedules` (
-  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  `eventid` mediumint(9) NOT NULL,
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `eventid` mediumint(9) unsigned NOT NULL,
   `run_day` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `run_time` varchar(32) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `run_next` datetime DEFAULT NULL,
-  `mailto` mediumint(9) NOT NULL,
-  `mailto_type` smallint(6) NOT NULL DEFAULT '0',
+  `mailto` mediumint(9) unsigned NOT NULL,
+  `mailto_type` smallint(6) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `whine_schedules_run_next_idx` (`run_next`),
   KEY `whine_schedules_eventid_idx` (`eventid`),
@@ -3509,13 +3510,24 @@ CREATE TABLE `whine_schedules` (
 
 /*Data for the table `whine_schedules` */
 
+/*Table structure for table `xxx_local_dev_ut_lambda_calls` */
+
+DROP TABLE IF EXISTS `xxx_local_dev_ut_lambda_calls`;
+
+CREATE TABLE `xxx_local_dev_ut_lambda_calls` (
+  `notification_type` varchar(255) NOT NULL,
+  `json_payload` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `xxx_local_dev_ut_lambda_calls` */
+
 /* Trigger structure for table `bugs` */
 
 DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `ut_prepare_message_new_case` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `ut_prepare_message_new_case` AFTER INSERT ON `bugs` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_new_case` AFTER INSERT ON `bugs` FOR EACH ROW 
 BEGIN
 	# Clean Slate: make sure all the variables we use are properly flushed first
 		SET @notification_type = NULL;
@@ -3531,7 +3543,6 @@ BEGIN
 		SET @current_status = NULL;
 		SET @current_resolution = NULL;
 		SET @current_severity = NULL;
-
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_new';
 		SET @bz_source_table = 'ut_notification_case_new';
@@ -3600,7 +3611,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_the_log_of_closed_cases` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `update_the_log_of_closed_cases` AFTER UPDATE ON `bugs` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `update_the_log_of_closed_cases` AFTER UPDATE ON `bugs` FOR EACH ROW 
   BEGIN
     IF NEW.`bug_status` <> OLD.`bug_status` 
 		THEN
@@ -3631,7 +3642,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `ut_prepare_message_case_assigned_updated` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `ut_prepare_message_case_assigned_updated` AFTER UPDATE ON `bugs` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_case_assigned_updated` AFTER UPDATE ON `bugs` FOR EACH ROW 
 BEGIN
 	# We only do that if the assignee has changed
 	IF NEW.`assigned_to` != OLD.`assigned_to`
@@ -3654,7 +3665,6 @@ BEGIN
 			SET @current_status = NULL;
 			SET @current_resolution = NULL;
 			SET @current_severity = NULL;
-
 		# We have a clean slate, define the variables now
 			SET @notification_type = 'case_assignee_updated';
 			SET @bz_source_table = 'ut_notification_case_assignee';
@@ -3741,7 +3751,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `ut_prepare_message_case_activity` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `ut_prepare_message_case_activity` AFTER INSERT ON `bugs_activity` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_case_activity` AFTER INSERT ON `bugs_activity` FOR EACH ROW 
 BEGIN
 	# Clean Slate: make sure all the variables we use are properly flushed first
 		SET @notification_type = NULL;
@@ -3764,7 +3774,6 @@ BEGIN
 		SET @current_status = NULL;
 		SET @current_resolution = NULL;
 		SET @current_severity = NULL;
-
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_updated';
 		SET @bz_source_table = 'ut_notification_case_updated';
@@ -3862,7 +3871,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `ut_prepare_message_case_invited` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `ut_prepare_message_case_invited` AFTER INSERT ON `cc` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_case_invited` AFTER INSERT ON `cc` FOR EACH ROW 
 BEGIN
 	# Clean Slate: make sure all the variables we use are properly flushed first
 		SET @notification_type = NULL;
@@ -3882,7 +3891,6 @@ BEGIN
 		SET @current_status = NULL;
 		SET @current_resolution = NULL;
 		SET @current_severity = NULL;
-
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_user_invited';
 		SET @bz_source_table = 'ut_notification_case_invited';
@@ -3905,7 +3913,6 @@ BEGIN
 		SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
-
 	# We insert the event in the relevant notification table		
 		INSERT INTO `ut_notification_case_invited`
 			(`notification_id`
@@ -3968,7 +3975,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_component_cc` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_component_cc` AFTER INSERT ON `component_cc` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_component_cc` AFTER INSERT ON `component_cc` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
@@ -4004,7 +4011,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_component_cc` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_component_cc` AFTER UPDATE ON `component_cc` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_component_cc` AFTER UPDATE ON `component_cc` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
@@ -4048,7 +4055,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_component_cc` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_component_cc` AFTER DELETE ON `component_cc` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_component_cc` AFTER DELETE ON `component_cc` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
@@ -4085,7 +4092,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_components` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_components` AFTER INSERT ON `components` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_components` AFTER INSERT ON `components` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -4136,7 +4143,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_components` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_components` AFTER UPDATE ON `components` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_components` AFTER UPDATE ON `components` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -4210,7 +4217,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_components` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_components` AFTER DELETE ON `components` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_components` AFTER DELETE ON `components` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
@@ -4261,7 +4268,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_flaginclusions` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flaginclusions` AFTER INSERT ON `flaginclusions` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flaginclusions` AFTER INSERT ON `flaginclusions` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_type_id = new.type_id;
@@ -4300,7 +4307,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_flaginclusions` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flaginclusions` AFTER UPDATE ON `flaginclusions` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flaginclusions` AFTER UPDATE ON `flaginclusions` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_type_id = new.type_id;
@@ -4350,7 +4357,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_flaginclusions` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flaginclusions` AFTER DELETE ON `flaginclusions` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flaginclusions` AFTER DELETE ON `flaginclusions` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_type_id = old.type_id;
@@ -4389,7 +4396,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_flagtypes` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flagtypes` AFTER INSERT ON `flagtypes` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_flagtypes` AFTER INSERT ON `flagtypes` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -4455,7 +4462,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_flagtypes` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flagtypes` AFTER UPDATE ON `flagtypes` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_flagtypes` AFTER UPDATE ON `flagtypes` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -4559,7 +4566,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_flagtypes` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flagtypes` AFTER DELETE ON `flagtypes` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_flagtypes` AFTER DELETE ON `flagtypes` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
@@ -4625,7 +4632,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_group_control_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_control_map` AFTER INSERT ON `group_control_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_control_map` AFTER INSERT ON `group_control_map` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_group_id = new.group_id;
@@ -4682,7 +4689,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_group_control_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_control_map` AFTER UPDATE ON `group_control_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_control_map` AFTER UPDATE ON `group_control_map` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_group_id = new.group_id;
@@ -4768,7 +4775,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_group_control_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_control_map` AFTER DELETE ON `group_control_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_control_map` AFTER DELETE ON `group_control_map` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_group_id = old.group_id;
@@ -4825,7 +4832,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_group_group_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_group_map` AFTER INSERT ON `group_group_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_group_group_map` AFTER INSERT ON `group_group_map` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_member_id = new.member_id;
@@ -4864,7 +4871,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_group_group_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_group_map` AFTER UPDATE ON `group_group_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_group_group_map` AFTER UPDATE ON `group_group_map` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_member_id = new.member_id;
@@ -4916,7 +4923,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_group_group_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_group_map` AFTER DELETE ON `group_group_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_group_group_map` AFTER DELETE ON `group_group_map` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_member_id = old.member_id;
@@ -4956,7 +4963,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_groups` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_groups` AFTER INSERT ON `groups` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_groups` AFTER INSERT ON `groups` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -5007,7 +5014,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_groups` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_groups` AFTER UPDATE ON `groups` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_groups` AFTER UPDATE ON `groups` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -5081,7 +5088,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_groups` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_groups` AFTER DELETE ON `groups` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_groups` AFTER DELETE ON `groups` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
@@ -5132,7 +5139,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `ut_notification_classify_messages` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `ut_notification_classify_messages` AFTER INSERT ON `longdescs` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `ut_notification_classify_messages` AFTER INSERT ON `longdescs` FOR EACH ROW 
 BEGIN
 	# Clean Slate: make sure all the variables we use are properly flushed first
 		SET @notification_id = NULL;
@@ -5156,7 +5163,6 @@ BEGIN
 		SET @current_status = NULL;
 		SET @current_resolution = NULL;
 		SET @current_severity = NULL;
-
 	# We have a clean slate, define the variables now
 		SET @created_datetime = NOW();
 		SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = NEW.`bug_id`);
@@ -5222,7 +5228,6 @@ BEGIN
 			, @current_severity
 			)
 			;
-
 END */$$
 
 
@@ -5234,7 +5239,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_milestones` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_milestones` AFTER INSERT ON `milestones` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_milestones` AFTER INSERT ON `milestones` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -5279,7 +5284,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_milestones` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_milestones` AFTER UPDATE ON `milestones` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_milestones` AFTER UPDATE ON `milestones` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -5341,7 +5346,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_milestones` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_milestones` AFTER DELETE ON `milestones` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_milestones` AFTER DELETE ON `milestones` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
@@ -5386,7 +5391,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_the_log_of_enabled_units_when_unit_is_created` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_created` AFTER INSERT ON `products` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_created` AFTER INSERT ON `products` FOR EACH ROW 
   BEGIN
     CALL `update_log_count_enabled_units`;
 END */$$
@@ -5400,7 +5405,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_products` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_products` AFTER INSERT ON `products` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_products` AFTER INSERT ON `products` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_name = new.name;
@@ -5448,7 +5453,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_the_log_of_enabled_units_when_unit_is_updated` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_updated` AFTER UPDATE ON `products` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_updated` AFTER UPDATE ON `products` FOR EACH ROW 
   BEGIN
     IF NEW.`isactive` <> OLD.`isactive` 
 		THEN
@@ -5466,7 +5471,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_products` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_products` AFTER UPDATE ON `products` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_products` AFTER UPDATE ON `products` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_name = new.name;
@@ -5534,7 +5539,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_the_log_of_enabled_units_when_unit_is_deleted` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_deleted` AFTER DELETE ON `products` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `update_the_log_of_enabled_units_when_unit_is_deleted` AFTER DELETE ON `products` FOR EACH ROW 
   BEGIN
     CALL `update_log_count_enabled_units`;
 END */$$
@@ -5548,7 +5553,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_products` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_products` AFTER DELETE ON `products` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_products` AFTER DELETE ON `products` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_name = old.name;
@@ -5596,7 +5601,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_user_group_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_user_group_map` AFTER INSERT ON `user_group_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_user_group_map` AFTER INSERT ON `user_group_map` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
@@ -5638,7 +5643,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_user_group_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_user_group_map` AFTER UPDATE ON `user_group_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_user_group_map` AFTER UPDATE ON `user_group_map` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_user_id = new.user_id;
@@ -5694,7 +5699,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_user_group_map` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_user_group_map` AFTER DELETE ON `user_group_map` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_user_group_map` AFTER DELETE ON `user_group_map` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_user_id = old.user_id;
@@ -5735,7 +5740,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_ut_data_to_create_units` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_data_to_create_units` AFTER INSERT ON `ut_data_to_create_units` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_data_to_create_units` AFTER INSERT ON `ut_data_to_create_units` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id_unit_to_create = new.id_unit_to_create;
@@ -5801,7 +5806,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_ut_data_to_create_units` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_data_to_create_units` AFTER UPDATE ON `ut_data_to_create_units` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_data_to_create_units` AFTER UPDATE ON `ut_data_to_create_units` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id_unit_to_create = new.id_unit_to_create;
@@ -5907,7 +5912,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_ut_data_to_create_units` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_data_to_create_units` AFTER DELETE ON `ut_data_to_create_units` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_data_to_create_units` AFTER DELETE ON `ut_data_to_create_units` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_id_unit_to_create = old.id_unit_to_create;
@@ -5973,7 +5978,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_ut_invitation_api_data` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_invitation_api_data` AFTER INSERT ON `ut_invitation_api_data` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_invitation_api_data` AFTER INSERT ON `ut_invitation_api_data` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -6048,7 +6053,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_ut_invitation_api_data` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_invitation_api_data` AFTER UPDATE ON `ut_invitation_api_data` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_invitation_api_data` AFTER UPDATE ON `ut_invitation_api_data` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -6172,7 +6177,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_ut_invitation_api_data` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_invitation_api_data` AFTER DELETE ON `ut_invitation_api_data` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_invitation_api_data` AFTER DELETE ON `ut_invitation_api_data` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
@@ -6247,7 +6252,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `ut_prepare_message_new_comment` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `ut_prepare_message_new_comment` AFTER INSERT ON `ut_notification_message_new` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `ut_prepare_message_new_comment` AFTER INSERT ON `ut_notification_message_new` FOR EACH ROW 
 BEGIN
 	# We only do this is this is a new comment, not if this is a description
 	IF NEW.`is_case_description` != 1
@@ -6270,7 +6275,6 @@ BEGIN
 			SET @current_status = NULL;
 			SET @current_resolution = NULL;
 			SET @current_severity = NULL;
-
 		# We have a clean slate, define the variables now
 			SET @notification_type = 'case_new_message';
 			SET @bz_source_table = 'ut_notification_message_new';
@@ -6321,7 +6325,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_ut_product_group` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_product_group` AFTER INSERT ON `ut_product_group` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_ut_product_group` AFTER INSERT ON `ut_product_group` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_product_id = new.product_id;
@@ -6372,7 +6376,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_ut_product_group` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_product_group` AFTER UPDATE ON `ut_product_group` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_ut_product_group` AFTER UPDATE ON `ut_product_group` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_product_id = new.product_id;
@@ -6448,7 +6452,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_ut_product_group` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_product_group` AFTER DELETE ON `ut_product_group` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_ut_product_group` AFTER DELETE ON `ut_product_group` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_product_id = old.product_id;
@@ -6499,7 +6503,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_new_record_versions` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_new_record_versions` AFTER INSERT ON `versions` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_new_record_versions` AFTER INSERT ON `versions` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -6541,7 +6545,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_update_record_versions` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_update_record_versions` AFTER UPDATE ON `versions` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_update_record_versions` AFTER UPDATE ON `versions` FOR EACH ROW 
   BEGIN
     # We capture the new values of each fields in dedicated variables:
         SET @new_id = new.id;
@@ -6597,7 +6601,7 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `trig_update_audit_log_delete_record_versions` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'unee_t_root'@'%' */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_versions` AFTER DELETE ON `versions` FOR EACH ROW 
+/*!50003 CREATE */ /*!50003 TRIGGER `trig_update_audit_log_delete_record_versions` AFTER DELETE ON `versions` FOR EACH ROW 
   BEGIN
     # We capture the old values of each fields in dedicated variables:
         SET @old_id = old.id;
@@ -6639,7 +6643,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `add_invitee_in_cc`()
+/*!50003 CREATE PROCEDURE `add_invitee_in_cc`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@add_invitee_in_cc = 1)
@@ -6726,7 +6730,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `add_user_to_role_in_unit`()
+/*!50003 CREATE PROCEDURE `add_user_to_role_in_unit`()
 BEGIN
     # This procedure needs the following objects:
     #   - variables:
@@ -7346,7 +7350,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `are_users_agent`()
+/*!50003 CREATE PROCEDURE `are_users_agent`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 5)
@@ -7424,7 +7428,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `are_users_contractor`()
+/*!50003 CREATE PROCEDURE `are_users_contractor`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 3)
@@ -7502,7 +7506,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `are_users_landlord`()
+/*!50003 CREATE PROCEDURE `are_users_landlord`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 2)
@@ -7580,7 +7584,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `are_users_mgt_cny`()
+/*!50003 CREATE PROCEDURE `are_users_mgt_cny`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 4)
@@ -7658,7 +7662,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_approve_all_flags`()
+/*!50003 CREATE PROCEDURE `can_approve_all_flags`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@can_approve_all_flags = 1)
@@ -7735,7 +7739,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_ask_to_approve_flags`()
+/*!50003 CREATE PROCEDURE `can_ask_to_approve_flags`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@can_ask_to_approve_flags = 1)
@@ -7812,7 +7816,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_create_new_cases`()
+/*!50003 CREATE PROCEDURE `can_create_new_cases`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@can_create_new_cases = 1)
@@ -7891,7 +7895,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_create_shared_queries`()
+/*!50003 CREATE PROCEDURE `can_create_shared_queries`()
     SQL SECURITY INVOKER
 BEGIN
 	# This should not change, it was hard coded when we created Unee-T
@@ -7958,7 +7962,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_edit_all_field_in_a_case_regardless_of_role`()
+/*!50003 CREATE PROCEDURE `can_edit_all_field_in_a_case_regardless_of_role`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@can_edit_all_field_in_a_case_regardless_of_role = 1)
@@ -8035,7 +8039,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_edit_a_case`()
+/*!50003 CREATE PROCEDURE `can_edit_a_case`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@can_edit_a_case = 1)
@@ -8112,7 +8116,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_see_all_public_cases`()
+/*!50003 CREATE PROCEDURE `can_see_all_public_cases`()
     SQL SECURITY INVOKER
 BEGIN
 	# This allows a user to see the 'public' cases for a given unit.
@@ -8194,7 +8198,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_see_time_tracking`()
+/*!50003 CREATE PROCEDURE `can_see_time_tracking`()
     SQL SECURITY INVOKER
 BEGIN
 	# This should not change, it was hard coded when we created Unee-T
@@ -8263,7 +8267,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_see_unit_in_search`()
+/*!50003 CREATE PROCEDURE `can_see_unit_in_search`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@can_see_unit_in_search = 1)
@@ -8341,7 +8345,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_tag_comment`()
+/*!50003 CREATE PROCEDURE `can_tag_comment`()
     SQL SECURITY INVOKER
 BEGIN
 	# This should not change, it was hard coded when we created Unee-T
@@ -8409,7 +8413,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `capture_id_dummy_user`()
+/*!50003 CREATE PROCEDURE `capture_id_dummy_user`()
     SQL SECURITY INVOKER
 BEGIN
 	
@@ -8463,7 +8467,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `change_case_assignee`()
+/*!50003 CREATE PROCEDURE `change_case_assignee`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@change_case_assignee = 1)
@@ -8557,7 +8561,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `create_temp_table_to_update_group_permissions`()
+/*!50003 CREATE PROCEDURE `create_temp_table_to_update_group_permissions`()
     SQL SECURITY INVOKER
 BEGIN
 	# DELETE the temp table if it exists
@@ -8578,7 +8582,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `create_temp_table_to_update_permissions`()
+/*!50003 CREATE PROCEDURE `create_temp_table_to_update_permissions`()
     SQL SECURITY INVOKER
 BEGIN
     # We use a temporary table to make sure we do not have duplicates.
@@ -8603,7 +8607,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `default_agent_see_users_agent`()
+/*!50003 CREATE PROCEDURE `default_agent_see_users_agent`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 5)
@@ -8681,7 +8685,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `default_contractor_see_users_contractor`()
+/*!50003 CREATE PROCEDURE `default_contractor_see_users_contractor`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 3)
@@ -8759,7 +8763,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `default_landlord_see_users_landlord`()
+/*!50003 CREATE PROCEDURE `default_landlord_see_users_landlord`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 2)
@@ -8838,7 +8842,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `default_mgt_cny_see_users_mgt_cny`()
+/*!50003 CREATE PROCEDURE `default_mgt_cny_see_users_mgt_cny`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 4)
@@ -8917,7 +8921,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `default_occupant_can_see_occupant`()
+/*!50003 CREATE PROCEDURE `default_occupant_can_see_occupant`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@is_occupant = 1)
@@ -8994,7 +8998,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `default_tenant_can_see_tenant`()
+/*!50003 CREATE PROCEDURE `default_tenant_can_see_tenant`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 1)
@@ -9072,7 +9076,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `disable_bugmail`()
+/*!50003 CREATE PROCEDURE `disable_bugmail`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@is_mefe_only_user = 1)
@@ -9170,7 +9174,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `finalize_invitation_to_a_case`()
+/*!50003 CREATE PROCEDURE `finalize_invitation_to_a_case`()
     SQL SECURITY INVOKER
 BEGIN
 	
@@ -9247,7 +9251,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `is_occupant`()
+/*!50003 CREATE PROCEDURE `is_occupant`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@is_occupant = 1)
@@ -9324,7 +9328,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `is_tenant`()
+/*!50003 CREATE PROCEDURE `is_tenant`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 1)
@@ -9402,7 +9406,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `lambda_notification_case_assignee_updated`(
+/*!50003 CREATE PROCEDURE `lambda_notification_case_assignee_updated`(
 	IN notification_type varchar(255)
 	, IN bz_source_table varchar(240)
 	, IN notification_id varchar(255)
@@ -9453,7 +9457,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `lambda_notification_case_event`(
+/*!50003 CREATE PROCEDURE `lambda_notification_case_event`(
 	IN notification_id int(11)
 	, IN created_datetime datetime
 	, IN unit_id smallint(6)
@@ -9488,7 +9492,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `lambda_notification_case_invited`(
+/*!50003 CREATE PROCEDURE `lambda_notification_case_invited`(
 	IN notification_type varchar(255)
 	, IN bz_source_table varchar(240)
 	, IN notification_id varchar(255)
@@ -9539,7 +9543,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `lambda_notification_case_new`(
+/*!50003 CREATE PROCEDURE `lambda_notification_case_new`(
 	IN notification_type varchar(255)
 	, IN bz_source_table varchar(240)
 	, IN notification_id varchar(255)
@@ -9584,7 +9588,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `lambda_notification_case_updated`(
+/*!50003 CREATE PROCEDURE `lambda_notification_case_updated`(
 	IN notification_type varchar(255)
 	, IN bz_source_table varchar(240)
 	, IN notification_id varchar(255)
@@ -9641,7 +9645,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `lambda_notification_message_new_comment`(
+/*!50003 CREATE PROCEDURE `lambda_notification_message_new_comment`(
 	IN notification_type varchar(255)
 	, IN bz_source_table varchar(240)
 	, IN notification_id varchar(255)
@@ -9694,7 +9698,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `remove_user_from_default_cc`()
+/*!50003 CREATE PROCEDURE `remove_user_from_default_cc`()
     SQL SECURITY INVOKER
 BEGIN
 	# This procedure needs the following objects
@@ -9746,7 +9750,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `remove_user_from_role`()
+/*!50003 CREATE PROCEDURE `remove_user_from_role`()
     SQL SECURITY INVOKER
 BEGIN
 	# This procedure needs the following objects
@@ -9763,7 +9767,6 @@ BEGIN
 	#
 	#   - Tables:
 	#	   - `ut_user_group_map_temp`
-
 	# We only do this if this is needed:
 	IF (@remove_user_from_role = 1)
 	THEN
@@ -9797,7 +9800,6 @@ BEGIN
 			# We record the name of this procedure for future debugging and audit_log
 				SET @script = 'PROCEDURE - remove_user_from_role';
 				SET @timestamp = NOW();
-
 			# Revoke all permissions for this user in this unit
 				# This procedure needs the following objects:
 				#	- Variables:
@@ -9808,41 +9810,32 @@ BEGIN
 			# All the permission have been prepared, we can now update the permissions table
 			#		- This NEEDS the table 'ut_user_group_map_temp'
 				CALL `update_permissions_invited_user`;
-
 			# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 				SET @script = 'PROCEDURE remove_user_from_role';
-
 			# Add a comment to all the cases where:
 			#	- the product/unit is the product/unit we are removing the user from
 			#	- The user we are removing is in CC/invited to these bugs/cases
 			# to let everyone knows what is happening.
-
 				# Which role is this? (we need that to add meaningfull comments)
-
 					SET @user_role_type_this_role = (SELECT `role_type_id` 
 						FROM `ut_product_group`
 						WHERE (`component_id` = @component_id_this_role)
 							AND (`group_type_id` = 22)
 						)
 						;
-
 					SET @user_role_type_name = (SELECT `role_type`
 						FROM `ut_role_types`
 						WHERE `id_role_type` = @user_role_type_this_role
 						)
 						;
-
 				# Prepare the comment
-
 					SET @comment_remove_user_from_case = (CONCAT ('We removed a user in the role '
 						, @user_role_type_name 
 						, '. This user was un-invited from the case since he has no more role in this unit.'
 						)
 					)
 					;
-
 				# Insert the comment in all the cases we are touching
-
 					INSERT INTO `longdescs`
 						(`bug_id`
 						, `who`
@@ -9860,11 +9853,9 @@ BEGIN
 							WHERE (`bugs`.`product_id` = @product_id)  
 								AND (`cc`.`who` = @bz_user_id)
 							;
-
 				# Record the change in the Bug history for all the cases where:
 				#	- the product/unit is the product/unit we are removing the user from
 				#	- The user we are removing is in CC/invited to these bugs/cases
-
 					INSERT INTO	`bugs_activity`
 						(`bug_id` 
 						, `who` 
@@ -9886,10 +9877,8 @@ BEGIN
 							WHERE (`bugs`.`product_id` = @product_id)  
 								AND (`cc`.`who` = @bz_user_id)
 						;
-
 			# We have done what we needed to record the changes and inform users.
 			# We can now remove the user invited to (i.e in CC for) any bugs/cases in the given product/unit.
-
 				DELETE `cc`
 				FROM
 					`cc`
@@ -9900,25 +9889,19 @@ BEGIN
 					;
 		
 		# We need to check if the user we are removing is the current default assignee for this role for this unit.
-
 			# What is the current default assignee for this role/component?
-
 				SET @old_component_initialowner = (SELECT `initialowner` 
 					FROM `components` 
 					WHERE `id` = @component_id_this_role
 					)
 					;
-
 			# Is it the same as the current user?
-
 				SET @is_user_default_assignee = IF(@old_component_initialowner = @bz_user_id
 					, '1'
 					, '0'
 					)
 					;
-
 			# IF needed, then do the change of default assignee.
-
 				IF @is_user_default_assignee = 1
 				THEN
 				# We need to 
@@ -9937,50 +9920,38 @@ BEGIN
 				# 	- @this_script
 				#	- @product_id
 				#	- @creator_bz_id
-
 					# Which scenario are we in?
-
 						# Do we have at least another real user in default CC for the cases created in this role in this unit?
-
 							SET @oldest_default_cc_this_role = (SELECT MIN(`user_id`)
 							FROM `component_cc`
 								WHERE `component_id` = @component_id_this_role
 								)
 								;
-
 							SET @assignee_in_option_1 = IFNULL(@oldest_default_cc_this_role, 0);
-
 							#  Are we going to do the change now?
 							
 								IF @assignee_in_option_1 !=0
 								# yes, we can do the change
 								THEN
 									# We need to capture the old component description to update the bz_audit_log_table
-
 										SET @old_component_description = (SELECT `description` 
 											FROM `components` 
 											WHERE `id` = @component_id_this_role
 											)
 											;
-
 									# We use this user ID as the new default assignee for this component/role
-
 										SET @assignee_in_option_1_name = (SELECT `realname` 
 											FROM `profiles` 
 											WHERE `userid` = @assignee_in_option_1
 											)
 											;
-
 									# We can now update the default assignee for this component/role
-
 										UPDATE `components`
 											SET `initialowner` = @assignee_in_option_1
 												,`description` = @assignee_in_option_1_name
 											WHERE `id` = @component_id_this_role
 											;
-
 									# We remove this user ID from the list of users in Default CC for this role/component
-
 										DELETE FROM `component_cc`
 											WHERE `component_id` = @component_id_this_role
 												AND `user_id` = @assignee_in_option_1
@@ -10000,59 +9971,44 @@ BEGIN
 											(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialowner', @bz_user_id, @assignee_in_option_1, @timestamp)
 											, (@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'description', @old_component_description, @assignee_in_option_1_name, @timestamp)
 											;
-
 								END IF;
-
 								IF @assignee_in_option_1 = 0
 								# We know that we do NOT have any other user in default CC for this role
 								# Do we have another 'Real' user in this role for this unit?
 								THEN
-
 									# First we need to find that user...
 									# What is the group id for all the users in this role in this unit?
-
 										SET @option_2_group_id_this_role = (SELECT `group_id`
 											FROM `ut_product_group`
 											WHERE `component_id` = @component_id_this_role
 												AND `group_type_id` = 22
 												)
 											;
-
 									# What is the oldest user in this group who is NOT a dummy user?
-
 										SET @oldest_other_user_in_this_role = (SELECT MIN(`user_id`)
 											FROM `user_group_map`
 											WHERE `group_id` = @option_2_group_id_this_role
 											)
 											;
-
 										SET @assignee_in_option_2 = IFNULL(@oldest_default_cc_this_role, 0);
-
 									# Are we going to do the change now?
-
 										IF @assignee_in_option_2 != 0
 										# We know that we do NOT have any other user in default CC for this role
 										# BUT We know we HAVE another user is this role for this unit.
 										THEN
-
 											# We need to capture the old component description to update the bz_audit_log_table
-
 												SET @old_component_description = (SELECT `description` 
 													FROM `components` 
 													WHERE `id` = @component_id_this_role
 													)
 													;
-
 											# We use this user ID as the new default assignee for this component/role.
-
 												SET @assignee_in_option_2_name = (SELECT `realname` 
 													FROM `profiles` 
 													WHERE `userid` = @assignee_in_option_2
 													)
 													;
-
 											# We can now update the default assignee for this component/role
-
 												UPDATE `components`
 													SET `initialowner` = @assignee_in_option_2
 														,`description` = @assignee_in_option_2_name
@@ -10073,23 +10029,18 @@ BEGIN
 													(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialowner', @bz_user_id, @assignee_in_option_2, @timestamp)
 													, (@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'description', @old_component_description, @assignee_in_option_2_name, @timestamp)
 													;
-
 										END IF;
-
 										IF @assignee_in_option_2 = 0
 										# We know that we do NOT have any other user in default CC for this role
 										# We know we do NOT have another user is this role for this unit.
 										# We need to use the Default dummy user for this role in this unit.
 										THEN
-
 											# We need to capture the old component description to update the bz_audit_log_table
-
 												SET @old_component_description = (SELECT `description` 
 													FROM `components` 
 													WHERE `id` = @component_id_this_role
 													)
 													;
-
 											# We define the dummy user role description based on the variable @id_role_type
 												SET @dummy_user_role_desc = IF(@id_role_type = 1
 													, CONCAT('Generic '
@@ -10136,9 +10087,7 @@ BEGIN
 														)
 													)
 													;
-
 												# We can now do the update
-
 													UPDATE `components`
 													SET `initialowner` = @bz_user_id_dummy_user_this_role
 														,`description` = @dummy_user_role_desc
@@ -10163,48 +10112,37 @@ BEGIN
 										END IF;
 								END IF;
 				END IF;
-
 		# IF the user we removed from this unit is the assignee for a case (Open or Closed) in this unit. 
 		# THEN make sure we reset the assignee to the default user for this role in this unit.
-
 			# What is the current initial owner for this role in this unit
-
 				SET @component_initialowner = (SELECT `initialowner`
 					FROM `components` 
 					WHERE `id` = @component_id_this_role
 					)
 					;
-
 			# Add a comment to the case to let everyone know what is happening.
-
 				# Which role is this? (we need that to add meaningfull comments)
-
 					SET @user_role_type_this_role = (SELECT `role_type_id` 
 						FROM `ut_product_group`
 						WHERE (`component_id` = @component_id_this_role)
 							AND (`group_type_id` = 22)
 						)
 						;
-
 					SET @user_role_type_name = (SELECT `role_type`
 						FROM `ut_role_types`
 						WHERE `id_role_type` = @user_role_type_this_role
 						)
 						;
-
 				# Prepare the comment:
-
 					SET @comment_change_assignee_for_case = (CONCAT ('We removed a user in the role '
 							, @user_role_type_name 
 							, '. This user cannot be the assignee for this case anymore since he/she has no more role in this unit. We have assigned this case to the default assignee for this role in this unit'
 							)
 						)
 						;
-
 				# Insert the comment in all the cases we are touchingfor for all the cases where:
 				#	- the product/unit is the product/unit we are removing the user from
 				#	- The user we are removing is the current assignee for these bugs/cases
-
 					INSERT INTO `longdescs`
 						(`bug_id`
 						, `who`
@@ -10220,11 +10158,9 @@ BEGIN
 							WHERE (`bugs`.`product_id` = @product_id)  
 								AND (`bugs`.`assigned_to` = @bz_user_id)
 							;
-
 				# Record the change in the Bug history for all the cases where:
 				#	- the product/unit is the product/unit we are removing the user from
 				#	- The user we are removing is the current assignee for these bugs/cases
-
 					INSERT INTO	`bugs_activity`
 						(`bug_id` 
 						, `who` 
@@ -10244,37 +10180,28 @@ BEGIN
 							WHERE (`bugs`.`product_id` = @product_id)  
 								AND (`bugs`.`assigned_to` = @bz_user_id)
 						;
-
 				# We can now update the assignee for all the cases 
 				#	- in this unit for this PRODUCT/Unit
 				#	- currently assigned to the user we are removing from this unit.
-
 					UPDATE `bugs`
 						SET `assigned_to` = @component_initialowner
 						WHERE `product_id` = @product_id
 							AND `assigned_to` = @bz_user_id
 						;			
-
 		# We also need to check if the user we are removing is the current qa user for this role for this unit.
-
 			# Get the initial QA contact for this role/component for this product/unit
-
 				SET @old_component_initialqacontact = (SELECT `initialqacontact` 
 					FROM `components` 
 					WHERE `id` = @component_id_this_role
 					)
 					;
-
 			# Check if the current QA contact for all the cases in this product/unit is the user we are removing
-
  				SET @is_user_qa = IF(@old_component_initialqacontact = @bz_user_id
  					, '1'
 					, '0'
 					)
 					;
-
  			#IF needed, then do the change of default QA contact.
-
 				IF @is_user_qa = 1
 				THEN
 					# IF the user is the current qa contact
@@ -10294,37 +10221,29 @@ BEGIN
 					# 	- @this_script
 					#	- @product_id
 					#	- @creator_bz_id
-
 					# Which scenario are we in?
-
 						# Do we have at least another real user in default CC for the cases created in this role in this unit?
-
 							SET @oldest_default_cc_this_role = (SELECT MIN(`user_id`)
 								FROM `component_cc`
 								WHERE `component_id` = @component_id_this_role
 								)
 								;
-
 							SET @qa_in_option_1 = IFNULL(@oldest_default_cc_this_role, 0);
-
 							#  Are we going to do the change now?
 							
 								IF @qa_in_option_1 !=0
 								# yes, we can do the change
 								THEN
 									# We use this user ID as the new default assignee for this component/role
-
 										SET @qa_in_option_1_name = (SELECT `realname` 
 											FROM `profiles` 
 											WHERE `userid` = @qa_in_option_1
 											)
 											;
-
 										UPDATE `components`
 											SET `initialqacontact` = @qa_in_option_1
 											WHERE `id` = @component_id_this_role
 											;
-
 									# We log the change in the BZ native audit log
 										
 										INSERT  INTO `audit_log`
@@ -10339,56 +10258,42 @@ BEGIN
 											VALUES 
 											(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialqacontact', @bz_user_id, @qa_in_option_1, @timestamp)
 											;
-
 								END IF;
-
 								IF @qa_in_option_1 = 0
 								# We know that we do NOT have any other user in default CC for this role
 								# Do we have another 'Real' user in this role for this unit?
 								THEN
-
 									# First we need to find that user...
 									# What is the group id for all the users in this role in this unit?
-
 										SET @option_2_group_id_this_role = (SELECT `group_id`
 											FROM `ut_product_group`
 											WHERE (`component_id` = @component_id_this_role)
 												AND (`group_type_id` = 22)
 											)
 											;
-
 									# What is the oldest user in this group who is NOT a dummy user?
-
 										SET @oldest_other_user_in_this_role = (SELECT MIN(`user_id`)
 											FROM `user_group_map`
 											WHERE `group_id` = @option_2_group_id_this_role
 											)
 											;
-
 										SET @qa_in_option_2 = IFNULL(@oldest_default_cc_this_role, 0);
-
 									# Are we going to do the change now?
-
 										IF @qa_in_option_2 != 0
 										# We know that we do NOT have any other user in default CC for this role
 										# BUT We know we HAVE another user is this role for this unit.
 										THEN
-
 											# We use this user ID as the new default assignee for this component/role.
-
 												SET @qa_in_option_2_name = (SELECT `realname` 
 													FROM `profiles` 
 													WHERE `userid` = @qa_in_option_2
 													)
 													;
-
 											# We can now update the default assignee for this component/role
-
 												UPDATE `components`
 													SET `initialqacontact` = @qa_in_option_2
 													WHERE `id` = @component_id_this_role
 													;
-
 											# We log the change in the BZ native audit log
 											
 												INSERT  INTO `audit_log`
@@ -10403,15 +10308,12 @@ BEGIN
 													VALUES 
 													(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialqacontact', @bz_user_id, @qa_in_option_2, @timestamp)
 													;
-
 										END IF;
-
 										IF @qa_in_option_2 = 0
 										# We know that we do NOT have any other user in default CC for this role
 										# We know we do NOT have another user is this role for this unit.
 										# We need to use the Default dummy user for this role in this unit.
 										THEN
-
 										# We define the dummy user role description based on the variable @id_role_type
 											SET @dummy_user_role_desc = IF(@id_role_type = 1
 												, CONCAT('Generic '
@@ -10458,15 +10360,12 @@ BEGIN
 													)
 												)
 												;
-
 											# We can now do the update
-
 												UPDATE `components`
 												SET `initialqacontact` = @bz_user_id_dummy_user_this_role
 													WHERE 
 													`id` = @component_id_this_role
 													;
-
 											# We log the change in the BZ native audit log
 											
 												INSERT  INTO `audit_log`
@@ -10481,19 +10380,14 @@ BEGIN
 													VALUES 
 													(@creator_bz_id, 'Bugzilla::Component', @component_id_this_role, 'initialqacontact', @bz_user_id, @bz_user_id_dummy_user_this_role, @timestamp)
 													;
-
 										END IF;
 								END IF;
 				END IF;
-
 	# Housekeeping 
 	# Clean up the variables we used specifically for this script
-
 		SET @script = NULL;
 		SET @timestamp = NULL;
-
 	END IF;
-
 END */$$
 DELIMITER ;
 
@@ -10503,7 +10397,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `revoke_all_permission_for_this_user_in_this_unit`()
+/*!50003 CREATE PROCEDURE `revoke_all_permission_for_this_user_in_this_unit`()
     SQL SECURITY INVOKER
 BEGIN
     # this procedure needs the following variables:
@@ -10675,7 +10569,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `show_to_agent`()
+/*!50003 CREATE PROCEDURE `show_to_agent`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 5)
@@ -10755,7 +10649,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `show_to_contractor`()
+/*!50003 CREATE PROCEDURE `show_to_contractor`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 3)
@@ -10835,7 +10729,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `show_to_landlord`()
+/*!50003 CREATE PROCEDURE `show_to_landlord`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 2)
@@ -10915,7 +10809,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `show_to_mgt_cny`()
+/*!50003 CREATE PROCEDURE `show_to_mgt_cny`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 4)
@@ -10995,7 +10889,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `show_to_occupant`()
+/*!50003 CREATE PROCEDURE `show_to_occupant`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@is_occupant = 1)
@@ -11074,7 +10968,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `show_to_tenant`()
+/*!50003 CREATE PROCEDURE `show_to_tenant`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@id_role_type = 1)
@@ -11155,7 +11049,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `table_to_list_dummy_user_by_environment`()
+/*!50003 CREATE PROCEDURE `table_to_list_dummy_user_by_environment`()
     SQL SECURITY INVOKER
 BEGIN
 	# We create a temporary table to record the ids of the dummy users in each environments:
@@ -11185,7 +11079,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `unit_create_with_dummy_users`()
+/*!50003 CREATE PROCEDURE `unit_create_with_dummy_users`()
     SQL SECURITY INVOKER
 BEGIN
 	# This procedure needs the following objects:
@@ -14252,7 +14146,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `unit_disable_existing`()
+/*!50003 CREATE PROCEDURE `unit_disable_existing`()
     SQL SECURITY INVOKER
 BEGIN
 	# This procedure needs the following variables:
@@ -14344,7 +14238,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `unit_enable_existing`()
+/*!50003 CREATE PROCEDURE `unit_enable_existing`()
     SQL SECURITY INVOKER
 BEGIN
         # This procedure needs the following variables:
@@ -14438,7 +14332,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_assignee_if_dummy_user`()
+/*!50003 CREATE PROCEDURE `update_assignee_if_dummy_user`()
     SQL SECURITY INVOKER
 BEGIN
 	# check if the user is the first in this role for this unit
@@ -14560,7 +14454,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_audit_log`()
+/*!50003 CREATE PROCEDURE `update_audit_log`()
     SQL SECURITY INVOKER
 BEGIN
     # This procedure need the following variables
@@ -14602,7 +14496,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_bz_fielddefs`()
+/*!50003 CREATE PROCEDURE `update_bz_fielddefs`()
     SQL SECURITY INVOKER
 BEGIN
     # Update the name for the field `bug_id`
@@ -14638,7 +14532,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_list_changes_new_assignee_is_real`()
+/*!50003 CREATE PROCEDURE `update_list_changes_new_assignee_is_real`()
     SQL SECURITY INVOKER
 BEGIN
 			
@@ -14779,7 +14673,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_log_count_closed_case`()
+/*!50003 CREATE PROCEDURE `update_log_count_closed_case`()
     SQL SECURITY INVOKER
 BEGIN
 	# When are we doing this?
@@ -14824,7 +14718,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_log_count_enabled_units`()
+/*!50003 CREATE PROCEDURE `update_log_count_enabled_units`()
     SQL SECURITY INVOKER
 BEGIN
  
@@ -14868,7 +14762,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_permissions_invited_user`()
+/*!50003 CREATE PROCEDURE `update_permissions_invited_user`()
     SQL SECURITY INVOKER
 BEGIN
 	# We update the `user_group_map` table
@@ -14932,7 +14826,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `user_can_see_publicly_visible`()
+/*!50003 CREATE PROCEDURE `user_can_see_publicly_visible`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@user_can_see_publicly_visible = 1)
@@ -15012,7 +14906,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `user_in_default_cc_for_cases`()
+/*!50003 CREATE PROCEDURE `user_in_default_cc_for_cases`()
 BEGIN
 	IF (@user_in_default_cc_for_cases = 1)
 	THEN 
@@ -15117,7 +15011,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `user_is_default_assignee_for_cases`()
+/*!50003 CREATE PROCEDURE `user_is_default_assignee_for_cases`()
     SQL SECURITY INVOKER
 BEGIN
 	# This procedure needs the following objects
@@ -15214,7 +15108,7 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `user_is_publicly_visible`()
+/*!50003 CREATE PROCEDURE `user_is_publicly_visible`()
     SQL SECURITY INVOKER
 BEGIN
 	IF (@user_is_publicly_visible = 1)
@@ -15295,7 +15189,7 @@ DROP TABLE IF EXISTS `count_cases_per_users_per_month`;
 /*!50001 CREATE TABLE  `count_cases_per_users_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `reporter` mediumint(9) ,
+ `reporter` mediumint(9) unsigned ,
  `bugs_created` bigint(21) 
 )*/;
 
@@ -15310,7 +15204,7 @@ DROP TABLE IF EXISTS `count_cases_per_users_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `reporter` mediumint(9) ,
+ `reporter` mediumint(9) unsigned ,
  `bugs_created` bigint(21) 
 )*/;
 
@@ -15351,7 +15245,7 @@ DROP TABLE IF EXISTS `count_invitation_per_invitee_per_month`;
 /*!50001 CREATE TABLE  `count_invitation_per_invitee_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `invitee_bz_user_id` mediumint(9) ,
+ `invitee_bz_user_id` mediumint(9) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15366,7 +15260,7 @@ DROP TABLE IF EXISTS `count_invitation_per_invitee_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `invitee_bz_user_id` mediumint(9) ,
+ `invitee_bz_user_id` mediumint(9) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15380,7 +15274,7 @@ DROP TABLE IF EXISTS `count_invitation_per_invitor_per_month`;
 /*!50001 CREATE TABLE  `count_invitation_per_invitor_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `invitor_bz_user_id` mediumint(9) ,
+ `invitor_bz_user_id` mediumint(9) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15395,7 +15289,7 @@ DROP TABLE IF EXISTS `count_invitation_per_invitor_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `invitor_bz_user_id` mediumint(9) ,
+ `invitor_bz_user_id` mediumint(9) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15422,7 +15316,7 @@ DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_month`;
 /*!50001 CREATE TABLE  `count_invitation_sent_per_unit_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `bz_unit_id` smallint(6) ,
+ `bz_unit_id` mediumint(9) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15437,7 +15331,7 @@ DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `bz_unit_id` smallint(6) ,
+ `bz_unit_id` mediumint(9) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15478,7 +15372,7 @@ DROP TABLE IF EXISTS `count_invites_per_role_per_month`;
 /*!50001 CREATE TABLE  `count_invites_per_role_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `user_role_type_id` smallint(6) ,
+ `user_role_type_id` smallint(6) unsigned ,
  `count_invites` bigint(21) 
 )*/;
 
@@ -15492,7 +15386,7 @@ DROP TABLE IF EXISTS `count_invites_per_unit_per_month`;
 /*!50001 CREATE TABLE  `count_invites_per_unit_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `bz_unit_id` smallint(6) ,
+ `bz_unit_id` mediumint(9) unsigned ,
  `count_invites` bigint(21) 
 )*/;
 
@@ -15506,8 +15400,8 @@ DROP TABLE IF EXISTS `count_invites_per_unit_per_role_per_month`;
 /*!50001 CREATE TABLE  `count_invites_per_unit_per_role_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `bz_unit_id` smallint(6) ,
- `user_role_type_id` smallint(6) ,
+ `bz_unit_id` mediumint(9) unsigned ,
+ `user_role_type_id` smallint(6) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15521,7 +15415,7 @@ DROP TABLE IF EXISTS `count_invites_per_user_per_month`;
 /*!50001 CREATE TABLE  `count_invites_per_user_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `invitor` mediumint(9) ,
+ `invitor` mediumint(9) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15536,7 +15430,7 @@ DROP TABLE IF EXISTS `count_invites_per_user_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `invitor` mediumint(9) ,
+ `invitor` mediumint(9) unsigned ,
  `invitation_sent` bigint(21) 
 )*/;
 
@@ -15550,7 +15444,7 @@ DROP TABLE IF EXISTS `count_messages_per_case_per_month`;
 /*!50001 CREATE TABLE  `count_messages_per_case_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `case_id` mediumint(9) ,
+ `case_id` mediumint(9) unsigned ,
  `count_messages` bigint(21) 
 )*/;
 
@@ -15565,7 +15459,7 @@ DROP TABLE IF EXISTS `count_messages_per_case_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `case_id` mediumint(9) ,
+ `case_id` mediumint(9) unsigned ,
  `count_messages` bigint(21) 
 )*/;
 
@@ -15579,7 +15473,7 @@ DROP TABLE IF EXISTS `count_messages_per_unit_per_month`;
 /*!50001 CREATE TABLE  `count_messages_per_unit_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `bz_unit_id` smallint(6) ,
+ `bz_unit_id` mediumint(9) unsigned ,
  `count_messages` bigint(21) 
 )*/;
 
@@ -15593,7 +15487,7 @@ DROP TABLE IF EXISTS `count_messages_per_unit_per_quarter`;
 /*!50001 CREATE TABLE  `count_messages_per_unit_per_quarter`(
  `year` int(4) ,
  `quarter` int(1) ,
- `bz_unit_id` smallint(6) ,
+ `bz_unit_id` mediumint(9) unsigned ,
  `count_messages` bigint(21) 
 )*/;
 
@@ -15608,7 +15502,7 @@ DROP TABLE IF EXISTS `count_messages_per_unit_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `bz_unit_id` smallint(6) ,
+ `bz_unit_id` mediumint(9) unsigned ,
  `count_messages` bigint(21) 
 )*/;
 
@@ -15622,7 +15516,7 @@ DROP TABLE IF EXISTS `count_messages_per_users_per_month`;
 /*!50001 CREATE TABLE  `count_messages_per_users_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `who` mediumint(9) ,
+ `who` mediumint(9) unsigned ,
  `count_messages` bigint(21) 
 )*/;
 
@@ -15637,7 +15531,7 @@ DROP TABLE IF EXISTS `count_messages_per_users_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `who` mediumint(9) ,
+ `who` mediumint(9) unsigned ,
  `count_messages` bigint(21) 
 )*/;
 
@@ -15772,7 +15666,7 @@ DROP TABLE IF EXISTS `count_unit_created_per_users_per_month`;
 /*!50001 CREATE TABLE  `count_unit_created_per_users_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `user_id` mediumint(9) ,
+ `user_id` mediumint(9) unsigned ,
  `count_new_units` bigint(21) 
 )*/;
 
@@ -15787,7 +15681,7 @@ DROP TABLE IF EXISTS `count_unit_created_per_users_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `user_id` mediumint(9) ,
+ `user_id` mediumint(9) unsigned ,
  `count_new_units` bigint(21) 
 )*/;
 
@@ -15801,8 +15695,8 @@ DROP TABLE IF EXISTS `count_units_enabled_and_total_per_month`;
 /*!50001 CREATE TABLE  `count_units_enabled_and_total_per_month`(
  `year` int(4) ,
  `month` int(2) ,
- `average_enabled_units` decimal(14,4) ,
- `average_total_units` decimal(14,4) 
+ `average_enabled_units` decimal(15,4) ,
+ `average_total_units` decimal(15,4) 
 )*/;
 
 /*Table structure for table `count_units_enabled_and_total_per_week` */
@@ -15816,8 +15710,8 @@ DROP TABLE IF EXISTS `count_units_enabled_and_total_per_week`;
  `year` int(4) ,
  `month` int(2) ,
  `week` int(2) ,
- `average_enabled_units` decimal(14,4) ,
- `average_total_units` decimal(14,4) 
+ `average_enabled_units` decimal(15,4) ,
+ `average_total_units` decimal(15,4) 
 )*/;
 
 /*Table structure for table `count_units_with_invitation_sent_per_month` */
@@ -16044,7 +15938,7 @@ DROP TABLE IF EXISTS `flash_count_units_with_real_roles`;
 /*!50001 DROP TABLE IF EXISTS `flash_count_units_with_real_roles` */;
 
 /*!50001 CREATE TABLE  `flash_count_units_with_real_roles`(
- `role_type_id` smallint(6) ,
+ `role_type_id` smallint(6) unsigned ,
  `units_with_real_users` bigint(21) ,
  `isactive` tinyint(4) 
 )*/;
@@ -16057,8 +15951,8 @@ DROP TABLE IF EXISTS `flash_count_user_per_role_per_unit`;
 /*!50001 DROP TABLE IF EXISTS `flash_count_user_per_role_per_unit` */;
 
 /*!50001 CREATE TABLE  `flash_count_user_per_role_per_unit`(
- `product_id` smallint(6) ,
- `role_type_id` smallint(6) ,
+ `product_id` mediumint(9) unsigned ,
+ `role_type_id` smallint(6) unsigned ,
  `count_users` bigint(21) 
 )*/;
 
@@ -16075,7 +15969,7 @@ DROP TABLE IF EXISTS `list_all_changes_to_components_default_assignee_dummy_user
  `action_remove` varchar(24) ,
  `added` longtext ,
  `action_add` varchar(20) ,
- `component_id` int(11) ,
+ `component_id` int(11) unsigned ,
  `at_time` datetime 
 )*/;
 
@@ -16087,12 +15981,12 @@ DROP TABLE IF EXISTS `list_changes_new_assignee_is_real`;
 /*!50001 DROP TABLE IF EXISTS `list_changes_new_assignee_is_real` */;
 
 /*!50001 CREATE TABLE  `list_changes_new_assignee_is_real`(
- `product_id` smallint(6) ,
- `component_id` int(11) ,
+ `product_id` mediumint(9) unsigned ,
+ `component_id` int(11) unsigned ,
  `removed` longtext ,
  `added` longtext ,
  `at_time` datetime ,
- `role_type_id` smallint(6) 
+ `role_type_id` smallint(6) unsigned 
 )*/;
 
 /*Table structure for table `list_components_with_real_default_assignee` */
@@ -16103,10 +15997,10 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP TABLE IF EXISTS `list_components_with_real_default_assignee` */;
 
 /*!50001 CREATE TABLE  `list_components_with_real_default_assignee`(
- `product_id` smallint(6) ,
- `component_id` mediumint(9) ,
- `initialowner` mediumint(9) ,
- `role_type_id` smallint(6) ,
+ `product_id` mediumint(9) unsigned ,
+ `component_id` mediumint(9) unsigned ,
+ `initialowner` mediumint(9) unsigned ,
+ `role_type_id` smallint(6) unsigned ,
  `isactive` tinyint(4) 
 )*/;
 
@@ -16115,413 +16009,413 @@ DROP TABLE IF EXISTS `list_components_with_real_default_assignee`;
 /*!50001 DROP TABLE IF EXISTS `count_cases_per_users_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_cases_per_users_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_cases_per_users_per_month` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,`bugs`.`reporter` AS `reporter`,count(`bugs`.`bug_id`) AS `bugs_created` from `bugs` group by `bugs`.`reporter`,year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`) order by year(`bugs`.`creation_ts`) desc,month(`bugs`.`creation_ts`) desc,count(`bugs`.`bug_id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_cases_per_users_per_month` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,`bugs`.`reporter` AS `reporter`,count(`bugs`.`bug_id`) AS `bugs_created` from `bugs` group by `bugs`.`reporter`,year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`) order by year(`bugs`.`creation_ts`) desc,month(`bugs`.`creation_ts`) desc,count(`bugs`.`bug_id`) desc */;
 
 /*View structure for view count_cases_per_users_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_cases_per_users_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_cases_per_users_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_cases_per_users_per_week` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,week(`bugs`.`creation_ts`,0) AS `week`,`bugs`.`reporter` AS `reporter`,count(`bugs`.`bug_id`) AS `bugs_created` from `bugs` group by `bugs`.`reporter`,year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`),week(`bugs`.`creation_ts`,0) order by year(`bugs`.`creation_ts`) desc,month(`bugs`.`creation_ts`) desc,week(`bugs`.`creation_ts`,0) desc,count(`bugs`.`bug_id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_cases_per_users_per_week` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,week(`bugs`.`creation_ts`,0) AS `week`,`bugs`.`reporter` AS `reporter`,count(`bugs`.`bug_id`) AS `bugs_created` from `bugs` group by `bugs`.`reporter`,year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`),week(`bugs`.`creation_ts`,0) order by year(`bugs`.`creation_ts`) desc,month(`bugs`.`creation_ts`) desc,week(`bugs`.`creation_ts`,0) desc,count(`bugs`.`bug_id`) desc */;
 
 /*View structure for view count_cases_with_messages_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_cases_with_messages_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_cases_with_messages_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_cases_with_messages_per_month` AS select `count_messages_per_case_per_month`.`year` AS `year`,`count_messages_per_case_per_month`.`month` AS `month`,count(`count_messages_per_case_per_month`.`case_id`) AS `count_cases_with_messages` from `count_messages_per_case_per_month` group by `count_messages_per_case_per_month`.`month`,`count_messages_per_case_per_month`.`year` order by `count_messages_per_case_per_month`.`year` desc,`count_messages_per_case_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_cases_with_messages_per_month` AS select `count_messages_per_case_per_month`.`year` AS `year`,`count_messages_per_case_per_month`.`month` AS `month`,count(`count_messages_per_case_per_month`.`case_id`) AS `count_cases_with_messages` from `count_messages_per_case_per_month` group by `count_messages_per_case_per_month`.`month`,`count_messages_per_case_per_month`.`year` order by `count_messages_per_case_per_month`.`year` desc,`count_messages_per_case_per_month`.`month` desc */;
 
 /*View structure for view count_cases_with_messages_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_cases_with_messages_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_cases_with_messages_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_cases_with_messages_per_week` AS select `count_messages_per_case_per_week`.`year` AS `year`,`count_messages_per_case_per_week`.`month` AS `month`,`count_messages_per_case_per_week`.`week` AS `week`,count(`count_messages_per_case_per_week`.`case_id`) AS `count_cases_with_messages` from `count_messages_per_case_per_week` group by `count_messages_per_case_per_week`.`year`,`count_messages_per_case_per_week`.`month`,`count_messages_per_case_per_week`.`week` order by `count_messages_per_case_per_week`.`year` desc,`count_messages_per_case_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_cases_with_messages_per_week` AS select `count_messages_per_case_per_week`.`year` AS `year`,`count_messages_per_case_per_week`.`month` AS `month`,`count_messages_per_case_per_week`.`week` AS `week`,count(`count_messages_per_case_per_week`.`case_id`) AS `count_cases_with_messages` from `count_messages_per_case_per_week` group by `count_messages_per_case_per_week`.`year`,`count_messages_per_case_per_week`.`month`,`count_messages_per_case_per_week`.`week` order by `count_messages_per_case_per_week`.`year` desc,`count_messages_per_case_per_week`.`week` desc */;
 
 /*View structure for view count_invitation_per_invitee_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitee_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitee_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invitation_per_invitee_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bz_user_id` AS `invitee_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,month(`ut_invitation_api_data`.`processed_datetime`),year(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitee_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bz_user_id` AS `invitee_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,month(`ut_invitation_api_data`.`processed_datetime`),year(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invitation_per_invitee_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitee_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitee_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invitation_per_invitee_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bz_user_id` AS `invitee_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitee_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bz_user_id` AS `invitee_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invitation_per_invitor_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitor_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitor_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invitation_per_invitor_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bzfe_invitor_user_id`,month(`ut_invitation_api_data`.`processed_datetime`),year(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitor_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bzfe_invitor_user_id`,month(`ut_invitation_api_data`.`processed_datetime`),year(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invitation_per_invitor_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_per_invitor_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_per_invitor_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invitation_per_invitor_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bzfe_invitor_user_id`,year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_per_invitor_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor_bz_user_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bzfe_invitor_user_id`,year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invitation_sent_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invitation_sent_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc */;
 
 /*View structure for view count_invitation_sent_per_unit_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_unit_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invitation_sent_per_unit_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),`ut_invitation_api_data`.`bz_unit_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_unit_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),`ut_invitation_api_data`.`bz_unit_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invitation_sent_per_unit_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_unit_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_unit_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invitation_sent_per_unit_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0),`ut_invitation_api_data`.`bz_unit_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_unit_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0),`ut_invitation_api_data`.`bz_unit_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invitation_sent_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_invitation_sent_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_invitation_sent_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invitation_sent_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invitation_sent_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) order by year(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc */;
 
 /*View structure for view count_invites_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invites_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invites_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invites_per_month` AS select `count_invites_per_unit_per_role_per_month`.`year` AS `year`,`count_invites_per_unit_per_role_per_month`.`month` AS `month`,count(`count_invites_per_unit_per_role_per_month`.`invitation_sent`) AS `count_invites` from `count_invites_per_unit_per_role_per_month` group by `count_invites_per_unit_per_role_per_month`.`month`,`count_invites_per_unit_per_role_per_month`.`year` order by `count_invites_per_unit_per_role_per_month`.`year` desc,`count_invites_per_unit_per_role_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invites_per_month` AS select `count_invites_per_unit_per_role_per_month`.`year` AS `year`,`count_invites_per_unit_per_role_per_month`.`month` AS `month`,count(`count_invites_per_unit_per_role_per_month`.`invitation_sent`) AS `count_invites` from `count_invites_per_unit_per_role_per_month` group by `count_invites_per_unit_per_role_per_month`.`month`,`count_invites_per_unit_per_role_per_month`.`year` order by `count_invites_per_unit_per_role_per_month`.`year` desc,`count_invites_per_unit_per_role_per_month`.`month` desc */;
 
 /*View structure for view count_invites_per_role_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invites_per_role_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invites_per_role_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invites_per_role_per_month` AS select `count_invites_per_unit_per_role_per_month`.`year` AS `year`,`count_invites_per_unit_per_role_per_month`.`month` AS `month`,`count_invites_per_unit_per_role_per_month`.`user_role_type_id` AS `user_role_type_id`,count(`count_invites_per_unit_per_role_per_month`.`invitation_sent`) AS `count_invites` from `count_invites_per_unit_per_role_per_month` group by `count_invites_per_unit_per_role_per_month`.`month`,`count_invites_per_unit_per_role_per_month`.`year`,`count_invites_per_unit_per_role_per_month`.`user_role_type_id` order by `count_invites_per_unit_per_role_per_month`.`year` desc,`count_invites_per_unit_per_role_per_month`.`month` desc,`count_invites_per_unit_per_role_per_month`.`user_role_type_id` */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invites_per_role_per_month` AS select `count_invites_per_unit_per_role_per_month`.`year` AS `year`,`count_invites_per_unit_per_role_per_month`.`month` AS `month`,`count_invites_per_unit_per_role_per_month`.`user_role_type_id` AS `user_role_type_id`,count(`count_invites_per_unit_per_role_per_month`.`invitation_sent`) AS `count_invites` from `count_invites_per_unit_per_role_per_month` group by `count_invites_per_unit_per_role_per_month`.`month`,`count_invites_per_unit_per_role_per_month`.`year`,`count_invites_per_unit_per_role_per_month`.`user_role_type_id` order by `count_invites_per_unit_per_role_per_month`.`year` desc,`count_invites_per_unit_per_role_per_month`.`month` desc,`count_invites_per_unit_per_role_per_month`.`user_role_type_id` */;
 
 /*View structure for view count_invites_per_unit_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invites_per_unit_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invites_per_unit_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invites_per_unit_per_month` AS select `count_invites_per_unit_per_role_per_month`.`year` AS `year`,`count_invites_per_unit_per_role_per_month`.`month` AS `month`,`count_invites_per_unit_per_role_per_month`.`bz_unit_id` AS `bz_unit_id`,count(`count_invites_per_unit_per_role_per_month`.`invitation_sent`) AS `count_invites` from `count_invites_per_unit_per_role_per_month` group by `count_invites_per_unit_per_role_per_month`.`month`,`count_invites_per_unit_per_role_per_month`.`year`,`count_invites_per_unit_per_role_per_month`.`bz_unit_id` order by `count_invites_per_unit_per_role_per_month`.`year` desc,`count_invites_per_unit_per_role_per_month`.`month` desc,`count_invites_per_unit_per_role_per_month`.`bz_unit_id` */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invites_per_unit_per_month` AS select `count_invites_per_unit_per_role_per_month`.`year` AS `year`,`count_invites_per_unit_per_role_per_month`.`month` AS `month`,`count_invites_per_unit_per_role_per_month`.`bz_unit_id` AS `bz_unit_id`,count(`count_invites_per_unit_per_role_per_month`.`invitation_sent`) AS `count_invites` from `count_invites_per_unit_per_role_per_month` group by `count_invites_per_unit_per_role_per_month`.`month`,`count_invites_per_unit_per_role_per_month`.`year`,`count_invites_per_unit_per_role_per_month`.`bz_unit_id` order by `count_invites_per_unit_per_role_per_month`.`year` desc,`count_invites_per_unit_per_role_per_month`.`month` desc,`count_invites_per_unit_per_role_per_month`.`bz_unit_id` */;
 
 /*View structure for view count_invites_per_unit_per_role_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invites_per_unit_per_role_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invites_per_unit_per_role_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invites_per_unit_per_role_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,`ut_invitation_api_data`.`user_role_type_id` AS `user_role_type_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,month(`ut_invitation_api_data`.`processed_datetime`),year(`ut_invitation_api_data`.`processed_datetime`),`ut_invitation_api_data`.`bz_unit_id`,`ut_invitation_api_data`.`user_role_type_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,`ut_invitation_api_data`.`user_role_type_id`,`ut_invitation_api_data`.`bz_unit_id`,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invites_per_unit_per_role_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bz_unit_id` AS `bz_unit_id`,`ut_invitation_api_data`.`user_role_type_id` AS `user_role_type_id`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by `ut_invitation_api_data`.`bz_user_id`,month(`ut_invitation_api_data`.`processed_datetime`),year(`ut_invitation_api_data`.`processed_datetime`),`ut_invitation_api_data`.`bz_unit_id`,`ut_invitation_api_data`.`user_role_type_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,`ut_invitation_api_data`.`user_role_type_id`,`ut_invitation_api_data`.`bz_unit_id`,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invites_per_user_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_invites_per_user_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_invites_per_user_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invites_per_user_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),`ut_invitation_api_data`.`bzfe_invitor_user_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invites_per_user_per_month` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),`ut_invitation_api_data`.`bzfe_invitor_user_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_invites_per_user_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_invites_per_user_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_invites_per_user_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_invites_per_user_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0),`ut_invitation_api_data`.`bzfe_invitor_user_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_invites_per_user_per_week` AS select year(`ut_invitation_api_data`.`processed_datetime`) AS `year`,month(`ut_invitation_api_data`.`processed_datetime`) AS `month`,week(`ut_invitation_api_data`.`processed_datetime`,0) AS `week`,`ut_invitation_api_data`.`bzfe_invitor_user_id` AS `invitor`,count(`ut_invitation_api_data`.`id`) AS `invitation_sent` from `ut_invitation_api_data` group by year(`ut_invitation_api_data`.`processed_datetime`),month(`ut_invitation_api_data`.`processed_datetime`),week(`ut_invitation_api_data`.`processed_datetime`,0),`ut_invitation_api_data`.`bzfe_invitor_user_id` order by year(`ut_invitation_api_data`.`processed_datetime`) desc,month(`ut_invitation_api_data`.`processed_datetime`) desc,week(`ut_invitation_api_data`.`processed_datetime`,0) desc,count(`ut_invitation_api_data`.`id`) desc */;
 
 /*View structure for view count_messages_per_case_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_messages_per_case_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_case_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_messages_per_case_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`longdescs`.`bug_id` AS `case_id`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),`longdescs`.`bug_id` order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`longdescs`.`bug_id` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_case_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`longdescs`.`bug_id` AS `case_id`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),`longdescs`.`bug_id` order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`longdescs`.`bug_id` desc */;
 
 /*View structure for view count_messages_per_case_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_messages_per_case_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_case_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_messages_per_case_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,`longdescs`.`bug_id` AS `case_id`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by year(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0),`longdescs`.`bug_id` order by year(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc,count(`longdescs`.`comment_id`) desc,`longdescs`.`bug_id` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_case_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,`longdescs`.`bug_id` AS `case_id`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by year(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0),`longdescs`.`bug_id` order by year(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc,count(`longdescs`.`comment_id`) desc,`longdescs`.`bug_id` desc */;
 
 /*View structure for view count_messages_per_unit_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_messages_per_unit_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
 
 /*View structure for view count_messages_per_unit_per_quarter */
 
 /*!50001 DROP TABLE IF EXISTS `count_messages_per_unit_per_quarter` */;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_quarter` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_quarter` AS select year(`longdescs`.`bug_when`) AS `year`,quarter(`longdescs`.`bug_when`) AS `quarter`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),quarter(`longdescs`.`bug_when`),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,quarter(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_quarter` AS select year(`longdescs`.`bug_when`) AS `year`,quarter(`longdescs`.`bug_when`) AS `quarter`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),quarter(`longdescs`.`bug_when`),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,quarter(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
 
 /*View structure for view count_messages_per_unit_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_messages_per_unit_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_unit_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_unit_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,`bugs`.`product_id` AS `bz_unit_id`,count(`longdescs`.`comment_id`) AS `count_messages` from (`longdescs` join `bugs` on((`longdescs`.`bug_id` = `bugs`.`bug_id`))) group by year(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0),`bugs`.`product_id` order by year(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc,count(`longdescs`.`comment_id`) desc,`bugs`.`product_id` desc */;
 
 /*View structure for view count_messages_per_users_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_messages_per_users_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_users_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_messages_per_users_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`longdescs`.`who` AS `who`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by `longdescs`.`who`,year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_users_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,`longdescs`.`who` AS `who`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by `longdescs`.`who`,year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,count(`longdescs`.`comment_id`) desc */;
 
 /*View structure for view count_messages_per_users_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_messages_per_users_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_messages_per_users_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_messages_per_users_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,`longdescs`.`who` AS `who`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by `longdescs`.`who`,year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc,count(`longdescs`.`comment_id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_messages_per_users_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,`longdescs`.`who` AS `who`,count(`longdescs`.`comment_id`) AS `count_messages` from `longdescs` group by `longdescs`.`who`,year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc,count(`longdescs`.`comment_id`) desc */;
 
 /*View structure for view count_new_cases_created_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_cases_created_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_cases_created_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_cases_created_per_month` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,count(`bugs`.`bug_id`) AS `count_cases` from `bugs` group by year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`) order by `bugs`.`creation_ts` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_cases_created_per_month` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,count(`bugs`.`bug_id`) AS `count_cases` from `bugs` group by year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`) order by `bugs`.`creation_ts` desc */;
 
 /*View structure for view count_new_cases_created_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_cases_created_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_cases_created_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_cases_created_per_week` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,week(`bugs`.`creation_ts`,0) AS `week`,count(`bugs`.`bug_id`) AS `count_cases_created` from `bugs` group by year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`),week(`bugs`.`creation_ts`,0) order by `bugs`.`creation_ts` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_cases_created_per_week` AS select year(`bugs`.`creation_ts`) AS `year`,month(`bugs`.`creation_ts`) AS `month`,week(`bugs`.`creation_ts`,0) AS `week`,count(`bugs`.`bug_id`) AS `count_cases_created` from `bugs` group by year(`bugs`.`creation_ts`),month(`bugs`.`creation_ts`),week(`bugs`.`creation_ts`,0) order by `bugs`.`creation_ts` desc */;
 
 /*View structure for view count_new_geographies_created_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_geographies_created_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_geographies_created_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_geographies_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_geography` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Classification') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_geographies_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_geography` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Classification') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
 
 /*View structure for view count_new_messages_created_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_messages_created_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_messages_created_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_messages_created_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,count(`longdescs`.`comment_id`) AS `count_messages_created` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_messages_created_per_month` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,count(`longdescs`.`comment_id`) AS `count_messages_created` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc */;
 
 /*View structure for view count_new_messages_created_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_messages_created_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_messages_created_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_messages_created_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,count(`longdescs`.`comment_id`) AS `count_messages_created` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_messages_created_per_week` AS select year(`longdescs`.`bug_when`) AS `year`,month(`longdescs`.`bug_when`) AS `month`,week(`longdescs`.`bug_when`,0) AS `week`,count(`longdescs`.`comment_id`) AS `count_messages_created` from `longdescs` group by year(`longdescs`.`bug_when`),month(`longdescs`.`bug_when`),week(`longdescs`.`bug_when`,0) order by year(`longdescs`.`bug_when`) desc,month(`longdescs`.`bug_when`) desc,week(`longdescs`.`bug_when`,0) desc */;
 
 /*View structure for view count_new_unit_created_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_unit_created_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_unit_created_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_unit_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_unit` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_unit_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_unit` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
 
 /*View structure for view count_new_unit_created_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_unit_created_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_unit_created_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_unit_created_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc,count(`audit_log`.`object_id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_unit_created_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc,count(`audit_log`.`object_id`) desc */;
 
 /*View structure for view count_new_user_created_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_user_created_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_user_created_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_user_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_users` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::User') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_user_created_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,count(`audit_log`.`object_id`) AS `new_users` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::User') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by `audit_log`.`at_time` desc */;
 
 /*View structure for view count_new_user_created_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_new_user_created_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_new_user_created_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_new_user_created_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,count(`audit_log`.`object_id`) AS `new_users` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::User') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_new_user_created_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,count(`audit_log`.`object_id`) AS `new_users` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::User') and (`audit_log`.`field` = '__create__')) group by year(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc */;
 
 /*View structure for view count_unit_created_per_users_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_unit_created_per_users_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_unit_created_per_users_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_unit_created_per_users_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,`audit_log`.`user_id` AS `user_id`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by `audit_log`.`user_id`,year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,count(`audit_log`.`object_id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_unit_created_per_users_per_month` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,`audit_log`.`user_id` AS `user_id`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by `audit_log`.`user_id`,year(`audit_log`.`at_time`),month(`audit_log`.`at_time`) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,count(`audit_log`.`object_id`) desc */;
 
 /*View structure for view count_unit_created_per_users_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_unit_created_per_users_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_unit_created_per_users_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_unit_created_per_users_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,`audit_log`.`user_id` AS `user_id`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by `audit_log`.`user_id`,year(`audit_log`.`at_time`),month(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc,count(`audit_log`.`object_id`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_unit_created_per_users_per_week` AS select year(`audit_log`.`at_time`) AS `year`,month(`audit_log`.`at_time`) AS `month`,week(`audit_log`.`at_time`,0) AS `week`,`audit_log`.`user_id` AS `user_id`,count(`audit_log`.`object_id`) AS `count_new_units` from `audit_log` where ((`audit_log`.`class` = 'Bugzilla::Product') and (`audit_log`.`field` = '__create__')) group by `audit_log`.`user_id`,year(`audit_log`.`at_time`),month(`audit_log`.`at_time`),week(`audit_log`.`at_time`,0) order by year(`audit_log`.`at_time`) desc,month(`audit_log`.`at_time`) desc,week(`audit_log`.`at_time`,0) desc,count(`audit_log`.`object_id`) desc */;
 
 /*View structure for view count_units_enabled_and_total_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_units_enabled_and_total_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_units_enabled_and_total_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_units_enabled_and_total_per_month` AS select year(`ut_log_count_enabled_units`.`timestamp`) AS `year`,month(`ut_log_count_enabled_units`.`timestamp`) AS `month`,avg(`ut_log_count_enabled_units`.`count_enabled_units`) AS `average_enabled_units`,avg(`ut_log_count_enabled_units`.`count_total_units`) AS `average_total_units` from `ut_log_count_enabled_units` group by year(`ut_log_count_enabled_units`.`timestamp`),month(`ut_log_count_enabled_units`.`timestamp`) order by year(`ut_log_count_enabled_units`.`timestamp`) desc,month(`ut_log_count_enabled_units`.`timestamp`) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_enabled_and_total_per_month` AS select year(`ut_log_count_enabled_units`.`timestamp`) AS `year`,month(`ut_log_count_enabled_units`.`timestamp`) AS `month`,avg(`ut_log_count_enabled_units`.`count_enabled_units`) AS `average_enabled_units`,avg(`ut_log_count_enabled_units`.`count_total_units`) AS `average_total_units` from `ut_log_count_enabled_units` group by year(`ut_log_count_enabled_units`.`timestamp`),month(`ut_log_count_enabled_units`.`timestamp`) order by year(`ut_log_count_enabled_units`.`timestamp`) desc,month(`ut_log_count_enabled_units`.`timestamp`) desc */;
 
 /*View structure for view count_units_enabled_and_total_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_units_enabled_and_total_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_units_enabled_and_total_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_units_enabled_and_total_per_week` AS select year(`ut_log_count_enabled_units`.`timestamp`) AS `year`,month(`ut_log_count_enabled_units`.`timestamp`) AS `month`,week(`ut_log_count_enabled_units`.`timestamp`,0) AS `week`,avg(`ut_log_count_enabled_units`.`count_enabled_units`) AS `average_enabled_units`,avg(`ut_log_count_enabled_units`.`count_total_units`) AS `average_total_units` from `ut_log_count_enabled_units` group by year(`ut_log_count_enabled_units`.`timestamp`),month(`ut_log_count_enabled_units`.`timestamp`),week(`ut_log_count_enabled_units`.`timestamp`,0) order by year(`ut_log_count_enabled_units`.`timestamp`) desc,week(`ut_log_count_enabled_units`.`timestamp`,0) desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_enabled_and_total_per_week` AS select year(`ut_log_count_enabled_units`.`timestamp`) AS `year`,month(`ut_log_count_enabled_units`.`timestamp`) AS `month`,week(`ut_log_count_enabled_units`.`timestamp`,0) AS `week`,avg(`ut_log_count_enabled_units`.`count_enabled_units`) AS `average_enabled_units`,avg(`ut_log_count_enabled_units`.`count_total_units`) AS `average_total_units` from `ut_log_count_enabled_units` group by year(`ut_log_count_enabled_units`.`timestamp`),month(`ut_log_count_enabled_units`.`timestamp`),week(`ut_log_count_enabled_units`.`timestamp`,0) order by year(`ut_log_count_enabled_units`.`timestamp`) desc,week(`ut_log_count_enabled_units`.`timestamp`,0) desc */;
 
 /*View structure for view count_units_with_invitation_sent_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_units_with_invitation_sent_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_units_with_invitation_sent_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_units_with_invitation_sent_per_month` AS select `count_invitation_sent_per_unit_per_month`.`year` AS `year`,`count_invitation_sent_per_unit_per_month`.`month` AS `month`,count(`count_invitation_sent_per_unit_per_month`.`bz_unit_id`) AS `count_units` from `count_invitation_sent_per_unit_per_month` group by `count_invitation_sent_per_unit_per_month`.`month`,`count_invitation_sent_per_unit_per_month`.`year` order by `count_invitation_sent_per_unit_per_month`.`year` desc,`count_invitation_sent_per_unit_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_with_invitation_sent_per_month` AS select `count_invitation_sent_per_unit_per_month`.`year` AS `year`,`count_invitation_sent_per_unit_per_month`.`month` AS `month`,count(`count_invitation_sent_per_unit_per_month`.`bz_unit_id`) AS `count_units` from `count_invitation_sent_per_unit_per_month` group by `count_invitation_sent_per_unit_per_month`.`month`,`count_invitation_sent_per_unit_per_month`.`year` order by `count_invitation_sent_per_unit_per_month`.`year` desc,`count_invitation_sent_per_unit_per_month`.`month` desc */;
 
 /*View structure for view count_units_with_invitation_sent_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_units_with_invitation_sent_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_units_with_invitation_sent_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_units_with_invitation_sent_per_week` AS select `count_invitation_sent_per_unit_per_week`.`year` AS `year`,`count_invitation_sent_per_unit_per_week`.`month` AS `month`,`count_invitation_sent_per_unit_per_week`.`week` AS `week`,count(`count_invitation_sent_per_unit_per_week`.`bz_unit_id`) AS `count_units` from `count_invitation_sent_per_unit_per_week` group by `count_invitation_sent_per_unit_per_week`.`year`,`count_invitation_sent_per_unit_per_week`.`month`,`count_invitation_sent_per_unit_per_week`.`week` order by `count_invitation_sent_per_unit_per_week`.`year` desc,`count_invitation_sent_per_unit_per_week`.`month` desc,`count_invitation_sent_per_unit_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_with_invitation_sent_per_week` AS select `count_invitation_sent_per_unit_per_week`.`year` AS `year`,`count_invitation_sent_per_unit_per_week`.`month` AS `month`,`count_invitation_sent_per_unit_per_week`.`week` AS `week`,count(`count_invitation_sent_per_unit_per_week`.`bz_unit_id`) AS `count_units` from `count_invitation_sent_per_unit_per_week` group by `count_invitation_sent_per_unit_per_week`.`year`,`count_invitation_sent_per_unit_per_week`.`month`,`count_invitation_sent_per_unit_per_week`.`week` order by `count_invitation_sent_per_unit_per_week`.`year` desc,`count_invitation_sent_per_unit_per_week`.`month` desc,`count_invitation_sent_per_unit_per_week`.`week` desc */;
 
 /*View structure for view count_units_with_messages_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_units_with_messages_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_units_with_messages_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_units_with_messages_per_month` AS select `count_messages_per_unit_per_month`.`year` AS `year`,`count_messages_per_unit_per_month`.`month` AS `month`,count(`count_messages_per_unit_per_month`.`bz_unit_id`) AS `count_units_with_messages` from `count_messages_per_unit_per_month` group by `count_messages_per_unit_per_month`.`month`,`count_messages_per_unit_per_month`.`year` order by `count_messages_per_unit_per_month`.`year` desc,`count_messages_per_unit_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_with_messages_per_month` AS select `count_messages_per_unit_per_month`.`year` AS `year`,`count_messages_per_unit_per_month`.`month` AS `month`,count(`count_messages_per_unit_per_month`.`bz_unit_id`) AS `count_units_with_messages` from `count_messages_per_unit_per_month` group by `count_messages_per_unit_per_month`.`month`,`count_messages_per_unit_per_month`.`year` order by `count_messages_per_unit_per_month`.`year` desc,`count_messages_per_unit_per_month`.`month` desc */;
 
 /*View structure for view count_units_with_messages_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_units_with_messages_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_units_with_messages_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_units_with_messages_per_week` AS select `count_messages_per_unit_per_week`.`year` AS `year`,`count_messages_per_unit_per_week`.`month` AS `month`,`count_messages_per_unit_per_week`.`week` AS `week`,count(`count_messages_per_unit_per_week`.`bz_unit_id`) AS `count_units_with_messages` from `count_messages_per_unit_per_week` group by `count_messages_per_unit_per_week`.`year`,`count_messages_per_unit_per_week`.`month`,`count_messages_per_unit_per_week`.`week` order by `count_messages_per_unit_per_week`.`year` desc,`count_messages_per_unit_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_units_with_messages_per_week` AS select `count_messages_per_unit_per_week`.`year` AS `year`,`count_messages_per_unit_per_week`.`month` AS `month`,`count_messages_per_unit_per_week`.`week` AS `week`,count(`count_messages_per_unit_per_week`.`bz_unit_id`) AS `count_units_with_messages` from `count_messages_per_unit_per_week` group by `count_messages_per_unit_per_week`.`year`,`count_messages_per_unit_per_week`.`month`,`count_messages_per_unit_per_week`.`week` order by `count_messages_per_unit_per_week`.`year` desc,`count_messages_per_unit_per_week`.`week` desc */;
 
 /*View structure for view count_users_who_create_case_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_create_case_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_create_case_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_create_case_per_month` AS select `count_cases_per_users_per_month`.`year` AS `year`,`count_cases_per_users_per_month`.`month` AS `month`,count(`count_cases_per_users_per_month`.`reporter`) AS `count_users_who_create_case` from `count_cases_per_users_per_month` group by `count_cases_per_users_per_month`.`year`,`count_cases_per_users_per_month`.`month` order by `count_cases_per_users_per_month`.`year` desc,`count_cases_per_users_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_create_case_per_month` AS select `count_cases_per_users_per_month`.`year` AS `year`,`count_cases_per_users_per_month`.`month` AS `month`,count(`count_cases_per_users_per_month`.`reporter`) AS `count_users_who_create_case` from `count_cases_per_users_per_month` group by `count_cases_per_users_per_month`.`year`,`count_cases_per_users_per_month`.`month` order by `count_cases_per_users_per_month`.`year` desc,`count_cases_per_users_per_month`.`month` desc */;
 
 /*View structure for view count_users_who_create_case_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_create_case_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_create_case_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_create_case_per_week` AS select `count_cases_per_users_per_week`.`year` AS `year`,`count_cases_per_users_per_week`.`month` AS `month`,`count_cases_per_users_per_week`.`week` AS `week`,count(`count_cases_per_users_per_week`.`reporter`) AS `count_users_who_create_case` from `count_cases_per_users_per_week` group by `count_cases_per_users_per_week`.`year`,`count_cases_per_users_per_week`.`month`,`count_cases_per_users_per_week`.`week` order by `count_cases_per_users_per_week`.`year` desc,`count_cases_per_users_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_create_case_per_week` AS select `count_cases_per_users_per_week`.`year` AS `year`,`count_cases_per_users_per_week`.`month` AS `month`,`count_cases_per_users_per_week`.`week` AS `week`,count(`count_cases_per_users_per_week`.`reporter`) AS `count_users_who_create_case` from `count_cases_per_users_per_week` group by `count_cases_per_users_per_week`.`year`,`count_cases_per_users_per_week`.`month`,`count_cases_per_users_per_week`.`week` order by `count_cases_per_users_per_week`.`year` desc,`count_cases_per_users_per_week`.`week` desc */;
 
 /*View structure for view count_users_who_create_invites_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_create_invites_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_create_invites_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_create_invites_per_month` AS select `count_invites_per_user_per_week`.`year` AS `year`,`count_invites_per_user_per_week`.`month` AS `month`,count(`count_invites_per_user_per_week`.`invitor`) AS `count_users_who_created_invites` from `count_invites_per_user_per_week` group by `count_invites_per_user_per_week`.`year`,`count_invites_per_user_per_week`.`month` order by `count_invites_per_user_per_week`.`year` desc,`count_invites_per_user_per_week`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_create_invites_per_month` AS select `count_invites_per_user_per_week`.`year` AS `year`,`count_invites_per_user_per_week`.`month` AS `month`,count(`count_invites_per_user_per_week`.`invitor`) AS `count_users_who_created_invites` from `count_invites_per_user_per_week` group by `count_invites_per_user_per_week`.`year`,`count_invites_per_user_per_week`.`month` order by `count_invites_per_user_per_week`.`year` desc,`count_invites_per_user_per_week`.`month` desc */;
 
 /*View structure for view count_users_who_create_invites_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_create_invites_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_create_invites_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_create_invites_per_week` AS select `count_invites_per_user_per_week`.`year` AS `year`,`count_invites_per_user_per_week`.`month` AS `month`,`count_invites_per_user_per_week`.`week` AS `week`,count(`count_invites_per_user_per_week`.`invitor`) AS `count_users_who_created_invites` from `count_invites_per_user_per_week` group by `count_invites_per_user_per_week`.`year`,`count_invites_per_user_per_week`.`month`,`count_invites_per_user_per_week`.`week` order by `count_invites_per_user_per_week`.`year` desc,`count_invites_per_user_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_create_invites_per_week` AS select `count_invites_per_user_per_week`.`year` AS `year`,`count_invites_per_user_per_week`.`month` AS `month`,`count_invites_per_user_per_week`.`week` AS `week`,count(`count_invites_per_user_per_week`.`invitor`) AS `count_users_who_created_invites` from `count_invites_per_user_per_week` group by `count_invites_per_user_per_week`.`year`,`count_invites_per_user_per_week`.`month`,`count_invites_per_user_per_week`.`week` order by `count_invites_per_user_per_week`.`year` desc,`count_invites_per_user_per_week`.`week` desc */;
 
 /*View structure for view count_users_who_create_units_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_create_units_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_create_units_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_create_units_per_month` AS select `count_unit_created_per_users_per_month`.`year` AS `year`,`count_unit_created_per_users_per_month`.`month` AS `month`,count(`count_unit_created_per_users_per_month`.`user_id`) AS `count_users_who_created_units` from `count_unit_created_per_users_per_month` group by `count_unit_created_per_users_per_month`.`year`,`count_unit_created_per_users_per_month`.`month` order by `count_unit_created_per_users_per_month`.`year` desc,`count_unit_created_per_users_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_create_units_per_month` AS select `count_unit_created_per_users_per_month`.`year` AS `year`,`count_unit_created_per_users_per_month`.`month` AS `month`,count(`count_unit_created_per_users_per_month`.`user_id`) AS `count_users_who_created_units` from `count_unit_created_per_users_per_month` group by `count_unit_created_per_users_per_month`.`year`,`count_unit_created_per_users_per_month`.`month` order by `count_unit_created_per_users_per_month`.`year` desc,`count_unit_created_per_users_per_month`.`month` desc */;
 
 /*View structure for view count_users_who_create_units_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_create_units_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_create_units_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_create_units_per_week` AS select `count_unit_created_per_users_per_week`.`year` AS `year`,`count_unit_created_per_users_per_week`.`month` AS `month`,`count_unit_created_per_users_per_week`.`week` AS `week`,count(`count_unit_created_per_users_per_week`.`user_id`) AS `count_users_who_created_units` from `count_unit_created_per_users_per_week` group by `count_unit_created_per_users_per_week`.`year`,`count_unit_created_per_users_per_week`.`month`,`count_unit_created_per_users_per_week`.`week` order by `count_unit_created_per_users_per_week`.`year` desc,`count_unit_created_per_users_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_create_units_per_week` AS select `count_unit_created_per_users_per_week`.`year` AS `year`,`count_unit_created_per_users_per_week`.`month` AS `month`,`count_unit_created_per_users_per_week`.`week` AS `week`,count(`count_unit_created_per_users_per_week`.`user_id`) AS `count_users_who_created_units` from `count_unit_created_per_users_per_week` group by `count_unit_created_per_users_per_week`.`year`,`count_unit_created_per_users_per_week`.`month`,`count_unit_created_per_users_per_week`.`week` order by `count_unit_created_per_users_per_week`.`year` desc,`count_unit_created_per_users_per_week`.`week` desc */;
 
 /*View structure for view count_users_who_invited_someone_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_invited_someone_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_invited_someone_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_invited_someone_per_month` AS select `count_invitation_per_invitor_per_month`.`year` AS `year`,`count_invitation_per_invitor_per_month`.`month` AS `month`,count(`count_invitation_per_invitor_per_month`.`invitor_bz_user_id`) AS `count_invitors` from `count_invitation_per_invitor_per_month` group by `count_invitation_per_invitor_per_month`.`year`,`count_invitation_per_invitor_per_month`.`month` order by `count_invitation_per_invitor_per_month`.`year` desc,`count_invitation_per_invitor_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_invited_someone_per_month` AS select `count_invitation_per_invitor_per_month`.`year` AS `year`,`count_invitation_per_invitor_per_month`.`month` AS `month`,count(`count_invitation_per_invitor_per_month`.`invitor_bz_user_id`) AS `count_invitors` from `count_invitation_per_invitor_per_month` group by `count_invitation_per_invitor_per_month`.`year`,`count_invitation_per_invitor_per_month`.`month` order by `count_invitation_per_invitor_per_month`.`year` desc,`count_invitation_per_invitor_per_month`.`month` desc */;
 
 /*View structure for view count_users_who_invited_someone_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_invited_someone_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_invited_someone_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_invited_someone_per_week` AS select `count_invitation_per_invitor_per_week`.`year` AS `year`,`count_invitation_per_invitor_per_week`.`month` AS `month`,`count_invitation_per_invitor_per_week`.`week` AS `week`,count(`count_invitation_per_invitor_per_week`.`invitor_bz_user_id`) AS `count_invitors` from `count_invitation_per_invitor_per_week` group by `count_invitation_per_invitor_per_week`.`year`,`count_invitation_per_invitor_per_week`.`month`,`count_invitation_per_invitor_per_week`.`week` order by `count_invitation_per_invitor_per_week`.`year` desc,`count_invitation_per_invitor_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_invited_someone_per_week` AS select `count_invitation_per_invitor_per_week`.`year` AS `year`,`count_invitation_per_invitor_per_week`.`month` AS `month`,`count_invitation_per_invitor_per_week`.`week` AS `week`,count(`count_invitation_per_invitor_per_week`.`invitor_bz_user_id`) AS `count_invitors` from `count_invitation_per_invitor_per_week` group by `count_invitation_per_invitor_per_week`.`year`,`count_invitation_per_invitor_per_week`.`month`,`count_invitation_per_invitor_per_week`.`week` order by `count_invitation_per_invitor_per_week`.`year` desc,`count_invitation_per_invitor_per_week`.`week` desc */;
 
 /*View structure for view count_users_who_sent_message_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_sent_message_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_sent_message_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_sent_message_per_month` AS select `count_messages_per_users_per_month`.`year` AS `year`,`count_messages_per_users_per_month`.`month` AS `month`,count(`count_messages_per_users_per_month`.`who`) AS `count_users_who_sent_messages` from `count_messages_per_users_per_month` group by `count_messages_per_users_per_month`.`year`,`count_messages_per_users_per_month`.`month` order by `count_messages_per_users_per_month`.`year` desc,`count_messages_per_users_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_sent_message_per_month` AS select `count_messages_per_users_per_month`.`year` AS `year`,`count_messages_per_users_per_month`.`month` AS `month`,count(`count_messages_per_users_per_month`.`who`) AS `count_users_who_sent_messages` from `count_messages_per_users_per_month` group by `count_messages_per_users_per_month`.`year`,`count_messages_per_users_per_month`.`month` order by `count_messages_per_users_per_month`.`year` desc,`count_messages_per_users_per_month`.`month` desc */;
 
 /*View structure for view count_users_who_sent_message_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_sent_message_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_sent_message_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_sent_message_per_week` AS select `count_messages_per_users_per_week`.`year` AS `year`,`count_messages_per_users_per_week`.`month` AS `month`,`count_messages_per_users_per_week`.`week` AS `week`,count(`count_messages_per_users_per_week`.`who`) AS `count_users_who_sent_messages` from `count_messages_per_users_per_week` group by `count_messages_per_users_per_week`.`year`,`count_messages_per_users_per_week`.`month`,`count_messages_per_users_per_week`.`week` order by `count_messages_per_users_per_week`.`year` desc,`count_messages_per_users_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_sent_message_per_week` AS select `count_messages_per_users_per_week`.`year` AS `year`,`count_messages_per_users_per_week`.`month` AS `month`,`count_messages_per_users_per_week`.`week` AS `week`,count(`count_messages_per_users_per_week`.`who`) AS `count_users_who_sent_messages` from `count_messages_per_users_per_week` group by `count_messages_per_users_per_week`.`year`,`count_messages_per_users_per_week`.`month`,`count_messages_per_users_per_week`.`week` order by `count_messages_per_users_per_week`.`year` desc,`count_messages_per_users_per_week`.`week` desc */;
 
 /*View structure for view count_users_who_were_invited_per_month */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_were_invited_per_month` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_were_invited_per_month` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_were_invited_per_month` AS select `count_invitation_per_invitee_per_month`.`year` AS `year`,`count_invitation_per_invitee_per_month`.`month` AS `month`,count(`count_invitation_per_invitee_per_month`.`invitee_bz_user_id`) AS `count_invitees` from `count_invitation_per_invitee_per_month` group by `count_invitation_per_invitee_per_month`.`year`,`count_invitation_per_invitee_per_month`.`month` order by `count_invitation_per_invitee_per_month`.`year` desc,`count_invitation_per_invitee_per_month`.`month` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_were_invited_per_month` AS select `count_invitation_per_invitee_per_month`.`year` AS `year`,`count_invitation_per_invitee_per_month`.`month` AS `month`,count(`count_invitation_per_invitee_per_month`.`invitee_bz_user_id`) AS `count_invitees` from `count_invitation_per_invitee_per_month` group by `count_invitation_per_invitee_per_month`.`year`,`count_invitation_per_invitee_per_month`.`month` order by `count_invitation_per_invitee_per_month`.`year` desc,`count_invitation_per_invitee_per_month`.`month` desc */;
 
 /*View structure for view count_users_who_were_invited_per_week */
 
 /*!50001 DROP TABLE IF EXISTS `count_users_who_were_invited_per_week` */;
 /*!50001 DROP VIEW IF EXISTS `count_users_who_were_invited_per_week` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `count_users_who_were_invited_per_week` AS select `count_invitation_per_invitee_per_week`.`year` AS `year`,`count_invitation_per_invitee_per_week`.`month` AS `month`,`count_invitation_per_invitee_per_week`.`week` AS `week`,count(`count_invitation_per_invitee_per_week`.`invitee_bz_user_id`) AS `count_invitees` from `count_invitation_per_invitee_per_week` group by `count_invitation_per_invitee_per_week`.`year`,`count_invitation_per_invitee_per_week`.`month`,`count_invitation_per_invitee_per_week`.`week` order by `count_invitation_per_invitee_per_week`.`year` desc,`count_invitation_per_invitee_per_week`.`week` desc */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `count_users_who_were_invited_per_week` AS select `count_invitation_per_invitee_per_week`.`year` AS `year`,`count_invitation_per_invitee_per_week`.`month` AS `month`,`count_invitation_per_invitee_per_week`.`week` AS `week`,count(`count_invitation_per_invitee_per_week`.`invitee_bz_user_id`) AS `count_invitees` from `count_invitation_per_invitee_per_week` group by `count_invitation_per_invitee_per_week`.`year`,`count_invitation_per_invitee_per_week`.`month`,`count_invitation_per_invitee_per_week`.`week` order by `count_invitation_per_invitee_per_week`.`year` desc,`count_invitation_per_invitee_per_week`.`week` desc */;
 
 /*View structure for view flash_count_units_with_real_roles */
 
 /*!50001 DROP TABLE IF EXISTS `flash_count_units_with_real_roles` */;
 /*!50001 DROP VIEW IF EXISTS `flash_count_units_with_real_roles` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `flash_count_units_with_real_roles` AS select `list_components_with_real_default_assignee`.`role_type_id` AS `role_type_id`,count(`list_components_with_real_default_assignee`.`product_id`) AS `units_with_real_users`,`list_components_with_real_default_assignee`.`isactive` AS `isactive` from `list_components_with_real_default_assignee` group by `list_components_with_real_default_assignee`.`role_type_id`,`list_components_with_real_default_assignee`.`isactive` order by `list_components_with_real_default_assignee`.`isactive` desc,`list_components_with_real_default_assignee`.`role_type_id` */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `flash_count_units_with_real_roles` AS select `list_components_with_real_default_assignee`.`role_type_id` AS `role_type_id`,count(`list_components_with_real_default_assignee`.`product_id`) AS `units_with_real_users`,`list_components_with_real_default_assignee`.`isactive` AS `isactive` from `list_components_with_real_default_assignee` group by `list_components_with_real_default_assignee`.`role_type_id`,`list_components_with_real_default_assignee`.`isactive` order by `list_components_with_real_default_assignee`.`isactive` desc,`list_components_with_real_default_assignee`.`role_type_id` */;
 
 /*View structure for view flash_count_user_per_role_per_unit */
 
 /*!50001 DROP TABLE IF EXISTS `flash_count_user_per_role_per_unit` */;
 /*!50001 DROP VIEW IF EXISTS `flash_count_user_per_role_per_unit` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `flash_count_user_per_role_per_unit` AS select `ut_product_group`.`product_id` AS `product_id`,`ut_product_group`.`role_type_id` AS `role_type_id`,count(`profiles`.`userid`) AS `count_users` from ((`user_group_map` join `profiles` on((`user_group_map`.`user_id` = `profiles`.`userid`))) join `ut_product_group` on((`user_group_map`.`group_id` = `ut_product_group`.`group_id`))) where ((`ut_product_group`.`role_type_id` is not null) and (`ut_product_group`.`group_type_id` = 2) and (`user_group_map`.`isbless` = 0)) group by `ut_product_group`.`product_id`,`ut_product_group`.`role_type_id`,`user_group_map`.`group_id` */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `flash_count_user_per_role_per_unit` AS select `ut_product_group`.`product_id` AS `product_id`,`ut_product_group`.`role_type_id` AS `role_type_id`,count(`profiles`.`userid`) AS `count_users` from ((`user_group_map` join `profiles` on((`user_group_map`.`user_id` = `profiles`.`userid`))) join `ut_product_group` on((`user_group_map`.`group_id` = `ut_product_group`.`group_id`))) where ((`ut_product_group`.`role_type_id` is not null) and (`ut_product_group`.`group_type_id` = 2) and (`user_group_map`.`isbless` = 0)) group by `ut_product_group`.`product_id`,`ut_product_group`.`role_type_id`,`user_group_map`.`group_id` */;
 
 /*View structure for view list_all_changes_to_components_default_assignee_dummy_users */
 
 /*!50001 DROP TABLE IF EXISTS `list_all_changes_to_components_default_assignee_dummy_users` */;
 /*!50001 DROP VIEW IF EXISTS `list_all_changes_to_components_default_assignee_dummy_users` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `list_all_changes_to_components_default_assignee_dummy_users` AS select `audit_log`.`class` AS `class`,`audit_log`.`removed` AS `removed`,if((`audit_log`.`removed` = 93),'replace_dummy_tenant',if((`audit_log`.`removed` = 91),'replace_dummy_landlord',if((`audit_log`.`removed` = 90),'replace_dummy_contractor',if((`audit_log`.`removed` = 92),'replace_dummy_mgt_cny',if((`audit_log`.`removed` = 89),'replace_dummy_agent','dummy_user_not_removed'))))) AS `action_remove`,`audit_log`.`added` AS `added`,if((`audit_log`.`added` = 92),'use_dummy_tenant',if((`audit_log`.`added` = 91),'use_dummy_landlord',if((`audit_log`.`added` = 90),'use_dummy_contractor',if((`audit_log`.`added` = 92),'use_dummy_mgt_cny',if((`audit_log`.`added` = 89),'use_dummy_agent','dummy_user_not_added'))))) AS `action_add`,`audit_log`.`object_id` AS `component_id`,`audit_log`.`at_time` AS `at_time` from `audit_log` where (((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 92)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 91)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 90)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 92)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 89)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 92)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 91)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 90)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 92)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 89))) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `list_all_changes_to_components_default_assignee_dummy_users` AS select `audit_log`.`class` AS `class`,`audit_log`.`removed` AS `removed`,if((`audit_log`.`removed` = 93),'replace_dummy_tenant',if((`audit_log`.`removed` = 91),'replace_dummy_landlord',if((`audit_log`.`removed` = 90),'replace_dummy_contractor',if((`audit_log`.`removed` = 92),'replace_dummy_mgt_cny',if((`audit_log`.`removed` = 89),'replace_dummy_agent','dummy_user_not_removed'))))) AS `action_remove`,`audit_log`.`added` AS `added`,if((`audit_log`.`added` = 92),'use_dummy_tenant',if((`audit_log`.`added` = 91),'use_dummy_landlord',if((`audit_log`.`added` = 90),'use_dummy_contractor',if((`audit_log`.`added` = 92),'use_dummy_mgt_cny',if((`audit_log`.`added` = 89),'use_dummy_agent','dummy_user_not_added'))))) AS `action_add`,`audit_log`.`object_id` AS `component_id`,`audit_log`.`at_time` AS `at_time` from `audit_log` where (((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 92)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 91)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 90)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 92)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`removed` = 89)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 92)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 91)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 90)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 92)) or ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` = 89))) */;
 
 /*View structure for view list_changes_new_assignee_is_real */
 
 /*!50001 DROP TABLE IF EXISTS `list_changes_new_assignee_is_real` */;
 /*!50001 DROP VIEW IF EXISTS `list_changes_new_assignee_is_real` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `list_changes_new_assignee_is_real` AS select `ut_product_group`.`product_id` AS `product_id`,`audit_log`.`object_id` AS `component_id`,`audit_log`.`removed` AS `removed`,`audit_log`.`added` AS `added`,`audit_log`.`at_time` AS `at_time`,`ut_product_group`.`role_type_id` AS `role_type_id` from (`audit_log` join `ut_product_group` on((`audit_log`.`object_id` = `ut_product_group`.`component_id`))) where ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` <> 4) and (`audit_log`.`added` <> 3) and (`audit_log`.`added` <> 5) and (`audit_log`.`added` <> 6) and (`audit_log`.`added` <> 2)) group by `audit_log`.`object_id`,`ut_product_group`.`role_type_id` order by `audit_log`.`at_time` desc,`ut_product_group`.`product_id`,`audit_log`.`object_id` */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `list_changes_new_assignee_is_real` AS select `ut_product_group`.`product_id` AS `product_id`,`audit_log`.`object_id` AS `component_id`,`audit_log`.`removed` AS `removed`,`audit_log`.`added` AS `added`,`audit_log`.`at_time` AS `at_time`,`ut_product_group`.`role_type_id` AS `role_type_id` from (`audit_log` join `ut_product_group` on((`audit_log`.`object_id` = `ut_product_group`.`component_id`))) where ((`audit_log`.`class` = 'Bugzilla::Component') and (`audit_log`.`field` = 'initialowner') and (`audit_log`.`added` <> 4) and (`audit_log`.`added` <> 3) and (`audit_log`.`added` <> 5) and (`audit_log`.`added` <> 6) and (`audit_log`.`added` <> 2)) group by `audit_log`.`object_id`,`ut_product_group`.`role_type_id` order by `audit_log`.`at_time` desc,`ut_product_group`.`product_id`,`audit_log`.`object_id` */;
 
 /*View structure for view list_components_with_real_default_assignee */
 
 /*!50001 DROP TABLE IF EXISTS `list_components_with_real_default_assignee` */;
 /*!50001 DROP VIEW IF EXISTS `list_components_with_real_default_assignee` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`unee_t_root`@`%` SQL SECURITY DEFINER VIEW `list_components_with_real_default_assignee` AS select `ut_product_group`.`product_id` AS `product_id`,`components`.`id` AS `component_id`,`components`.`initialowner` AS `initialowner`,`ut_product_group`.`role_type_id` AS `role_type_id`,`products`.`isactive` AS `isactive` from ((`components` join `ut_product_group` on((`components`.`id` = `ut_product_group`.`component_id`))) join `products` on((`ut_product_group`.`product_id` = `products`.`id`))) where ((`components`.`initialowner` <> 93) and (`components`.`initialowner` <> 91) and (`components`.`initialowner` <> 90) and (`components`.`initialowner` <> 92) and (`components`.`initialowner` <> 89) and (`ut_product_group`.`role_type_id` is not null)) group by `ut_product_group`.`product_id`,`components`.`id`,`ut_product_group`.`role_type_id` order by `ut_product_group`.`product_id`,`components`.`id` */;
+/*!50001 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `list_components_with_real_default_assignee` AS select `ut_product_group`.`product_id` AS `product_id`,`components`.`id` AS `component_id`,`components`.`initialowner` AS `initialowner`,`ut_product_group`.`role_type_id` AS `role_type_id`,`products`.`isactive` AS `isactive` from ((`components` join `ut_product_group` on((`components`.`id` = `ut_product_group`.`component_id`))) join `products` on((`ut_product_group`.`product_id` = `products`.`id`))) where ((`components`.`initialowner` <> 93) and (`components`.`initialowner` <> 91) and (`components`.`initialowner` <> 90) and (`components`.`initialowner` <> 92) and (`components`.`initialowner` <> 89) and (`ut_product_group`.`role_type_id` is not null)) group by `ut_product_group`.`product_id`,`components`.`id`,`ut_product_group`.`role_type_id` order by `ut_product_group`.`product_id`,`components`.`id` */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
