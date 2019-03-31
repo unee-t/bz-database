@@ -31,8 +31,12 @@
 ###############################
 # In this update
 #
-# Change all the SMALLINT(6) to MEDIUMINT(9) to avoid hitting issue where we run out of IDs
-
+# We alter the tables to change:
+#		- All the SMALLINT(6) to UNSIGNED = `true`
+#		- All the MEDIUMINT(9) to UNSIGNED = `true`
+#		- All the INT(11) to UNSIGNED = `true`
+#		- Most of the keys from SMALLINT(6) to MEDIUMINT(9) Unsigned
+#
 #####################
 #
 # Do it!
@@ -164,11 +168,11 @@
 		, `whine_schedules` WRITE
 		;
 
-# We alter the table to change:
+# We alter the tables to change:
 #		- All the SMALLINT(6) to UNSIGNED = `true`
 #		- All the MEDIUMINT(9) to UNSIGNED = `true`
 #		- All the INT(11) to UNSIGNED = `true`
-#		- Most of the keys from SMALLINT(6) to MEDIUMINT(11)
+#		- Most of the keys from SMALLINT(6) to MEDIUMINT(9) Unsigned
 
 	/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 
