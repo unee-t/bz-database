@@ -56,13 +56,25 @@
 		, `bug_cf_ipi_clust_9_acct_action` WRITE
 		, `bug_group_map` WRITE
 		, `bug_see_also` WRITE
+		, `bug_severity` WRITE
+		, `bug_status` WRITE
 		, `bug_tag` WRITE
 		, `bug_user_last_visit` WRITE
 		, `bugs` WRITE
 		, `bugs_activity` WRITE
 		, `bugs_aliases` WRITE
+		, `bugs_fulltext` WRITE
 		, `category_group_map` WRITE
 		, `cc` WRITE
+		, `cf_ipi_clust_3_action_type` WRITE
+		, `cf_ipi_clust_3_roadbook_for` WRITE
+		, `cf_ipi_clust_4_status_in_progress` WRITE
+		, `cf_ipi_clust_4_status_standby` WRITE
+		, `cf_ipi_clust_6_claim_type` WRITE
+		, `cf_ipi_clust_7_spe_payment_type` WRITE
+		, `cf_ipi_clust_9_acct_action` WRITE
+		, `cf_specific_for` WRITE
+		, `classifications` WRITE
 		, `component_cc` WRITE
 		, `components` WRITE
 		, `dependencies` WRITE
@@ -77,37 +89,74 @@
 		, `flagtypes` WRITE
 		, `group_control_map` WRITE
 		, `group_group_map` WRITE
+		, `groups` WRITE
+		, `keyworddefs` WRITE
 		, `keywords` WRITE
 		, `login_failure` WRITE
 		, `logincookies` WRITE
 		, `longdescs` WRITE
 		, `longdescs_tags` WRITE
 		, `longdescs_tags_activity` WRITE
+		, `longdescs_tags_weights` WRITE
+		, `mail_staging` WRITE
 		, `milestones` WRITE
 		, `namedqueries` WRITE
 		, `namedqueries_link_in_footer` WRITE
 		, `namedquery_group_map` WRITE
+		, `op_sys` WRITE
+		, `priority` WRITE
 		, `products` WRITE
 		, `profile_search` WRITE
 		, `profile_setting` WRITE
+		, `profiles` WRITE
 		, `profiles_activity` WRITE
 		, `quips` WRITE
+		, `rep_platform` WRITE
 		, `reports` WRITE
+		, `resolution` WRITE
 		, `series` WRITE
+		, `series_categories` WRITE
 		, `series_data` WRITE
 		, `setting_value` WRITE
 		, `status_workflow` WRITE
 		, `tag` WRITE
 		, `tokens` WRITE
+		, `ts_error` WRITE
+		, `ts_exitstatus` WRITE
+		, `ts_funcmap` WRITE
+		, `ts_job` WRITE
+		, `ts_note` WRITE
 		, `user_api_keys` WRITE
 		, `user_group_map` WRITE
+		, `ut_all_units` WRITE
+		, `ut_audit_log` WRITE
+		, `ut_contractor_types` WRITE
+		, `ut_contractors` WRITE
 		, `ut_data_to_add_user_to_a_case` WRITE
 		, `ut_data_to_add_user_to_a_role` WRITE
 		, `ut_data_to_create_units` WRITE
 		, `ut_data_to_replace_dummy_roles` WRITE
+		, `ut_db_schema_version` WRITE
+		, `ut_group_types` WRITE
 		, `ut_invitation_api_data` WRITE
+		, `ut_invitation_types` WRITE
+		, `ut_log_count_closed_cases` WRITE
+		, `ut_log_count_enabled_units` WRITE
+		, `ut_map_contractor_to_type` WRITE
+		, `ut_map_contractor_to_user` WRITE
 		, `ut_map_invitation_type_to_permission_type` WRITE
+		, `ut_map_user_mefe_bzfe` WRITE
+		, `ut_map_user_unit_details` WRITE
+		, `ut_notification_case_assignee` WRITE
+		, `ut_notification_case_invited` WRITE
+		, `ut_notification_case_new` WRITE
+		, `ut_notification_case_updated` WRITE
+		, `ut_notification_message_new` WRITE
+		, `ut_notification_types` WRITE
 		, `ut_permission_types` WRITE
+		, `ut_product_group` WRITE
+		, `ut_role_types` WRITE
+		, `ut_script_log` WRITE
 		, `versions` WRITE
 		, `watch` WRITE
 		, `whine_events` WRITE
