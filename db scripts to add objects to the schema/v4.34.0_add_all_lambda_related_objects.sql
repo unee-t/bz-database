@@ -4,47 +4,47 @@
 #
 ###################################################################################
 # IMPORTANT!! 
-#   1- make sure that the variable for the Lambda is correct for each environment
+#	1- make sure that the variable for the Lambda is correct for each environment
 #	  By default, this script creates procedures for the PROD environment.
 #	  See: https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
-#   	- DEV/Staging: 812644853088
-#   	- Prod: 192458993663
-#   	- Demo: 915001051872
-#   2- make sure that the following manadatory tables exist in the database:
-#	   - `ut_notification_case_assignee`
-#	   - `ut_notification_case_updated`
-#	   - `ut_notification_case_invited`
-#	   - `ut_notification_case_new`
-#	   - `ut_notification_classify_messages`
-#	   - `ut_notification_message_new`
-#	   Why?
-#	   Because this script does NOT re-create the associated DB tables that we have 
-#	   created to log what happens when SQL triggers are activated
+#		- DEV/Staging: 812644853088
+#		- Prod: 192458993663
+#		- Demo: 915001051872
+#	2- make sure that the following manadatory tables exist in the database:
+#		- `ut_notification_case_assignee`
+#		- `ut_notification_case_updated`
+#		- `ut_notification_case_invited`
+#		- `ut_notification_case_new`
+#		- `ut_notification_classify_messages`
+#		- `ut_notification_message_new`
+#		Why?
+#		Because this script does NOT re-create the associated DB tables that we have 
+#		created to log what happens when SQL triggers are activated
 #
 #	3- This requires MySQL 5.7.22 or later OR Maria DB 10.2.3 or later
-#	   these are the only version which support the JSON functions
+#		these are the only version which support the JSON functions
 ###################################################################################
 #
 # As of DB schema v4.31 we have
-#   - 5 procedures that are using lambda:
-#	   - `lambda_notification_case_assignee_updated` latest version introduced in v4.32
-#	   - `lambda_notification_case_updated` latest version introduced in v4.32
-#	   - `lambda_notification_case_invited` latest version introduced in v4.32
-#	   - `lambda_notification_case_new` latest version introduced in v4.32
-#	  - `lambda_notification_message_new_comment` latest version introduced in v4.32
+#	- 5 procedures that are using lambda:
+#		- `lambda_notification_case_assignee_updated` latest version introduced in v4.32
+#		- `lambda_notification_case_updated` latest version introduced in v4.32
+#		- `lambda_notification_case_invited` latest version introduced in v4.32
+#		- `lambda_notification_case_new` latest version introduced in v4.32
+#		- `lambda_notification_message_new_comment` latest version introduced in v4.32
 #
 # These 5 procedures are associated with 6 triggers and 6 tables:
-#	   - `ut_prepare_message_case_assigned_updated` latest version introduced in v4.32
+#		- `ut_prepare_message_case_assigned_updated` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_case_assignee`
-#	   - `ut_prepare_message_case_activity` latest version introduced in v4.32
+#		- `ut_prepare_message_case_activity` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_case_updated`
-#	   - `ut_prepare_message_case_invited` latest version introduced in v4.32
+#		- `ut_prepare_message_case_invited` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_case_invited`
-#	   - `ut_prepare_message_new_case` latest version introduced in v4.32
+#		- `ut_prepare_message_new_case` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_case_new`
-#	   - `ut_prepare_message_new_comment` latest version introduced i1-n v4.32
+#		- `ut_prepare_message_new_comment` latest version introduced i1-n v4.32
 #		  the log for this trigger is not needed as it is fired as a consequence `ut_notification_classify_messages`
-#	   - `ut_notification_classify_messages` latest version introduced in v4.32
+#		- `ut_notification_classify_messages` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_message_new`
 #
 # Code to create these procedures:
@@ -309,8 +309,8 @@ END $$
 DELIMITER ;
 
 # Code to create the triggers. Keep in mind that the triggers need:
-#   - The tables where we record the logs
-#   - The procedures
+#	- The tables where we record the logs
+#	- The procedures
 #
 # `ut_prepare_message_case_activity` the latest version was introduced in schema v4.32
 

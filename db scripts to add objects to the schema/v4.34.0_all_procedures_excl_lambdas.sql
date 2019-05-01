@@ -1,3 +1,98 @@
+# For any question about this script, Ask Franck
+#
+# This script will create the following procedures:
+#
+# - Used in several scenarios
+#	- `change_case_assignee`
+#	- `remove_user_from_default_cc`
+#	- `remove_user_from_role`
+#	- `revoke_all_permission_for_this_user_in_this_unit`
+#	- `table_to_list_dummy_user_by_environment`
+#	- `update_assignee_if_dummy_user`
+
+#
+# - Related to unit creation
+#	- `unit_create_with_dummy_users`
+#
+#	- `capture_id_dummy_user`
+#
+#	- `show_to_agent`
+#	- `show_to_contractor`
+#	- `show_to_landlord`
+#	- `show_to_mgt_cny`
+#	- `show_to_occupant`
+#	- `show_to_tenant`
+#
+# - Related to unit management
+#	- `unit_disable_existing`
+#	- `unit_enable_existing`
+#
+# - Related to user creation
+#	- `are_users_agent`
+#	- `are_users_contractor`
+#	- `are_users_landlord`
+#	- `are_users_mgt_cny`
+#	- `is_occupant`
+#	- `is_tenant`
+#
+#	- `can_approve_all_flags`
+#	- `can_ask_to_approve_flags`
+#
+#	- `can_create_new_cases`
+#	- `can_create_shared_queries`
+#	- `can_edit_all_field_in_a_case_regardless_of_role`
+#	- `can_edit_a_case`
+#
+#	- `can_see_all_public_cases`
+#	- `can_see_time_tracking`
+#	- `can_see_unit_in_search`
+#
+#	- `user_can_see_publicly_visible`
+#	- `user_in_default_cc_for_cases`
+#	- `user_is_default_assignee_for_cases`
+#	- `user_is_publicly_visible`
+#
+#	- `can_tag_comment`
+#
+#	- `create_temp_table_to_update_group_permissions`
+#	- `create_temp_table_to_update_permissions`
+#
+#	- `default_agent_see_users_agent`
+#	- `default_contractor_see_users_contractor`
+#	- `default_landlord_see_users_landlord`
+#	- `default_mgt_cny_see_users_mgt_cny`
+#	- `default_occupant_can_see_occupant`
+#	- `default_tenant_can_see_tenant`
+
+#	- `disable_bugmail`
+
+# - Related to associating a user to a unit
+#	- `add_user_to_role_in_unit`
+
+# - Related to inviting a user to a case
+#	- `finalize_invitation_to_a_case`
+#
+# - Metrics
+#
+# - Logs
+#	- `update_audit_log`
+#	- `update_log_count_closed_case`
+#	- `update_log_count_enabled_units`
+
+#
+# - Housekeeping
+#	- `update_bz_fielddefs`
+
+
+
+#	- `add_invitee_in_cc`
+
+#	- `update_list_changes_new_assignee_is_real`
+
+#	- `update_permissions_invited_user`
+
+
+
 /* Procedure structure for procedure `add_invitee_in_cc` */
 
 DROP PROCEDURE IF EXISTS `add_invitee_in_cc` ;
@@ -189,7 +284,6 @@ BEGIN
 	# Limits of this script:
 	#	- Unit must have all roles created with Dummy user roles.
 	#
-	#	
 	
 	#####################################################
 	#					
