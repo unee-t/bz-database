@@ -200,7 +200,7 @@ BEGIN
 	#		 - `environment`: Which environment are you creating the unit in?
 	#		 	- 1 is for the DEV/Staging
 	#			- 2 is for the prod environment
-	#				- 3 is for the Demo environment
+	#			- 3 is for the Demo environment
 	#	 - tables
 	#		 - 'ut_user_group_map_temp'
 	#
