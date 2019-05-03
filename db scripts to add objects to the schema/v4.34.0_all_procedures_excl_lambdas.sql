@@ -185,7 +185,8 @@ END IF ;
 END $$
 DELIMITER ;
 
-/* Procedure structure for procedure `add_user_to_role_in_unit` */
+
+# Procedure structure for procedure `add_user_to_role_in_unit`
 
 DROP PROCEDURE IF EXISTS `add_user_to_role_in_unit` ;
 
@@ -195,14 +196,15 @@ CREATE PROCEDURE `add_user_to_role_in_unit`()
 BEGIN
 
 	# This procedure needs the following objects:
-	#	 - variables:
-	#		 - `mefe_invitation_id`
-	#		 - `environment`: Which environment are you creating the unit in?
-	#		 	- 1 is for the DEV/Staging
+	#	- variables:
+	#		- @mefe_invitation_id
+	#		- @mefe_invitation_id_int_value
+	#		- @environment : Which environment are you creating the unit in?
+	#			- 1 is for the DEV/Staging
 	#			- 2 is for the prod environment
-	#			- 3 is for the Demo environment
-	#	 - tables
-	#		 - 'ut_user_group_map_temp'
+	#		  	- 3 is for the Demo environment
+	#	- tables
+	#		- 'ut_user_group_map_temp'
 	#
 	#############################################
 	#
@@ -232,7 +234,7 @@ BEGIN
 	#			- Is the invited user an occupant of the unit or not.
 	#			- Is the user is a MEFE user only:
 	#				- IF the user is a MEFE user only 
-	#					Then disable the mail sending functionality from the BZFE.
+	#				  Then disable the mail sending functionality from the BZFE.
 	#		- The type of invitation for this user
 	#			- 'replace_default': Remove and Replace: 
 	#				- Grant the permissions to the inviter user for this role for this unit
@@ -253,25 +255,25 @@ BEGIN
 	#				and
 	#				- Check if this new user is the first in this role for this unit.
 	#					- If it IS the first in this role for this unit.
-	#				 		Then Replace the Default 'dummy user' for this specific role with the BZ user in CC for this role for this unit.
+	#				 	  Then Replace the Default 'dummy user' for this specific role with the BZ user in CC for this role for this unit.
 	#					- If it is NOT the first in this role for this unit.
-	#						Do Nothing
+	#					  Do Nothing
 	#			- 'remove_user': Remove user from a role in a unit
 	#				- Revoke the permissions to the user for this role for this unit
 	#				and 
 	#				- Check if this user is the default user for this role for this unit.
 	#					- If it IS the Default user in this role for this unit.
-	#				 		Then Replace the Default user in this role for this unit with the 'dummy user' for this specific role.
+	#				 	  Then Replace the Default user in this role for this unit with the 'dummy user' for this specific role.
 	#					- If it is NOT the Default user in this role for this unit.
-	#						Do Nothing
+	#					  Do Nothing
 	#			- Other or no information about the type of invitation
 	#				- Grant the permissions to the inviter user for this role for this unit
 	#				and
 	#				- Check if this new user is the first in this role for this unit.
 	#					- If it IS the first in this role for this unit.
-	#				 		Then Replace the Default 'dummy user' for this specific role with the BZ user in CC for this role for this unit.
+	#				 	  Then Replace the Default 'dummy user' for this specific role with the BZ user in CC for this role for this unit.
 	#					- If it is NOT the first in this role for this unit.
-	#						Do Nothing
+	#					  Do Nothing
 	#	- Process the invitation accordingly.
 	#	- Delete an re-create all the entries for the table `user_groups`
 	#	- Log the action of the scripts that are run
@@ -284,6 +286,7 @@ BEGIN
 	# Limits of this script:
 	#	- Unit must have all roles created with Dummy user roles.
 	#
+	#	
 	
 	#####################################################
 	#					
@@ -367,7 +370,7 @@ BEGIN
 		CALL `table_to_list_dummy_user_by_environment`;
 		
 	# The reference of the record we want to update in the table `ut_invitation_api_data`
-		SET @reference_for_update = (SELECT `id` FROM `ut_invitation_api_data` WHERE `mefe_invitation_id` = @mefe_invitation_id);	
+		SET @reference_for_update = (SELECT `id` FROM `ut_invitation_api_data` WHERE `mefe_invitation_id_int_value` = @mefe_invitation_id_int_value );	
 
 	# The MEFE information:
 		SET @mefe_invitor_user_id = (SELECT `mefe_invitor_user_id` FROM `ut_invitation_api_data` WHERE `id` = @reference_for_update);
@@ -551,9 +554,9 @@ BEGIN
 	# This procedure needs the following objects:
 	#	- variables:
 	#		- @bz_user_id : 
-	#			the BZ user id of the user
+	#		  the BZ user id of the user
 	#		- @component_id_this_role: 
-	#			The id of the role in the bz table `components`
+	#		  The id of the role in the bz table `components`
 		CALL `remove_user_from_default_cc`;
 
 	# We are recording this for KPI measurements
@@ -683,7 +686,7 @@ BEGIN
 			#		- @product_id
 			#		- @bz_user_id
 			#	- table 
-			#		 - 'ut_user_group_map_temp'
+			#		- 'ut_user_group_map_temp'
 			CALL `revoke_all_permission_for_this_user_in_this_unit`;
 			
 		# Prepare the permissions - configure these to default:
@@ -768,6 +771,7 @@ BEGIN
 	#		- @product_id
 	#		- @creator_bz_id
 	#		- @mefe_invitation_id
+	#		- @mefe_invitation_id_int_value
 	#		- @mefe_invitor_user_id
 	#		- @is_occupant
 	#		- @is_mefe_only_user
@@ -828,7 +832,7 @@ BEGIN
 			UPDATE `ut_invitation_api_data`
 				SET `processed_datetime` = @timestamp
 					, `script` = @this_script
-				WHERE `mefe_invitation_id` = @mefe_invitation_id
+				WHERE `mefe_invitation_id_int_value` = @mefe_invitation_id_int_value
 				;
 
 END $$
@@ -2734,9 +2738,9 @@ END IF ;
 END $$
 DELIMITER ;
 
-/* Procedure structure for procedure `finalize_invitation_to_a_case` */
+# Procedure structure for procedure `finalize_invitation_to_a_case`
 
-DROP PROCEDURE IF EXISTS `finalize_invitation_to_a_case` ;
+	DROP PROCEDURE IF EXISTS `finalize_invitation_to_a_case` ;
 
 DELIMITER $$
 
@@ -2789,6 +2793,7 @@ BEGIN
 	# Update the table 'ut_data_to_add_user_to_a_case' so that we record what we have done
 		INSERT INTO `ut_data_to_add_user_to_a_case`
 			( `mefe_invitation_id`
+			, `mefe_invitation_id_int_value`
 			, `mefe_invitor_user_id`
 			, `bzfe_invitor_user_id`
 			, `bz_user_id`
@@ -2798,6 +2803,7 @@ BEGIN
 			)
 		VALUES
 			(@mefe_invitation_id
+			, @mefe_invitation_id_int_value
 			, @mefe_invitor_user_id
 			, @creator_bz_id
 			, @bz_user_id
@@ -4516,9 +4522,9 @@ BEGIN
 END $$
 DELIMITER ;
 
-/* Procedure structure for procedure `unit_create_with_dummy_users` */
+# Procedure structure for procedure `unit_create_with_dummy_users`
 
-DROP PROCEDURE IF EXISTS `unit_create_with_dummy_users` ;
+	DROP PROCEDURE IF EXISTS `unit_create_with_dummy_users` ;
 
 DELIMITER $$
 
@@ -4526,18 +4532,20 @@ CREATE PROCEDURE `unit_create_with_dummy_users`()
 	SQL SECURITY INVOKER
 BEGIN
 	# This procedure needs the following objects:
-	#	 - variables:
+	#	- variables:
 	#		- @mefe_unit_id
+	#		- @mefe_unit_id_int_value
 	#		- @environment
 	#
 	# This procedure needs the following info in the table `ut_data_to_create_units`
-	#	 - id_unit_to_create
-	#	 - mefe_unit_id
-	#	 - mefe_creator_user_id
-	#	 - bzfe_creator_user_id
-	#	 - classification_id
-	#	 - unit_name
-	#	 - unit_description_details
+	#	- id_unit_to_create
+	#	- mefe_unit_id
+	#	- mefe_unit_id_int_value
+	#	- mefe_creator_user_id
+	#	- bzfe_creator_user_id
+	#	- classification_id
+	#	- unit_name
+	#	- unit_description_details
 	# 
 	# This procedure will create
 	#	- The unit
@@ -4556,18 +4564,18 @@ BEGIN
 	#		- Log the group_id that we have created so we can assign permissions later
 	#
 	# This procedure will update the following information:
-	#	 -	in the table `ut_data_to_create_units`
-	#		 - bz_created_date
-	#		 - comment
-	#		 - product_id	
+	#	-  in the table `ut_data_to_create_units`
+	#		- bz_created_date
+	#		- comment
+	#		- product_id	
 	#	- the Unee-T script log
 	#	- BZ db table `audit_log`
 	#
 	# This procedure depends on the following procedures:
-	#	 - `table_to_list_dummy_user_by_environment`
+	#	- `table_to_list_dummy_user_by_environment`
 	
 	# What is the record that we need to use to create the objects in BZ?
-		SET @unit_reference_for_import = (SELECT `id_unit_to_create` FROM `ut_data_to_create_units` WHERE `mefe_unit_id` = @mefe_unit_id);
+		SET @unit_reference_for_import = (SELECT `id_unit_to_create` FROM `ut_data_to_create_units` WHERE `mefe_unit_id_int_value` = @mefe_unit_id_int_value);
 	
 	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - unit_create_with_dummy_users';
@@ -4626,14 +4634,14 @@ BEGIN
 	# We need to create the component for ALL the roles.
 	# We do that using dummy users for all the roles different from the user role.	
 	#		- agent -> temporary.agent.dev@unee-t.com
-	#		- landlord	-> temporary.landlord.dev@unee-t.com
-	#		- Tenant	-> temporary.tenant.dev@unee-t.com
-	#		- Contractor	-> temporary.contractor.dev@unee-t.com
+	#		- landlord  -> temporary.landlord.dev@unee-t.com
+	#		- Tenant  -> temporary.tenant.dev@unee-t.com
+	#		- Contractor  -> temporary.contractor.dev@unee-t.com
 	# We populate the additional variables that we will need for this script to work
 		# For the product
 		
 			# We are predicting the product id to avoid name duplicates
-	 				SET @predicted_product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
+					SET @predicted_product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
 
 			# We need a unique unit name
 				SET @unit_bz_name = CONCAT(@unit_name, '-', @predicted_product_id);
@@ -4828,7 +4836,7 @@ BEGIN
 					(@creator_bz_id, 'Bugzilla::Milestone', @milestone_id, '__create__', NULL, @default_milestone, @timestamp)
 					;
 
-	#	We create all the components/roles we need
+	#  We create all the components/roles we need
 		# For the temporary users:
 			# Tenant
 				SET @role_user_g_description_tenant = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 1);
@@ -5206,30 +5214,30 @@ BEGIN
 					SET @group_description_can_see_unit_in_search_group = 'User can see the unit in the search panel';
 					
 			# The groups related to Flags
-				# Allow user to	for this unit
+				# Allow user to  for this unit
 					SET @group_name_all_g_flags_group = (CONCAT(@unit_for_group,'-05-Can-Approve-All-Flags'));
 					SET @group_description_all_g_flags_group = 'User can approve all flags';
 					
-				# Allow user to	for this unit
+				# Allow user to  for this unit
 					SET @group_name_all_r_flags_group = (CONCAT(@unit_for_group,'-05-Can-Request-All-Flags'));
 					SET @group_description_all_r_flags_group = 'User can request a Flag to be approved';
 					
 				
 			# The Groups that control user visibility
-				# Allow user to	for this unit
+				# Allow user to  for this unit
 					SET @group_name_list_visible_assignees_group = (CONCAT(@unit_for_group,'-06-List-Public-Assignee'));
 					SET @group_description_list_visible_assignees_group = 'User are visible assignee(s) for this unit';
 					
-				# Allow user to	for this unit
+				# Allow user to  for this unit
 					SET @group_name_see_visible_assignees_group = (CONCAT(@unit_for_group,'-06-Can-See-Public-Assignee'));
 					SET @group_description_see_visible_assignees_group = 'User can see all visible assignee(s) for this unit';
 					
 			# Other Misc Groups
-				# Allow user to	for this unit
+				# Allow user to  for this unit
 					SET @group_name_active_stakeholder_group = (CONCAT(@unit_for_group,'-07-Active-Stakeholder'));
 					SET @group_description_active_stakeholder_group = 'Users who have a role in this unit as of today (WIP)';
 					
-				# Allow user to	for this unit
+				# Allow user to  for this unit
 					SET @group_name_unit_creator_group = (CONCAT(@unit_for_group,'-07-Unit-Creator'));
 					SET @group_description_unit_creator_group = 'User is considered to be the creator of the unit';
 					
@@ -5958,7 +5966,7 @@ BEGIN
 					SET @script_log_message = NULL;		
 
 			# group_id_show_to_landlord
-				 INSERT INTO `groups`
+				INSERT INTO `groups`
 					(`name`
 					, `description`
 					, `isbuggroup`
@@ -6000,7 +6008,7 @@ BEGIN
 					SET @script_log_message = NULL;		
 
 			# group_id_are_users_landlord
-				 INSERT INTO `groups`
+				INSERT INTO `groups`
 					(`name`
 					, `description`
 					, `isbuggroup`
@@ -6084,7 +6092,7 @@ BEGIN
 					SET @script_log_message = NULL;		
 
 			# group_id_show_to_agent
-				 INSERT INTO `groups`
+				INSERT INTO `groups`
 					(`name`
 					, `description`
 					, `isbuggroup`
@@ -6439,7 +6447,7 @@ BEGIN
 					;		 
 
 				# Get the actual id that was created for that group
-					SET @group_id_see_users_mgt_cny = (SELECT LAST_INSERT_ID());	 
+					SET @group_id_see_users_mgt_cny = (SELECT LAST_INSERT_ID());	
 
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
@@ -6481,7 +6489,7 @@ BEGIN
 					;
 
 				# Get the actual id that was created for that group
-					SET @group_id_show_to_occupant = (SELECT LAST_INSERT_ID());	 
+					SET @group_id_show_to_occupant = (SELECT LAST_INSERT_ID());	
 
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
@@ -6523,7 +6531,7 @@ BEGIN
 					;
 
 				# Get the actual id that was created for that group
-					SET @group_id_are_users_occupant = (SELECT LAST_INSERT_ID());	
+					SET @group_id_are_users_occupant = (SELECT LAST_INSERT_ID());  
 
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
@@ -7523,15 +7531,15 @@ BEGIN
 					;
 
 	# We now assign the permissions to each of the dummy user associated to each role:
-	#	 - Tenant (1)
+	#	- Tenant (1)
 	#	 @bz_user_id_dummy_tenant
-	#	 - Landlord (2)
+	#	- Landlord (2)
 	#	 @bz_user_id_dummy_landlord
-	#	 - Contractor (3)
+	#	- Contractor (3)
 	#	 @bz_user_id_dummy_contractor
-	#	 - Management company (4)
+	#	- Management company (4)
 	#	 @bz_user_id_dummy_mgt_cny
-	#	 - Agent (5)
+	#	- Agent (5)
 	#	 @bz_user_id_dummy_agent
 	#
 	#
@@ -7705,9 +7713,9 @@ BEGIN
 	# We give the user the permission they need.
 
 		# We update the `group_group_map` table first
-		#	 - Create an intermediary table to deduplicate the records in the table `ut_group_group_map_temp`
-		#	 - If the record does NOT exists in the table then INSERT new records in the table `group_group_map`
-		#	 - If the record DOES exist in the table then update the new records in the table `group_group_map`
+		#	- Create an intermediary table to deduplicate the records in the table `ut_group_group_map_temp`
+		#	- If the record does NOT exists in the table then INSERT new records in the table `group_group_map`
+		#	- If the record DOES exist in the table then update the new records in the table `group_group_map`
 
 			# We drop the deduplication table if it exists:
 				DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
@@ -7721,7 +7729,7 @@ BEGIN
 					KEY `fk_group_group_map_dedup_grantor_id_groups_id` (`grantor_id`),
 					KEY `group_group_map_dedup_grantor_id_grant_type_idx` (`grantor_id`, `grant_type`),
 					KEY `group_group_map_dedup_member_id_grant_type_idx` (`member_id`, `grant_type`)
-					 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
+					) 
 				;
 	
 			# We insert the de-duplicated record in the table `ut_group_group_map_dedup`
@@ -7976,7 +7984,7 @@ BEGIN
 END $$
 DELIMITER ;
 
-/* Procedure structure for procedure `update_assignee_if_dummy_user` */
+# Procedure structure for procedure `update_assignee_if_dummy_user` */
 
 DROP PROCEDURE IF EXISTS `update_assignee_if_dummy_user` ;
 
@@ -8045,7 +8053,7 @@ BEGIN
 				;
 				
 		# We update the BZ logs
-			INSERT	INTO `audit_log`
+			INSERT  INTO `audit_log`
 				(`user_id`
 				,`class`
 				,`object_id`
@@ -8063,6 +8071,7 @@ BEGIN
 		# Update the table 'ut_data_to_replace_dummy_roles' so that we record what we have done
 			INSERT INTO `ut_data_to_replace_dummy_roles`
 				(`mefe_invitation_id`
+				, `mefe_invitation_id_int_value`
 				, `mefe_invitor_user_id`
 				, `bzfe_invitor_user_id`
 				, `bz_unit_id`
@@ -8076,6 +8085,7 @@ BEGIN
 				)
 			VALUES 
 				(@mefe_invitation_id
+				, @mefe_invitation_id_int_value
 				, @mefe_invitor_user_id
 				, @creator_bz_id
 				, @product_id
