@@ -31,6 +31,8 @@
 ###############################
 # In this update
 #
+#OK	- Default for the database should be `utf8_mb4` and `utf8mb4_unicode_520_ci`
+#
 # We fix the collation issues we have See (https://github.com/unee-t/bz-database/issues/128#issuecomment-488227233):
 #	- Alter the following tables to have an INT as unique ID from MEFE to query with
 #		- `ut_invitation_api_data` ---> we add `mefe_invitation_id_int_value`
@@ -76,7 +78,6 @@
 #		- `trig_update_audit_log_delete_record_ut_data_to_create_units`
 #
 #
-#OK	- Default for the database should be `utf8_mb4` and `utf8_mb4_unicode_520_ci`
 #OK	- Re- create all the triggers and procedures we have so they use the correct collations and character set
 #	  we do NOT re-create the procedures:
 #		- `add_user_to_role_in_unit`
@@ -91,6 +92,10 @@
 
 # When are we doing this?
 	SET @the_timestamp = NOW();
+
+# Make sure we use the correct default in the database.
+
+	ALTER DATABASE `bugzilla` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 # Alter the tables:
 
@@ -4882,10 +4887,6 @@ AFTER DELETE ON `ut_data_to_create_units` FOR EACH ROW
 
 END $$
 DELIMITER ;
-
-# Make sure we use the correct default in the database.
-
-	ALTER DATABASE `bugzilla` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
 # Re-create the views
 
