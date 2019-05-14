@@ -48,6 +48,9 @@
 # 	  use `mefe_unit_id` instead of `mefe_unit_id_int_value`
 #		- `unit_create_with_dummy_users`
 #
+# Alter the tables:
+#	- `ut_invitation_api_data`: the field `mefe_invitation_id_int_value` does NOT have to be unique anymore
+#	- `ut_data_to_create_units`: the field `mefe_unit_id_int_value` does NOT have to be unique anymore
 #
 #####################
 #
