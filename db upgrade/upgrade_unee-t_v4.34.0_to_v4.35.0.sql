@@ -61,6 +61,23 @@
 # When are we doing this?
 	SET @the_timestamp = NOW();
 
+# Alter the tables:
+#	- `ut_invitation_api_data`: the field `mefe_invitation_id_int_value` does NOT have to be unique anymore
+#	- `ut_data_to_create_units`: the field `mefe_unit_id_int_value` does NOT have to be unique anymore
+
+	/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
+	/* Alter table in target */
+	ALTER TABLE `ut_data_to_create_units` 
+		ADD KEY `unique_mefe_unit_id_int_value`(`mefe_unit_id_int_value`) , 
+		DROP KEY `unique_mefe_unit_id_int_value_must_be_unique` ;
+
+	/* Alter table in target */
+	ALTER TABLE `ut_invitation_api_data` 
+		ADD KEY `mefe_invitation_id_int_value`(`mefe_invitation_id_int_value`) , 
+		DROP KEY `mefe_invitation_id_int_value_must_be_unique` ;
+	/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+
 # Procedure structure for procedure `add_user_to_role_in_unit`
 
 DROP PROCEDURE IF EXISTS `add_user_to_role_in_unit` ;
