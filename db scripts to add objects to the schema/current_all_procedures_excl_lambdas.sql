@@ -1,3 +1,8 @@
+# For any question about this script. Ask Franck
+#
+# These are valid for the BZ Db Schema v4.36
+#
+
 /* Procedure structure for procedure `add_invitee_in_cc` */
 
 DROP PROCEDURE IF EXISTS `add_invitee_in_cc` ;
@@ -2017,7 +2022,9 @@ BEGIN
 		CREATE TEMPORARY TABLE `ut_group_group_map_temp` (
 		`member_id` MEDIUMINT(9) NOT NULL
 		, `grantor_id` MEDIUMINT(9) NOT NULL
-		, `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+		, `grant_type` TINYINT(4) NOT NULL DEFAULT 0,
+		KEY `search_member_id` (`member_id`),
+		KEY `search_grantor_id` (`grantor_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 		;
 
@@ -2043,7 +2050,9 @@ BEGIN
 			`user_id` MEDIUMINT(9) NOT NULL
 			, `group_id` MEDIUMINT(9) NOT NULL
 			, `isbless` TINYINT(4) NOT NULL DEFAULT 0
-			, `grant_type` TINYINT(4) NOT NULL DEFAULT 0
+			, `grant_type` TINYINT(4) NOT NULL DEFAULT 0,
+			KEY `search_user_id` (`user_id`, `group_id`),
+			KEY `search_group_id` (`group_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 		;
 
@@ -8516,7 +8525,9 @@ BEGIN
 		# Re-create the temp table
 			CREATE TEMPORARY TABLE `ut_temp_component_cc` (
 				`user_id` MEDIUMINT(9) NOT NULL
-				, `component_id` MEDIUMINT(9) NOT NULL
+				, `component_id` MEDIUMINT(9) NOT NULL,
+				KEY `search_user_id` (`user_id`, `component_id`),
+				KEY `search_component_id` (`component_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 				;
 
