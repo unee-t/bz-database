@@ -1,8 +1,3 @@
-# For any question about this script. Ask Franck
-#
-# These are valid for the BZ Db Schema v4.36
-#
-
 /* Procedure structure for procedure `add_invitee_in_cc` */
 
 DROP PROCEDURE IF EXISTS `add_invitee_in_cc` ;
