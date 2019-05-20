@@ -18,8 +18,8 @@
 ###################################################################################
 #
 # What are the version of the Unee-T BZ Database schema BEFORE and AFTER this update?
-	SET @old_schema_version = 'v4.33';
-	SET @new_schema_version = 'v4.33.1';
+	SET @old_schema_version = 'v4.33.1';
+	SET @new_schema_version = 'v4.34.';
 #
 # What is the name of this script?
 	SET @this_script = CONCAT ('upgrade_unee-t_', @old_schema_version, '_to_', @new_schema_version, '.sql');
@@ -31,7 +31,7 @@
 ###############################
 # In this update
 #
-# We implement the temporary fix for https://github.com/unee-t/bz-database/issues/123 (Deadlock because of trigger)
+# We make sure we only have temporary table in the scripts and procedures needed to create a new unit.
 #
 #####################
 #
@@ -42,24 +42,22 @@
 # When are we doing this?
 	SET @the_timestamp = NOW();
 
-# We temporarily disable the auto counter for active units:
 
 
-    DROP TRIGGER IF EXISTS `update_the_log_of_enabled_units_when_unit_is_created`;
 
-# Un-comment the below code to re-enable the trigger
 
-/*
-#DELIMITER $$
-#CREATE TRIGGER `update_the_log_of_enabled_units_when_unit_is_created`
-#    AFTER INSERT ON `products`
-#    FOR EACH ROW
-#  BEGIN
-#    CALL `update_log_count_enabled_units`;
-#END;
-#$$
-#DELIMITER ;
-*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 # We also make sure that we use the correct definition for the Unee-T fields:
 
