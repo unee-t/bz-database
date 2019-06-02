@@ -181,6 +181,8 @@
 
 # The case types:
 
+		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='59', `value`='Other_obsolete', `sortkey`='9999', `isactive`='0', `visibility_value_id`='10'  WHERE (`id` = 59) ;
+
 	# Create the new case types
 
 		INSERT INTO `cf_ipi_clust_6_claim_type`(`id`, `value`, `sortkey`, `isactive`, `visibility_value_id`) VALUES ('71', 'Extra Furnitures/Fixtures', '210', '1', '8');
@@ -244,7 +246,6 @@
 		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='56', `value`='Internet', `sortkey`='320', `isactive`='1', `visibility_value_id`='9'  WHERE (`id` = 56) ;
 		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='57', `value`='Cable', `sortkey`='325', `isactive`='1', `visibility_value_id`='9'  WHERE (`id` = 57) ;
 		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='58', `value`='Viewing', `sortkey`='525', `isactive`='1', `visibility_value_id`='10'  WHERE (`id` = 58) ;
-		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='59', `value`='Other_obsolete', `sortkey`='9999', `isactive`='0', `visibility_value_id`='10'  WHERE (`id` = 59) ;
 		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='60', `value`='Early/Late', `sortkey`='245', `isactive`='1', `visibility_value_id`='8'  WHERE (`id` = 60) ;
 		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='61', `value`='Early Check IN/OUT', `sortkey`='9999', `isactive`='0', `visibility_value_id`='8'  WHERE (`id` = 61) ;
 		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='62', `value`='High Chair', `sortkey`='9999', `isactive`='0', `visibility_value_id`='8'  WHERE (`id` = 62) ;
