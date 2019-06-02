@@ -341,14 +341,6 @@
 				AND `cf_ipi_clust_6_claim_type` = 'Store room Clearance'
 			;
 
-	# For "Complex Project - Store room Clearance"
-
-		UPDATE `bugs`
-			SET `cf_ut_org_specific_dd_1` = 'Complex Project - Store room Clearance'
-			WHERE `rep_platform` = 'Complex Project'
-				AND `cf_ipi_clust_6_claim_type` = 'Store room Clearance'
-			;
-
 	# For "Devices - Key"
 
 		UPDATE `bugs`
