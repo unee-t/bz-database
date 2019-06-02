@@ -258,13 +258,6 @@
 		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='36', `value`='Hand Over', `sortkey`='430', `isactive`='1', `visibility_value_id`='7'  WHERE (`id` = 36) ;
 		UPDATE `cf_ipi_clust_6_claim_type` SET `id`='1', `value`='---', `sortkey`='0', `isactive`='1', `visibility_value_id`=NULL  WHERE (`id` = 1) ;
 
-# We rename the categories in the bugs table to reflect the new names:
-
-		UPDATE `bugs`
-			SET `rep_platform` = 'Projects'
-			WHERE `rep_platform` = 'Complex Project'
-			;
-
 # We capture the legacy information for the case categories and types where we have no mapping
 
 	# For "Extra Service - Early check IN/OUT"
@@ -343,7 +336,7 @@
 
 		UPDATE `bugs`
 			SET `cf_ut_org_specific_dd_1` = 'Complex Project - Store room Clearance'
-			WHERE `rep_platform` = 'Projects'
+			WHERE `rep_platform` = 'Complex Project'
 				AND `cf_ipi_clust_6_claim_type` = 'Store room Clearance'
 			;
 
@@ -351,7 +344,7 @@
 
 		UPDATE `bugs`
 			SET `cf_ut_org_specific_dd_1` = 'Complex Project - Store room Clearance'
-			WHERE `rep_platform` = 'Projects'
+			WHERE `rep_platform` = 'Complex Project'
 				AND `cf_ipi_clust_6_claim_type` = 'Store room Clearance'
 			;
 
@@ -1004,7 +997,7 @@
 		# Old category "Other - Internet O"
 
 			UPDATE `bugs`
-				SET `rep_platform` := 'Other'
+				SET `rep_platform` := 'Utilities'
 					, `cf_ipi_clust_6_claim_type` := 'Internet'
 				WHERE `rep_platform` = 'Other'
 					AND `cf_ipi_clust_6_claim_type` = 'Internet O'
@@ -1013,7 +1006,7 @@
 		# Old category "Other - Cable TV O"
 
 			UPDATE `bugs`
-				SET `rep_platform` := 'Other'
+				SET `rep_platform` := 'Utilities'
 					, `cf_ipi_clust_6_claim_type` := 'Cable'
 				WHERE `rep_platform` = 'Other'
 					AND `cf_ipi_clust_6_claim_type` = 'Cable TV O'
@@ -1041,11 +1034,7 @@
 
 	SET FOREIGN_KEY_CHECKS = 1 ;
 
-# Update the audit logs so that the history of the case is correct and reflects the new categories.
-
-
-
-
+# We do NOT Update the audit logs
 
 # We temporarily disable the auto counter for active units:
 
