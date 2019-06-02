@@ -347,6 +347,118 @@
 				AND `cf_ipi_clust_6_claim_type` = 'Store room Clearance'
 			;
 
+	# For "Complex Project - Store room Clearance"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Complex Project - Store room Clearance'
+			WHERE `rep_platform` = 'Projects'
+				AND `cf_ipi_clust_6_claim_type` = 'Store room Clearance'
+			;
+
+	# For "Devices - Key"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Devices - Key'
+			WHERE `rep_platform` = 'Devices'
+				AND `cf_ipi_clust_6_claim_type` = 'Key'
+			;
+
+	# For "Devices - Resident Card"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Devices - Resident Card'
+			WHERE `rep_platform` = 'Devices'
+				AND `cf_ipi_clust_6_claim_type` = 'Resident Card'
+			;
+
+	# For "Devices - Car Transponder"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Devices - Car Transponder'
+			WHERE `rep_platform` = 'Devices'
+				AND `cf_ipi_clust_6_claim_type` = 'Car Transponder'
+			;
+
+	# For "Devices - Kitchen Utensils"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Devices - Kitchen Utensil'
+			WHERE `rep_platform` = 'Devices'
+				AND `cf_ipi_clust_6_claim_type` = 'Kitchen Utensils'
+			;
+
+	# For "Devices - Furniture"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Devices - Furniture'
+			WHERE `rep_platform` = 'Devices'
+				AND `cf_ipi_clust_6_claim_type` = 'Furniture'
+			;
+
+	# For "Devices - Safe box"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Devices - Safe box'
+			WHERE `rep_platform` = 'Devices'
+				AND `cf_ipi_clust_6_claim_type` = 'Safe box'
+			;
+
+	# For "Devices - Equipment"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Devices - Equipment'
+			WHERE `rep_platform` = 'Devices'
+				AND `cf_ipi_clust_6_claim_type` = 'Equipment'
+			;
+
+	# For "Devices - Other D"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Devices - Other D'
+			WHERE `rep_platform` = 'Devices'
+				AND `cf_ipi_clust_6_claim_type` = 'Other D'
+			;
+
+	# For "Renovation - Structural Defect"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Renovation - Structural Defect'
+			WHERE `rep_platform` = 'Renovation'
+				AND `cf_ipi_clust_6_claim_type` = 'Structural Defect'
+			;
+
+	# For "Renovation - Carpentry Ren"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Renovation - Carpentry Ren'
+			WHERE `rep_platform` = 'Renovation'
+				AND `cf_ipi_clust_6_claim_type` = 'Carpentry Ren'
+			;
+
+	# For "Renovation - Parquet Polishing"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Renovation - Parquet Polishing'
+			WHERE `rep_platform` = 'Renovation'
+				AND `cf_ipi_clust_6_claim_type` = 'Parquet Polishing'
+			;
+
+	# For "Renovation - Painting"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Renovation - Painting'
+			WHERE `rep_platform` = 'Renovation'
+				AND `cf_ipi_clust_6_claim_type` = 'Painting'
+			;
+
+	# For "Renovation - Other Ren"
+
+		UPDATE `bugs`
+			SET `cf_ut_org_specific_dd_1` = 'Renovation - Other Ren'
+			WHERE `rep_platform` = 'Renovation'
+				AND `cf_ipi_clust_6_claim_type` = 'Other Ren'
+			;
+
 # Update the bugs so that they use the new categories and case types
 
 	# Repair
