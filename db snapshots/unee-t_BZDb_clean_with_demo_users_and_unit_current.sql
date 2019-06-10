@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.1.2 (64 bit)
-MySQL - 5.7.12 : Database - unee_t_v4.36
+MySQL - 5.7.12 : Database - unee_t_v5.37
 *********************************************************************
 */
 
@@ -588,6 +588,7 @@ CREATE TABLE `bugs` (
   `cf_ipi_clust_7_spe_contractor_payment` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `cf_ipi_clust_8_spe_customer` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '',
   `cf_specific_for` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
+  `cf_ut_org_specific_dd_1` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT '---',
   PRIMARY KEY (`bug_id`),
   KEY `bugs_assigned_to_idx` (`assigned_to`),
   KEY `bugs_creation_ts_idx` (`creation_ts`),
@@ -892,74 +893,82 @@ CREATE TABLE `cf_ipi_clust_6_claim_type` (
   UNIQUE KEY `cf_ipi_clust_6_claim_type_value_idx` (`value`),
   KEY `cf_ipi_clust_6_claim_type_sortkey_idx` (`sortkey`,`value`),
   KEY `cf_ipi_clust_6_claim_type_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_ipi_clust_6_claim_type` */
 
 insert  into `cf_ipi_clust_6_claim_type`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',500,1,NULL),
-(2,'Electrical',1005,1,2),
-(3,'Plumbing Rep',1010,1,2),
-(4,'Aircon Rep',1015,1,2),
-(5,'Furniture Rep',1020,1,2),
-(6,'Carpentry Rep',1025,1,2),
-(7,'Internet Rep',1030,1,2),
-(8,'Cable TV Rep',1035,1,2),
-(9,'Other Rep',1090,1,2),
-(10,'Aircon M',1505,1,3),
-(11,'Equipment M',1510,1,3),
-(12,'Plumbing M',1515,1,3),
-(13,'Battery repl.',1520,1,3),
-(14,'Other M',1525,1,3),
-(15,'Linens',2005,1,4),
-(16,'Textile',2010,1,4),
-(17,'Curtains',2015,1,4),
-(18,'Cleaning',2020,1,4),
-(19,'Other H',2025,1,4),
-(20,'Key',2505,1,5),
-(21,'Resident Card',2510,1,5),
-(22,'Car Transponder',2515,1,5),
-(23,'Kitchen Utensils',2520,1,5),
-(24,'Furniture D',2525,1,5),
-(25,'Safe box',2530,1,5),
-(26,'Equipment D',2535,1,5),
-(27,'Other D',2540,1,5),
-(28,'Structural Defect',3005,1,6),
-(29,'Carpentry Ren',3010,1,6),
-(30,'Parquet Polishing',3015,1,6),
-(31,'Painting',3020,1,6),
-(32,'Other Ren',3025,1,6),
-(33,'Flat Set Up',3505,1,7),
-(34,'Light Renovation',3510,1,7),
-(35,'Flat Refurbishing',3515,1,7),
-(36,'Hand Over',3520,1,7),
-(37,'Basic Check',3525,1,7),
-(38,'Store room Clearance',3530,1,7),
-(39,'Other CP',3535,1,7),
-(40,'Laundry',4005,1,8),
-(41,'Ironing',4010,1,8),
-(42,'Housekeeping',4015,1,8),
-(43,'Cable Channel',4020,1,8),
-(44,'Internet Upgrade',4025,1,8),
-(45,'Beds',4030,1,8),
-(46,'Baby Cot',4035,1,8),
-(47,'Airport Transportation',4040,1,8),
-(48,'Welcome Basket',4045,1,8),
-(49,'Dish Washing',4050,1,8),
-(50,'Other ES',4090,1,8),
-(51,'NOT SPECIFIED',4095,1,8),
-(52,'SP Services',4505,1,9),
-(53,'Gas',4510,1,9),
-(54,'Meter Reading',4515,1,9),
-(55,'Other U',4520,1,9),
-(56,'Internet O',5005,1,10),
-(57,'Cable TV O',5010,1,10),
-(58,'Viewing',5015,1,10),
-(59,'Other',5020,1,10),
-(60,'Late Check IN/OUT',4055,1,8),
-(61,'Early Check IN/OUT',4060,1,8),
-(62,'High Chair',4065,1,8),
-(63,'Equipment',1040,1,2);
+(1,'---',0,1,NULL),
+(2,'Electrical',9999,0,2),
+(3,'Plumbing Rep',9999,0,2),
+(4,'Aircon Rep',9999,0,2),
+(5,'Furniture Rep',9999,0,2),
+(6,'Carpentry Rep',9999,0,2),
+(7,'Internet Rep',9999,0,2),
+(8,'Cable TV Rep',9999,0,2),
+(9,'Other Rep',9999,0,2),
+(10,'Aircon M',9999,0,3),
+(11,'Equipment M',9999,0,3),
+(12,'Plumbing M',9999,0,3),
+(13,'Battery repl.',9999,0,3),
+(14,'Other M',9999,0,3),
+(15,'Linens',110,1,4),
+(16,'Textile',115,1,4),
+(17,'Curtains',120,1,4),
+(18,'Cleaning',105,1,4),
+(19,'Other H',9999,0,4),
+(20,'Key',9999,0,5),
+(21,'Resident Card',9999,0,5),
+(22,'Car Transponder',9999,0,5),
+(23,'Kitchen Utensils',9999,0,5),
+(24,'Furniture D',9999,0,5),
+(25,'Safe box',9999,0,5),
+(26,'Equipment D',9999,0,5),
+(27,'Other D',9999,0,5),
+(28,'Structural Defect',9999,0,6),
+(29,'Carpentry Ren',9999,0,6),
+(30,'Parquet Polishing',9999,0,6),
+(31,'Painting',9999,0,6),
+(32,'Other Ren',9999,0,6),
+(33,'Set Up',405,1,7),
+(34,'Light Renovation',420,1,7),
+(35,'Refurbishing',410,1,7),
+(36,'Hand Over',430,1,7),
+(37,'Check',415,1,7),
+(38,'Store room Clearance',9999,0,7),
+(39,'Other CP',9999,0,7),
+(40,'Laundry',225,1,8),
+(41,'Ironing',220,1,8),
+(42,'Housekeeping',215,1,8),
+(43,'Cable Upgrade',230,1,8),
+(44,'Internet Upgrade',235,1,8),
+(45,'Beds',9999,0,8),
+(46,'Baby Cot',9999,0,8),
+(47,'Transportation',240,1,8),
+(48,'Welcome Basket',9999,0,8),
+(49,'Dish Washing',9999,0,8),
+(50,'Other ES',9999,0,8),
+(51,'NOT SPECIFIED',200,1,8),
+(52,'Electricity',305,1,9),
+(53,'Gas',315,1,9),
+(54,'Meter Reading',9999,0,9),
+(55,'Other U',9999,0,9),
+(56,'Internet',320,1,9),
+(57,'Cable',325,1,9),
+(58,'Viewing',525,1,10),
+(59,'Other_obsolete',9999,0,10),
+(60,'Early/Late',245,1,8),
+(61,'Early Check IN/OUT',9999,0,8),
+(62,'High Chair',9999,0,8),
+(63,'Equipment',9999,0,2),
+(64,'Repair',5,1,NULL),
+(65,'Maintenance',10,1,NULL),
+(66,'Replace',15,1,NULL),
+(67,'Security',520,1,10),
+(68,'Other',999,1,NULL),
+(69,'Water',310,1,9),
+(70,'Renovation',425,1,7),
+(71,'Extra Furnitures/Fixtures',210,1,8);
 
 /*Table structure for table `cf_ipi_clust_7_spe_payment_type` */
 
@@ -1025,13 +1034,58 @@ CREATE TABLE `cf_specific_for` (
   UNIQUE KEY `cf_specific_for_value_idx` (`value`),
   KEY `cf_specific_for_sortkey_idx` (`sortkey`,`value`),
   KEY `cf_specific_for_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `cf_specific_for` */
 
 insert  into `cf_specific_for`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
 (1,'---',0,1,NULL),
-(2,'LMB - #1',1,1,NULL);
+(2,'LMB',9999,0,NULL),
+(3,'Hmlet',5,1,NULL);
+
+/*Table structure for table `cf_ut_org_specific_dd_1` */
+
+DROP TABLE IF EXISTS `cf_ut_org_specific_dd_1`;
+
+CREATE TABLE `cf_ut_org_specific_dd_1` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `value` varchar(64) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `sortkey` smallint(6) NOT NULL DEFAULT '0',
+  `isactive` tinyint(4) NOT NULL DEFAULT '1',
+  `visibility_value_id` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cf_ut_org_specific_dd_1_value_idx` (`value`),
+  KEY `cf_ut_org_specific_dd_1_visibility_value_id_idx` (`visibility_value_id`),
+  KEY `cf_ut_org_specific_dd_1_sortkey_idx` (`sortkey`,`value`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+/*Data for the table `cf_ut_org_specific_dd_1` */
+
+insert  into `cf_ut_org_specific_dd_1`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
+(1,'---',0,1,NULL),
+(2,'Extra Service - Early check IN/OUT',5,1,NULL),
+(3,'Extra Service - Late check IN/OUT',10,1,NULL),
+(4,'Extra Service - Dish Washing',15,1,NULL),
+(5,'Extra Service - Welcome Basket',20,1,NULL),
+(6,'Extra Service - Baby Cot',25,1,NULL),
+(7,'Extra Service - Beds',30,1,NULL),
+(8,'Extra Service - High Chair',35,1,NULL),
+(9,'Utilities - Meter Reading',100,1,NULL),
+(10,'Repair - Carpentry Rep',200,1,NULL),
+(11,'Complex Project - Store room Clearance',300,1,NULL),
+(12,'Devices - Key',400,1,NULL),
+(13,'Devices - Resident Card',405,1,NULL),
+(14,'Devices - Car Transponder',410,1,NULL),
+(15,'Devices - Kitchen Utensils',415,1,NULL),
+(16,'Devices - Furniture',420,1,NULL),
+(17,'Devices - Safe box',425,1,NULL),
+(18,'Devices - Equipment',430,1,NULL),
+(19,'Devices - Other D',435,1,NULL),
+(20,'Renovation - Structural Defect',500,1,NULL),
+(21,'Renovation - Carpentry Ren',505,1,NULL),
+(22,'Renovation - Parquet Polishing',510,1,NULL),
+(23,'Renovation - Painting',515,1,NULL),
+(24,'Renovation - Other Ren',520,1,NULL);
 
 /*Table structure for table `classifications` */
 
@@ -1575,7 +1629,8 @@ insert  into `field_visibility`(`field_id`,`value_id`) values
 (88,2),
 (89,2),
 (90,2),
-(91,2);
+(91,2),
+(93,3);
 
 /*Table structure for table `fielddefs` */
 
@@ -1606,7 +1661,7 @@ CREATE TABLE `fielddefs` (
   KEY `fk_fielddefs_visibility_field_id_fielddefs_id` (`visibility_field_id`),
   CONSTRAINT `fk_fielddefs_value_field_id_fielddefs_id` FOREIGN KEY (`value_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_fielddefs_visibility_field_id_fielddefs_id` FOREIGN KEY (`visibility_field_id`) REFERENCES `fielddefs` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `fielddefs` */
 
@@ -1682,7 +1737,7 @@ insert  into `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`
 (69,'cf_ipi_clust_3_field_action_until',5,1,'Scheduled Until','The End date for the action on the field. It is also possible to add an end time.',0,3255,0,0,1,NULL,NULL,NULL,0,0),
 (70,'cf_ipi_clust_3_action_type',2,1,'Action Type','What type of action do we need to do on the field?',0,3260,0,0,1,NULL,NULL,NULL,0,0),
 (71,'cf_ipi_clust_3_nber_field_visits',10,1,'Field Visits','Number of visits or trips done to diagnose and solve this case. DO NOT include the visits by the supervisors/managers for Quality Control purposes. Increases Each time there is a new visit SCHEDULED. Decrease during debrief if cancelled.',0,3205,0,0,1,NULL,NULL,NULL,0,0),
-(72,'cf_ipi_clust_3_roadbook_for',3,1,'Action For','In whose roadbook shall Field Action appear? This can change over time. It is possible to choose more than 1 person if needed.',0,3235,0,0,1,NULL,NULL,NULL,0,0),
+(72,'cf_ipi_clust_3_roadbook_for',3,1,'Action For','In whose roadbook shall Field Action appear? This can change over time. It is possible to choose more than 1 person if needed.',0,3235,1,0,1,NULL,NULL,NULL,0,0),
 (73,'cf_ipi_clust_5_approved_budget',1,1,'Approved Budget','What is the budget that has been APPROVED to solve this. This can be different from the actual cost of the purchase or total cost for solving the case. This allows us to monitor how good we are when we have to estimate a budget.',0,3275,0,0,1,NULL,NULL,NULL,0,0),
 (74,'cf_ipi_clust_5_budget',1,1,'Estimated Budget','The LATEST estimate for the budget we need to fix the problem. This can change with time and might be different than the approved budget as we gather more information.',0,3265,0,0,1,NULL,NULL,NULL,0,0),
 (75,'cf_ipi_clust_8_contract_id',1,1,'Customer ID','The internal ID for the contract with the customer.',0,3270,0,0,1,NULL,NULL,NULL,0,0),
@@ -1691,16 +1746,17 @@ insert  into `fielddefs`(`id`,`name`,`type`,`custom`,`description`,`long_desc`,`
 (78,'cf_ipi_clust_9_inv_det_ll',1,1,'Invoice Details (LL)','Use this if there are has specific requirement on our invoice to the Landlord. Accounting will use this to prepare the invoice and explain to the Lanldord why we have invoiced/paid him that way...',0,3310,0,0,1,92,NULL,NULL,0,0),
 (79,'cf_ipi_clust_9_inv_cust',4,1,'Invoice Amount (Cust)','What is the amount of the invoice that we need to generate to the CUSTOMER for this claim?',0,3315,0,0,1,92,NULL,NULL,0,0),
 (80,'cf_ipi_clust_9_inv_det_cust',4,1,'Invoice Details (Cust)','Details about the invoice: what do we need to know about this invoice? What is the information/message that we need to send to the customer together with this invoice?',0,3320,0,0,1,92,NULL,NULL,0,0),
-(81,'cf_ipi_clust_5_spe_action_purchase_list',1,1,'Purchase List','Enter the list of things that we need to purchase. If the list is too long, attach a file to the claim with the detailed list and only summarize what we need to purchase here. IN Unee-T IT\'S EASIER TO USE APPROVED ATTACHMENTS TO DO THIS',0,9905,0,0,1,92,NULL,NULL,0,0),
-(83,'cf_ipi_clust_5_spe_approval_for',4,1,'Approval For','Explain why you require an approval. The approver will use this information to better understand the whole situtation. IN Unee-T IT\'S BETTER TO DO THIS WHEN YOU APPROVE AN ATTACHMENT',0,9910,0,0,1,92,NULL,NULL,0,0),
-(84,'cf_ipi_clust_5_spe_approval_comment',4,1,'Approval Comment','This is to explain/comment about the approval/rejection of what was requested. IN Unee-T IT\'S BETTER TO DO THIS WHEN WE APPROVE AN ATTACHMENT.',0,9915,0,0,1,92,NULL,NULL,0,0),
-(85,'cf_ipi_clust_5_spe_contractor',4,1,'Contractor ID','The name of the contractor that has been assigned to work on this case. IN Unee-T THIS HAS BEEN MOVED. THE CONTRACTOR IS A STAKEHOLDER.',0,9920,0,0,1,92,NULL,NULL,0,0),
-(87,'cf_ipi_clust_5_spe_purchase_cost',1,1,'Purchase Cost','What was the ACTUAL purchase cost for the purchase we did. This can be (and usually is) slightly different from the approved budget (but NOT higher than the approved budget).',0,9925,0,0,1,92,NULL,NULL,0,0),
-(88,'cf_ipi_clust_7_spe_bill_number',1,1,'Bill Nber','The Supplier\'s invoice number. This is so that accounting can easily find explanations about a supplier invoice if this is needed. IN Unee-T THIS HAS BEEN MOVED TO ATTACHMENTS',0,9930,0,0,1,92,NULL,NULL,0,0),
-(89,'cf_ipi_clust_7_spe_payment_type',2,1,'Payment Type','How will we pay the contractor? This is important information so that accounting can prepare the payment accordingly. This will ensure we pay our supplier as fast as possible and minimize the risk of misunderstandings.',0,9935,0,0,1,92,NULL,NULL,0,0),
-(90,'cf_ipi_clust_7_spe_contractor_payment',4,1,'Contractor Payment','Use this if the supplier has specific requirement about the payment. Accounting will use this to explain to the supplier why we have invoiced/paid him that way...',0,9940,0,0,1,92,NULL,NULL,0,0),
-(91,'cf_ipi_clust_8_spe_customer',1,1,'Customer','The name of the customer. IN Unee-T WE USE THE CUSTOMER ID INSTEAD',0,9945,0,0,1,92,NULL,NULL,0,0),
-(92,'cf_specific_for',2,1,'Field For','The name and id of the Unee-T customer that can see these fields',0,9900,0,0,1,NULL,NULL,NULL,0,0);
+(81,'cf_ipi_clust_5_spe_action_purchase_list',1,1,'Purchase List','Enter the list of things that we need to purchase. If the list is too long, attach a file to the claim with the detailed list and only summarize what we need to purchase here. IN Unee-T IT\'S EASIER TO USE APPROVED ATTACHMENTS TO DO THIS',0,6005,0,0,1,92,NULL,NULL,0,0),
+(83,'cf_ipi_clust_5_spe_approval_for',4,1,'Approval For','Explain why you require an approval. The approver will use this information to better understand the whole situtation. IN Unee-T IT\'S BETTER TO DO THIS WHEN YOU APPROVE AN ATTACHMENT',0,6010,0,0,1,92,NULL,NULL,0,0),
+(84,'cf_ipi_clust_5_spe_approval_comment',4,1,'Approval Comment','This is to explain/comment about the approval/rejection of what was requested. IN Unee-T IT\'S BETTER TO DO THIS WHEN WE APPROVE AN ATTACHMENT.',0,6015,0,0,1,92,NULL,NULL,0,0),
+(85,'cf_ipi_clust_5_spe_contractor',4,1,'Contractor ID','The name of the contractor that has been assigned to work on this case. IN Unee-T THIS HAS BEEN MOVED. THE CONTRACTOR IS A STAKEHOLDER.',0,6020,0,0,1,92,NULL,NULL,0,0),
+(87,'cf_ipi_clust_5_spe_purchase_cost',1,1,'Purchase Cost','What was the ACTUAL purchase cost for the purchase we did. This can be (and usually is) slightly different from the approved budget (but NOT higher than the approved budget).',0,6025,0,0,1,92,NULL,NULL,0,0),
+(88,'cf_ipi_clust_7_spe_bill_number',1,1,'Bill Nber','The Supplier\'s invoice number. This is so that accounting can easily find explanations about a supplier invoice if this is needed. IN Unee-T THIS HAS BEEN MOVED TO ATTACHMENTS',0,6030,0,0,1,92,NULL,NULL,0,0),
+(89,'cf_ipi_clust_7_spe_payment_type',2,1,'Payment Type','How will we pay the contractor? This is important information so that accounting can prepare the payment accordingly. This will ensure we pay our supplier as fast as possible and minimize the risk of misunderstandings.',0,6035,0,0,1,92,NULL,NULL,0,0),
+(90,'cf_ipi_clust_7_spe_contractor_payment',4,1,'Contractor Payment','Use this if the supplier has specific requirement about the payment. Accounting will use this to explain to the supplier why we have invoiced/paid him that way...',0,6040,0,0,1,92,NULL,NULL,0,0),
+(91,'cf_ipi_clust_8_spe_customer',1,1,'Customer','The name of the customer. IN Unee-T WE USE THE CUSTOMER ID INSTEAD',0,6100,0,0,1,92,NULL,NULL,0,0),
+(92,'cf_specific_for',2,1,'Field For','The name and id of the Unee-T customer that can see these fields',0,6000,0,0,1,NULL,NULL,NULL,0,0),
+(93,'cf_ut_org_specific_dd_1',2,1,'Legacy Case Types','The case category or type that were made obsolete on 01 June 2019',0,6200,0,0,1,92,NULL,NULL,0,0);
 
 /*Table structure for table `flagexclusions` */
 
@@ -2663,21 +2719,28 @@ CREATE TABLE `rep_platform` (
   UNIQUE KEY `rep_platform_value_idx` (`value`),
   KEY `rep_platform_sortkey_idx` (`sortkey`,`value`),
   KEY `rep_platform_visibility_value_id_idx` (`visibility_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 /*Data for the table `rep_platform` */
 
 insert  into `rep_platform`(`id`,`value`,`sortkey`,`isactive`,`visibility_value_id`) values 
-(1,'---',5,1,NULL),
-(2,'Repair',10,1,NULL),
-(3,'Maintenance',15,1,NULL),
-(4,'Housekeeping',20,1,NULL),
-(5,'Devices',25,1,NULL),
-(6,'Renovation',30,1,NULL),
-(7,'Complex Project',35,1,NULL),
-(8,'Extra Service',40,1,NULL),
-(9,'Utilities',45,1,NULL),
-(10,'Other',50,1,NULL);
+(1,'---',0,1,NULL),
+(2,'Repair',9999,0,NULL),
+(3,'Maintenance',9999,0,NULL),
+(4,'Housekeeping',40,1,NULL),
+(5,'Devices',9999,0,NULL),
+(6,'Renovation',9999,0,NULL),
+(7,'Projects',50,1,NULL),
+(8,'Extra Service',45,1,NULL),
+(9,'Utilities',60,1,NULL),
+(10,'Other',55,1,NULL),
+(11,'Furnitures/Fixtures',5,1,NULL),
+(12,'Appliances/Equipment',10,1,NULL),
+(13,'Electrical',15,1,NULL),
+(14,'Plumbing',20,1,NULL),
+(15,'Aircon/Heating',25,1,NULL),
+(16,'Structural',30,1,NULL),
+(17,'Landscape',35,1,NULL);
 
 /*Table structure for table `reports` */
 
@@ -3546,7 +3609,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -3588,7 +3651,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (35,'v4.33.1','2019-04-09 08:02:13','upgrade_unee-t_v4.33_to_v4.33.1.sql','Database updated from v4.33 to v4.33.1'),
 (36,'v4.34.0','2019-05-20 05:31:46','upgrade_unee-t_v4.33.1_to_v4.34.0.sql','Database updated from v4.33.1 to v4.34.0'),
 (37,'v4.35.0','2019-05-20 05:33:38','upgrade_unee-t_v4.34.0_to_v4.35.0.sql','Database updated from v4.34.0 to v4.35.0'),
-(38,'v4.36.0','2019-05-20 07:54:16','upgrade_unee-t_v4.35.0_to_v4.36.0.sql','Database updated from v4.35.0 to v4.36.0');
+(38,'v4.36.0','2019-05-20 07:54:16','upgrade_unee-t_v4.35.0_to_v4.36.0.sql','Database updated from v4.35.0 to v4.36.0'),
+(39,'v5.37.0','2019-06-10 01:54:51','upgrade_unee-t_v4.36.0_to_v5.37.0.sql','Database updated from v4.36.0 to v5.37.0');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -9434,10 +9498,8 @@ DELIMITER $$
 /*!50003 CREATE PROCEDURE `create_temp_table_to_update_group_permissions`()
     SQL SECURITY INVOKER
 BEGIN
-
 	# DELETE the temp table if it exists
 		DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_temp`;
-
 	# Re-create the temp table
 		CREATE TEMPORARY TABLE `ut_group_group_map_temp` (
 		`member_id` MEDIUMINT(9) NOT NULL
@@ -9447,7 +9509,6 @@ BEGIN
 		KEY `search_grantor_id` (`grantor_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 		;
-
 END */$$
 DELIMITER ;
 
@@ -9475,7 +9536,6 @@ BEGIN
 			KEY `search_group_id` (`group_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 		;
-
 END */$$
 DELIMITER ;
 
@@ -15794,11 +15854,9 @@ DELIMITER $$
 BEGIN
 	IF (@user_in_default_cc_for_cases = 1)
 	THEN 
-
 		# We record the name of this procedure for future debugging and audit_log
 			SET @script = 'PROCEDURE - user_in_default_cc_for_cases';
 			SET @timestamp = NOW();
-
 		# We use a temporary table to make sure we do not have duplicates.
 		
 		# DELETE the temp table if it exists
@@ -15812,12 +15870,10 @@ BEGIN
 				KEY `search_component_id` (`component_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 				;
-
 		# Add the records that exist in the table component_cc
 			INSERT INTO `ut_temp_component_cc`
 				SELECT *
 				FROM `component_cc`;
-
 		# Add the new user rights for the product
 			INSERT INTO `ut_temp_component_cc`
 				(user_id
@@ -15826,10 +15882,8 @@ BEGIN
 				VALUES
 				(@bz_user_id, @component_id)
 				;
-
 		# We drop the deduplication table if it exists:
 			DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
-
 		# We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
 			CREATE TEMPORARY TABLE `ut_temp_component_cc_dedup` (
 				`user_id` MEDIUMINT(9) NOT NULL
@@ -15847,7 +15901,6 @@ BEGIN
 			GROUP BY `user_id`
 				, `component_id`
 			;
-
 		# We insert the new records in the table `component_cc`
 			INSERT INTO `component_cc`
 			SELECT `user_id`
@@ -15862,7 +15915,6 @@ BEGIN
 				`user_id` = `ut_temp_component_cc_dedup`.`user_id`
 				, `component_id` = `ut_temp_component_cc_dedup`.`component_id`
 			;
-
 		# Clean up:
 			# We drop the deduplication table if it exists:
 				DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
