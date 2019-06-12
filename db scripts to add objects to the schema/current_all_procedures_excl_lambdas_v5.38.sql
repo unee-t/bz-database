@@ -1,6 +1,6 @@
 # For any question about this script. Ask Franck
 #
-# These are valid for the BZ Db Schema v4.36
+# These are valid for the BZ Db Schema v5.38
 #
 
 /* Procedure structure for procedure `add_invitee_in_cc` */
