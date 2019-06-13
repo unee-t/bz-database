@@ -4426,7 +4426,9 @@ BEGIN
 
 		/*Data for the table `ut_temp_dummy_users_for_roles` */
 			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`, `environment_name`, `tenant_id`, `landlord_id`, `contractor_id`, `mgt_cny_id`, `agent_id`) values 
-				(1,'DEV/Staging', 96, 94, 93, 95, 92),
+# This is incorrect since we replace DEV with a copy of the PROD
+#				(1,'DEV/Staging', 96, 94, 93, 95, 92),
+				(1,'DEV/Staging', 93, 91, 90, 92, 89),
 				(2,'Prod', 93, 91, 90, 92, 89),
 				(3,'demo/dev', 4, 3, 5, 6, 2);
 

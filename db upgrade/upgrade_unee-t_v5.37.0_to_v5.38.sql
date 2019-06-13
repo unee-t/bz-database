@@ -30,6 +30,7 @@
 #
 ###############################
 # In this update
+#	- Update the dummy users ID for the DEV/Staging environment (needed since we have restored data from the PROD)
 #	- No need to add a key to the `xxx_dedup` tables
 # This is WIP, we are not even sure that this will be more efficient/fast...
 #
@@ -43,6 +44,43 @@
 # When are we doing this?
 
 	SET @the_timestamp = NOW();
+
+
+/* Procedure structure for procedure `table_to_list_dummy_user_by_environment` */
+
+DROP PROCEDURE IF EXISTS `table_to_list_dummy_user_by_environment` ;
+
+DELIMITER $$
+
+CREATE PROCEDURE `table_to_list_dummy_user_by_environment`()
+	SQL SECURITY INVOKER
+BEGIN
+
+	# We create a temporary table to record the ids of the dummy users in each environments:
+		/*Table structure for table `ut_temp_dummy_users_for_roles` */
+			DROP TEMPORARY TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
+			CREATE TEMPORARY TABLE `ut_temp_dummy_users_for_roles` (
+				`environment_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
+				`environment_name` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
+				`tenant_id` INT(11) NOT NULL,
+				`landlord_id` INT(11) NOT NULL,
+				`contractor_id` INT(11) NOT NULL,
+				`mgt_cny_id` INT(11) NOT NULL,
+				`agent_id` INT(11) DEFAULT NULL,
+				PRIMARY KEY (`environment_id`)
+			) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+		/*Data for the table `ut_temp_dummy_users_for_roles` */
+			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`, `environment_name`, `tenant_id`, `landlord_id`, `contractor_id`, `mgt_cny_id`, `agent_id`) VALUES 
+# This is incorrect since we replace DEV with a copy of the PROD
+#				(1,'DEV/Staging', 96, 94, 93, 95, 92),
+				(1,'DEV/Staging', 93, 91, 90, 92, 89),
+				(2,'Prod', 93, 91, 90, 92, 89),
+				(3,'demo/dev', 4, 3, 5, 6, 2);
+
+END $$
+DELIMITER ;
 
 # Procedure structure for procedure `unit_create_with_dummy_users`
 
