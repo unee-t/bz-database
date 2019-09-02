@@ -80,7 +80,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT ('notification_type' , notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -134,7 +134,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -188,7 +188,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -236,7 +236,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -285,7 +285,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
