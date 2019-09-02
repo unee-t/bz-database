@@ -51,10 +51,9 @@
 #		- `lambda_notification_case_new`
 #		- `lambda_notification_message_new_comment`
 
+# How to do the upgrade:
 
-
-
-
+# Run the script `add_all_lambda_related_objects_v5.39_[environment]`
 
 # We temporarily disable the auto counter for active units:
 
