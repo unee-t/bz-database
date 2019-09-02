@@ -2935,7 +2935,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -2980,7 +2980,8 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (38,'v4.36.0','2019-05-20 07:52:51','upgrade_unee-t_v4.35.0_to_v4.36.0.sql','Database updated from v4.35.0 to v4.36.0'),
 (39,'v5.37.0','2019-06-10 01:51:58','upgrade_unee-t_v4.36.0_to_v5.37.0.sql','Database updated from v4.36.0 to v5.37.0'),
 (40,'v5.38.0','2019-09-02 03:29:30','upgrade_unee-t_v5.37.0_to_v5.38.0.sql','Database updated from v5.37.0 to v5.38.0'),
-(41,'v5.39.0','2019-09-02 03:29:59','upgrade_unee-t_v5.38.0_to_v5.39.0.sql','Database updated from v5.38.0 to v5.39.0');
+(41,'v5.39.0','2019-09-02 03:29:59','upgrade_unee-t_v5.38.0_to_v5.39.0.sql','Database updated from v5.38.0 to v5.39.0'),
+(42,'v5.39.1','2019-09-02 06:03:03','upgrade_unee-t_v5.39.0_to_v5.39.1.sql','Database updated from v5.39.0 to v5.39.1');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -8097,83 +8098,6 @@ END IF ;
 END */$$
 DELIMITER ;
 
-/* Procedure structure for procedure `can_edit_all_field_in_a_case_regardless_of_role` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `can_edit_all_field_in_a_case_regardless_of_role` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_edit_all_field_in_a_case_regardless_of_role`()
-    SQL SECURITY INVOKER
-BEGIN
-	IF (@can_edit_all_field_in_a_case_regardless_of_role = 1)
-	THEN 
-		# Get the information about the group which grant this permission
-			SET @can_edit_all_field_case_group_id = (SELECT `group_id` 
-				FROM `ut_product_group` 
-				WHERE (`product_id` = @product_id 
-					AND `group_type_id` = 26)
-				)
-				;
-		
-		# Grant the permission
-			INSERT INTO `ut_user_group_map_temp`
-				(`user_id`
-				,`group_id`
-				,`isbless`
-				,`grant_type`
-				) 
-				VALUES 
-				(@bz_user_id, @can_edit_all_field_case_group_id, 0, 0)	
-				;
-		# We record the name of this procedure for future debugging and audit_log
-			SET @script = 'PROCEDURE - can_edit_all_field_in_a_case_regardless_of_role';
-			SET @timestamp = NOW();
-		# Log the actions of the script.
-			SET @script_log_message = CONCAT('the bz user #'
-									, @bz_user_id
-									, ' can edit all fields in the case regardless of his/her role for the unit#'
-									, @product_id
-									);
-			
-			INSERT INTO `ut_script_log`
-				(`datetime`
-				, `script`
-				, `log`
-				)
-				VALUES
-				(@timestamp, @script, @script_log_message)
-				;
-			# We log what we have just done into the `ut_audit_log` table
-			
-			SET @bzfe_table = 'ut_user_group_map_temp';
-			SET @permission_granted = 'Can edit all fields in the case regardless of his/her role.';
-				INSERT INTO `ut_audit_log`
-				 (`datetime`
-				 , `bzfe_table`
-				 , `bzfe_field`
-				 , `previous_value`
-				 , `new_value`
-				 , `script`
-				 , `comment`
-				 )
-				 VALUES
-				 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
-				 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_all_field_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
-				 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
-				 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
-				;
-		 
-		# Cleanup the variables for the log messages
-			SET @script_log_message = NULL;
-			SET @script = NULL;
-			SET @timestamp = NULL;
-			SET @bzfe_table = NULL;
-			SET @permission_granted = NULL;
-END IF ;
-END */$$
-DELIMITER ;
-
 /* Procedure structure for procedure `can_edit_a_case` */
 
 /*!50003 DROP PROCEDURE IF EXISTS  `can_edit_a_case` */;
@@ -8237,6 +8161,83 @@ BEGIN
 				 VALUES
 				 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
 				 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
+				 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
+				 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
+				;
+		 
+		# Cleanup the variables for the log messages
+			SET @script_log_message = NULL;
+			SET @script = NULL;
+			SET @timestamp = NULL;
+			SET @bzfe_table = NULL;
+			SET @permission_granted = NULL;
+END IF ;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `can_edit_all_field_in_a_case_regardless_of_role` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `can_edit_all_field_in_a_case_regardless_of_role` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `can_edit_all_field_in_a_case_regardless_of_role`()
+    SQL SECURITY INVOKER
+BEGIN
+	IF (@can_edit_all_field_in_a_case_regardless_of_role = 1)
+	THEN 
+		# Get the information about the group which grant this permission
+			SET @can_edit_all_field_case_group_id = (SELECT `group_id` 
+				FROM `ut_product_group` 
+				WHERE (`product_id` = @product_id 
+					AND `group_type_id` = 26)
+				)
+				;
+		
+		# Grant the permission
+			INSERT INTO `ut_user_group_map_temp`
+				(`user_id`
+				,`group_id`
+				,`isbless`
+				,`grant_type`
+				) 
+				VALUES 
+				(@bz_user_id, @can_edit_all_field_case_group_id, 0, 0)	
+				;
+		# We record the name of this procedure for future debugging and audit_log
+			SET @script = 'PROCEDURE - can_edit_all_field_in_a_case_regardless_of_role';
+			SET @timestamp = NOW();
+		# Log the actions of the script.
+			SET @script_log_message = CONCAT('the bz user #'
+									, @bz_user_id
+									, ' can edit all fields in the case regardless of his/her role for the unit#'
+									, @product_id
+									);
+			
+			INSERT INTO `ut_script_log`
+				(`datetime`
+				, `script`
+				, `log`
+				)
+				VALUES
+				(@timestamp, @script, @script_log_message)
+				;
+			# We log what we have just done into the `ut_audit_log` table
+			
+			SET @bzfe_table = 'ut_user_group_map_temp';
+			SET @permission_granted = 'Can edit all fields in the case regardless of his/her role.';
+				INSERT INTO `ut_audit_log`
+				 (`datetime`
+				 , `bzfe_table`
+				 , `bzfe_field`
+				 , `previous_value`
+				 , `new_value`
+				 , `script`
+				 , `comment`
+				 )
+				 VALUES
+				 (@timestamp ,@bzfe_table, 'user_id', 'UNKNOWN', @bz_user_id, @script, CONCAT('Add the BZ user id when we grant the permission to ', @permission_granted))
+				 , (@timestamp ,@bzfe_table, 'group_id', 'UNKNOWN', @can_edit_all_field_case_group_id, @script, CONCAT('Add the BZ group id when we grant the permission to ', @permission_granted))
 				 , (@timestamp ,@bzfe_table, 'isbless', 'UNKNOWN', 0, @script, CONCAT('user does NOT grant ',@permission_granted, ' permission'))
 				 , (@timestamp ,@bzfe_table, 'grant_type', 'UNKNOWN', 0, @script, CONCAT('user is a member of the group', @permission_granted))
 				;
@@ -9576,7 +9577,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT ('notification_type' , notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -9592,41 +9593,6 @@ BEGIN
 			, 'current_status', current_status
 			, 'current_resolution', current_resolution
 			, 'current_severity', current_severity
-			)
-		)
-		;
-END */$$
-DELIMITER ;
-
-/* Procedure structure for procedure `lambda_notification_case_event` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_event` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `lambda_notification_case_event`(
-	IN notification_id int(11)
-	, IN created_datetime datetime
-	, IN unit_id smallint(6)
-	, IN case_id mediumint(9)
-	, IN user_id mediumint(9)
-	, IN update_what varchar(255)
-	)
-    SQL SECURITY INVOKER
-BEGIN
-	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
-	#	- DEV/Staging: 812644853088
-	#	- Prod: 192458993663
-	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:function:alambda_simple')
-		, CONCAT ('{ '
-			, '"notification_id": "', notification_id
-			, '", "created_datetime" : "', created_datetime
-			, '", "unit_id" : "', unit_id
-			, '", "case_id" : "', case_id
-			, '", "user_id" : "', user_id
-			, '", "update_what" : "', update_what
-			, '"}'
 			)
 		)
 		;
@@ -9662,7 +9628,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -9710,7 +9676,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -9761,7 +9727,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -9816,7 +9782,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:ut_lambda2sqs_push')
 		, JSON_OBJECT('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
