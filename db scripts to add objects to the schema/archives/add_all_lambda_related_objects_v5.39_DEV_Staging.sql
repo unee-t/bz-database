@@ -11,40 +11,40 @@
 #   	- Prod: 192458993663
 #   	- Demo: 915001051872
 #   2- make sure that the following manadatory tables exist in the database:
-#	   - `ut_notification_case_assignee`
-#	   - `ut_notification_case_updated`
-#	   - `ut_notification_case_invited`
-#	   - `ut_notification_case_new`
-#	   - `ut_notification_classify_messages`
-#	   - `ut_notification_message_new`
-#	   Why?
-#	   Because this script does NOT re-create the associated DB tables that we have 
-#	   created to log what happens when SQL triggers are activated
+#		- `ut_notification_case_assignee`
+#		- `ut_notification_case_updated`
+#		- `ut_notification_case_invited`
+#		- `ut_notification_case_new`
+#		- `ut_notification_classify_messages`
+#		- `ut_notification_message_new`
+#		Why?
+#		Because this script does NOT re-create the associated DB tables that we have 
+#		created to log what happens when SQL triggers are activated
 #
 #	3- This requires MySQL 5.7.22 or later OR Maria DB 10.2.3 or later
-#	   these are the only version which support the JSON functions
+#		these are the only version which support the JSON functions
 ###################################################################################
 #
 # As of DB schema v4.31 we have
-#   - 5 procedures that are using lambda:
-#	   - `lambda_notification_case_assignee_updated` latest version introduced in v4.32
-#	   - `lambda_notification_case_updated` latest version introduced in v4.32
-#	   - `lambda_notification_case_invited` latest version introduced in v4.32
-#	   - `lambda_notification_case_new` latest version introduced in v4.32
-#	  - `lambda_notification_message_new_comment` latest version introduced in v4.32
+#	- 5 procedures that are using lambda:
+#		- `lambda_notification_case_assignee_updated`  latest version introduced in v5.39
+#		- `lambda_notification_case_updated`  latest version introduced in v5.39
+#		- `lambda_notification_case_invited`  latest version introduced in v5.39
+#		- `lambda_notification_case_new`  latest version introduced in v5.39
+#		- `lambda_notification_message_new_comment`  latest version introduced in v5.39
 #
 # These 5 procedures are associated with 6 triggers and 6 tables:
-#	   - `ut_prepare_message_case_assigned_updated` latest version introduced in v4.32
+#		- `ut_prepare_message_case_assigned_updated` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_case_assignee`
-#	   - `ut_prepare_message_case_activity` latest version introduced in v4.32
+#		- `ut_prepare_message_case_activity` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_case_updated`
-#	   - `ut_prepare_message_case_invited` latest version introduced in v4.32
+#		- `ut_prepare_message_case_invited` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_case_invited`
-#	   - `ut_prepare_message_new_case` latest version introduced in v4.32
+#		- `ut_prepare_message_new_case` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_case_new`
-#	   - `ut_prepare_message_new_comment` latest version introduced i1-n v4.32
+#		- `ut_prepare_message_new_comment` latest version introduced i1-n v4.32
 #		  the log for this trigger is not needed as it is fired as a consequence `ut_notification_classify_messages`
-#	   - `ut_notification_classify_messages` latest version introduced in v4.32
+#		- `ut_notification_classify_messages` latest version introduced in v4.32
 #		  the log for this trigger is in the table `ut_notification_message_new`
 #
 # Code to create these procedures:
@@ -80,7 +80,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
 		, JSON_OBJECT ('notification_type' , notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -134,7 +134,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -188,7 +188,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -236,7 +236,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -285,7 +285,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:alambda_simple')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:push')
 		, JSON_OBJECT('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id

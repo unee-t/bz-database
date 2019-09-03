@@ -2935,7 +2935,7 @@ CREATE TABLE `ut_db_schema_version` (
   `update_script` varchar(256) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'The script which was used to do the db ugrade',
   `comment` mediumtext COLLATE utf8mb4_unicode_520_ci COMMENT 'Comment',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci ROW_FORMAT=DYNAMIC;
 
 /*Data for the table `ut_db_schema_version` */
 
@@ -2979,9 +2979,7 @@ insert  into `ut_db_schema_version`(`id`,`schema_version`,`update_datetime`,`upd
 (37,'v4.35.0','2019-05-20 05:01:47','upgrade_unee-t_v4.34.0_to_v4.35.0.sql','Database updated from v4.34.0 to v4.35.0'),
 (38,'v4.36.0','2019-05-20 07:52:51','upgrade_unee-t_v4.35.0_to_v4.36.0.sql','Database updated from v4.35.0 to v4.36.0'),
 (39,'v5.37.0','2019-06-10 01:51:58','upgrade_unee-t_v4.36.0_to_v5.37.0.sql','Database updated from v4.36.0 to v5.37.0'),
-(40,'v5.38.0','2019-09-02 03:31:35','upgrade_unee-t_v5.37.0_to_v5.38.0.sql','Database updated from v5.37.0 to v5.38.0'),
-(41,'v5.39.0','2019-09-02 03:31:52','upgrade_unee-t_v5.38.0_to_v5.39.0.sql','Database updated from v5.38.0 to v5.39.0'),
-(42,'v5.39.1','2019-09-02 05:58:19','upgrade_unee-t_v5.39.0_to_v5.39.1.sql','Database updated from v5.39.0 to v5.39.1');
+(40,'v5.38.0','2019-09-02 03:27:13','upgrade_unee-t_v5.37.0_to_v5.38.0.sql','Database updated from v5.37.0 to v5.38.0');
 
 /*Table structure for table `ut_flash_units_with_dummy_users` */
 
@@ -3662,20 +3660,19 @@ BEGIN
 		SET @current_status = NULL;
 		SET @current_resolution = NULL;
 		SET @current_severity = NULL;
-
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_new';
 		SET @bz_source_table = 'ut_notification_case_new';
 		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_case_new`) + 1);
 		SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
 		SET @created_datetime = NOW();
-		SET @unit_id = NEW.`product_id`;
-		SET @case_id = NEW.`bug_id`;
-		SET @case_title = NEW.`short_desc`;
-		SET @reporter_user_id = NEW.`reporter`;
-		SET @assignee_user_id = NEW.`assigned_to`;
-		SET @current_status = NEW.`bug_status`;
-		SET @current_resolution = NEW.`resolution`;
+		SET @unit_id := NEW.`product_id`;
+		SET @case_id := NEW.`bug_id`;
+		SET @case_title := NEW.`short_desc`;
+		SET @reporter_user_id := NEW.`reporter`;
+		SET @assignee_user_id := NEW.`assigned_to`;
+		SET @current_status := NEW.`bug_status`;
+		SET @current_resolution := NEW.`resolution`;
 		SET @current_severity = NEW.`bug_severity`;
 	
 	# We insert the event in the notification table
@@ -3785,20 +3782,19 @@ BEGIN
 			SET @current_status = NULL;
 			SET @current_resolution = NULL;
 			SET @current_severity = NULL;
-
 		# We have a clean slate, define the variables now
 			SET @notification_type = 'case_assignee_updated';
 			SET @bz_source_table = 'ut_notification_case_assignee';
 			SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_case_assignee`) + 1);
 			SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
 			SET @created_datetime = NOW();
-			SET @unit_id = NEW.`product_id`;
-			SET @case_id = NEW.`bug_id`;
+			SET @unit_id := NEW.`product_id`;
+			SET @case_id := NEW.`bug_id`;
 			SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
 			SET @invitor_user_id = 0;
 			SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
-			SET @old_case_assignee_user_id = OLD.`assigned_to`;
-			SET @new_case_assignee_user_id = NEW.`assigned_to`;
+			SET @old_case_assignee_user_id := OLD.`assigned_to`;
+			SET @new_case_assignee_user_id := NEW.`assigned_to`;
 			SET @current_list_of_invitees_1 = (SELECT GROUP_CONCAT(DISTINCT `who` ORDER BY `who` SEPARATOR ', ')
 			FROM `cc`
 			WHERE `bug_id` = @case_id
@@ -3895,7 +3891,6 @@ BEGIN
 		SET @current_status = NULL;
 		SET @current_resolution = NULL;
 		SET @current_severity = NULL;
-
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_updated';
 		SET @bz_source_table = 'ut_notification_case_updated';
@@ -3903,12 +3898,12 @@ BEGIN
 		SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
 		SET @created_datetime = NOW();
 		SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = NEW.`bug_id`);
-		SET @case_id = NEW.`bug_id`;
+		SET @case_id := NEW.`bug_id`;
 		SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
-		SET @user_id = NEW.`who`;
+		SET @user_id := NEW.`who`;
 		SET @update_what = (SELECT `description` FROM `fielddefs` WHERE `id` = NEW.`fieldid`);
-		SET @old_value = NEW.`removed`;
-		SET @new_value = NEW.`added`;
+		SET @old_value := NEW.`removed`;
+		SET @new_value := NEW.`added`;
 		SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @old_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @new_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
@@ -4013,17 +4008,16 @@ BEGIN
 		SET @current_status = NULL;
 		SET @current_resolution = NULL;
 		SET @current_severity = NULL;
-
 	# We have a clean slate, define the variables now
 		SET @notification_type = 'case_user_invited';
 		SET @bz_source_table = 'ut_notification_case_invited';
 		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_case_invited`) + 1);
 		SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
 		SET @created_datetime = NOW();
-		SET @case_id = NEW.`bug_id`;
+		SET @case_id := NEW.`bug_id`;
 		SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = @case_id);
-		SET @invitee_user_id = NEW.`who`;
+		SET @invitee_user_id := NEW.`who`;
 		SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @old_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @new_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
@@ -4036,7 +4030,6 @@ BEGIN
 		SET @current_status = (SELECT `bug_status` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @current_resolution = (SELECT `resolution` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @current_severity = (SELECT `bug_severity` FROM `bugs` WHERE `bug_id` = @case_id);
-
 	# We insert the event in the relevant notification table		
 		INSERT INTO `ut_notification_case_invited`
 			(`notification_id`
@@ -5287,14 +5280,12 @@ BEGIN
 		SET @current_status = NULL;
 		SET @current_resolution = NULL;
 		SET @current_severity = NULL;
-
 	# We have a clean slate, define the variables now
-		SET @notification_id = ((SELECT MAX(`notification_id`) FROM `ut_notification_message_new`) + 1);
 		SET @created_datetime = NOW();
 		SET @unit_id = (SELECT `product_id` FROM `bugs` WHERE `bug_id` = NEW.`bug_id`);
-		SET @case_id = NEW.`bug_id`;
+		SET @case_id := NEW.`bug_id`;
 		SET @case_title = (SELECT `short_desc` FROM `bugs` WHERE `bug_id` = @case_id);
-		SET @user_id = NEW.`who`;
+		SET @user_id := NEW.`who`;
 		SET @count_comments = (SELECT COUNT(`comment_id`)
 			FROM
 				`longdescs`
@@ -5303,9 +5294,9 @@ BEGIN
 			;
 		SET @is_case_description = IF(@count_comments = 1 , 1, 0);
 		SET @message = (CAST(NEW.`thetext` AS CHAR));
-		SET @message_sanitized_1 = REPLACE(@message,'\r\n',' ');
-		SET @message_sanitized_2 = REPLACE(@message_sanitized_1,'\r',' ');
-		SET @message_sanitized_3 = REPLACE(@message_sanitized_2,'\n',' ');
+		SET @message_sanitized_1 = REPLACE(@message,'\r\n', ' ');
+		SET @message_sanitized_2 = REPLACE(@message_sanitized_1,'\r', ' ');
+		SET @message_sanitized_3 = REPLACE(@message_sanitized_2,'\n', ' ');
 		SET @message_truncated = (SUBSTRING(@message_sanitized_3, 1, 255));
 		SET @case_reporter_user_id = (SELECT `reporter` FROM `bugs` WHERE `bug_id` = @case_id);
 		SET @old_case_assignee_user_id = (SELECT `assigned_to` FROM `bugs` WHERE `bug_id` = @case_id);
@@ -5322,8 +5313,7 @@ BEGIN
 		
 	# We insert the event in the relevant notification table
 		INSERT INTO `ut_notification_message_new`
-			(notification_id
-			, `created_datetime`
+			(`created_datetime`
 			, `unit_id`
 			, `case_id`
 			, `case_title`
@@ -5339,8 +5329,7 @@ BEGIN
 			, `current_severity`
 			)
 			VALUES
-			(@notification_id
-			, @created_datetime
+			(@created_datetime
 			, @unit_id
 			, @case_id
 			, @case_title
@@ -5356,7 +5345,6 @@ BEGIN
 			, @current_severity
 			)
 			;
-
 END */$$
 
 
@@ -6414,25 +6402,24 @@ BEGIN
 			SET @current_status = NULL;
 			SET @current_resolution = NULL;
 			SET @current_severity = NULL;
-
 		# We have a clean slate, define the variables now
 			SET @notification_type = 'case_new_message';
 			SET @bz_source_table = 'ut_notification_message_new';
-			SET @notification_id = NEW.`notification_id`;
+			SET @notification_id := NEW.`notification_id`;
 			SET @unique_notification_id = (CONCAT(@bz_source_table, '-', @notification_id));
-			SET @created_datetime = NEW.`created_datetime`;
-			SET @unit_id = NEW.`unit_id`;
-			SET @case_id = NEW.`case_id`;
-			SET @case_title = NEW.`case_title`;
-			SET @user_id = NEW.`user_id`;
-			SET @message_truncated = NEW.`message_truncated`;
-			SET @case_reporter_user_id = NEW.`case_reporter_user_id`;
-			SET @old_case_assignee_user_id = NEW.`old_case_assignee_user_id`;
-			SET @new_case_assignee_user_id = NEW.`new_case_assignee_user_id`;
-			SET @current_list_of_invitees = NEW.`current_list_of_invitees`;
-			SET @current_status = NEW.`current_status`;
-			SET @current_resolution = NEW.`current_resolution`;
-			SET @current_severity = NEW.`current_severity`;
+			SET @created_datetime := NEW.`created_datetime`;
+			SET @unit_id := NEW.`unit_id`;
+			SET @case_id := NEW.`case_id`;
+			SET @case_title := NEW.`case_title`;
+			SET @user_id := NEW.`user_id`;
+			SET @message_truncated := NEW.`message_truncated`;
+			SET @case_reporter_user_id := NEW.`case_reporter_user_id`;
+			SET @old_case_assignee_user_id := NEW.`old_case_assignee_user_id`;
+			SET @new_case_assignee_user_id := NEW.`new_case_assignee_user_id`;
+			SET @current_list_of_invitees := NEW.`current_list_of_invitees`;
+			SET @current_status := NEW.`current_status`;
+			SET @current_resolution := NEW.`current_resolution`;
+			SET @current_severity := NEW.`current_severity`;
 			
 		# We call the Lambda procedure to notify that there is a new comment
 			CALL `lambda_notification_message_new_comment`(@notification_type
@@ -9577,7 +9564,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:ut_lambda2sqs_push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
 		, JSON_OBJECT ('notification_type' , notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -9593,6 +9580,41 @@ BEGIN
 			, 'current_status', current_status
 			, 'current_resolution', current_resolution
 			, 'current_severity', current_severity
+			)
+		)
+		;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `lambda_notification_case_event` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `lambda_notification_case_event` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `lambda_notification_case_event`(
+	IN notification_id int(11)
+	, IN created_datetime datetime
+	, IN unit_id smallint(6)
+	, IN case_id mediumint(9)
+	, IN user_id mediumint(9)
+	, IN update_what varchar(255)
+	)
+    SQL SECURITY INVOKER
+BEGIN
+	# https://github.com/unee-t/lambda2sns/blob/master/tests/call-lambda-as-root.sh#L5
+	#	- DEV/Staging: 812644853088
+	#	- Prod: 192458993663
+	#	- Demo: 915001051872
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:812644853088:function:alambda_simple')
+		, CONCAT ('{ '
+			, '"notification_id": "', notification_id
+			, '", "created_datetime" : "', created_datetime
+			, '", "unit_id" : "', unit_id
+			, '", "case_id" : "', case_id
+			, '", "user_id" : "', user_id
+			, '", "update_what" : "', update_what
+			, '"}'
 			)
 		)
 		;
@@ -9628,7 +9650,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:ut_lambda2sqs_push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -9676,7 +9698,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:ut_lambda2sqs_push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -9727,7 +9749,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:ut_lambda2sqs_push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
 		, JSON_OBJECT ('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -9782,7 +9804,7 @@ BEGIN
 	#	- DEV/Staging: 812644853088
 	#	- Prod: 192458993663
 	#	- Demo: 915001051872
-	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:192458993663:function:ut_lambda2sqs_push')
+	CALL mysql.lambda_async(CONCAT('arn:aws:lambda:ap-southeast-1:915001051872:function:alambda_simple')
 		, JSON_OBJECT('notification_type', notification_type
 			, 'bz_source_table', bz_source_table
 			, 'notification_id', notification_id
@@ -11165,9 +11187,11 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `table_to_list_dummy_user_by_environment`()
     SQL SECURITY INVOKER
 BEGIN
+
 	# We create a temporary table to record the ids of the dummy users in each environments:
 		/*Table structure for table `ut_temp_dummy_users_for_roles` */
 			DROP TEMPORARY TABLE IF EXISTS `ut_temp_dummy_users_for_roles`;
+
 			CREATE TEMPORARY TABLE `ut_temp_dummy_users_for_roles` (
 				`environment_id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'Id of the environment',
 				`environment_name` VARCHAR(256) COLLATE utf8_unicode_ci NOT NULL,
@@ -11178,11 +11202,15 @@ BEGIN
 				`agent_id` INT(11) DEFAULT NULL,
 				PRIMARY KEY (`environment_id`)
 			) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 		/*Data for the table `ut_temp_dummy_users_for_roles` */
 			INSERT INTO `ut_temp_dummy_users_for_roles`(`environment_id`, `environment_name`, `tenant_id`, `landlord_id`, `contractor_id`, `mgt_cny_id`, `agent_id`) VALUES 
+# This is incorrect since we replace DEV with a copy of the PROD
+#				(1,'DEV/Staging', 96, 94, 93, 95, 92),
 				(1,'DEV/Staging', 93, 91, 90, 92, 89),
 				(2,'Prod', 93, 91, 90, 92, 89),
 				(3,'demo/dev', 4, 3, 5, 6, 2);
+
 END */$$
 DELIMITER ;
 
@@ -11244,8 +11272,11 @@ BEGIN
 	# We record the name of this procedure for future debugging and audit_log
 		SET @script = 'PROCEDURE - unit_create_with_dummy_users';
 		SET @timestamp = NOW();
+
 	# We create a temporary table to record the ids of the dummy users in each environments:
+
 		CALL `table_to_list_dummy_user_by_environment`;
+
 	# We create the temporary tables to update the group permissions
 		CALL `create_temp_table_to_update_group_permissions`;
 	
@@ -11267,6 +11298,7 @@ BEGIN
 			
 		# Agent 5
 			SET @bz_user_id_dummy_agent = (SELECT `agent_id` FROM `ut_temp_dummy_users_for_roles` WHERE `environment_id` = @environment);
+
 	# The unit:
 		# BZ Classification id for the unit that you want to create (default is 2)
 			SET @classification_id = (SELECT `classification_id` FROM `ut_data_to_create_units` WHERE `id_unit_to_create` = @unit_reference_for_import);
@@ -11284,7 +11316,9 @@ BEGIN
 	# Other important information that should not change:
 			SET @visibility_explanation_1 = 'Visible only to ';
 			SET @visibility_explanation_2 = ' for this unit.';
+
 	# The global permission for the application
+
 	# This should not change, it was hard coded when we created Unee-T
 		# Can tag comments
 			SET @can_tag_comment_group_id = 18;	
@@ -11300,16 +11334,21 @@ BEGIN
 		
 			# We are predicting the product id to avoid name duplicates
 					SET @predicted_product_id = ((SELECT MAX(`id`) FROM `products`) + 1);
+
 			# We need a unique unit name
 				SET @unit_bz_name = CONCAT(@unit_name, '-', @predicted_product_id);
+
 			# We need a default milestone for that unit
 				SET @default_milestone = '---';
+
 			# We need a default version for that unit
 				SET @default_version = '---';
 			
 	# We now create the unit we need.
+
 		# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 			SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 		# Insert the new product into the `products table`
 			INSERT INTO `products`
 				(`name`
@@ -11324,6 +11363,7 @@ BEGIN
 	
 		# Get the actual id that was created for that unit
 			SET @product_id = (SELECT LAST_INSERT_ID());
+
 		# Log the actions of the script.
 			SET @script_log_message = CONCAT('A new unit #'
 									, (SELECT IFNULL(@product_id, 'product_id is NULL'))
@@ -11353,8 +11393,11 @@ BEGIN
 				;
 			
 			SET @script_log_message = NULL;
+
 	# We can now get the real id of the unit
+
 		SET @unit = CONCAT(@unit_bz_name, '-', @product_id);
+
 	# We log this in the `audit_log` table
 		
 		INSERT INTO `audit_log` 
@@ -11376,7 +11419,9 @@ BEGIN
 			, @timestamp
 			)
 			;
+
 	# We prepare all the names we will need
+
 		SET @unit_for_query = REPLACE(@unit, ' ', '%');
 		
 		SET @unit_for_flag = REPLACE(@unit_for_query, '%', '_');
@@ -11409,7 +11454,9 @@ BEGIN
 		SET @unit_for_group = REPLACE(@unit_for_group, '----', '-');
 		SET @unit_for_group = REPLACE(@unit_for_group, '---', '-');
 		SET @unit_for_group = REPLACE(@unit_for_group, '--', '-');
+
 		# We need a version for this product
+
 			# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 				SET @script = 'PROCEDURE unit_create_with_dummy_users';
 	
@@ -11422,8 +11469,10 @@ BEGIN
 					VALUES
 					(@default_version, @product_id, 1)
 					;
+
 			# We get the id for the version 
 				SET @version_id = (SELECT LAST_INSERT_ID());
+
 			# We also log this in the `audit_log` table
 					
 						INSERT INTO `audit_log` 
@@ -11447,8 +11496,10 @@ BEGIN
 							;
 					
 		# We now create the milestone for this product.
+
 			# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 				SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 			# We can now insert the milestone there
 				INSERT INTO `milestones`
 					(`product_id`
@@ -11462,6 +11513,7 @@ BEGIN
 				
 			# We get the id for the milestone 
 				SET @milestone_id = (SELECT LAST_INSERT_ID());
+
 			# We also log this in the `audit_log` table
 				INSERT INTO `audit_log` 
 					(`user_id`
@@ -11475,6 +11527,7 @@ BEGIN
 					VALUES
 					(@creator_bz_id, 'Bugzilla::Milestone', @milestone_id, '__create__', NULL, @default_milestone, @timestamp)
 					;
+
 	#  We create all the components/roles we need
 		# For the temporary users:
 			# Tenant
@@ -11487,6 +11540,7 @@ BEGIN
 													, ' TO THIS UNIT'
 													);
 				SET @user_role_desc_tenant = @role_user_pub_info_tenant;
+
 			# Landlord
 				SET @role_user_g_description_landlord = (SELECT `role_type` FROM `ut_role_types` WHERE `id_role_type`= 2);
 				SET @user_pub_name_landlord = (SELECT `realname` FROM `profiles` WHERE `userid` = @bz_user_id_dummy_landlord);
@@ -11530,10 +11584,13 @@ BEGIN
 													, ' TO THIS UNIT'
 													);
 				SET @user_role_desc_mgt_cny = @role_user_pub_info_mgt_cny;
+
 		# We have eveything, we can create the components we need:
 		# We insert the component 1 by 1 to get the id for each component easily
+
 		# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 			SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 			# Tenant (component_id_tenant)
 				INSERT INTO `components`
 					(`name`
@@ -11552,8 +11609,10 @@ BEGIN
 					, 1
 					)
 					;
+
 				# We get the id for the component for the tenant 
 					SET @component_id_tenant = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following component #'
 											, @component_id_tenant
@@ -11584,6 +11643,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 			# Landlord (component_id_landlord)
 				INSERT INTO `components`
 					(`name`
@@ -11602,8 +11662,10 @@ BEGIN
 					, 1
 					)
 					;
+
 				# We get the id for the component for the Landlord
 					SET @component_id_landlord = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following component #'
 											, @component_id_landlord
@@ -11634,6 +11696,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 			# Agent (component_id_agent)
 				INSERT INTO `components`
 					(`name`
@@ -11655,6 +11718,7 @@ BEGIN
 			
 				# We get the id for the component for the Agent
 					SET @component_id_agent = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following component #'
 											, @component_id_agent
@@ -11685,6 +11749,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 			# Contractor (component_id_contractor)
 				INSERT INTO `components`
 					(`name`
@@ -11706,6 +11771,7 @@ BEGIN
 			
 				# We get the id for the component for the Contractor
 					SET @component_id_contractor = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following component #'
 											, @component_id_contractor
@@ -11758,6 +11824,7 @@ BEGIN
 			
 				# We get the id for the component for the Management Company 
 					SET @component_id_mgt_cny = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following component #'
 											, @component_id_mgt_cny
@@ -11806,6 +11873,7 @@ BEGIN
 					, (@creator_bz_id, 'Bugzilla::Component', @component_id_contractor, '__create__', NULL, @role_user_g_description_contractor, @timestamp)
 					, (@creator_bz_id, 'Bugzilla::Component', @component_id_mgt_cny, '__create__', NULL, @role_user_g_description_mgt_cny, @timestamp)
 					;
+
 	# We create the goups we need
 		# For simplicity reason, it is better to create ALL the groups we need for all the possible roles and permissions
 		# This will avoid a scenario where we need to grant permission to see occupants for instances but the group for occupants does not exist yet...
@@ -11952,10 +12020,13 @@ BEGIN
 					# Can See users in invited_by user Group
 					SET @group_name_see_users_invited_by = (CONCAT(@unit_for_group,'-06-Can-see-invited-by'));
 					SET @group_description_see_users_invited_by = (CONCAT('See the list of invited_by(s) for ', @unit));
+
 		# We can populate the 'groups' table now.
 		# We insert the groups 1 by 1 so we can get the id for each of these groups.
+
 			# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 				SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 			# create_case_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -11974,8 +12045,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @create_case_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -11995,6 +12068,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# can_edit_case_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12013,8 +12087,10 @@ BEGIN
 					, NULL
 					)
 					;			
+
 				# Get the actual id that was created for that group
 					SET @can_edit_case_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12034,6 +12110,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# can_see_cases_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12052,8 +12129,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @can_see_cases_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12073,6 +12152,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# can_edit_all_field_case_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12091,8 +12171,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @can_edit_all_field_case_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12112,6 +12194,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# can_edit_component_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12130,8 +12213,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @can_edit_component_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12151,6 +12236,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# can_see_unit_in_search_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12169,8 +12255,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @can_see_unit_in_search_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12190,6 +12278,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# all_g_flags_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12208,8 +12297,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @all_g_flags_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12229,6 +12320,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# all_r_flags_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12247,8 +12339,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @all_r_flags_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12268,6 +12362,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# list_visible_assignees_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12286,8 +12381,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @list_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12307,6 +12404,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# see_visible_assignees_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12325,8 +12423,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @see_visible_assignees_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12346,6 +12446,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# active_stakeholder_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12367,6 +12468,7 @@ BEGIN
 				
 				# Get the actual id that was created for that group
 					SET @active_stakeholder_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12386,6 +12488,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# unit_creator_group_id
 				INSERT INTO `groups`
 					(`name`
@@ -12404,8 +12507,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @unit_creator_group_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12425,6 +12530,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_show_to_tenant
 				INSERT INTO `groups`
 					(`name`
@@ -12443,8 +12549,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_show_to_tenant = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12464,6 +12572,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_are_users_tenant
 				INSERT INTO `groups`
 					(`name`
@@ -12482,8 +12591,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_are_users_tenant = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12503,6 +12614,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_see_users_tenant
 				INSERT INTO `groups`
 					(`name`
@@ -12521,8 +12633,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_see_users_tenant = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12542,6 +12656,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_show_to_landlord
 				INSERT INTO `groups`
 					(`name`
@@ -12560,8 +12675,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_show_to_landlord = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12581,6 +12698,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_are_users_landlord
 				INSERT INTO `groups`
 					(`name`
@@ -12599,8 +12717,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_are_users_landlord = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12620,6 +12740,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_see_users_landlord
 				INSERT INTO `groups`
 					(`name`
@@ -12638,8 +12759,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_see_users_landlord = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12659,6 +12782,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_show_to_agent
 				INSERT INTO `groups`
 					(`name`
@@ -12677,8 +12801,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_show_to_agent = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12698,6 +12824,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_are_users_agent
 				INSERT INTO `groups`
 					(`name`
@@ -12716,8 +12843,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_are_users_agent = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12737,6 +12866,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_see_users_agent
 				INSERT INTO `groups`
 					(`name`
@@ -12755,8 +12885,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_see_users_agent = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12776,6 +12908,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_show_to_contractor
 				INSERT INTO `groups`
 					(`name`
@@ -12794,8 +12927,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_show_to_contractor = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12815,6 +12950,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_are_users_contractor
 				INSERT INTO `groups`
 					(`name`
@@ -12833,8 +12969,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_are_users_contractor = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12854,6 +12992,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_see_users_contractor
 				INSERT INTO `groups`
 					(`name`
@@ -12872,8 +13011,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_see_users_contractor = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12893,6 +13034,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_show_to_mgt_cny
 				INSERT INTO `groups`
 					(`name`
@@ -12911,8 +13053,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_show_to_mgt_cny = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12932,6 +13076,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_are_users_mgt_cny
 				INSERT INTO `groups`
 					(`name`
@@ -12950,8 +13095,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_are_users_mgt_cny = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -12971,6 +13118,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_see_users_mgt_cny
 				INSERT INTO `groups`
 					(`name`
@@ -12989,8 +13137,10 @@ BEGIN
 					, NULL
 					)
 					;		 
+
 				# Get the actual id that was created for that group
 					SET @group_id_see_users_mgt_cny = (SELECT LAST_INSERT_ID());	
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -13010,6 +13160,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_show_to_occupant
 				INSERT INTO `groups`
 					(`name`
@@ -13028,8 +13179,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_show_to_occupant = (SELECT LAST_INSERT_ID());	
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -13049,6 +13202,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_are_users_occupant
 				INSERT INTO `groups`
 					(`name`
@@ -13067,8 +13221,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_are_users_occupant = (SELECT LAST_INSERT_ID());  
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -13088,6 +13244,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_see_users_occupant
 				INSERT INTO `groups`
 					(`name`
@@ -13109,6 +13266,7 @@ BEGIN
 					
 				# Get the actual id that was created for that group
 					SET @group_id_see_users_occupant = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -13128,6 +13286,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_are_users_invited_by
 				INSERT INTO `groups`
 					(`name`
@@ -13146,8 +13305,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_are_users_invited_by = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -13166,6 +13327,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 			# group_id_see_users_invited_by
 				INSERT INTO `groups`
 					(`name`
@@ -13184,8 +13346,10 @@ BEGIN
 					, NULL
 					)
 					;
+
 				# Get the actual id that was created for that group
 					SET @group_id_see_users_invited_by = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('Unit #'
 											, @product_id
@@ -13205,10 +13369,13 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;		
+
 		# We record the groups we have just created:
 		#	We NEED the component_id for that
+
 		# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 			SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 		# We can now insert in the table
 			INSERT INTO `ut_product_group`
 				(
@@ -13318,8 +13485,10 @@ BEGIN
 			SET @flag_is_paid_name = CONCAT('is_paid_', @unit_for_flag);
 	
 		# We insert the flagtypes 1 by 1 to get the id for each component easily
+
 		# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 			SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 		# Flagtype for next_step
 			INSERT INTO `flagtypes`
 				(`name`
@@ -13348,8 +13517,10 @@ BEGIN
 				, @all_r_flags_group_id
 				)
 				;
+
 				# We get the id for that flag
 					SET @flag_next_step_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following flag Next Step (#'
 										, (SELECT IFNULL(@flag_next_step_id, 'flag_next_step is NULL'))
@@ -13369,6 +13540,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 		# We can now create the flagtypes for solution
 			INSERT INTO `flagtypes`
 				(`name`
@@ -13397,8 +13569,10 @@ BEGIN
 				, @all_r_flags_group_id
 				)
 				;
+
 				# We get the id for that flag
 					SET @flag_solution_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following flag Solution (#'
 										, (SELECT IFNULL(@flag_solution_id, 'flag_solution is NULL'))
@@ -13418,6 +13592,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 		# We can now create the flagtypes for budget
 			INSERT INTO `flagtypes`
 				(`name`
@@ -13446,8 +13621,10 @@ BEGIN
 				, @all_r_flags_group_id
 				)
 				;
+
 				# We get the id for that flag
 					SET @flag_budget_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following flag Budget (#'
 										, (SELECT IFNULL(@flag_budget_id, 'flag_budget is NULL'))
@@ -13467,6 +13644,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 		# We can now create the flagtypes for attachment
 			INSERT INTO `flagtypes`
 				(`name`
@@ -13495,8 +13673,10 @@ BEGIN
 				, @all_r_flags_group_id
 				)
 				;
+
 				# We get the id for that flag
 					SET @flag_attachment_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following flag Attachment (#'
 										, (SELECT IFNULL(@flag_attachment_id, 'flag_attachment is NULL'))
@@ -13516,6 +13696,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 		# We can now create the flagtypes for ok_to_pay
 			INSERT INTO `flagtypes`
 				(`name`
@@ -13544,8 +13725,10 @@ BEGIN
 				, @all_r_flags_group_id
 				)
 				;
+
 				# We get the id for that flag
 					SET @flag_ok_to_pay_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following flag OK to pay (#'
 										, (SELECT IFNULL(@flag_ok_to_pay_id, 'flag_ok_to_pay is NULL'))
@@ -13565,6 +13748,7 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 		# We can now create the flagtypes for is_paid
 			INSERT INTO `flagtypes`
 				(`name`
@@ -13593,8 +13777,10 @@ BEGIN
 				, @all_r_flags_group_id
 				)
 				;
+
 				# We get the id for that flag
 					SET @flag_is_paid_id = (SELECT LAST_INSERT_ID());
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('The following flag Is paid (#'
 										, (SELECT IFNULL(@flag_is_paid_id, 'flag_is_paid is NULL'))
@@ -13614,9 +13800,12 @@ BEGIN
 						;
 					
 					SET @script_log_message = NULL;	
+
 		# We also define the flag inclusion
+
 		# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 			SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 		# We can now do the insert
 			INSERT INTO `flaginclusions`
 				(`type_id`
@@ -13631,6 +13820,7 @@ BEGIN
 				, (@flag_ok_to_pay_id, @product_id, NULL)
 				, (@flag_is_paid_id, @product_id, NULL)
 				;
+
 		# We update the BZ logs
 			INSERT INTO `audit_log`
 				(`user_id`
@@ -13654,6 +13844,7 @@ BEGIN
 		# Data for the table `group_group_map`
 		# We first insert these in the table `ut_group_group_map_temp`
 		# If you need to re-create the table `ut_group_group_map_temp`, use the procedure `create_temp_table_to_update_group_permissions`
+
 			INSERT INTO `ut_group_group_map_temp`
 				(`member_id`
 				, `grantor_id`
@@ -13716,9 +13907,12 @@ BEGIN
 				, (@group_id_see_users_occupant, @group_id_are_users_occupant, 2)
 				, (@group_id_see_users_invited_by, @group_id_are_users_invited_by, 2)
 				;
+
 	# We make sure that only user in certain groups can create, edit or see cases.
+
 	# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 		SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 	# We can now do the insert
 		INSERT INTO `group_control_map`
 			(`group_id`
@@ -13745,6 +13939,7 @@ BEGIN
 			, (@group_id_show_to_mgt_cny, @product_id, 0, 2, 0, 0, 0, 0, 0)
 			, (@group_id_show_to_occupant, @product_id, 0, 2, 0, 0, 0, 0, 0)
 			;
+
 		# Log the actions of the script.
 			SET @script_log_message = CONCAT('We have updated the group control permissions for the product# '
 									, @product_id
@@ -13797,6 +13992,7 @@ BEGIN
 				;
 			
 			SET @script_log_message = NULL;
+
 		# We insert the series categories that BZ needs...
 				
 			# What are the name for the categories
@@ -13891,10 +14087,13 @@ BEGIN
 							, '&component='
 							, @component_name_for_serie_agent)
 							);
+
 		# We have eveything, we can create the series_categories we need:
 		# We insert the series_categories 1 by 1 to get the id for each series_categories easily
+
 		# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 			SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 		# We can now insert the series category product
 			INSERT INTO `series_categories`
 				(`name`
@@ -13902,8 +14101,10 @@ BEGIN
 				VALUES 
 				(@series_category_product_name)
 				;
+
 			# We get the id for the series_category 
 				SET @series_category_product = (SELECT LAST_INSERT_ID());
+
 		# We can now insert the series category component_tenant
 			INSERT INTO `series_categories`
 				(`name`
@@ -13911,8 +14112,10 @@ BEGIN
 				VALUES 
 				(@series_category_component_tenant_name)
 				;
+
 			# We get the id for the series_category 
 				SET @series_category_component_tenant = (SELECT LAST_INSERT_ID());
+
 		# We can now insert the series category component_landlord
 			INSERT INTO `series_categories`
 				(`name`
@@ -13920,8 +14123,10 @@ BEGIN
 				VALUES 
 				(@series_category_component_landlord_name)
 				;
+
 			# We get the id for the series_category 
 				SET @series_category_component_landlord = (SELECT LAST_INSERT_ID());
+
 		# We can now insert the series category component_contractor
 			INSERT INTO `series_categories`
 				(`name`
@@ -13929,8 +14134,10 @@ BEGIN
 				VALUES 
 				(@series_category_component_contractor_name)
 				;
+
 			# We get the id for the series_category 
 				SET @series_category_component_contractor = (SELECT LAST_INSERT_ID());
+
 		# We can now insert the series category component_mgtcny
 			INSERT INTO `series_categories`
 				(`name`
@@ -13938,8 +14145,10 @@ BEGIN
 				VALUES 
 				(@series_category_component_mgtcny_name)
 				;
+
 			# We get the id for the series_category 
 				SET @series_category_component_mgtcny = (SELECT LAST_INSERT_ID());
+
 		# We can now insert the series category component_agent
 			INSERT INTO `series_categories`
 				(`name`
@@ -13947,11 +14156,15 @@ BEGIN
 				VALUES 
 				(@series_category_component_agent_name)
 				;
+
 			# We get the id for the series_category 
 				SET @series_category_component_agent = (SELECT LAST_INSERT_ID());
+
 		# We do not need the series_id - we can insert in bulk here
+
 			# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 				SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 			# Insert the series related to the product/unit
 				INSERT INTO `series`
 					(`series_id`
@@ -14008,6 +14221,7 @@ BEGIN
 					,(NULL, @creator_bz_id, @series_category_product, @series_category_component_agent, 'All Open', 1, @serie_search_all_open_agent, 1)
 					,(NULL, @creator_bz_id, @series_category_product, @series_category_component_agent, 'All Closed', 1, @serie_search_all_closed_agent, 1)
 					;
+
 	# We now assign the permissions to each of the dummy user associated to each role:
 	#	- Tenant (1)
 	#	 @bz_user_id_dummy_tenant
@@ -14024,6 +14238,7 @@ BEGIN
 	# For each of the dummy users, we use the following parameters:
 		SET @user_in_default_cc_for_cases = 1;
 		SET @replace_default_assignee = 1;
+
 		# Default permissions for dummy users:	
 			#User Permissions in the unit:
 				# Generic Permissions
@@ -14106,6 +14321,7 @@ BEGIN
 					, (@bz_user_id_dummy_contractor, @create_case_group_id, 0, 0)
 					, (@bz_user_id_dummy_mgt_cny, @create_case_group_id, 0, 0)
 					;
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('the dummy bz users for each component: '
 											, '(#'
@@ -14135,6 +14351,7 @@ BEGIN
  
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
+
 			# User can Edit a case and see this unit, this is needed so the API does not throw an error see issue #60:
 				INSERT INTO `ut_user_group_map_temp`
 					(`user_id`
@@ -14154,6 +14371,7 @@ BEGIN
 					, (@bz_user_id_dummy_contractor, @can_see_unit_in_search_group_id, 0, 0)
 					, (@bz_user_id_dummy_mgt_cny, @can_see_unit_in_search_group_id, 0, 0)
 					;
+
 				# Log the actions of the script.
 					SET @script_log_message = CONCAT('the dummy bz users for each component: '
 											, '(#'
@@ -14183,18 +14401,26 @@ BEGIN
 				 
 				# Cleanup the variables for the log messages
 					SET @script_log_message = NULL;
+
 	# We give the user the permission they need.
+
 		# We update the `group_group_map` table first
 		#	- Create an intermediary table to deduplicate the records in the table `ut_group_group_map_temp`
 		#	- If the record does NOT exists in the table then INSERT new records in the table `group_group_map`
 		#	- If the record DOES exist in the table then update the new records in the table `group_group_map`
+
 			# We drop the deduplication table if it exists:
 				DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
+
 			# We create a table `ut_group_group_map_dedup` to prepare the data we need to insert
 				CREATE TEMPORARY TABLE `ut_group_group_map_dedup` (
 					`member_id` mediumint(9) NOT NULL
 					, `grantor_id` mediumint(9) NOT NULL
 					, `grant_type` tinyint(4) NOT NULL DEFAULT '0'
+#					, UNIQUE KEY `ut_group_group_map_dedup_member_id_idx` (`member_id`, `grantor_id`, `grant_type`)
+#					, KEY `fk_group_group_map_dedup_grantor_id_groups_id` (`grantor_id`)
+#					, KEY `group_group_map_dedup_grantor_id_grant_type_idx` (`grantor_id`, `grant_type`)
+#					, KEY `group_group_map_dedup_member_id_grant_type_idx` (`member_id`, `grant_type`)
 					) 
 				;
 	
@@ -14211,9 +14437,12 @@ BEGIN
 				ORDER BY `member_id` ASC
 					, `grantor_id` ASC
 				;
+
 			# We insert the data we need in the `group_group_map` table
+
 				# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 					SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 				# We can now do the insert
 					INSERT INTO `group_group_map`
 					SELECT `member_id`
@@ -14228,14 +14457,19 @@ BEGIN
 						, `grantor_id` = `ut_group_group_map_dedup`.`grantor_id`
 						, `grant_type` = `ut_group_group_map_dedup`.`grant_type`
 					;
+
 			# We drop the temp table as we do not need it anymore
 				DROP TEMPORARY TABLE IF EXISTS `ut_group_group_map_dedup`;
+
 		# We can now update the permissions table for the users
 		# This NEEDS the table 'ut_user_group_map_temp'
 			CALL `update_permissions_invited_user`;
+
 	# Update the table 'ut_data_to_create_units' so that we record that the unit has been created
+
 		# Make sure we have the correct value for the name of this script so the `ut_audit_log_table` has the correct info
 			SET @script = 'PROCEDURE unit_create_with_dummy_users';
+
 		# We can now do the uppdate
 			UPDATE `ut_data_to_create_units`
 			SET 
@@ -14878,20 +15112,24 @@ DELIMITER $$
 /*!50003 CREATE DEFINER=`unee_t_root`@`%` PROCEDURE `update_permissions_invited_user`()
     SQL SECURITY INVOKER
 BEGIN
+
 	# We update the `user_group_map` table
 	#	 - Create an intermediary table to deduplicate the records in the table `ut_user_group_map_temp`
 	#	 - If the record does NOT exists in the table then INSERT new records in the table `user_group_map`
 	#	 - If the record DOES exist in the table then update the new records in the table `user_group_map`
 	#
 	# We NEED the table `ut_user_group_map_temp` BUT this table should already exist. DO NO re-create it here!!!
+
 	# We drop the deduplication table if it exists:
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
+
 	# We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
 		CREATE TEMPORARY TABLE `ut_user_group_map_dedup` (
 			`user_id` MEDIUMINT(9) NOT NULL
 			, `group_id` MEDIUMINT(9) NOT NULL
 			, `isbless` TINYINT(4) NOT NULL DEFAULT '0'
 			, `grant_type` TINYINT(4) NOT NULL DEFAULT '0'
+#			UNIQUE KEY `user_group_map_dedup_user_id_idx` (`user_id`, `group_id`, `grant_type`, `isbless`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 		;
 		
@@ -14927,8 +15165,10 @@ BEGIN
 			, `isbless` = `ut_user_group_map_dedup`.`isbless`
 			, `grant_type` = `ut_user_group_map_dedup`.`grant_type`
 		;
+
 	# We drop the temp table as we do not need it anymore
 		DROP TEMPORARY TABLE IF EXISTS `ut_user_group_map_dedup`;
+
 END */$$
 DELIMITER ;
 
@@ -15022,9 +15262,11 @@ DELIMITER $$
 BEGIN
 	IF (@user_in_default_cc_for_cases = 1)
 	THEN 
+
 		# We record the name of this procedure for future debugging and audit_log
 			SET @script = 'PROCEDURE - user_in_default_cc_for_cases';
 			SET @timestamp = NOW();
+
 		# We use a temporary table to make sure we do not have duplicates.
 		
 		# DELETE the temp table if it exists
@@ -15038,10 +15280,12 @@ BEGIN
 				KEY `search_component_id` (`component_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 				;
+
 		# Add the records that exist in the table component_cc
 			INSERT INTO `ut_temp_component_cc`
 				SELECT *
 				FROM `component_cc`;
+
 		# Add the new user rights for the product
 			INSERT INTO `ut_temp_component_cc`
 				(user_id
@@ -15050,12 +15294,15 @@ BEGIN
 				VALUES
 				(@bz_user_id, @component_id)
 				;
+
 		# We drop the deduplication table if it exists:
 			DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
+
 		# We create a table `ut_user_group_map_dedup` to prepare the data we need to insert
 			CREATE TEMPORARY TABLE `ut_temp_component_cc_dedup` (
 				`user_id` MEDIUMINT(9) NOT NULL
 				, `component_id` MEDIUMINT(9) NOT NULL
+#				, UNIQUE KEY `ut_temp_component_cc_dedup_userid_componentid` (`user_id`, `component_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
 			;
 			
@@ -15068,6 +15315,7 @@ BEGIN
 			GROUP BY `user_id`
 				, `component_id`
 			;
+
 		# We insert the new records in the table `component_cc`
 			INSERT INTO `component_cc`
 			SELECT `user_id`
@@ -15082,6 +15330,7 @@ BEGIN
 				`user_id` = `ut_temp_component_cc_dedup`.`user_id`
 				, `component_id` = `ut_temp_component_cc_dedup`.`component_id`
 			;
+
 		# Clean up:
 			# We drop the deduplication table if it exists:
 				DROP TEMPORARY TABLE IF EXISTS `ut_temp_component_cc_dedup`;
